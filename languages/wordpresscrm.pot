@@ -1,0 +1,452 @@
+# Copyright (C) 2016 Integration for Dynamics
+# This file is distributed under the same license as the Integration for Dynamics package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Integration for Dynamics 1.1.7\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/integration-dynamics\n"
+"POT-Creation-Date: 2016-09-30 09:34:49+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: src/Admin/Metabox/DataBinding.php:49
+msgid "Dynamics CRM Data Binding"
+msgstr ""
+
+#: src/Admin/Tab/About.php:32 src/Admin/Tab/About.php:48
+msgid "About"
+msgstr ""
+
+#: src/Admin/Tab/About.php:52
+msgid "Version: %s"
+msgstr ""
+
+#: src/Admin/Tab/About.php:53
+msgid "Copyright &copy; %1$d %2$s"
+msgstr ""
+
+#: src/Admin/Tab/About.php:54
+msgid "<a href=\"%s\">Plugin website</a>"
+msgstr ""
+
+#: src/Admin/Tab/About.php:55
+msgid "<a href=\"http://%s\">Documentation</a>"
+msgstr ""
+
+#: src/Admin/Tab/Attachments.php:33
+msgid "Images"
+msgstr ""
+
+#: src/Admin/Tab/Attachments.php:78
+msgid "Annotations settings"
+msgstr ""
+
+#: src/Admin/Tab/Attachments.php:89
+msgid "Use a view to get images"
+msgstr ""
+
+#: src/Admin/Tab/Attachments.php:95 views/admin/meta_box.php:13
+msgid "— Select —"
+msgstr ""
+
+#: src/Admin/Tab/Forms.php:26
+msgid "Forms"
+msgstr ""
+
+#: src/Admin/Tab/Forms.php:41
+msgid "reCAPTCHA settings"
+msgstr ""
+
+#: src/Admin/Tab/Forms.php:42
+msgid ""
+"Plugin supports reCAPTCHA that you can add to the forms to protect your "
+"WordPress site from spam."
+msgstr ""
+
+#: src/Admin/Tab/Forms.php:52
+msgid "Enable reCAPTCHA"
+msgstr ""
+
+#: src/Admin/Tab/Forms.php:56
+msgid "Site key <span class=\"description\">(required)</span>"
+msgstr ""
+
+#: src/Admin/Tab/Forms.php:64
+msgid "Secret key <span class=\"description\">(required)</span>"
+msgstr ""
+
+#: src/Admin/Tab/General.php:61
+msgid "Metadata cache has been purged and now will be rebuilt gradually."
+msgstr ""
+
+#: src/Admin/Tab/General.php:69
+msgid "Connection"
+msgstr ""
+
+#: src/Admin/Tab/General.php:113
+msgid "Connection to Dynamics CRM <%s> has been successfully established."
+msgstr ""
+
+#: src/Admin/Tab/General.php:116
+msgid ""
+"Unable to connect to Dynamics CRM using provided address, username and/or "
+"password."
+msgstr ""
+
+#: src/Admin/Tab/General.php:121
+msgid "Unable to connect to Dynamics CRM: %s"
+msgstr ""
+
+#: src/Admin/Tab/General.php:165
+msgid "Reconnect"
+msgstr ""
+
+#: src/Admin/Tab/General.php:165
+msgid "Connect"
+msgstr ""
+
+#: src/Admin/Tab/General.php:172
+msgid "Configure the plugin to connect to your Dynamics CRM instance."
+msgstr ""
+
+#: src/Admin/Tab/General.php:179 src/Admin/Tab/General.php:183
+msgid "Deployment Type"
+msgstr ""
+
+#: src/Admin/Tab/General.php:216 src/Admin/Tab/General.php:273
+msgid ""
+"Dynamics CRM Address (URL) <span class=\"description\">(required)</span>"
+msgstr ""
+
+#: src/Admin/Tab/General.php:227
+msgid "Authentication Source"
+msgstr ""
+
+#: src/Admin/Tab/General.php:231
+msgid "Internet-facing deployment (IFD)"
+msgstr ""
+
+#: src/Admin/Tab/General.php:237 src/Admin/Tab/General.php:284
+msgid "User Name <span class=\"description\">(required)</span>"
+msgstr ""
+
+#: src/Admin/Tab/General.php:243 src/Admin/Tab/General.php:290
+msgid "CRM user login"
+msgstr ""
+
+#: src/Admin/Tab/General.php:248 src/Admin/Tab/General.php:295
+msgid "Password <span class=\"description\">(required)</span>"
+msgstr ""
+
+#: src/Admin/Tab/General.php:254 src/Admin/Tab/General.php:301
+msgid "CRM user password"
+msgstr ""
+
+#: src/Admin/Tab/General.php:314
+msgid "Metadata Settings"
+msgstr ""
+
+#: src/Admin/Tab/General.php:315
+msgid ""
+"If you have changed your Dynamics CRM entities metadata recently, please "
+"regenerate local metadata cache to keep it up to date."
+msgstr ""
+
+#: src/Admin/Tab/General.php:319
+msgid "Regenerate Metadata Cache"
+msgstr ""
+
+#: src/Admin/Tab/General.php:323
+msgid "F j, Y \\a\\t g:i A"
+msgstr ""
+
+#: src/Admin/Tab/General.php:326
+msgid "Metadata cache was last regenerated on %s."
+msgstr ""
+
+#: src/Admin/Tab/Messages.php:32
+msgid "Form validation failed"
+msgstr ""
+
+#: src/Admin/Tab/Messages.php:33
+msgid "An error has occurred submitting the form"
+msgstr ""
+
+#: src/Admin/Tab/Messages.php:34
+msgid "Error: invalid captcha"
+msgstr ""
+
+#: src/Admin/Tab/Messages.php:49
+msgid "Form errors"
+msgstr ""
+
+#: src/Admin/Tab/Messages.php:51
+msgid "Validation error"
+msgstr ""
+
+#: src/Admin/Tab/Messages.php:52
+msgid "Form submit error"
+msgstr ""
+
+#: src/Admin/Tab/Messages.php:53
+msgid "Invalid captcha error"
+msgstr ""
+
+#: src/Admin/Tab/Messages.php:67
+msgid "Messages"
+msgstr ""
+
+#: src/Admin/Tab/Messages.php:119
+msgid "You can adjust messages that are displayed to users."
+msgstr ""
+
+#: src/Admin/Tab/Views.php:24
+msgid "Views"
+msgstr ""
+
+#: src/Admin/Tab/Views.php:38
+msgid "Views settings"
+msgstr ""
+
+#: src/Admin/Tab/Views.php:42
+msgid "Images for boolean fields"
+msgstr ""
+
+#: src/Admin/Tab/Views.php:49
+msgid "Use images for boolean field values in views"
+msgstr ""
+
+#: src/Admin.php:79
+msgid "%s &lsaquo; Dynamics CRM"
+msgstr ""
+
+#: src/Admin.php:105
+msgid ""
+"Dynamics CRM Plugin successfully activated, <b>please configure it</b> <a "
+"href=\"admin.php?page=wordpresscrm\">on this page</a>."
+msgstr ""
+
+#: src/Lookup.php:287
+msgid "No records are available in this view."
+msgstr ""
+
+#: src/Plugin.php:133 src/Plugin.php:140
+msgid "Cheatin&#8217; huh?"
+msgstr ""
+
+#: src/Plugin.php:303
+msgid "Settings"
+msgstr ""
+
+#: src/Shortcode/Form/Control.php:73
+msgid "%s is required"
+msgstr ""
+
+#: src/Shortcode/Form/Control.php:90
+msgid "%s must be a valid email address"
+msgstr ""
+
+#: src/Shortcode/Form/Control.php:98
+msgid "%s must be a valid URL"
+msgstr ""
+
+#: src/Shortcode/Form/Control.php:108
+msgid "%1$s must be less than %2$d character"
+msgid_plural "%1$s must be less than %2$d characters"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Shortcode/Form/FormInstance.php:456
+msgid "Unsupported lookup type for [%1$s], or entity {%2$s} not found"
+msgstr ""
+
+#: src/Shortcode/Form/FormInstance.php:528
+msgid "Must be less than %d characters"
+msgid_plural "Must be less than %d characters"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Shortcode/Form/FormInstance.php:535
+msgid "Incorrect text value"
+msgstr ""
+
+#: src/Shortcode/Form/FormInstance.php:540
+msgid "Incorrect email"
+msgstr ""
+
+#: src/Shortcode/Form/FormInstance.php:553
+msgid "Invalid number value"
+msgstr ""
+
+#: src/Shortcode/Form/FormInstance.php:558
+msgid ""
+"Invalid number value. Enter a decimal number without currency symbol or "
+"thousands separator."
+msgstr ""
+
+#: src/Shortcode/Form/FormInstance.php:563
+msgid ""
+"Invalid money value. Enter a decimal number without currency symbol or "
+"thousands separator."
+msgstr ""
+
+#: src/Shortcode/View.php:117
+msgid "Inline view templates are not supported in this version."
+msgstr ""
+
+#: src/Shortcode/View.php:120
+msgid ""
+"Error in inline template body, please check the inline template for unclosed "
+"or empty tags. <br/> Note that inline template must be well formatted xml "
+"document"
+msgstr ""
+
+#: src/Shortcode/View.php:125
+msgid ""
+"<strong>The &lt;fetch&gt;, &lt;results&gt; and &lt;noresults&gt; nodes are "
+"required for inline templates</strong>, please construct fetch query and the "
+"results layot and add them into the shortcode body, <br />Example: "
+"[msdyncrm_view]&lt;fetch&gt;...&lt;/fetch&gt;&lt;results&gt;...&lt;/"
+"results&gt;&lt;noresults&gt;...&lt;/noresults&gt;[/msdyncrm_view]"
+msgstr ""
+
+#: src/Shortcode/View.php:135
+msgid ""
+"\"entity_name\" shortcode attribute is deprecated, use \"entity\" shortcode "
+"attribute instead with result records entity type"
+msgstr ""
+
+#: src/Shortcode/View.php:139
+msgid ""
+"\"entity\" shortcode attribute is required, please add entity="
+"\"entity_logical_name\" to the msdyncrm_view shortcode attributes"
+msgstr ""
+
+#: src/Shortcode/View.php:143
+msgid ""
+"\"name\" shortcode attribute is required, please add name=\"View Name\" to "
+"the msdyncrm_view shortcode attributes"
+msgstr ""
+
+#: src/Shortcode.php:32
+msgid ""
+"An error occurred, please try again later or contact site administration"
+msgstr ""
+
+#: src/Shortcode.php:47
+msgid "Wordpress CRM Plugin is not connected to Dynamics CRM"
+msgstr ""
+
+#: templates/form/field/field-lookup.php:27
+#: templates/form/field/field-lookup.php:89
+msgid "Cancel"
+msgstr ""
+
+#: templates/form/field/field-lookup.php:31
+msgid "Look up record"
+msgstr ""
+
+#: templates/form/field/field-lookup.php:36
+msgid "Look for"
+msgstr ""
+
+#: templates/form/field/field-lookup.php:48
+msgid "Search"
+msgstr ""
+
+#: templates/form/field/field-lookup.php:50
+msgid "Search for records"
+msgstr ""
+
+#: templates/form/field/field-lookup.php:66
+msgid "Loading..."
+msgstr ""
+
+#: templates/form/field/field-lookup.php:78
+msgid "Page <span class=\"crm-lookup-popup-page-counter\">1</span>"
+msgstr ""
+
+#: templates/form/field/field-lookup.php:88
+msgid "Add"
+msgstr ""
+
+#: templates/form/field/field-lookup.php:92
+msgid "Remove Value"
+msgstr ""
+
+#: templates/form/field/submit.php:8
+msgid "Submit"
+msgstr ""
+
+#: templates/view/view.php:25
+msgid "<p>No results</p>"
+msgstr ""
+
+#: views/admin/meta_box.php:11
+msgid "Entity"
+msgstr ""
+
+#: views/admin/meta_box.php:23
+msgid "Parameter name"
+msgstr ""
+
+#: views/admin/meta_box.php:43
+msgid "Query string parameter name"
+msgstr ""
+
+#: views/admin/meta_box.php:47
+msgid "Empty parameter behavior"
+msgstr ""
+
+#: views/admin/meta_box.php:50
+msgid "Ignore"
+msgstr ""
+
+#: views/admin/meta_box.php:52
+msgid "Page Not Found"
+msgstr ""
+
+#: views/admin/meta_box.php:57
+msgid "Set default for views"
+msgstr ""
+
+#: views/admin/nav_tabs.php:37
+msgid ""
+"WordPress is connected to your Dynamics CRM organization and is ready for "
+"use."
+msgstr ""
+
+#: views/admin/nav_tabs.php:37
+msgid "WordPress is not connected to Dynamics CRM."
+msgstr ""
+
+#: views/admin/nav_tabs.php:38
+msgid "Connected to &lt;%s&gt;"
+msgstr ""
+
+#: views/admin/nav_tabs.php:38
+msgid "Not connected"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Integration for Dynamics"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://wordpress.org/plugins/integration-dynamics/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "The easiest way to connect Dynamics CRM with WordPress."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "AlexaCRM"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://alexacrm.com"
+msgstr ""

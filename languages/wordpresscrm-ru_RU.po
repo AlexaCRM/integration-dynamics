@@ -1,0 +1,481 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Dynamics CRM\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/wordpress-crm\n"
+"POT-Creation-Date: 2016-09-12 13:46+0300\n"
+"PO-Revision-Date: 2016-09-12 13:50+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.9\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: wordpress-crm.php\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: src/Admin/Metabox/DataBinding.php:45
+msgid "Dynamics CRM Data Binding"
+msgstr "Привязка данных к Dynamics CRM"
+
+#: src/Admin/Tab/About.php:28 src/Admin/Tab/About.php:44
+msgid "About"
+msgstr "О плагине"
+
+#: src/Admin/Tab/About.php:48
+msgid "Version: %s"
+msgstr "Версия: %s"
+
+#: src/Admin/Tab/About.php:49
+msgid "Copyright &copy; %1$d %2$s"
+msgstr "Copyright &copy; %1$d %2$s"
+
+#: src/Admin/Tab/About.php:50
+msgid "<a href=\"%s\">Plugin website</a>"
+msgstr "<a href=\"%s\">Сайт плагина</a>"
+
+#: src/Admin/Tab/About.php:51
+msgid "<a href=\"http://%s\">Documentation</a>"
+msgstr "<a href=\"http://%s\">Документация</a>"
+
+#: src/Admin/Tab/Attachments.php:29
+msgid "Images"
+msgstr "Изображения"
+
+#: src/Admin/Tab/Attachments.php:74
+msgid "Annotations settings"
+msgstr "Настройки аннотаций"
+
+#: src/Admin/Tab/Attachments.php:85
+msgid "Use a view to get images"
+msgstr "Выберите представление для получения изображений"
+
+#: src/Admin/Tab/Attachments.php:91 views/admin/meta_box.php:7
+msgid "— Select —"
+msgstr "— Выбор —"
+
+#: src/Admin/Tab/Forms.php:22
+msgid "Forms"
+msgstr "Формы"
+
+#: src/Admin/Tab/Forms.php:37
+msgid "reCAPTCHA settings"
+msgstr "Настройки reCAPTCHA"
+
+#: src/Admin/Tab/Forms.php:38
+msgid ""
+"Plugin supports reCAPTCHA that you can add to the forms to protect your "
+"WordPress site from spam."
+msgstr ""
+"Плагин поддерживает интеграцию с reCAPTCHA, чтобы защитить ваши формы на "
+"сайте от спама."
+
+#: src/Admin/Tab/Forms.php:48
+msgid "Enable reCAPTCHA"
+msgstr "Включить reCAPTCHA"
+
+#: src/Admin/Tab/Forms.php:52
+msgid "Site key <span class=\"description\">(required)</span>"
+msgstr "Ключ сайта <span class=\"description\">(обязательно)</span>"
+
+#: src/Admin/Tab/Forms.php:60
+msgid "Secret key <span class=\"description\">(required)</span>"
+msgstr "Секретный ключ <span class=\"description\">(обязательно)</span>"
+
+#: src/Admin/Tab/General.php:57
+msgid "Metadata cache has been purged and now will be rebuilt gradually."
+msgstr "Кэш метаданных был очищен и будет постепенно наполнен снова."
+
+#: src/Admin/Tab/General.php:65
+msgid "Connection"
+msgstr "Подключение"
+
+#: src/Admin/Tab/General.php:109
+msgid "Connection to Dynamics CRM <%s> has been successfully established."
+msgstr "Подключение к Dynamics CRM <%s> успешно установлено."
+
+#: src/Admin/Tab/General.php:112
+msgid ""
+"Unable to connect to Dynamics CRM using provided address, username and/or "
+"password."
+msgstr ""
+"Не удалось подключиться к Dynamics CRM, используя данные адрес, имя "
+"пользователя и/или пароль."
+
+#: src/Admin/Tab/General.php:117
+msgid "Unable to connect to Dynamics CRM: %s"
+msgstr "Не удалось подключиться к Dynamics CRM: %s"
+
+#: src/Admin/Tab/General.php:161
+msgid "Reconnect"
+msgstr "Переподключиться"
+
+#: src/Admin/Tab/General.php:161
+msgid "Connect"
+msgstr "Подключиться"
+
+#: src/Admin/Tab/General.php:168
+msgid "Configure the plugin to connect to your Dynamics CRM instance."
+msgstr "Настройте плагин, чтобы подключиться к вашей Dynamics CRM."
+
+#: src/Admin/Tab/General.php:175 src/Admin/Tab/General.php:179
+msgid "Deployment Type"
+msgstr "Тип развёртки"
+
+#: src/Admin/Tab/General.php:212 src/Admin/Tab/General.php:269
+msgid ""
+"Dynamics CRM Address (URL) <span class=\"description\">(required)</span>"
+msgstr ""
+"Адрес (URL) Dynamics CRM <span class=\"description\">(обязательно)</span>"
+
+#: src/Admin/Tab/General.php:223
+msgid "Authentication Source"
+msgstr "Источник аутентификации"
+
+#: src/Admin/Tab/General.php:227
+msgid "Internet-facing deployment (IFD)"
+msgstr "Доступ через интернет (IDF)"
+
+#: src/Admin/Tab/General.php:233 src/Admin/Tab/General.php:280
+msgid "User Name <span class=\"description\">(required)</span>"
+msgstr "Имя пользователя <span class=\"description\">(обязательно)</span>"
+
+#: src/Admin/Tab/General.php:239 src/Admin/Tab/General.php:286
+msgid "CRM user login"
+msgstr "Имя пользователя в CRM"
+
+#: src/Admin/Tab/General.php:244 src/Admin/Tab/General.php:291
+msgid "Password <span class=\"description\">(required)</span>"
+msgstr "Пароль <span class=\"description\">(обязательно)</span>"
+
+#: src/Admin/Tab/General.php:250 src/Admin/Tab/General.php:297
+msgid "CRM user password"
+msgstr "Пароль в CRM"
+
+#: src/Admin/Tab/General.php:310
+msgid "Metadata Settings"
+msgstr "Настройки метаданных"
+
+#: src/Admin/Tab/General.php:311
+msgid ""
+"If you have changed your Dynamics CRM entities metadata recently, please "
+"regenerate local metadata cache to keep it up to date."
+msgstr ""
+"Если вы недавно изменяли объекты и их поля в Dynamics CRM, необходимо "
+"пересобрать кэш метаданных."
+
+#: src/Admin/Tab/General.php:315
+msgid "Regenerate Metadata Cache"
+msgstr "Пересобрать кэш метаданных"
+
+#: src/Admin/Tab/General.php:319
+msgid "F j, Y \\a\\t g:i A"
+msgstr "j F Y в H:i"
+
+#: src/Admin/Tab/General.php:322
+msgid "Metadata cache was last regenerated on %s."
+msgstr "Последний раз кэш метаданных пересобирался %s."
+
+#: src/Admin/Tab/Messages.php:28
+msgid "Form validation failed"
+msgstr "Не удалось проверить форму"
+
+#: src/Admin/Tab/Messages.php:29
+msgid "An error has occurred submitting the form"
+msgstr "При подаче формы произошла ошибка"
+
+#: src/Admin/Tab/Messages.php:30
+msgid "Error: invalid captcha"
+msgstr "Ошибка: неверная капча"
+
+#: src/Admin/Tab/Messages.php:45
+msgid "Form errors"
+msgstr "Ошибки в формах"
+
+#: src/Admin/Tab/Messages.php:47
+msgid "Validation error"
+msgstr "Ошибка валидации"
+
+#: src/Admin/Tab/Messages.php:48
+msgid "Form submit error"
+msgstr "Ошибка при подаче формы"
+
+#: src/Admin/Tab/Messages.php:49
+msgid "Invalid captcha error"
+msgstr "Неверная reCAPTCHA"
+
+#: src/Admin/Tab/Messages.php:63
+msgid "Messages"
+msgstr "Сообщения"
+
+#: src/Admin/Tab/Messages.php:115
+msgid "You can adjust messages that are displayed to users."
+msgstr ""
+"Вы можете поменять текст сообщений, которые показываются пользователям "
+"вашего сайта."
+
+#: src/Admin/Tab/Views.php:20
+msgid "Views"
+msgstr "Представления"
+
+#: src/Admin/Tab/Views.php:34
+msgid "Views settings"
+msgstr "Настройки представлений"
+
+#: src/Admin/Tab/Views.php:38
+msgid "Images for boolean fields"
+msgstr "Картинки в булевых полях"
+
+#: src/Admin/Tab/Views.php:45
+msgid "Use images for boolean field values in views"
+msgstr ""
+"Использовать картинки в качестве значений для булевых полей в представлениях"
+
+#: src/Admin.php:52
+msgid "%s &lsaquo; Dynamics CRM"
+msgstr "%s &lsaquo; Dynamics CRM"
+
+#: src/Admin.php:75
+msgid ""
+"Dynamics CRM Plugin successfully activated, <b>please configure it</b> <a "
+"href=\"admin.php?page=wordpresscrm\">on this page</a>."
+msgstr ""
+"Плагин для Dynamics CRM успешно установлен. <b>Настройте его</b> на <a href="
+"\"admin.php?page=wordpresscrm\">этой странице</a>."
+
+#: src/Plugin.php:131 src/Plugin.php:138
+msgid "Cheatin&#8217; huh?"
+msgstr "Cheatin&#8217; huh?"
+
+#: src/Plugin.php:317
+msgid "Settings"
+msgstr "Настройки"
+
+#: src/Shortcode/Form/Control.php:69
+msgid "%s is required"
+msgstr "%s обязательно"
+
+#: src/Shortcode/Form/Control.php:86
+msgid "%s must be a valid email address"
+msgstr "%s должен быть верным e-mail адресом"
+
+#: src/Shortcode/Form/Control.php:94
+msgid "%s must be a valid URL"
+msgstr "%s должен быть верным URL"
+
+#: src/Shortcode/Form/Control.php:104
+msgid "%1$s must be less than %2$d character"
+msgid_plural "%1$s must be less than %2$d characters"
+msgstr[0] "%1$s должен содержать не менее %2$d символа"
+msgstr[1] "%1$s должен содержать не менее %2$d символов"
+msgstr[2] "%1$s должен содержать не менее %2$d символов"
+
+#: src/Shortcode/Form/FormInstance.php:452
+msgid "Unsupported lookup type for [%1$s], or entity {%2$s} not found"
+msgstr "[%1$s] не поддерживает данный тип лукапа, либо объект {%2$s} не найден"
+
+#: src/Shortcode/Form/FormInstance.php:524
+msgid "Must be less than %d characters"
+msgid_plural "Must be less than %d characters"
+msgstr[0] "Должно быть менее %d символа"
+msgstr[1] "Должно быть менее %d символов"
+msgstr[2] "Должно быть менее %d символов"
+
+#: src/Shortcode/Form/FormInstance.php:531
+msgid "Incorrect text value"
+msgstr "Неверное текстовое значение"
+
+#: src/Shortcode/Form/FormInstance.php:536
+msgid "Incorrect email"
+msgstr "Неверный e-mail"
+
+#: src/Shortcode/Form/FormInstance.php:549
+msgid "Invalid number value"
+msgstr "Неверное числовое значение"
+
+#: src/Shortcode/Form/FormInstance.php:554
+msgid ""
+"Invalid number value. Enter a decimal number without currency symbol or "
+"thousands separator."
+msgstr ""
+"Неверное числовое значение. Числа вводятся без знаков валют и разделителей "
+"разрядов."
+
+#: src/Shortcode/Form/FormInstance.php:559
+msgid ""
+"Invalid money value. Enter a decimal number without currency symbol or "
+"thousands separator."
+msgstr ""
+"Неверное денежное значение. Числа вводятся без знаков валют и разделителей "
+"разрядов."
+
+#: src/Shortcode/View.php:97
+msgid "Inline view templates are not supported in this version."
+msgstr "В этой версии встраиваемые представления не поддерживаются."
+
+#: src/Shortcode/View.php:100
+msgid ""
+"Error in inline template body, please check the inline template for unclosed "
+"or empty tags. <br/> Note that inline template must be well formatted xml "
+"document"
+msgstr ""
+"Ошибка в теле встроенного представления. Проверьте код на наличие незакрытых "
+"или пустых тегов. <br/> Учтите, что встроенное представление должно "
+"содержать верно составленный XML-документ"
+
+#: src/Shortcode/View.php:105
+msgid ""
+"<strong>The &lt;fetch&gt;, &lt;results&gt; and &lt;noresults&gt; nodes are "
+"required for inline templates</strong>, please construct fetch query and the "
+"results layot and add them into the shortcode body, <br />Example: "
+"[msdyncrm_view]&lt;fetch&gt;...&lt;/fetch&gt;&lt;results&gt;...&lt;/"
+"results&gt;&lt;noresults&gt;...&lt;/noresults&gt;[/msdyncrm_view]"
+msgstr ""
+
+#: src/Shortcode/View.php:115
+msgid ""
+"\"entity_name\" shortcode attribute is deprecated, use \"entity\" shortcode "
+"attribute instead with result records entity type"
+msgstr ""
+
+#: src/Shortcode/View.php:119
+msgid ""
+"\"entity\" shortcode attribute is required, please add entity="
+"\"entity_logical_name\" to the msdyncrm_view shortcode attributes"
+msgstr ""
+
+#: src/Shortcode/View.php:123
+msgid ""
+"\"name\" shortcode attribute is required, please add name=\"View Name\" to "
+"the msdyncrm_view shortcode attributes"
+msgstr ""
+
+#: src/Shortcode.php:35
+msgid ""
+"An error occurred, please try again later or contact site administration"
+msgstr ""
+"Произошла ошибка. Попробуйте позже снова или свяжитесь с администратором "
+"сайта"
+
+#: src/Shortcode.php:50
+msgid "Wordpress CRM Plugin is not connected to Dynamics CRM"
+msgstr "Сайт не подключен к Dynamics CRM"
+
+#: templates/view/view.php:25
+msgid "<p>No results</p>"
+msgstr "<p>Результатов нет</p>"
+
+#: views/admin/meta_box.php:5
+msgid "Entity"
+msgstr "Объект"
+
+#: views/admin/meta_box.php:17
+msgid "Parameter name"
+msgstr "Имя параметра"
+
+#: views/admin/meta_box.php:37
+msgid "Query string parameter name"
+msgstr "Параметр запроса со значением параметра"
+
+#: views/admin/meta_box.php:41
+msgid "Empty parameter behavior"
+msgstr "Поведение при незаполненном параметре"
+
+#: views/admin/meta_box.php:44
+msgid "Ignore"
+msgstr "Игнорировать"
+
+#: views/admin/meta_box.php:46
+msgid "Page Not Found"
+msgstr "Страница не найдена"
+
+#: views/admin/meta_box.php:51
+msgid "Set default for views"
+msgstr "По умолчанию в представлениях"
+
+#: views/admin/nav_tabs.php:32
+msgid "WordPress is connected to your Dynamics CRM and is ready for use."
+msgstr "WordPress подключен к вашей Dynamics CRM и готов к использованию."
+
+#: views/admin/nav_tabs.php:32
+msgid "WordPress is not connected to Dynamics CRM."
+msgstr "WordPress не подключен к Dynamics CRM."
+
+#: views/admin/nav_tabs.php:33
+msgid "Connected"
+msgstr "Подключено"
+
+#: views/admin/nav_tabs.php:33
+msgid "Not connected"
+msgstr "Не подключено"
+
+#. Plugin Name of the plugin/theme
+msgid "Dynamics CRM"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://alexacrm.com/dynamics-crm-wordpress-plugin"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Microsoft Dynamics CRM and Wordpress integration plugin"
+msgstr "Интеграция WordPress и Microsoft Dynamics CRM"
+
+#. Author of the plugin/theme
+msgid "AlexaCRM"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://alexacrm.com"
+msgstr ""
+
+#~ msgid "Plugin Documentation"
+#~ msgstr "Документация"
+
+#~ msgid ""
+#~ "To check the <strong>plugin documentation</strong> please visit "
+#~ "<strong><a href='http://%s' target='_blank'>%s</a></strong>"
+#~ msgstr ""
+#~ "<strong>Документация к плагину</strong> доступна на сайте <strong><a "
+#~ "href='http://%s' target='_blank'>%s</a></strong>"
+
+#~ msgid "'%s is required'"
+#~ msgstr "'%s обязательно'"
+
+#~ msgid "'%s must be a valid email address'"
+#~ msgstr "'%s должен быть правильным адресом e-mail'"
+
+#~ msgid "'%s must be a valid URL'"
+#~ msgstr "'%s должен быть правильным URL'"
+
+#~ msgid "'%s must be a valid phone number'"
+#~ msgstr "'%s должен быть правильным номером телефона'"
+
+#~ msgid "'%1$s must be less than %2$d character'"
+#~ msgid_plural "'%1$s must be less than %2$d characters'"
+#~ msgstr[0] "'%1$s должен быть короче %2$d символа'"
+#~ msgstr[1] "'%1$s должен быть короче %2$d символов'"
+#~ msgstr[2] "'%1$s должен быть короче %2$d символов'"
+
+#~ msgid "'%1$s must be less than %2$d characters'"
+#~ msgstr "'%1$s должен быть менее %2$d символов'"
+
+#~ msgid "Search"
+#~ msgstr "Поиск"
+
+#~ msgid ""
+#~ "An error occured, please try again later or contact site administration"
+#~ msgstr ""
+#~ "Произошла ошибка. Попробуйте ещё раз позже, или свяжитесь с "
+#~ "администратором сайта"
+
+#~ msgid "Use default for views"
+#~ msgstr "Страница по умолчанию для представлений"
