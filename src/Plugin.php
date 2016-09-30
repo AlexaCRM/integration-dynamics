@@ -23,7 +23,7 @@ final class Plugin {
     /**
      * @var string
      */
-    public $plugin_name = 'Integration for Dynamics';
+    public $plugin_name = 'Dynamics CRM Integration';
 
     /**
      * @var string
@@ -33,7 +33,7 @@ final class Plugin {
     /**
      * @var string
      */
-    public $full_plugin_name = 'Integration for Dynamics';
+    public $full_plugin_name = 'Dynamics CRM Integration';
 
     /**
      * Shortcode prefix

@@ -1,6 +1,6 @@
-=== Integration for Dynamics ===
+=== Dynamics CRM Integration ===
 Contributors: alexacrm, georgedude, wizardist
-Tags: crm, dynamics crm, forms, integration, contact form, shortcode
+Tags: contact form, CRM, dynamics crm, form, integration, leads, membership, portal, shortcode
 Requires at least: 4.5
 Tested up to: 4.6.1
 Stable tag: trunk
@@ -10,6 +10,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 The easiest way to connect Dynamics CRM with WordPress.
 
 == Description ==
+
 This plugin directly connects WordPress and Microsoft Dynamics CRM creating powerful portal solutions for your business.
 
 Features:
@@ -18,10 +19,22 @@ Features:
 * Design forms in the CRM and insert them on your site with a form shortcode.
 * Write data from the forms directly to Dynamics CRM.
 * Collect leads, contact requests, support queries and much more without any coding.
-* Display records using Dynamics CRM views with a shortcode. GIve your customers direct access to product catalogs, event lists, knowledge base articles.
+* Display records using Dynamics CRM views with a shortcode. Give your customers direct access to product catalogs, event lists, knowledge base articles.
 * Bind WordPress posts and pages to Dynamics CRM records. Build a customized record view in WordPress like product information sheets
 * Support for entity images and attached images with dynamic resizing and caching.
 * Extensible through WordPress [actions and filters](https://codex.wordpress.org/Plugin_API).
+
+= Minimum PHP version =
+
+This plugin requires at least PHP 5.4. Versions 5.6 or 7.x are expected to have full compatibility.
+
+= WARNING =
+
+For this plugin to work, access to a working instance of Dynamics CRM Online or Dynamics CRM On-Premises with IFD (Internet Facing Deployment) is required. Without an instance of Dynamics CRM the plugin is absolutely useless. Please, do not raise issues related to that fact. If you are curious to try, you can always sign up for a [free trial of Dynamics CRM](https://www.microsoft.com/en-us/dynamics/crm-free-trial-overview.aspx).
+
+= Reporting issues =
+
+Development of this plugin takes place at the [GitHub repository](https://github.com/AlexaCRM/integration-dynamics). Please address all questions and issues there.
 
 == Installation ==
 

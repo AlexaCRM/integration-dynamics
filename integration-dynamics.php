@@ -1,6 +1,6 @@
 <?php
 /*
- * Plugin Name: Integration for Dynamics
+ * Plugin Name: Dynamics CRM Integration
  * Plugin URI: https://wordpress.org/plugins/integration-dynamics/
  * Description: The easiest way to connect Dynamics CRM with WordPress.
  * Version: 1.1.7
