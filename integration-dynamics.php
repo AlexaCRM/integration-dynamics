@@ -6,7 +6,7 @@
  * Version: 1.1.7
  * Author: AlexaCRM
  * Author URI: http://alexacrm.com
- * Text Domain: wordpresscrm
+ * Text Domain: integration-dynamics
  * Domain Path: /languages
  */
 
@@ -41,7 +41,7 @@ spl_autoload_register( function ( $className ) {
 
 require_once __DIR__ . '/libraries/php-crm-toolkit/init.php'; // CRM Toolkit for PHP autoloader
 
-load_plugin_textdomain( 'wordpresscrm', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+load_plugin_textdomain( 'integration-dynamics', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
 // run migrations
 require_once __DIR__ . '/update.php';

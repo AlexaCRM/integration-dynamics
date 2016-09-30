@@ -24,16 +24,16 @@ if ( !defined( 'ABSPATH' ) ) {
             <div class="crm-lookup-popup-overlay-bg"></div>
             <div class="crm-lookup-popup">
                 <div class="crm-lookup-popup-header">
-                    <a title="<?php _e( 'Cancel', 'wordpresscrm' ); ?>" class="crm-popup-cancel" href="#" tabindex="2">
+                    <a title="<?php _e( 'Cancel', 'integration-dynamics' ); ?>" class="crm-popup-cancel" href="#" tabindex="2">
                         <img style="height:16px;width:16px;"
                              src="<?php echo ACRM()->plugin_url(); ?>/resources/front/images/CloseDialog.png" alt="x"/>
                     </a>
-                    <div class="crm-header-title"><?php _e( 'Look up record', 'wordpresscrm' ); ?></div>
+                    <div class="crm-header-title"><?php _e( 'Look up record', 'integration-dynamics' ); ?></div>
                 </div>
                 <div class="crm-lookup-search-area">
                     <table>
                         <tr>
-                            <td class="label-td"><label><?php _e( 'Look for', 'wordpresscrm' ); ?></label></td>
+                            <td class="label-td"><label><?php _e( 'Look for', 'integration-dynamics' ); ?></label></td>
                             <td>
                                 <select class="crm-lookup-lookuptype" <?php if ( count( $lookupTypes ) <= 1 ) {
                                     echo "disabled";
@@ -45,9 +45,9 @@ if ( !defined( 'ABSPATH' ) ) {
                             </td>
                         </tr>
                         <tr>
-                            <td class="label-td"><label><?php _e( 'Search', 'wordpresscrm' ); ?></label></td>
+                            <td class="label-td"><label><?php _e( 'Search', 'integration-dynamics' ); ?></label></td>
                             <td>
-                                <input type="text" class="crm-lookup-searchfield" placeholder="<?php _e( 'Search for records', 'wordpresscrm' ); ?>"/>
+                                <input type="text" class="crm-lookup-searchfield" placeholder="<?php _e( 'Search for records', 'integration-dynamics' ); ?>"/>
                                 <span class="crm-lookup-searchfield-button"></span>
                                 <span class="crm-lookup-searchfield-delete-search"></span>
                             </td>
@@ -63,7 +63,7 @@ if ( !defined( 'ABSPATH' ) ) {
                                     <img src="<?php echo ACRM()->plugin_url(); ?>/resources/front/images/progress.gif"
                                          alt=""
                                          id="DialogLoadingDivImg">
-                                    <br><?php _e( 'Loading...', 'wordpresscrm' ); ?>
+                                    <br><?php _e( 'Loading...', 'integration-dynamics' ); ?>
                                 </td>
                             </tr>
                         </table>
@@ -75,7 +75,7 @@ if ( !defined( 'ABSPATH' ) ) {
                                 <td>
                                     <button disabled class="crm-lookup-popup-first-page"></button>
                                     <button disabled class="crm-lookup-popup-prev-page" data-pagingcookie=""></button>
-                                    <?php _e( 'Page <span class="crm-lookup-popup-page-counter">1</span>', 'wordpresscrm' ); ?>
+                                    <?php _e( 'Page <span class="crm-lookup-popup-page-counter">1</span>', 'integration-dynamics' ); ?>
                                     <button disabled class="crm-lookup-popup-next-page" data-pagingcookie=""></button>
                                 </td>
                             </tr>
@@ -85,11 +85,11 @@ if ( !defined( 'ABSPATH' ) ) {
                 <div class="crm-lookup-popup-foot">
                     <div class="crm-lookup-popup-foot-left"></div>
                     <div class="crm-lookup-popup-foot-right">
-                        <button class="crm-popup-add-button"><?php _e( 'Add', 'wordpresscrm' ); ?></button>
-                        <button class="crm-popup-cancel-button"><?php _e( 'Cancel', 'wordpresscrm' ); ?></button>
+                        <button class="crm-popup-add-button"><?php _e( 'Add', 'integration-dynamics' ); ?></button>
+                        <button class="crm-popup-cancel-button"><?php _e( 'Cancel', 'integration-dynamics' ); ?></button>
                         <button <?php if ( !$value ) {
                             echo "disabled";
-                        } ?> class="crm-popup-remove-value-button"><?php _e( 'Remove Value', 'wordpresscrm' ); ?>
+                        } ?> class="crm-popup-remove-value-button"><?php _e( 'Remove Value', 'integration-dynamics' ); ?>
                         </button>
                     </div>
                 </div>

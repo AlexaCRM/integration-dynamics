@@ -284,7 +284,7 @@ class Lookup {
             }
 
             $noRecordsMessage = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">'
-                                . __( 'No records are available in this view.', 'wordpresscrm' )
+                                . __( 'No records are available in this view.', 'integration-dynamics' )
                                 . '</td></tr></table>';
 
             if ( !$invoices ) {

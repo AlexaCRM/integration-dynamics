@@ -20,7 +20,7 @@ class Messages {
                 }
             }
 
-            return __( $message, 'wordpresscrm' );
+            return __( $message, 'integration-dynamics' );
         }
 
         $trace = debug_backtrace();

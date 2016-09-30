@@ -22,5 +22,5 @@ if ( $rows ) { ?>
         </tbody>
     </table>
 <?php } else {
-    echo apply_filters( "wordpresscrm_no_results_view", __( "<p>No results</p>", 'wordpresscrm' ), $attributes["entity"], $attributes["name"] );
+    echo apply_filters( "wordpresscrm_no_results_view", __( "<p>No results</p>", 'integration-dynamics' ), $attributes["entity"], $attributes["name"] );
 } ?>

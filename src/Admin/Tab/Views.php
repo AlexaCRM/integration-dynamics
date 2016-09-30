@@ -21,7 +21,7 @@ class Views extends Tab {
     ];
 
     public function getDisplayName() {
-        return __( 'Views', 'wordpresscrm' );
+        return __( 'Views', 'integration-dynamics' );
     }
 
     public function initializeTab( $tabHookName ) {

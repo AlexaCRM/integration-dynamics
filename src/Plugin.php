@@ -130,14 +130,14 @@ final class Plugin {
      * Cloning is forbidden.
      */
     public function __clone() {
-        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wordpresscrm' ), $this->version );
+        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'integration-dynamics' ), $this->version );
     }
 
     /**
      * Unserializing instances of this class is forbidden.
      */
     public function __wakeup() {
-        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wordpresscrm' ), $this->version );
+        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'integration-dynamics' ), $this->version );
     }
 
     /**
@@ -300,7 +300,7 @@ final class Plugin {
 
             // Settings page link
             if ( current_user_can( 'manage_options' ) ) {
-                $settingsLabel         = __( 'Settings', 'wordpresscrm' );
+                $settingsLabel         = __( 'Settings', 'integration-dynamics' );
                 $new_links['settings'] = '<a href="' . admin_url( 'options-general.php?page=wordpresscrm_general' ) . '">' . $settingsLabel . '</a>';
             }
 

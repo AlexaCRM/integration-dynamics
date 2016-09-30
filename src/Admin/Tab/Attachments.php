@@ -30,7 +30,7 @@ class Attachments extends Tab {
     );
 
     public function getDisplayName() {
-        return __( 'Images', 'wordpresscrm' );
+        return __( 'Images', 'integration-dynamics' );
     }
 
     public function initializeTab( $tabHookName ) {
@@ -75,7 +75,7 @@ class Attachments extends Tab {
                 <?php settings_fields( $this->settingsField ); ?>
                 <?php do_settings_sections( $this->settingsField ); ?>
 
-                <h3><?php _e( 'Annotations settings', 'wordpresscrm' ); ?></h3>
+                <h3><?php _e( 'Annotations settings', 'integration-dynamics' ); ?></h3>
                 <p></p>
                 <table class="form-table">
                     <tbody>
@@ -86,13 +86,13 @@ class Attachments extends Tab {
                                     name="<?php echo $this->get_field_name( 'annotations_use_view' ); ?>"
                                     value="1"<?php if ( $shouldUseView ) {
                                     checked( 1 == $this->get_field_value( 'annotations_use_view' ) );
-                                } ?> /> <?php _e( 'Use a view to get images', 'wordpresscrm' ); ?></label>
+                                } ?> /> <?php _e( 'Use a view to get images', 'integration-dynamics' ); ?></label>
                         </td>
                     </tr>
                     <tr id="wpcrmAnnotationSelector" <?php echo $shouldUseView ?: 'style="display:none"'; ?>>
                         <td>
                             <select name="<?php echo $this->get_field_name( 'annotations_view_name' ); ?>">
-                                <option value=""><?php _e( '— Select —', 'wordpresscrm' ); ?></option>
+                                <option value=""><?php _e( '— Select —', 'integration-dynamics' ); ?></option>
                                 <?php foreach ( $this->getViews() as $entity ) : ?>
 
                                     <?php $selected = ( $this->get_field_value( "annotations_view_name" ) && $entity->displayname == $this->get_field_value( "annotations_view_name" ) ) ? "selected" : ""; ?>

@@ -114,7 +114,7 @@ class View extends Shortcode {
          */
         $inlineTemplate = ( $content ) ? apply_filters( 'wordpresscrm_view_inline', null, $this, $content ) : null;
         if ( $content && $inlineTemplate === null ) {
-            return static::returnError( __( 'Inline view templates are not supported in this version.', 'wordpresscrm' ) );
+            return static::returnError( __( 'Inline view templates are not supported in this version.', 'integration-dynamics' ) );
         }
         if ( $content && !$inlineTemplate ) {
             return self::returnError( __( "Error in inline template body, please check the inline template for unclosed or empty tags. <br/> Note that inline template must be well formatted xml document", "wordpresscrm" ) );

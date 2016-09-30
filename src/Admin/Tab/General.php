@@ -58,7 +58,7 @@ class General extends Tab {
         if ( isset( $_POST["clear_cache"] ) && $_POST["clear_cache"] ) {
             ACRM()->purgeCache();
 
-            self::set_notice( __( 'Metadata cache has been purged and now will be rebuilt gradually.', 'wordpresscrm' ) );
+            self::set_notice( __( 'Metadata cache has been purged and now will be rebuilt gradually.', 'integration-dynamics' ) );
 
             $this->options['last_metadata_purge'] = current_time( 'timestamp' );
             update_option( $this->settingsField, $this->options );
@@ -66,7 +66,7 @@ class General extends Tab {
     }
 
     public function getDisplayName() {
-        return __( 'Connection', 'wordpresscrm' );
+        return __( 'Connection', 'integration-dynamics' );
     }
 
     public function initializeTab( $tabHookName ) {
@@ -110,15 +110,15 @@ class General extends Tab {
                     update_option( ACRM()->prefix . 'options', $options );
                     $this->options = $options;
 
-                    $noticeText = sprintf( __( 'Connection to Dynamics CRM <%s> has been successfully established.', 'wordpresscrm' ), $options['organizationName'] );
+                    $noticeText = sprintf( __( 'Connection to Dynamics CRM <%s> has been successfully established.', 'integration-dynamics' ), $options['organizationName'] );
                     self::set_notice( $noticeText );
                 } else {
-                    $this->set_error( __( 'Unable to connect to Dynamics CRM using provided address, username and/or password.', 'wordpresscrm' ) );
+                    $this->set_error( __( 'Unable to connect to Dynamics CRM using provided address, username and/or password.', 'integration-dynamics' ) );
                 }
             } catch ( Exception $e ) {
                 $this->set_error( $e->getMessage() );
             } catch ( Error $err ) {
-                $this->set_error( sprintf( __( 'Unable to connect to Dynamics CRM: %s' ), $err->getMessage() ) );
+                $this->set_error( sprintf( __( 'Unable to connect to Dynamics CRM: %s', 'integration-dynamics' ), $err->getMessage() ) );
             }
         }
     }
@@ -162,25 +162,25 @@ class General extends Tab {
 
         $this->options = ACRM()->option( 'options' );
         $isConnected   = ( isset( $this->options['connected'] ) && $this->options['connected'] );
-        $connectLabel  = $isConnected ? __( 'Reconnect', 'wordpresscrm' ) : __( 'Connect', 'wordpresscrm' );
+        $connectLabel  = $isConnected ? __( 'Reconnect', 'integration-dynamics' ) : __( 'Connect', 'integration-dynamics' );
         ?>
         <div class="wrap">
             <?php Admin::renderSettingsTabs(); ?>
             <div class="metabox-holder">
                 <div class="postbox-container" style="width: 99%;">
 
-                    <p><?php _e( 'Configure the plugin to connect to your Dynamics CRM instance.', 'wordpresscrm' ) ?></p>
+                    <p><?php _e( 'Configure the plugin to connect to your Dynamics CRM instance.', 'integration-dynamics' ) ?></p>
 
                     <hr>
 
                     <table class="form-table">
                         <tbody>
                         <tr>
-                            <th scope="row"><?php _e( 'Deployment Type', 'wordpresscrm' ) ?></th>
+                            <th scope="row"><?php _e( 'Deployment Type', 'integration-dynamics' ) ?></th>
                             <td>
                                 <fieldset>
                                     <legend class="screen-reader-text">
-                                        <label><?php _e( 'Deployment Type', 'wordpresscrm' ) ?></label>
+                                        <label><?php _e( 'Deployment Type', 'integration-dynamics' ) ?></label>
                                     </legend>
                                     <p>
                                         <label>
@@ -213,7 +213,7 @@ class General extends Tab {
                                 <tbody>
                                 <tr>
                                     <th scope="row"><label
-                                            for="wpcrmFAddress"><?php _e( 'Dynamics CRM Address (URL) <span class="description">(required)</span>', 'wordpresscrm' ); ?></label>
+                                            for="wpcrmFAddress"><?php _e( 'Dynamics CRM Address (URL) <span class="description">(required)</span>', 'integration-dynamics' ); ?></label>
                                     </th>
                                     <td>
                                         <input id="wpcrmFAddress" type="text" class="regular-text code wpcrm-setting"
@@ -224,34 +224,34 @@ class General extends Tab {
                                 </tr>
                                 <tr>
                                     <th scope="row"><label
-                                            for="wpcrmFAuthSource"><?php _e( 'Authentication Source', 'wordpresscrm' ) ?></label>
+                                            for="wpcrmFAuthSource"><?php _e( 'Authentication Source', 'integration-dynamics' ) ?></label>
                                     </th>
                                     <td>
                                         <select id="wpcrmFAuthSource" disabled class="wpcrm-setting">
-                                            <option><?php _e( 'Internet-facing deployment (IFD)', 'wordpresscrm' ) ?></option>
+                                            <option><?php _e( 'Internet-facing deployment (IFD)', 'integration-dynamics' ) ?></option>
                                         </select>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><label
-                                            for="wpcrmFUsername"><?php _e( 'User Name <span class="description">(required)</span>', 'wordpresscrm' ); ?></label>
+                                            for="wpcrmFUsername"><?php _e( 'User Name <span class="description">(required)</span>', 'integration-dynamics' ); ?></label>
                                     </th>
                                     <td>
                                         <input id="wpcrmFUsername" type="text" class="regular-text wpcrm-setting"
                                                name="<?php echo $this->get_field_name( 'username' ); ?>"
                                                value="<?php echo esc_attr( $this->get_field_value( 'username' ) ); ?>"/>
-                                        <p class="description"><?php _e( 'CRM user login', 'wordpresscrm' ); ?></p>
+                                        <p class="description"><?php _e( 'CRM user login', 'integration-dynamics' ); ?></p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><label
-                                            for="wpcrmFPassword"><?php _e( 'Password <span class="description">(required)</span>', 'wordpresscrm' ); ?></label>
+                                            for="wpcrmFPassword"><?php _e( 'Password <span class="description">(required)</span>', 'integration-dynamics' ); ?></label>
                                     </th>
                                     <td>
                                         <input id="wpcrmFPassword" type="password" class="regular-text wpcrm-setting"
                                                name="<?php echo $this->get_field_name( 'password' ); ?>"
                                                value="<?php echo esc_attr( $this->get_field_value( 'password' ) ); ?>"/>
-                                        <p class="description"><?php _e( 'CRM user password', 'wordpresscrm' ); ?></p>
+                                        <p class="description"><?php _e( 'CRM user password', 'integration-dynamics' ); ?></p>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -270,7 +270,7 @@ class General extends Tab {
                                 <tbody>
                                 <tr>
                                     <th scope="row"><label
-                                            for="wpcrmOFAddress"><?php _e( 'Dynamics CRM Address (URL) <span class="description">(required)</span>', 'wordpresscrm' ); ?></label>
+                                            for="wpcrmOFAddress"><?php _e( 'Dynamics CRM Address (URL) <span class="description">(required)</span>', 'integration-dynamics' ); ?></label>
                                     </th>
                                     <td>
                                         <input id="wpcrmOFAddress" type="text" class="regular-text code wpcrm-setting"
@@ -281,24 +281,24 @@ class General extends Tab {
                                 </tr>
                                 <tr>
                                     <th scope="row"><label
-                                            for="wpcrmOFUsername"><?php _e( 'User Name <span class="description">(required)</span>', 'wordpresscrm' ); ?></label>
+                                            for="wpcrmOFUsername"><?php _e( 'User Name <span class="description">(required)</span>', 'integration-dynamics' ); ?></label>
                                     </th>
                                     <td>
                                         <input id="wpcrmOFUsername" class="regular-text wpcrm-setting" type="text"
                                                name="<?php echo $this->get_field_name( 'username' ); ?>"
                                                value="<?php echo esc_attr( $this->get_field_value( 'username' ) ); ?>"/>
-                                        <p class="description"><?php _e( 'CRM user login', 'wordpresscrm' ); ?></p>
+                                        <p class="description"><?php _e( 'CRM user login', 'integration-dynamics' ); ?></p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><label
-                                            for="wpcrmOFPassword"><?php _e( 'Password <span class="description">(required)</span>', 'wordpresscrm' ); ?></label>
+                                            for="wpcrmOFPassword"><?php _e( 'Password <span class="description">(required)</span>', 'integration-dynamics' ); ?></label>
                                     </th>
                                     <td>
                                         <input id="wpcrmOFPassword" class="regular-text wpcrm-setting" type="password"
                                                name="<?php echo $this->get_field_name( 'password' ); ?>"
                                                value="<?php echo esc_attr( $this->get_field_value( 'password' ) ); ?>"/>
-                                        <p class="description"><?php _e( 'CRM user password', 'wordpresscrm' ); ?></p>
+                                        <p class="description"><?php _e( 'CRM user password', 'integration-dynamics' ); ?></p>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -311,19 +311,19 @@ class General extends Tab {
 
                     <hr>
 
-                    <h3 class="title"><?php _e( 'Metadata Settings', 'wordpresscrm' ); ?></h3>
-                    <p><?php _e( 'If you have changed your Dynamics CRM entities metadata recently, please regenerate local metadata cache to keep it up to date.', 'wordpresscrm' ) ?></p>
+                    <h3 class="title"><?php _e( 'Metadata Settings', 'integration-dynamics' ); ?></h3>
+                    <p><?php _e( 'If you have changed your Dynamics CRM entities metadata recently, please regenerate local metadata cache to keep it up to date.', 'integration-dynamics' ) ?></p>
                     <form method="post" action="">
                         <input type="hidden" name="clear_cache" value="1"/>
                         <p class="submit">
-                            <?php submit_button( __( 'Regenerate Metadata Cache', 'wordpresscrm' ), 'primary', 'submit', false, [ 'style' => 'vertical-align:middle;' ] ); ?>
+                            <?php submit_button( __( 'Regenerate Metadata Cache', 'integration-dynamics' ), 'primary', 'submit', false, [ 'style' => 'vertical-align:middle;' ] ); ?>
                             <?php
                             $metadataRegeneratedTime = array_key_exists( 'last_metadata_purge', $this->options ) ? $this->options['last_metadata_purge'] : null;
                             if ( $metadataRegeneratedTime ) {
-                                $humanReadableTime = date_i18n( __( 'F j, Y \a\t g:i A', 'wordpresscrm' ), $metadataRegeneratedTime )
+                                $humanReadableTime = date_i18n( __( 'F j, Y \a\t g:i A', 'integration-dynamics' ), $metadataRegeneratedTime )
                                 ?>
                                 <span style="padding-left:1em;vertical-align:middle;">
-								<?php printf( __( 'Metadata cache was last regenerated on %s.', 'wordpresscrm' ), $humanReadableTime ); ?>
+								<?php printf( __( 'Metadata cache was last regenerated on %s.', 'integration-dynamics' ), $humanReadableTime ); ?>
 							</span>
                             <?php } ?>
                         </p>

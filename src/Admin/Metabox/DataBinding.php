@@ -46,7 +46,7 @@ class DataBinding {
         foreach ( $supported_pages as $page_type ) {
             add_meta_box(
                 'wordpresscrm_databinding_meta',
-                __( 'Dynamics CRM Data Binding', 'wordpresscrm' ),
+                __( 'Dynamics CRM Data Binding', 'integration-dynamics' ),
                 [ $this, 'render' ],
                 $page_type, 'side', 'high' );
         }

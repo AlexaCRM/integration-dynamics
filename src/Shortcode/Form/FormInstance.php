@@ -453,7 +453,7 @@ class FormInstance extends AbstractForm {
                         if ( $lookupEntity ) {
                             $value = $lookupEntity;
                         } else {
-                            array_push( $this->errors, sprintf( __( 'Unsupported lookup type for [%1$s], or entity {%2$s} not found', 'wordpresscrm' ), $key, $value ) );
+                            array_push( $this->errors, sprintf( __( 'Unsupported lookup type for [%1$s], or entity {%2$s} not found', 'integration-dynamics' ), $key, $value ) );
                             $value = null;
 
                             return;
@@ -525,19 +525,19 @@ class FormInstance extends AbstractForm {
                 case "String":
 
                     if ( $property->maxLength && ( strlen( $value ) > $property->maxLength ) ) {
-                        $message                      = _n_noop( 'Must be less than %d characters', 'Must be less than %d characters', 'wordpresscrm' );
-                        $this->entityErrors[ $field ] = sprintf( translate_nooped_plural( $message, $property->maxLength, 'wordpresscrm' ), $property->maxLength );
+                        $message                      = _n_noop( 'Must be less than %d characters', 'Must be less than %d characters', 'integration-dynamics' );
+                        $this->entityErrors[ $field ] = sprintf( translate_nooped_plural( $message, $property->maxLength, 'integration-dynamics' ), $property->maxLength );
                     }
 
                     switch ( $property->format ) {
                         case "Text":
                             if ( $value && !$this->validator->validateItem( $value, 'anything' ) ) {
-                                $this->entityErrors[ $field ] = __( 'Incorrect text value', 'wordpresscrm' );
+                                $this->entityErrors[ $field ] = __( 'Incorrect text value', 'integration-dynamics' );
                             }
                             break;
                         case "Email":
                             if ( $value && !$this->validator->validateItem( $value, 'email' ) ) {
-                                $this->entityErrors[ $field ] = __( 'Incorrect email', 'wordpresscrm' );
+                                $this->entityErrors[ $field ] = __( 'Incorrect email', 'integration-dynamics' );
                             }
                             break;
                     }
@@ -550,17 +550,17 @@ class FormInstance extends AbstractForm {
                     break;
                 case "Integer":
                     if ( $value && !$this->validator->validateItem( $value, 'amount' ) ) {
-                        $this->entityErrors[ $field ] = __( 'Invalid number value', 'wordpresscrm' );
+                        $this->entityErrors[ $field ] = __( 'Invalid number value', 'integration-dynamics' );
                     }
                     break;
                 case "Double":
                     if ( $value && !$this->validator->validateItem( $value, 'float' ) ) {
-                        $this->entityErrors[ $field ] = __( 'Invalid number value. Enter a decimal number without currency symbol or thousands separator.', 'wordpresscrm' );
+                        $this->entityErrors[ $field ] = __( 'Invalid number value. Enter a decimal number without currency symbol or thousands separator.', 'integration-dynamics' );
                     }
                     break;
                 case "Money":
                     if ( $value && !$this->validator->validateItem( $value, 'float' ) ) {
-                        $this->entityErrors[ $field ] = __( 'Invalid money value. Enter a decimal number without currency symbol or thousands separator.', 'wordpresscrm' );
+                        $this->entityErrors[ $field ] = __( 'Invalid money value. Enter a decimal number without currency symbol or thousands separator.', 'integration-dynamics' );
                     }
                     break;
                 case "Memo":

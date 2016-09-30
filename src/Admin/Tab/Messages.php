@@ -29,9 +29,9 @@ class Messages extends Tab {
     private function getDefaultSettings() {
         $messages = [
             'form' => [
-                'validation_error' => __( 'Form validation failed', 'wordpresscrm' ),
-                'crm_error'        => __( 'An error has occurred submitting the form', 'wordpresscrm' ),
-                'invalid_captcha'  => __( 'Error: invalid captcha', 'wordpresscrm' ),
+                'validation_error' => __( 'Form validation failed', 'integration-dynamics' ),
+                'crm_error'        => __( 'An error has occurred submitting the form', 'integration-dynamics' ),
+                'invalid_captcha'  => __( 'Error: invalid captcha', 'integration-dynamics' ),
             ],
         ];
 
@@ -46,11 +46,11 @@ class Messages extends Tab {
     private function getMessagesSchema() {
         $schema = [
             'form' => [
-                'displayName' => __( 'Form errors', 'wordpresscrm' ),
+                'displayName' => __( 'Form errors', 'integration-dynamics' ),
                 'fields' => [
-                    'validation_error' => __( 'Validation error', 'wordpresscrm' ),
-                    'crm_error' => __( 'Form submit error', 'wordpresscrm' ),
-                    'invalid_captcha' => __( 'Invalid captcha error', 'wordpresscrm' ),
+                    'validation_error' => __( 'Validation error', 'integration-dynamics' ),
+                    'crm_error' => __( 'Form submit error', 'integration-dynamics' ),
+                    'invalid_captcha' => __( 'Invalid captcha error', 'integration-dynamics' ),
                 ],
             ]
         ];
@@ -64,7 +64,7 @@ class Messages extends Tab {
     }
 
     public function getDisplayName() {
-        return __( 'Messages', 'wordpresscrm' );
+        return __( 'Messages', 'integration-dynamics' );
     }
 
     public function updateMessages() {
@@ -116,7 +116,7 @@ class Messages extends Tab {
                 <?php
                 settings_fields( $this->settingsField );
                 do_settings_sections( $this->settingsField ); ?>
-                <p><?php _e( 'You can adjust messages that are displayed to users.', 'wordpresscrm' ) ?></p>
+                <p><?php _e( 'You can adjust messages that are displayed to users.', 'integration-dynamics' ) ?></p>
                 <?php
                 foreach ( $schema as $sectionName => $section ) {
                     ?><h2><?php echo $section['displayName']; ?></h2>

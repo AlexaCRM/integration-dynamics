@@ -34,8 +34,8 @@ $isConnected = ( isset( $options['connected'] ) && $options['connected'] );
 <h2>
     <span class="nav-title"><?php echo ACRM()->full_plugin_name; ?></span>
     <span class="wordpresscrm-status <?php echo $isConnected ? 'connected' : 'disconnected'; ?>"
-          title="<?php $isConnected ? _e( 'WordPress is connected to your Dynamics CRM organization and is ready for use.', 'wordpresscrm' ) : _e( 'WordPress is not connected to Dynamics CRM.', 'wordpresscrm' ); ?>"
-    ><?php $isConnected ? printf( __( 'Connected to &lt;%s&gt;', 'wordpresscrm' ), $options['organizationName'] ) : _e( 'Not connected', 'wordpresscrm' ); ?></span>
+          title="<?php $isConnected ? _e( 'WordPress is connected to your Dynamics CRM organization and is ready for use.', 'integration-dynamics' ) : _e( 'WordPress is not connected to Dynamics CRM.', 'integration-dynamics' ); ?>"
+    ><?php $isConnected ? printf( __( 'Connected to &lt;%s&gt;', 'integration-dynamics' ), $options['organizationName'] ) : _e( 'Not connected', 'integration-dynamics' ); ?></span>
 </h2>
 <h2 class="nav-tab-wrapper">
     <?php

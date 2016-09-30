@@ -70,7 +70,7 @@ class Control {
 
             $this->jsValidators['required'] = [
                 'value'   => true,
-                'message' => sprintf( __( '%s is required', 'wordpresscrm' ), $this->label ),
+                'message' => sprintf( __( '%s is required', 'integration-dynamics' ), $this->label ),
             ];
         }
 
@@ -87,7 +87,7 @@ class Control {
                 case "email":
                     $this->jsValidators['email'] = [
                         'value' => true,
-                        'message' => sprintf( __( '%s must be a valid email address', 'wordpresscrm' ), $this->label ),
+                        'message' => sprintf( __( '%s must be a valid email address', 'integration-dynamics' ), $this->label ),
                     ];
                     break;
                 case "textarea":
@@ -95,7 +95,7 @@ class Control {
                 case "url":
                     $this->jsValidators['url'] = [
                         'value' => true,
-                        'message' => sprintf( __( '%s must be a valid URL', 'wordpresscrm' ), $this->label )
+                        'message' => sprintf( __( '%s must be a valid URL', 'integration-dynamics' ), $this->label )
                     ];
                     break;
                 case "ticker symbol":
@@ -108,11 +108,11 @@ class Control {
             $message                            = _n_noop(
                 '%1$s must be less than %2$d character',
                 '%1$s must be less than %2$d characters',
-                'wordpresscrm'
+                'integration-dynamics'
             );
             $this->jsValidators['maxlength'] = [
                 'value'   => (int)$property->maxLength,
-                'message' => sprintf( translate_nooped_plural( $message, $property->maxLength, 'wordpresscrm' ), $this->label, $property->maxLength ),
+                'message' => sprintf( translate_nooped_plural( $message, $property->maxLength, 'integration-dynamics' ), $this->label, $property->maxLength ),
             ];
         }
     }

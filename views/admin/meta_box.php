@@ -8,9 +8,9 @@ if ( !defined( 'ABSPATH' ) ) {
        value="<?php echo wp_create_nonce( 'wordpresscrm_databinding' ); ?>"/>
 
 <div id="wordpresscrm_databinding_container">
-    <p><strong><?php _e( 'Entity', 'wordpresscrm' ); ?></strong></p>
+    <p><strong><?php _e( 'Entity', 'integration-dynamics' ); ?></strong></p>
     <select id="wordpresscrmDatabindingEntity" name="wordpresscrm_databinding[entity]">
-        <option value="0"><?php _e( '— Select —', 'wordpresscrm' ); ?></option>
+        <option value="0"><?php _e( '— Select —', 'integration-dynamics' ); ?></option>
         <?php foreach ( $entities as $entity ) : ?>
 
             <?php $selected = ( $post_entity && $entity["LogicalName"] == $post_entity ) ? "selected" : ""; ?>
@@ -20,7 +20,7 @@ if ( !defined( 'ABSPATH' ) ) {
         <?php endforeach; ?>
     </select>
 
-    <p><strong><?php _e( 'Parameter name', 'wordpresscrm' ); ?></strong></p>
+    <p><strong><?php _e( 'Parameter name', 'integration-dynamics' ); ?></strong></p>
     <select id="wordpressDatabindingParametername" name="wordpresscrm_databinding[parametername]">
         <option value="id" <?php selected( ( $post_parametername == 'id' || !$post_parametername ) ); ?>>ID</option>
         <?php
@@ -40,21 +40,21 @@ if ( !defined( 'ABSPATH' ) ) {
                    src="<?php echo ACRM()->plugin_dir_url(); ?>/resources/front/images/progress.gif" alt="" width="16"
                    height="16" style="vertical-align: middle;display:none;">
 
-    <p><strong><?php _e( 'Query string parameter name', 'wordpresscrm' ); ?></strong></p>
+    <p><strong><?php _e( 'Query string parameter name', 'integration-dynamics' ); ?></strong></p>
     <input type="text" value="<?php echo ( isset( $post_querystring ) ) ? $post_querystring : "id"; ?>" size="10"
            name="wordpresscrm_databinding[querystring]"/>
 
-    <p><strong><?php _e( 'Empty parameter behavior', 'wordpresscrm' ); ?></strong></p>
+    <p><strong><?php _e( 'Empty parameter behavior', 'integration-dynamics' ); ?></strong></p>
     <select name="wordpresscrm_databinding[empty_behavior]">
         <option
-            value="" <?php echo ( $post_empty_behavior == "" ) ? "selected" : ""; ?>><?php _e( 'Ignore', 'wordpresscrm' ); ?></option>
+            value="" <?php echo ( $post_empty_behavior == "" ) ? "selected" : ""; ?>><?php _e( 'Ignore', 'integration-dynamics' ); ?></option>
         <option
-            value="404" <?php echo ( $post_empty_behavior == "404" ) ? "selected" : ""; ?>><?php _e( 'Page Not Found', 'wordpresscrm' ); ?></option>
+            value="404" <?php echo ( $post_empty_behavior == "404" ) ? "selected" : ""; ?>><?php _e( 'Page Not Found', 'integration-dynamics' ); ?></option>
     </select>
 
     <p><label for="wpcrmDataBindingIsDefaultView"><input id="wpcrmDataBindingIsDefaultView" type="checkbox"
                                                          name="wordpresscrm_databinding[isdefaultview]"
-                                                         value="true" <?php echo $post_isdefaultview; ?> /> <?php _e( 'Set default for views', 'wordpresscrm' ); ?>
+                                                         value="true" <?php echo $post_isdefaultview; ?> /> <?php _e( 'Set default for views', 'integration-dynamics' ); ?>
         </label></p>
 
 </div>
