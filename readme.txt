@@ -44,6 +44,10 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.8 =
+
+* Text domain is updated to support WordPress translations service
+
 = 1.1.7 =
 * Search in Lookup Dialog using `like` operator
 * Fix record order in Lookup Dialog
