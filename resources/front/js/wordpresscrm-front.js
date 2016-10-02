@@ -10,7 +10,7 @@ function loadLookupData(popup, pagingcookie, pageNumber){
         var lookupType = popup.find(".crm-lookup-lookuptype").children(":selected").attr("value");
 
         jQuery.ajax({
-            url: ajaxurl,
+            url: wpcrm.ajaxurl,
             data: {
                 'action':'retrieve_lookup_request',
                 'lookupType' : lookupType,
@@ -67,7 +67,7 @@ function searchLookupData(popup, searchString){
         var lookupType = popup.find(".crm-lookup-lookuptype").children(":selected").attr("value");
 
         jQuery.ajax({
-            url: ajaxurl,
+            url: wpcrm.ajaxurl,
             data: {
                 'action':'search_lookup_request',
                 'lookupType' : lookupType,

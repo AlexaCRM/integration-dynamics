@@ -83,6 +83,12 @@ class FrontendScripts {
         wp_register_script( 'jquery-datetimepicker', $frontend_script_path . 'jquery.datetimepicker.js' );
         wp_register_script( 'jquery-validation', $frontend_script_path . 'jquery.validate.min.js' );
 
+        // localize scripts
+        $wpcrmFrontLocalizations = [
+            'ajaxurl' => admin_url( 'admin-ajax.php' ),
+        ];
+        wp_localize_script( 'wordpresscrm-front', 'wpcrm', $wpcrmFrontLocalizations );
+
         // CSS Styles
         $enqueue_styles = $this->get_styles();
 
