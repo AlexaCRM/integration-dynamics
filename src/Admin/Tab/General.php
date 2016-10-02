@@ -158,7 +158,7 @@ class General extends Tab {
      * Render settings page.
      */
     public function render() {
-        $authMode = ( $this->get_field_value( 'authMode' ) != null ) ? ( $this->get_field_value( 'authMode' ) ) : "Federation";
+        $authMode = ( $this->get_field_value( 'authMode' ) != null ) ? ( $this->get_field_value( 'authMode' ) ) : 'OnlineFederation';
 
         $this->options = ACRM()->option( 'options' );
         $isConnected   = ( isset( $this->options['connected'] ) && $this->options['connected'] );
@@ -184,16 +184,16 @@ class General extends Tab {
                                     </legend>
                                     <p>
                                         <label>
+                                            <input type="radio" value="OnlineFederation" class="wpcrm-setting"
+                                                   name="<?php echo $this->get_field_name( 'authMode' ); ?>" <?php echo ( $authMode == "OnlineFederation" ) ? "checked='checked'" : ""; ?>
+                                                   onClick='jQuery("#table-Federation").hide();
+                                                            jQuery("#table-OnlineFederation").show();'> CRM Online
+                                        </label>
+                                        <label style="margin-left:12px!important;">
                                             <input type="radio" value="Federation" class="wpcrm-setting"
                                                    name="<?php echo $this->get_field_name( 'authMode' ); ?>" <?php echo ( $authMode == "Federation" ) ? "checked='checked'" : ""; ?>
                                                    onClick='jQuery("#table-Federation").show();
                                                             jQuery("#table-OnlineFederation").hide();'> On-premises
-                                        </label>
-                                        <label>
-                                            <input type="radio" value="OnlineFederation" class="wpcrm-setting"
-                                                   name="<?php echo $this->get_field_name( 'authMode' ); ?>" <?php echo ( $authMode == "OnlineFederation" ) ? "checked='checked'" : ""; ?>
-                                                   onClick='jQuery("#table-Federation").hide();
-                                                            jQuery("#table-OnlineFederation").show();'>Office 365
                                         </label>
                                         <input type="hidden" id="alexasdkauthmode"
                                                value="<?php echo esc_attr( $this->get_field_value( 'authMode' ) ); ?>">
@@ -217,7 +217,7 @@ class General extends Tab {
                                     </th>
                                     <td>
                                         <input id="wpcrmFAddress" type="text" class="regular-text code wpcrm-setting"
-                                               placeholder="https://organization.crm2011.net.au"
+                                               placeholder="https://contoso.yourdomain.com"
                                                name="<?php echo $this->get_field_name( 'serverUrl' ); ?>"
                                                value="<?php echo esc_attr( $this->get_field_value( 'serverUrl' ) ); ?>"/>
                                     </td>
@@ -339,7 +339,7 @@ class General extends Tab {
             (function ($, authModeSelector) {
                 /* Radio buttons selector */
                 if (!$(authModeSelector + ":checked").length) {
-                    $(authModeSelector).val('Federation');
+                    $(authModeSelector).val('OnlineFederation');
                 } else {
                     $(authModeSelector + ':checked').prop('checked', true);
                 }
