@@ -25,7 +25,7 @@ class Admin {
     public static $tabs = [
         'general' => [ '\AlexaCRM\WordpressCRM\Admin\Tab\General', 10 ],
         'forms' => [ '\AlexaCRM\WordpressCRM\Admin\Tab\Forms', 20 ],
-        'views' => [ '\AlexaCRM\WordpressCRM\Admin\Tab\Views', 30 ],
+        // 'views' => [ '\AlexaCRM\WordpressCRM\Admin\Tab\Views', 30 ],
         'attachments' => [ '\AlexaCRM\WordpressCRM\Admin\Tab\Attachments', 40 ],
         'messages' => [ '\AlexaCRM\WordpressCRM\Admin\Tab\Messages', 50 ],
         'about' => [ '\AlexaCRM\WordpressCRM\Admin\Tab\About', 60 ],
