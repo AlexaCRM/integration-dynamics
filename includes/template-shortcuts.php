@@ -41,7 +41,7 @@ function wordpresscrm_field_type( $args ) {
 }
 
 function wordpresscrm_field( $args ) {
-    Template::getTemplate( 'form/field/Field.php', array( 'control' => $args ) );
+    Template::getTemplate( 'form/field/field.php', array( 'control' => $args ) );
 }
 
 function wordpresscrm_readonly_field( $args ) {
@@ -67,7 +67,7 @@ function wordpresscrm_form_validation( $id, $form ) {
 }
 
 function wordpresscrm_view_field( $args ) {
-    Template::getTemplate( 'view/field/Field.php', array( 'field' => $args ) );
+    Template::getTemplate( 'view/field/field.php', array( 'field' => $args ) );
 }
 
 function wordpresscrm_view_field_type( $args ) {
