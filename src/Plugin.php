@@ -301,7 +301,7 @@ final class Plugin {
             // Settings page link
             if ( current_user_can( 'manage_options' ) ) {
                 $settingsLabel         = __( 'Settings', 'integration-dynamics' );
-                $new_links['settings'] = '<a href="' . admin_url( 'options-general.php?page=wordpresscrm_general' ) . '">' . $settingsLabel . '</a>';
+                $new_links['settings'] = '<a href="' . admin_url( 'admin.php?page=wordpresscrm' ) . '">' . $settingsLabel . '</a>';
             }
 
             // Add a few links to the existing links array
