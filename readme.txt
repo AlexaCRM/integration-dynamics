@@ -44,6 +44,13 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.9 =
+
+* CRM Online is set to be the default connection option
+* Fixed: Settings link in the Plugins screen led to the wrong page
+* Fixed: Default form templates wouldn't work if installed on a case-sensitive file system
+* Fixed (upstream CRM Toolkit): Couldn't connect to CRM if password contained special XML characters
+
 = 1.1.8 =
 
 * Text domain is updated to support WordPress translations service
