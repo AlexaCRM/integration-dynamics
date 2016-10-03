@@ -2,4 +2,5 @@
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
-echo $message; ?>
+
+echo $message;

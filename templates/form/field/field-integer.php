@@ -2,7 +2,7 @@
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
-?>
-<input type="text" id='<?php echo $inputname; ?>'
-       name='<?php echo $inputname; ?>' <?php echo( ( $disabled ) ? "disabled='disabled'" : "" ); ?> <?php echo( ( $readonly ) ? "readonly='readonly'" : "" ); ?>
-       value="<?php echo $value; ?>" class="form-control"/>
+?><input type="text" id="<?php echo esc_attr( $inputname ); ?>" name="<?php echo esc_attr( $inputname ); ?>"<?php
+echo( ( $disabled ) ? ' disabled="disabled" ' : ' ' );
+echo( ( $readonly ) ? ' readonly="readonly" ' : ' ' );
+?>value="<?php echo esc_attr( $value ); ?>" class="form-control"><?php

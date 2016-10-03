@@ -2,12 +2,12 @@
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
-?>
-<?php if ( $disabled || $readonly ) : ?>
-    <input type="text" class="crm-lookup crm-lookup-textfield form-control" readonly="readonly" disabled='disabled'
-           value="<?php echo $recordName; ?>"/>
-<?php else : ?>
-    <div class="crm-lookup-wrapper">
+
+if ( $disabled || $readonly ) { ?>
+    <input type="text" class="crm-lookup crm-lookup-textfield form-control" <?php
+    ?>readonly="readonly" disabled="disabled" value="<?php echo esc_attr( $recordName ); ?>"><?php
+} else {
+    ?><div class="crm-lookup-wrapper">
         <div class="crm-lookup-field-wrapper form-control">
             <input type="text" class="crm-lookup crm-lookup-textfield form-control" readonly="readonly"
                    value="<?php echo $recordName; ?>"/>
@@ -95,5 +95,5 @@ if ( !defined( 'ABSPATH' ) ) {
                 </div>
             </div>
         </div>
-    </div>
-<?php endif; ?>
+    </div><?php
+}

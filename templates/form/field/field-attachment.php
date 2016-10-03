@@ -4,4 +4,4 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 ?>
 <input type='file' id='<?php echo $inputname; ?>' name='<?php echo $inputname; ?>'
-       class="form-control" <?php echo( ( $disabled ) ? "disabled='disabled'" : "" ); ?> <?php echo( ( $readonly ) ? "readonly='readonly'" : "" ); ?>/>
+       class="form-control" <?php echo( ( $disabled ) ? "disabled='disabled'" : "" ); ?> <?php echo( ( $readonly ) ? "readonly='readonly'" : "" ); ?>><?php
