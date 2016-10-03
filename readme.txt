@@ -44,6 +44,10 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.10 =
+
+* Fix the broken lookup dialog (wouldn't work on most installs)
+
 = 1.1.9 =
 
 * CRM Online is set to be the default connection option
