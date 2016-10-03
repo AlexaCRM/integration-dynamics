@@ -3,7 +3,7 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 if ( $rows ) { ?>
-    <table class="mscrm-listview">
+    <table class="mscrm-listview table">
         <thead>
         <tr>
             <?php foreach ( current( $rows ) as $cell ) : ?>
