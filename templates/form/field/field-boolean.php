@@ -10,7 +10,7 @@ if ( !defined( 'ABSPATH' ) ) {
                 <input <?php if ( $value == (bool) $option ) {
                     echo "checked='checked'";
                 } ?> type='radio' name='<?php echo $inputname; ?>'
-                     value='<?php echo $option; ?>' <?php echo( ( $disabled ) ? "disabled='disabled'" : "" ); ?> <?php echo( ( $readonly ) ? "readonly='readonly'" : "" ); ?>/><?php echo $val; ?>
+                     value='<?php echo $option; ?>' <?php echo( ( $disabled ) ? "disabled='disabled'" : "" ); ?> <?php echo( ( $readonly ) ? "readonly='readonly'" : "" ); ?>> <?php echo $val; ?>
             </label>
         </div>
     <?php endforeach; ?>
@@ -23,7 +23,7 @@ if ( !defined( 'ABSPATH' ) ) {
                 <input <?php if ( $value == (bool) $option ) {
                     echo "checked='checked'";
                 } ?> type='checkbox' name='<?php echo $inputname; ?>'
-                     value='<?php echo $option; ?>' <?php echo( ( $disabled ) ? "disabled='disabled'" : "" ); ?> <?php echo( ( $readonly ) ? "readonly='readonly'" : "" ); ?>/><?php echo $val; ?>
+                     value='<?php echo $option; ?>' <?php echo( ( $disabled ) ? "disabled='disabled'" : "" ); ?> <?php echo( ( $readonly ) ? "readonly='readonly'" : "" ); ?>> <?php echo $val; ?>
             </label>
         </div>
         <?php break; ?>
