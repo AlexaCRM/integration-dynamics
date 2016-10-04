@@ -190,7 +190,9 @@ final class Plugin {
 
         add_action( 'admin_init', array( $this, 'admin_init' ) );
 
-        new ShortcodeManager();
+        add_action( 'after_setup_theme', function() {
+            new ShortcodeManager();
+        } );
 
         // Loaded action
         do_action( 'wordpresscrm_loaded' );
