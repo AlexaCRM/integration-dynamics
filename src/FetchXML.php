@@ -65,7 +65,7 @@ class FetchXML {
      *
      * @return string result of fetchxml processing
      */
-    public static function replacePlaceholderValuesByParametersArray( $fetchXML, $parameters = Array() ) {
+    public static function replacePlaceholderValuesByParametersArray( $fetchXML, $parameters = [] ) {
         /* Check each parameter key => value array where key is placeholder to replace in fetchxml and param is value to replace */
         foreach ( $parameters as $placeholder => $param ) {
             $param = explode( ".", trim( $param ) );
@@ -81,6 +81,8 @@ class FetchXML {
                     $fetchXML = self::replaceConditionPlaceholderByQuerystringValue( $fetchXML, $placeholder, $value );
                 } else if ( $type == "currentrecord" ) {
                     $fetchXML = self::replaceConditionPlaceholderByCurrentrecordFieldValue( $fetchXML, $placeholder, $value );
+                } else {
+                    $fetchXML = apply_filters( 'wordpresscrm_replace_placeholders', $fetchXML, $placeholder, $value, $type );
                 }
             }
         }
@@ -146,6 +148,8 @@ class FetchXML {
                     add_filter( "wordpresscrm_view_entities", "__return_false" );
                 }
             }
+
+            $fetchXML = apply_filters( 'wordpresscrm_replace_lookups', $fetchXML, $key, $value, $type );
         }
 
         return $fetchXML;
@@ -178,6 +182,8 @@ class FetchXML {
                 ), "", $value ) );
             }
         }
+
+        $fetchXML = apply_filters( 'wordpresscrm_replace_parameters', $fetchXML );
 
         return $fetchXML;
     }
@@ -238,6 +244,8 @@ class FetchXML {
                     add_filter( "wordpresscrm_view_entities", "__return_false" );
                 }
             }
+
+            $fetchXML = apply_filters( 'wordpresscrm_construct_fetch', $fetchXML, $key, $value, $type );
         }
 
         return $fetchXML;
