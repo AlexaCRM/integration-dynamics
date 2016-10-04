@@ -59,36 +59,36 @@ class WordpressCRM_Update {
             if ( update_option( WORDPRESSCRM_PLUGIN_PREFIX . "options", $newOptions ) ) {
                 delete_option( "alexacrm_options" );
             }
-        }
-        /* Update the deprecated alexacrm_forms_options */
-        $formOptions = get_option( "alexacrm_forms_options" );
-        if ( $formOptions ) {
-            update_option( WORDPRESSCRM_PLUGIN_PREFIX . "forms", $formOptions );
-            delete_option( "alexacrm_forms_options" );
-        }
-        /* Update the deprecated alexacrm_oauth_options */
-        $oauthOptions = get_option( "alexacrm_oauth_options" );
-        if ( $oauthOptions ) {
-            update_option( WORDPRESSCRM_PLUGIN_PREFIX . "oauth", $oauthOptions );
-            delete_option( "alexacrm_oauth_options" );
-        }
-        /* Update the deprecated wordpresscrm_registration_options */
-        $registrationOptions = get_option( "wordpresscrm_registration_options" );
-        if ( $registrationOptions ) {
-            update_option( WORDPRESSCRM_PLUGIN_PREFIX . "registration", $registrationOptions );
-            delete_option( "wordpresscrm_registration_options" );
-        }
-        /* Update the deprecated alexacrm_role_options */
-        $rolesOptions = get_option( "alexacrm_role_options" );
-        if ( $rolesOptions ) {
-            update_option( WORDPRESSCRM_PLUGIN_PREFIX . "roles", $rolesOptions );
-            delete_option( "alexacrm_role_options" );
-        }
-        /* Update the deprecated wordpresscrm_search_options */
-        $searchOptions = get_option( "wordpresscrm_search_options" );
-        if ( $searchOptions ) {
-            update_option( WORDPRESSCRM_PLUGIN_PREFIX . "search", $searchOptions );
-            delete_option( "wordpresscrm_search_options" );
+            /* Update the deprecated alexacrm_forms_options */
+            $formOptions = get_option( "alexacrm_forms_options" );
+            if ( $formOptions ) {
+                update_option( WORDPRESSCRM_PLUGIN_PREFIX . "forms", $formOptions );
+                delete_option( "alexacrm_forms_options" );
+            }
+            /* Update the deprecated alexacrm_oauth_options */
+            $oauthOptions = get_option( "alexacrm_oauth_options" );
+            if ( $oauthOptions ) {
+                update_option( WORDPRESSCRM_PLUGIN_PREFIX . "oauth", $oauthOptions );
+                delete_option( "alexacrm_oauth_options" );
+            }
+            /* Update the deprecated wordpresscrm_registration_options */
+            $registrationOptions = get_option( "wordpresscrm_registration_options" );
+            if ( $registrationOptions ) {
+                update_option( WORDPRESSCRM_PLUGIN_PREFIX . "registration", $registrationOptions );
+                delete_option( "wordpresscrm_registration_options" );
+            }
+            /* Update the deprecated alexacrm_role_options */
+            $rolesOptions = get_option( "alexacrm_role_options" );
+            if ( $rolesOptions ) {
+                update_option( WORDPRESSCRM_PLUGIN_PREFIX . "roles", $rolesOptions );
+                delete_option( "alexacrm_role_options" );
+            }
+            /* Update the deprecated wordpresscrm_search_options */
+            $searchOptions = get_option( "wordpresscrm_search_options" );
+            if ( $searchOptions ) {
+                update_option( WORDPRESSCRM_PLUGIN_PREFIX . "search", $searchOptions );
+                delete_option( "wordpresscrm_search_options" );
+            }
         }
     }
 
@@ -106,7 +106,8 @@ class WordpressCRM_Update {
                 array(
                     'key' => '_alexacrm_databinding_isdefaultview'
                 )
-            )
+            ),
+            'posts_per_page' => -1,
         );
         /* Retrieve the posts that contain deprecated meta prefixes */
         if ( $posts = get_posts( $args ) ) {
