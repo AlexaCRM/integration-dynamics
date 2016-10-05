@@ -27,7 +27,6 @@ class Lookup {
     public function retrieve_lookup_request() {
         // The $_REQUEST contains all the data sent via ajax
         if ( isset( $_REQUEST ) ) {
-
             $lookupType = $_REQUEST['lookupType'];
 
             $pagingCookie = null;
@@ -46,7 +45,7 @@ class Lookup {
                 $entity = ASDK()->entity( $lookupType );
 
                 $returnedTypeCode = $entity->metadata()->objectTypeCode;
-                $lookup = $this->retrieveLookupView( $returnedTypeCode );
+                $lookup = $this->retrieveLookupView( $returnedTypeCode, 64, $entity->metadata()->primaryNameAttribute );
 
                 $fetchDom = new DOMDocument();
                 $fetchDom->loadXML( $lookup['fetchxml'] );
@@ -176,7 +175,7 @@ class Lookup {
             $searchString = urldecode( $_REQUEST["searchstring"] );
 
             if ( $searchString != "" ) {
-                $searchView = $this->retrieveLookupView( $returnedTypeCode, 4 );
+                $searchView = $this->retrieveLookupView( $returnedTypeCode, 4, $entity->metadata()->primaryNameAttribute );
 
                 $fetchXML   = new SimpleXMLElement( $searchView['fetchxml'] );
                 $conditions = $fetchXML->xpath( './/condition[@value]' );
@@ -215,7 +214,7 @@ class Lookup {
                 $invoices = ASDK()->retrieveMultipleEntities( $lookupType );
             }
 
-            $lookup = $this->retrieveLookupView( $returnedTypeCode );
+            $lookup = $this->retrieveLookupView( $returnedTypeCode, 64, $entity->metadata()->primaryNameAttribute );
 
             $fetchDom = new DOMDocument();
             $fetchDom->loadXML( $lookup['fetchxml'] );
@@ -322,14 +321,15 @@ class Lookup {
     /**
      * Retrieves the lookup view for given entity and type
      *
-     * @param int $returnedTypeCode EntityMetadata.ObjectTypeCode. See https://msdn.microsoft.com/en-us/library/microsoft.xrm.sdk.metadata.entitymetadata.objecttypecode.aspx
-     *
+     * @param int $returnedTypeCode EntityMetadata.ObjectTypeCode.
+     *                              See https://msdn.microsoft.com/en-us/library/microsoft.xrm.sdk.metadata.entitymetadata.objecttypecode.aspx
      * @param int $queryType See https://msdn.microsoft.com/en-us/library/gg309339.aspx
+     * @param string $sortableAttributeName Attribute name to sort by
      *
      * @return array
      * @throws Exception
      */
-    private function retrieveLookupView( $returnedTypeCode, $queryType = 64 ) {
+    private function retrieveLookupView( $returnedTypeCode, $queryType = 64, $sortableAttributeName = 'name' ) {
         $cacheKey = 'wpcrm_lookup_' . sha1( 'querytype_' . $queryType . '_returnedtypecode_' . $returnedTypeCode );
         $cache = ACRM()->cache;
 
@@ -367,9 +367,8 @@ class Lookup {
 
         // add order for the first attribute in the FetchXML in case no order is specified
         if ( !$fetchDOM->getElementsByTagName( 'order' )->length ) {
-            $sortableAttribute = $fetchDOM->getElementsByTagName( 'attribute' )->item( 0 );
-            $sortableAttributeName = $sortableAttribute->getAttribute( 'name' );
-            $orderElement = $sortableAttribute->parentNode->appendChild( $fetchDOM->createElement( 'order' ) );
+            $orderElement = $fetchDOM->getElementsByTagName( 'entity' )->item( 0 )
+                ->appendChild( $fetchDOM->createElement( 'order' ) );
             $orderElement->setAttribute( 'attribute', $sortableAttributeName );
             $orderElement->setAttribute( 'descending', 'false' );
 
