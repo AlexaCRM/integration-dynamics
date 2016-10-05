@@ -43,53 +43,22 @@ class Lookup {
             }
 
             if ( $lookupType ) {
-
                 $entity = ASDK()->entity( $lookupType );
 
-                /* Query type for lookup views */
-                $querytype = "64";
+                $returnedTypeCode = $entity->metadata()->objectTypeCode;
+                $lookup = $this->retrieveLookupView( $returnedTypeCode );
 
-                $fetchView = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
-                                <entity name="savedquery">
-                                  <all-attributes  />
-                                  <filter type="and">
-                                    <condition attribute="querytype" operator="eq" value="' . $querytype . '" />
-                                    <condition attribute="returnedtypecode" operator="eq" value="' . $entity->metadata()->objectTypeCode . '" />
-                                  </filter>
-                                </entity>
-                              </fetch>';
+                $fetchDom = new DOMDocument();
+                $fetchDom->loadXML( $lookup['fetchxml'] );
 
-                $lookupView = ASDK()->retrieveSingle( $fetchView );
+                $invoices = ASDK()->retrieveMultiple( $lookup['fetchxml'], false, $pagingCookie, 50, $pagingNumber );
 
-                if ( $lookupView != null ) {
-                    $fetchXML = $lookupView->fetchxml;
+                $noRecordsMessage = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">'
+                                    . __( 'No records are available in this view.', 'integration-dynamics' )
+                                    . '</td></tr></table>';
 
-                    $fetchDom = new DOMDocument();
-                    $fetchDom->loadXML( $fetchXML );
-                } else {
-                    throw new Exception( "Unable to get specified Savedquery" );
-                }
-
-                // add order for the first attribute in the FetchXML
-                if ( !$fetchDom->getElementsByTagName( 'order' )->length ) {
-                    $sortableAttribute = $fetchDom->getElementsByTagName( 'attribute' )->item( 0 );
-                    $sortableAttributeName = $sortableAttribute->getAttribute( 'name' );
-                    $orderElement = $sortableAttribute->parentNode->appendChild( $fetchDom->createElement( 'order' ) );
-                    $orderElement->setAttribute( 'attribute', $sortableAttributeName );
-                    $orderElement->setAttribute( 'descending', 'false' );
-
-                    $fetchXML = $fetchDom->saveXML( $fetchDom->firstChild );
-                }
-
-                $invoices = ASDK()->retrieveMultiple( $fetchXML, false, $pagingCookie, 50, $pagingNumber );
-
-                if ( !$invoices ) {
-                    $output = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">No records are available in this view.<td></tr></table>';
-                    die();
-                }
-
-                if ( $invoices->Count < 1 ) {
-                    $output = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">No records are available in this view.<td></tr></table>';
+                if ( !$invoices || $invoices->Count < 1 ) {
+                    echo $noRecordsMessage;
                     die();
                 }
 
@@ -101,7 +70,7 @@ class Lookup {
 
                 $output = "";
 
-                $layout = new SimpleXMLElement( $lookupView->layoutxml );
+                $layout = new SimpleXMLElement( $lookup['layoutxml'] );
 
                 $cells = $layout->xpath( ".//cell" );
 
@@ -199,34 +168,20 @@ class Lookup {
     public function search_lookup_request() {
         // The $_REQUEST contains all the data sent via ajax
         if ( isset( $_REQUEST ) && isset( $_REQUEST["lookupType"] ) && isset( $_REQUEST["searchstring"] ) ) {
-
             $lookupType = $_REQUEST['lookupType'];
-
             $entity = ASDK()->entity( $lookupType );
-            /* Query type for Search for lookup view */
-            $querytype = "4";
 
-            $fetch = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
-                            <entity name="savedquery">
-                              <all-attributes  />
-                              <filter type="and">
-                                <condition attribute="querytype" operator="eq" value="' . $querytype . '" />
-                                <condition attribute="isquickfindquery" operator="eq" value="true" />
-                                <condition attribute="returnedtypecode" operator="eq" value="' . $entity->metadata()->objectTypeCode . '" />
-                              </filter>
-                            </entity>
-                          </fetch>';
-
-            $view = ASDK()->retrieveSingle( $fetch );
+            $returnedTypeCode = $entity->metadata()->objectTypeCode;
 
             $searchString = urldecode( $_REQUEST["searchstring"] );
 
             if ( $searchString != "" ) {
+                $searchView = $this->retrieveLookupView( $returnedTypeCode, 4 );
 
-                $fetchxml   = new SimpleXMLElement( $view->fetchxml );
-                $conditions = $fetchxml->xpath( './/condition[@value]' );
+                $fetchXML   = new SimpleXMLElement( $searchView['fetchxml'] );
+                $conditions = $fetchXML->xpath( './/condition[@value]' );
 
-                $searchXML = $fetchxml->asXML();
+                $searchXML = $fetchXML->asXML();
 
                 foreach ( $conditions as $condition ) {
 
@@ -236,7 +191,6 @@ class Lookup {
                     $oldCondition = $condition[0]->asXML();
 
                     if ( $value == "{0}" ) {
-
                         if ( $entity->attributes[ $attribute ]->isLookup == true ) {
                             if ( preg_match( '/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/', $searchString ) ) {
                                 $newCondition             = $condition;
@@ -258,48 +212,26 @@ class Lookup {
 
                 $invoices = ASDK()->retrieveMultiple( $searchXML );
             } else {
-
                 $invoices = ASDK()->retrieveMultipleEntities( $lookupType );
             }
 
-            $fetchView = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
-                            <entity name="savedquery">
-                              <all-attributes  />
-                              <filter type="and">
-                                <condition attribute="querytype" operator="eq" value="64" />
-                                <condition attribute="returnedtypecode" operator="eq" value="' . $entity->metadata()->objectTypeCode . '" />
-                              </filter>
-                            </entity>
-                          </fetch>';
+            $lookup = $this->retrieveLookupView( $returnedTypeCode );
 
-            $lookupView = ASDK()->retrieveSingle( $fetchView );
-
-            if ( $view != null ) {
-                $fetchXML = $lookupView->fetchxml;
-
-                $fetchDom = new DOMDocument();
-                $fetchDom->loadXML( $fetchXML );
-            } else {
-                throw new Exception( "Unable to get specified Savedquery" );
-            }
+            $fetchDom = new DOMDocument();
+            $fetchDom->loadXML( $lookup['fetchxml'] );
 
             $noRecordsMessage = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">'
                                 . __( 'No records are available in this view.', 'integration-dynamics' )
                                 . '</td></tr></table>';
 
-            if ( !$invoices ) {
-                echo $noRecordsMessage;
-                die();
-            }
-
-            if ( $invoices->Count < 1 ) {
+            if ( !$invoices || $invoices->Count < 1 ) {
                 echo $noRecordsMessage;
                 die();
             }
 
             $output = "";
 
-            $layout = new SimpleXMLElement( $lookupView->layoutxml );
+            $layout = new SimpleXMLElement( $lookup['layoutxml'] );
 
             $cells = $layout->xpath( ".//cell" );
 
@@ -385,6 +317,68 @@ class Lookup {
 
         // Always die in functions echoing ajax content
         die();
+    }
+
+    /**
+     * Retrieves the lookup view for given entity and type
+     *
+     * @param int $returnedTypeCode EntityMetadata.ObjectTypeCode. See https://msdn.microsoft.com/en-us/library/microsoft.xrm.sdk.metadata.entitymetadata.objecttypecode.aspx
+     *
+     * @param int $queryType See https://msdn.microsoft.com/en-us/library/gg309339.aspx
+     *
+     * @return array
+     * @throws Exception
+     */
+    private function retrieveLookupView( $returnedTypeCode, $queryType = 64 ) {
+        $cacheKey = 'wpcrm_lookup_' . sha1( 'querytype_' . $queryType . '_returnedtypecode_' . $returnedTypeCode );
+        $cache = ACRM()->cache;
+
+        if ( $cache->exists( $cacheKey ) ) {
+            return $cache->get( $cacheKey );
+        }
+
+        $fetchView = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+                                <entity name="savedquery">
+                                  <all-attributes  />
+                                  <filter type="and">
+                                    <condition attribute="querytype" operator="eq" value="' . $queryType . '" />'
+                     . ( ( $queryType === 4 )? '<condition attribute="isquickfindquery" operator="eq" value="true" />' : '' )
+                                    . '<condition attribute="returnedtypecode" operator="eq" value="' . $returnedTypeCode . '" />
+                                  </filter>
+                                </entity>
+                              </fetch>';
+
+        $lookupView = ASDK()->retrieveSingle( $fetchView );
+
+        if ( $lookupView == null ) {
+            throw new Exception( 'Unable to retrieve specified SavedQuery' );
+        }
+
+        $lookup = [
+            'fetchxml' => $lookupView->fetchxml,
+        ];
+
+        if ( $lookupView->layoutxml ) {
+            $lookup['layoutxml'] = $lookupView->layoutxml;
+        }
+
+        $fetchDOM = new DOMDocument();
+        $fetchDOM->loadXML( $lookup['fetchxml'] );
+
+        // add order for the first attribute in the FetchXML in case no order is specified
+        if ( !$fetchDOM->getElementsByTagName( 'order' )->length ) {
+            $sortableAttribute = $fetchDOM->getElementsByTagName( 'attribute' )->item( 0 );
+            $sortableAttributeName = $sortableAttribute->getAttribute( 'name' );
+            $orderElement = $sortableAttribute->parentNode->appendChild( $fetchDOM->createElement( 'order' ) );
+            $orderElement->setAttribute( 'attribute', $sortableAttributeName );
+            $orderElement->setAttribute( 'descending', 'false' );
+
+            $lookup['fetchxml'] = $fetchDOM->saveXML( $fetchDOM->firstChild );
+        }
+
+        $cache->set( $cacheKey, $lookup, 2* 60 * 60 * 24 );
+
+        return $lookup;
     }
 }
 
