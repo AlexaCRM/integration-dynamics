@@ -31,9 +31,9 @@ class FormInstance extends AbstractForm {
     /**
      * @var Entity
      */
-    private $entity = null;
+    public $entity = null;
 
-    private $controls = [ ];
+    public $controls = [ ];
 
     private $attachment = false;
 
@@ -370,30 +370,34 @@ class FormInstance extends AbstractForm {
                                 unset( $this->default[ $key ] );
                             }
                         }
-                        /* Check if defaults contain current user inner field values */
+
+                        do_action( 'wordpresscrm_form_setup_with_comma', $this, $value, $k, $key, $last );
                     } else {
+                        $setupDefault = apply_filters( 'wordpresscrm_form_setup_without_comma', true, $this, $value, $k, $key, $last );
 
-                        if ( $k == null ) {
+                        if ( $setupDefault ) {
+                            if ( $k == null ) {
 
-                            $this->controls[ $last ]["controls"][ $key ]          = new Control( $key );
-                            $this->controls[ $last ]["controls"][ $key ]->visible = false;
-                            $this->controls[ $last ]["controls"][ $key ]->value   = $value;
-                            $this->entity->{$key}                                 = $value;
-                        } else {
-                            /* Simple value string */
-                            if ( $this->entity->attributes[ $key ]->isLookup ) {
-                                foreach ( $this->entity->attributes[ $key ]->lookupTypes as $entityType ) {
-                                    try {
-
-                                        $lookup = ASDK()->entity( $entityType, $value );
-                                    } catch ( Exception $ex ) {
-                                        continue;
-                                    }
-
-                                    $this->entity->{$key} = $lookup;
-                                }
+                                $this->controls[ $last ]["controls"][ $key ]          = new Control( $key );
+                                $this->controls[ $last ]["controls"][ $key ]->visible = false;
+                                $this->controls[ $last ]["controls"][ $key ]->value   = $value;
+                                $this->entity->{$key}                                 = $value;
                             } else {
-                                $this->entity->{$key} = $value;
+                                /* Simple value string */
+                                if ( $this->entity->attributes[ $key ]->isLookup ) {
+                                    foreach ( $this->entity->attributes[ $key ]->lookupTypes as $entityType ) {
+                                        try {
+
+                                            $lookup = ASDK()->entity( $entityType, $value );
+                                        } catch ( Exception $ex ) {
+                                            continue;
+                                        }
+
+                                        $this->entity->{$key} = $lookup;
+                                    }
+                                } else {
+                                    $this->entity->{$key} = $value;
+                                }
                             }
                         }
                     }

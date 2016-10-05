@@ -211,12 +211,19 @@ abstract class AbstractForm extends Shortcode {
         if ( strtolower( $mode ) == "create" ) {
             return null;
         }
+
         if ( $parameterName && isset( $_GET[ $parameterName ] ) ) {
             /* TODO function thar filters entity by attribute that NOT AN ID */
             return str_replace( "}", "", ( str_replace( "{", "", $_GET[ $parameterName ] ) ) );
         }
 
-        return null;
+        /**
+         * @param null $result
+         * @param string $parameterName
+         */
+        $result = apply_filters( 'wordpresscrm_form_parse_parameter_name', null, $parameterName );
+
+        return $result;
     }
 
     public static function setupRequiredControlsFromAttributes( $columns, $requiredFields ) {
