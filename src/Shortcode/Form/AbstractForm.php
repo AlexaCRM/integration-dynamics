@@ -218,8 +218,11 @@ abstract class AbstractForm extends Shortcode {
         }
 
         /**
-         * @param null $result
-         * @param string $parameterName
+         * Allows adding support for custom variables in "parameter_name" shortcode argument.
+         * Must return null if the expected value is not found in $parameterName
+         *
+         * @param null|mixed $result
+         * @param string $parameterName Parameter value to check
          */
         $result = apply_filters( 'wordpresscrm_form_parse_parameter_name', null, $parameterName );
 

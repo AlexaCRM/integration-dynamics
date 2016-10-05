@@ -371,8 +371,29 @@ class FormInstance extends AbstractForm {
                             }
                         }
 
+                        /**
+                         * Allows to add support for custom variables in the "default" shortcode argument with syntax
+                         * {var.field} (dot-notation)
+                         *
+                         * @param FormInstance $form Form instance
+                         * @param string $value Variable name (e.g. for {var.field} $value == "var.field")
+                         * @param string|null $k Associated form control name if one exists, null otherwise
+                         * @param string $key Field name to associate value with
+                         * @param string $last
+                         */
                         do_action( 'wordpresscrm_form_setup_with_comma', $this, $value, $k, $key, $last );
                     } else {
+                        /**
+                         * Allows to add support for custom variables in the "default" shortcode argument with syntax
+                         * {variable}
+                         *
+                         * @param bool $setupDefault Whether to setup default (handler must return false!)
+                         * @param FormInstance $form Form instance
+                         * @param string $value Variable name (e.g. for {var.field} $value == "var.field")
+                         * @param string|null $k Associated form control name if one exists, null otherwise
+                         * @param string $key Field name to associate value with
+                         * @param string $last
+                         */
                         $setupDefault = apply_filters( 'wordpresscrm_form_setup_without_comma', true, $this, $value, $k, $key, $last );
 
                         if ( $setupDefault ) {
