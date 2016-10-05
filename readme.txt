@@ -44,6 +44,13 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.11 =
+
+* Form shortcode now renders a cleaner output
+* Make forms and views more compatible with Bootstrap styles
+* Make View and Form shortcodes more extensible
+* Fixed: run migrations only once
+
 = 1.1.10 =
 
 * Fix the broken lookup dialog (wouldn't work on most installs)
