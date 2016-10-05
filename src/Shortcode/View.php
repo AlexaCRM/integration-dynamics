@@ -159,7 +159,7 @@ class View extends Shortcode {
                     'layoutxml' => $crmView->layoutxml,
                 ];
 
-                $cache->set( $cacheKey, $view, 10 * 60 );
+                $cache->set( $cacheKey, $view, 2 * 60 * 60 * 24 );
             }
 
             $fetchXML = $view['fetchxml'];

@@ -890,19 +890,26 @@ class FormInstance extends AbstractForm {
         return ASDK()->retrieveSingle( $fetch );
     }
 
+    /**
+     * Retrieves FormXML from the CRM and caches it for 48 hours.
+     *
+     * @param string $formName
+     *
+     * @return string
+     */
     private function getFormXML( $formName ) {
+        $cacheKey = 'wpcrm_form_' . sha1( $this->entity->logicalname . '_form_' . $formName );
+        $cache = ACRM()->cache;
 
-        $formxml = ACRM()->cache->get( "formxml_" . $this->entity->logicalname . str_replace( " ", "", $formName ) );
-
-        if ( $formxml == null ) {
+        $formXML = $cache->get( $cacheKey );
+        if ( $formXML == null ) {
             $form = self::getFormEntity( $formName, $this->entity, $this->formType );
 
-            $formxml = $form->formXML;
-
-            ACRM()->cache->set( "formxml_" . $this->entity->logicalname . str_replace( " ", "", $formName ), $formxml, 28800 );
+            $formXML = $form->formXML;
+            $cache->set( $cacheKey, $formXML, 2 * 60 * 60 * 24 );
         }
 
-        return $formxml;
+        return $formXML;
     }
 
 }
