@@ -39,7 +39,8 @@ foreach ( $form->controls as $column ) {
                 },
                 errorPlacement: function( $error, $element ) {
                     $error.appendTo( $element.parent() );
-                }
+                },
+                errorClass: 'help-block'
             };
 
         $( function() {
