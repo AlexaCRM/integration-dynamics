@@ -119,7 +119,7 @@ class Admin {
                     ?>
                     <div class="notice notice-success is-dismissible">
                         <p>
-                            <?php _e( $notice, "wordpresscrm" ); ?>
+                            <?php _e( $notice, 'integration-dynamics' ); ?>
                         </p>
                     </div>
                     <?php
@@ -128,7 +128,7 @@ class Admin {
                 ?>
                 <div class="notice notice-success is-dismissible">
                     <p>
-                        <?php _e( $notices, "wordpresscrm" ); ?>
+                        <?php _e( $notices, 'integration-dynamics' ); ?>
                     </p>
                 </div>
                 <?php
@@ -147,7 +147,7 @@ class Admin {
                     ?>
                     <div class="error notice-error is-dismissible">
                         <p>
-                            <?php _e( $notice, "wordpresscrm" ); ?>
+                            <?php _e( $notice, 'integration-dynamics' ); ?>
                         </p>
                     </div>
                     <?php
@@ -156,7 +156,7 @@ class Admin {
                 ?>
                 <div class="error notice-error is-dismissible">
                     <p>
-                        <?php _e( $notices, "wordpresscrm" ); ?>
+                        <?php _e( $notices, 'integration-dynamics' ); ?>
                     </p>
                 </div>
                 <?php

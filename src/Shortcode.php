@@ -29,7 +29,7 @@ abstract class Shortcode {
         $errorMessage = Messages::getMessage( "error", "sdk_exception" );
 
         $args = array(
-            "error" => ( !empty( $errorMessage ) ) ? $errorMessage : __( 'An error occurred, please try again later or contact site administration', "wordpresscrm" ),
+            "error" => ( !empty( $errorMessage ) ) ? $errorMessage : __( 'An error occurred, please try again later or contact site administration', 'integration-dynamics' ),
         );
 
         $showEx = ACRM()->option( "messages" );
@@ -44,7 +44,7 @@ abstract class Shortcode {
     }
 
     public static function notConnected() {
-        return self::returnError( __( "Wordpress CRM Plugin is not connected to Dynamics CRM", "wordpresscrm" ) );
+        return self::returnError( __( "Wordpress CRM Plugin is not connected to Dynamics CRM", 'integration-dynamics' ) );
     }
 
     /* "{key}, {key}" */

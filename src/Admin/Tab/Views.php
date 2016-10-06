@@ -35,18 +35,18 @@ class Views extends Tab {
                 <?php settings_fields( $this->settingsField ); ?>
                 <?php do_settings_sections( $this->settingsField ); ?>
 
-                <h3><?php _e( "Views settings", "wordpresscrm" ); ?></h3>
+                <h3><?php _e( "Views settings", 'integration-dynamics' ); ?></h3>
                 <table class="form-table">
                     <tbody>
                     <tr>
-                        <th scope="row"><label><?php _e( "Images for boolean fields", "wordpresscrm" ); ?></label></th>
+                        <th scope="row"><label><?php _e( "Images for boolean fields", 'integration-dynamics' ); ?></label></th>
                         <td>
                             <label><input
                                     type="checkbox"
                                     name="<?php echo $this->get_field_name( 'use_images_for_boolean' ); ?>"
                                     value="1"<?php if ( isset( $this->options['use_images_for_boolean'] ) ) {
                                     checked( 1 == $this->get_field_value( 'use_images_for_boolean' ) );
-                                } ?> /> <?php _e( "Use images for boolean field values in views", "wordpresscrm" ); ?>
+                                } ?> /> <?php _e( "Use images for boolean field values in views", 'integration-dynamics' ); ?>
                             </label>
                         </td>
                     </tr>

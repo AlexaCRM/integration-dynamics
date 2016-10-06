@@ -45,7 +45,7 @@ class About extends Tab {
     public function renderAboutInformation() {
         ?>
 
-        <h2><?php _e( "About", "wordpresscrm" ) ?></h2>
+        <h2><?php _e( "About", 'integration-dynamics' ) ?></h2>
 
         <p>
             <?php echo ACRM()->full_plugin_name; ?><br>

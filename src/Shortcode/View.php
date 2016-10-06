@@ -117,12 +117,12 @@ class View extends Shortcode {
             return static::returnError( __( 'Inline view templates are not supported in this version.', 'integration-dynamics' ) );
         }
         if ( $content && !$inlineTemplate ) {
-            return self::returnError( __( "Error in inline template body, please check the inline template for unclosed or empty tags. <br/> Note that inline template must be well formatted xml document", "wordpresscrm" ) );
+            return self::returnError( __( "Error in inline template body, please check the inline template for unclosed or empty tags. <br/> Note that inline template must be well formatted xml document", 'integration-dynamics' ) );
         }
         if ( $inlineTemplate && $inlineTemplate->fetch ) {
             /* Check for the required attributes for the inline templates  */
             if ( !$inlineTemplate->results || !$inlineTemplate->noresults ) {
-                return self::returnError( __( "<strong>The &lt;fetch&gt;, &lt;results&gt; and &lt;noresults&gt; nodes are required for inline templates</strong>, please construct fetch query and the results layot and add them into the shortcode body, <br />Example: [msdyncrm_view]&lt;fetch&gt;...&lt;/fetch&gt;&lt;results&gt;...&lt;/results&gt;&lt;noresults&gt;...&lt;/noresults&gt;[/msdyncrm_view]", "wordpresscrm" ) );
+                return self::returnError( __( "<strong>The &lt;fetch&gt;, &lt;results&gt; and &lt;noresults&gt; nodes are required for inline templates</strong>, please construct fetch query and the results layot and add them into the shortcode body, <br />Example: [msdyncrm_view]&lt;fetch&gt;...&lt;/fetch&gt;&lt;results&gt;...&lt;/results&gt;&lt;noresults&gt;...&lt;/noresults&gt;[/msdyncrm_view]", 'integration-dynamics' ) );
             }
             $fetchXML = $inlineTemplate->fetch->asXML();
         }
@@ -132,15 +132,15 @@ class View extends Shortcode {
             /* Check deprecated entity_name shortcode attribute */
             if ( $attributes["entity_name"] ) {
                 /* Return error template with details of deprecated attributes and instructions what need to change to make it works */
-                return self::returnError( __( "\"entity_name\" shortcode attribute is deprecated, use \"entity\" shortcode attribute instead with result records entity type", "wordpresscrm" ) );
+                return self::returnError( __( "\"entity_name\" shortcode attribute is deprecated, use \"entity\" shortcode attribute instead with result records entity type", 'integration-dynamics' ) );
             }
             /* Check for required "entity" shortcode attribute */
             if ( !$attributes["entity"] ) {
-                return self::returnError( __( "\"entity\" shortcode attribute is required, please add entity=\"entity_logical_name\" to the msdyncrm_view shortcode attributes", "wordpresscrm" ) );
+                return self::returnError( __( "\"entity\" shortcode attribute is required, please add entity=\"entity_logical_name\" to the msdyncrm_view shortcode attributes", 'integration-dynamics' ) );
             }
             /* Check for required "name" shortcode attribute */
             if ( !$attributes["name"] ) {
-                return self::returnError( __( "\"name\" shortcode attribute is required, please add name=\"View Name\" to the msdyncrm_view shortcode attributes", "wordpresscrm" ) );
+                return self::returnError( __( "\"name\" shortcode attribute is required, please add name=\"View Name\" to the msdyncrm_view shortcode attributes", 'integration-dynamics' ) );
             }
             /* Retrieve the view entity record by entity name of the result records type and view name */
 
@@ -151,7 +151,7 @@ class View extends Shortcode {
                 $crmView = CRMView::getViewForEntity( strtolower( $attributes["entity"] ), $attributes["name"] );
 
                 if ( $crmView == null ) {
-                    return self::returnError( "Unable to get specified savedquery (Query name: " . $attributes["name"] . " of entity: " . $attributes["entity"] . ")" );
+                    return self::returnError( sprintf( __( 'Unable to get the specified SavedQuery [%1$s] for the entity {%2$s}', 'integration-dynamics' ), $attributes['name'], $attributes['entity'] ) );
                 }
 
                 $view = [
