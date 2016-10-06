@@ -44,6 +44,12 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.12 =
+
+* Lookup Dialog performance is increased through caching
+* Fixed: View field of type State would not be rendered
+* Fixed: Form validation messages would not honor Bootstrap styles
+
 = 1.1.11 =
 
 * Form shortcode now renders a cleaner output
