@@ -13,7 +13,6 @@ wordpresscrm_form_notices( apply_filters( "wordpresscrm_form_template_notices", 
 do_action( 'wordpresscrm_before_form_fields' );
 
 if ( $form->showform ) {
-    print_r( $controls );
     ?><div class="row"><?php
     foreach ( $controls as $column ) {
         if ( !empty( $column["controls"] ) ) {
