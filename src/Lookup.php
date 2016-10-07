@@ -95,7 +95,14 @@ class Lookup {
                             }
                         }
                         if ( $linkedEntityName != null ) {
-                            $output .= $invoices->Entities[0]->{$linkedEntityName}->getPropertyLabel( $parts[1] );
+                            $linkedRecord = $invoices->Entities[0]->{$linkedEntityName};
+                            if ( $linkedRecord instanceof Entity\EntityReference ) {
+                                $linkedRecord = ASDK()->entity( $linkedRecord->logicalName, $linkedRecord->id );
+                            }
+
+                            if ( $linkedRecord instanceof Entity ) {
+                                $output .= $linkedRecord->getPropertyLabel( $parts[1] );
+                            }
                         }
                     } else {
 
@@ -237,7 +244,7 @@ class Lookup {
             $output .= '<table class="lookup-table"><thead>
                                 <tr><th></th>';
 
-            foreach ( $cells as $cell ) :
+            foreach ( $cells as $cell ) {
 
                 $output .= '<th><span>';
 
@@ -256,7 +263,12 @@ class Lookup {
                         }
                     }
                     if ( $linkedEntityName != null ) {
-                        $output .= $invoices->Entities[0]->{$linkedEntityName}->getPropertyLabel( $parts[1] );
+                        $linkedRecord = $invoices->Entities[0]->{$linkedEntityName};
+                        if ( $linkedRecord instanceof Entity\EntityReference ) {
+                            $linkedRecord = ASDK()->entity( $linkedRecord->logicalName, $linkedRecord->id );
+                        }
+
+                        $output .= $linkedRecord->getPropertyLabel( $parts[1] );
                     }
                 } else {
 
@@ -264,22 +276,41 @@ class Lookup {
                 }
 
                 $output .= '</span></th>';
-
-            endforeach;
+            }
 
             $output .= '</tr></thead><tbody>';
 
-            foreach ( $invoices->Entities as $invoice ) :
-
+            foreach ( $invoices->Entities as $invoice ) {
                 $output .= '<tr class="body-row" data-enitityid="' . $invoice->ID . '"  data-name="' . $invoice->displayname . '"><td><div class="lookup-checkbox"></div></td>';
-                foreach ( $cells as $cell ) :
+                foreach ( $cells as $cell ) {
 
                     $output .= '<td>';
 
                     if ( strpos( (string) $cell["name"], "." ) ) {
                         $parts = explode( ".", (string) $cell["name"] );
 
-                        $output .= $invoice->{$parts[0]}->getFormattedValue( $parts[1] );
+                        $linkedRecord = $invoice->{$parts[0]};
+                        if ( is_null( $linkedRecord ) ) {
+                            /*
+                             * Related entity not found. Perhaps the link-entity wasn't present in the search FetchXML.
+                             * Here we look into the Lookup FetchXML to find out via what field the entity is linked
+                             * using the alias.
+                             */
+                            $xpath = new \DOMXPath( $fetchDom );
+                            $query = $xpath->query( "//link-entity[@alias='{$parts[0]}']" );
+                            if ( $query->length ) {
+                                $resolvedRelationName = $query->item( 0 )->getAttribute( 'from' );
+                                $linkedRecord = $invoice->{$resolvedRelationName};
+                            }
+                        }
+
+                        if ( $linkedRecord instanceof Entity\EntityReference ) {
+                            $linkedRecord = ASDK()->entity( $linkedRecord->logicalName, $linkedRecord->id );
+                        }
+
+                        if ( $linkedRecord instanceof Entity ) {
+                            $output .= $linkedRecord->getFormattedValue( $parts[1] );
+                        }
                     } else {
 
                         if ( ( $invoice->{(string) $cell["name"]} ) instanceof Entity ) {
@@ -302,12 +333,10 @@ class Lookup {
                     }
 
                     $output .= '</td>';
-
-                endforeach;
+                }
 
                 $output .= '</tr>';
-
-            endforeach;
+            }
 
             $output .= '</tbody></table>';
 
