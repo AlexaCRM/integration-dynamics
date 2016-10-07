@@ -44,6 +44,11 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.14 =
+
+* Hotfix: Remove debugging statements that were left out in the previous release
+* No other changes in this release were made
+
 = 1.1.13 =
 
 * Form templates are now more compatible with Bootstrap 3 and 4
