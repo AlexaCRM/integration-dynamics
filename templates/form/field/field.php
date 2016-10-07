@@ -13,10 +13,10 @@ if ( $control->visible ) {
             break;
         case "Left":
         default:
-            $control->labelClass .= " col-sm-6";
+            $control->labelClass .= " col-sm-4";
 
             wordpresscrm_field_label( $control );
-            ?><div class="col-sm-6"><?php
+            ?><div class="col-sm-8"><?php
                 wordpresscrm_field_type( $control );
             ?></div><?php
             wordpresscrm_field_error( $control );

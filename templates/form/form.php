@@ -13,10 +13,12 @@ wordpresscrm_form_notices( apply_filters( "wordpresscrm_form_template_notices", 
 do_action( 'wordpresscrm_before_form_fields' );
 
 if ( $form->showform ) {
+    print_r( $controls );
     ?><div class="row"><?php
     foreach ( $controls as $column ) {
         if ( !empty( $column["controls"] ) ) {
-            ?><div class="col-sm-4"><?php
+            $columnWidth = intval( 12 * ( (int)str_replace( '%', '', $column['attributes']['width'] ) / 100 ) );
+            ?><div class="col-sm-<?php echo $columnWidth; ?>"><?php
                 foreach ( $column["controls"] as $control ) {
                     if ( $mode == "readonly" ) {
                         wordpresscrm_readonly_field( $control );

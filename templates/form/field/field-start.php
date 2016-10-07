@@ -2,4 +2,4 @@
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
-?><div class="form-group"><div class="row"><?php
+?><div class="form-group row"><?php
