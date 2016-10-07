@@ -233,12 +233,13 @@ abstract class AbstractForm extends Shortcode {
         foreach ( $columns as $k => $column ) {
             foreach ( $requiredFields as $field ) {
                 if ( isset( $columns[ $k ]["controls"][ $field ] ) ) {
+                    $control = $columns[ $k ]["controls"][ $field ];
 
-                    $columns[ $k ]["controls"][ $field ]->required = true;
-
-                    $columns[ $k ]["controls"][ $field ]->jsValidators["notEmpty"] = array(
-                        "Message" => "'" . $columns[ $k ]["controls"][ $field ]->label . " is required'"
-                    );
+                    $control->required = true;
+                    $control->jsValidators['required'] = [
+                        'value'   => true,
+                        'message' => sprintf( __( '%s is required', 'integration-dynamics' ), $control->label ),
+                    ];
                 }
             }
         }
@@ -252,8 +253,8 @@ abstract class AbstractForm extends Shortcode {
                 if ( !empty( $columns[ $k ]["controls"][ $field ] ) ) {
                     $columns[ $k ]["controls"][ $field ]->required = false;
 
-                    if ( isset( $columns[ $k ]["controls"][ $field ]->jsValidators["notEmpty"] ) ) {
-                        unset( $columns[ $k ]["controls"][ $field ]->jsValidators["notEmpty"] );
+                    if ( isset( $columns[ $k ]["controls"][ $field ]->jsValidators['required'] ) ) {
+                        unset( $columns[ $k ]["controls"][ $field ]->jsValidators['required'] );
                     }
                 }
             }
@@ -263,14 +264,11 @@ abstract class AbstractForm extends Shortcode {
     }
 
     public static function setValuesToControls( &$columns, &$entity ) {
-
         foreach ( $columns as $k => $column ) {
-
             foreach ( $column["controls"] as $control ) {
-
                 $name = $control->name;
-                if ( isset( $entity->{$name} ) ) {
 
+                if ( isset( $entity->{$name} ) ) {
                     if ( $entity->attributes[ $name ]->isLookup ) {
                         $control->value      = ( isset( $entity->{$name} ) && $entity->{$name} ) ? $entity->{$name}->ID : null;
                         $control->recordName = ( isset( $entity->{$name}->displayname ) && $entity->{$name}->displayname ) ? $entity->{$name}->displayname : null;
@@ -285,7 +283,6 @@ abstract class AbstractForm extends Shortcode {
     }
 
     public static function printFormErrors( $errors ) {
-
         return Template::printTemplate( 'form/messages/errors.php', array( 'errors' => $errors ) );
     }
 
