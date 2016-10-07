@@ -44,6 +44,11 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.13 =
+
+* Form templates are now more compatible with Bootstrap 3 and 4
+* Fixed: wrong front-end validation settings which could break validation process
+
 = 1.1.12 =
 
 * Lookup Dialog performance is increased through caching
