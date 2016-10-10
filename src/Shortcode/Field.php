@@ -286,6 +286,11 @@ class Field extends Shortcode {
      * @return array
      */
     public static function getDataBindPage( $entityLogicalName ) {
+        $transientName = 'wpcrm_databind_' . $entityLogicalName;
+        $posts = get_transient( $transientName );
+        if ( $posts !== false ) {
+            return $posts;
+        }
 
         $args  = array(
             'post_type'  => array( 'page', 'post' ),
@@ -301,6 +306,8 @@ class Field extends Shortcode {
             )
         );
         $posts = get_posts( $args );
+
+        set_transient( $transientName, $posts, 2 * 60 * 60 * 24 );
 
         return $posts;
     }

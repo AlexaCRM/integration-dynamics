@@ -167,6 +167,9 @@ class DataBinding {
         foreach ( $posts as $post ) {
             delete_post_meta( $post->ID, '_wordpresscrm_databinding_isdefaultview' );
         }
+
+        $transientName = 'wpcrm_databind_' . $entity;
+        delete_transient( $transientName );
     }
 
 }
