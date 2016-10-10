@@ -44,6 +44,12 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.15 =
+
+* Performance optimizations for data-bound posts and pages
+* View shortcode now honors CRM View column widths in layout mode
+* Fixed: Lookup Dialog would crash on some entities due to inconsistencies in Dynamics CRM metadata
+
 = 1.1.14 =
 
 * Hotfix: Remove debugging statements that were left out in the previous release
