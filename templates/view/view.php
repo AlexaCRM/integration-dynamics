@@ -2,23 +2,30 @@
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
+
+$rowWidth = 0;
+foreach ( $cells as $cell ) {
+    $rowWidth += (int)$cell['width'];
+}
 if ( $rows ) { ?>
     <table class="mscrm-listview table">
         <thead>
         <tr>
-            <?php foreach ( current( $rows ) as $cell ) : ?>
-                <th><?php echo $cell["head"]; ?></th>
-            <?php endforeach; ?>
+            <?php foreach ( current( $rows ) as $cell ) {
+                $cellWidth = $cells[ $cell['properties']->logicalName ]['width'];
+                ?>
+                <th style="width:<?php echo round( ( $cellWidth / $rowWidth * 100 ), 3 ); ?>%;"><?php echo $cell["head"]; ?></th>
+            <?php } ?>
         </tr>
         </thead>
         <tbody>
-        <?php foreach ( $rows as $row ) : ?>
+        <?php foreach ( $rows as $row ) { ?>
             <tr>
                 <?php foreach ( $row as $key => $cell ) : ?>
                     <td><?php wordpresscrm_view_field( $cell ); ?></td>
                 <?php endforeach; ?>
             </tr>
-        <?php endforeach; ?>
+        <?php } ?>
         </tbody>
     </table>
 <?php } else {

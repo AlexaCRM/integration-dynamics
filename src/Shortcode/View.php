@@ -191,7 +191,11 @@ class View extends Shortcode {
             }
         } else {
             $layout = new SimpleXMLElement( $view['layoutxml'] );
-            $cells  = $layout->xpath( ".//cell" );
+            $rawCells  = $layout->xpath( ".//cell" );
+            $cells = [];
+            foreach ( $rawCells as $cell ) {
+                $cells[(string)$cell['name']] = $cell;
+            }
         }
 
         $rows = CRMView::getViewRows( $entities, $cells, $fetchXML, null, ( $inlineTemplate && $inlineTemplate->results ) );
