@@ -87,8 +87,10 @@ class DataBinding {
             try {
                 $entityRequestValue = $_GET[ $requestValueParameter ];
 
+                $columnSet = $this->retrieveCurrentColumnSet();
+
                 if ( $entityParameterName == 'id' ) {
-                    return ASDK()->entity( $entityLogicalName, $entityRequestValue );
+                    return ASDK()->entity( $entityLogicalName, $entityRequestValue, $columnSet );
                 } else {
                     $entityMetadata = ASDK()->entity( $entityLogicalName )->metadata();
 
@@ -108,7 +110,7 @@ class DataBinding {
                     $keyAttribute = new KeyAttributes();
                     $keyAttribute->add( $entityKeyAttribute, $entityRequestValue );
 
-                    return ASDK()->entity( $entityLogicalName, $keyAttribute );
+                    return ASDK()->entity( $entityLogicalName, $keyAttribute, $columnSet );
                 }
             } catch ( NotAuthorizedException $e ) {
                 Connection::setConnectionStatus( false );
@@ -118,6 +120,43 @@ class DataBinding {
         }
 
         return null;
+    }
+
+    /**
+     * Retrieves a list of invoked fields in the current post.
+     *
+     * @return array
+     */
+    public function retrieveCurrentColumnSet() {
+        global $post;
+
+        $content = $post->post_content;
+        $shortcodeRegex = get_shortcode_regex( [ ACRM()->prefix . 'field' ] );
+
+        $count = preg_match_all( '/' . $shortcodeRegex . '/', $content, $shortcodes );
+
+        if ( !$count ) {
+            return [];
+        }
+
+        $fields = [];
+        foreach ( $shortcodes[3] as $attributesString ) {
+            $attributes = shortcode_parse_atts( $attributesString );
+
+            if ( !array_key_exists( 'field', $attributes ) ) {
+                continue;
+            }
+
+            $field = $attributes['field'];
+            if ( strpos( $field, '.' ) !== false ) { // include related records
+                $complexField = explode( '.', $field );
+                $field = $complexField[0];
+            }
+
+            array_push( $fields, $field );
+        }
+
+        return $fields;
     }
 
 }
