@@ -98,7 +98,7 @@ class View {
         return $view;
     }
 
-    public static function getViewRows( $entities, $cells, $fetchXML, $timezoneoffset = null ) {
+    public static function getViewRows( $entities, $cells, $fetchXML, $tzOffset = null ) {
 
         $elements = array();
 
@@ -112,6 +112,9 @@ class View {
         $primaryName = $entities->Entities[0]->getPrimaryNameField();
 
         foreach ( $entities->Entities as $entity ) {
+            /**
+             * @var Entity $entity
+             */
 
             $row = array();
 
@@ -125,52 +128,45 @@ class View {
                     $alias = $parts[0];
                     $field = $parts[1];
 
+                    $element["head"]            = "";
+                    $element["formatted_value"] = "";
+                    $element["value"]           = null;
+                    $element["properties"]      = null;
+
                     if ( isset( $entity->$alias ) && isset( $entity->$alias->$field ) ) {
                         $element["head"]            = $entity->$alias->getPropertyLabel( $field );
-                        $element["formatted_value"] = self::getFormattedValue( $entity->$alias, $field, $timezoneoffset );
+                        $element["formatted_value"] = self::getFormattedValue( $entity->$alias, $field, $tzOffset );
                         $element["value"]           = $entity->$alias->$field;
                         $element["properties"]      = $entity->$alias->attributes[ $field ];
-                    } else {
-                        $element["head"]            = "";
-                        $element["formatted_value"] = "";
-                        $element["value"]           = null;
-                        $element["properties"]      = null;
                     }
                 } else {
-
                     $element["head"] = $entity->getPropertyLabel( $name );
+                    $element["value"]      = trim( $entity->{$name} );
+                    $element["properties"] = $entity->attributes[ $name ];
+                    $element["formatted_value"] = self::getFormattedValue( $entity, $name, $tzOffset );
 
-                    if ( ( $entity->{$name} ) instanceof Entity ) {
+                    $relatedEntityId = $entity->ID;
+                    $relatedEntityName = $entity->logicalName;
+                    $relatedEntityLabel = self::getFormattedValue( $entity, $name, $tzOffset );
 
-                        if ( $post = DataBinding::getDefaultPost( $entity->{$name}->LOGICALNAME ) ) {
-                            $permalink                  = get_permalink( $post->ID );
-                            $post_querystring           = maybe_unserialize( get_post_meta( $post->ID, '_wordpresscrm_databinding_querystring', true ) );
-                            $linktopost                 = ( strpos( $permalink, "?" ) ) ? $permalink . "&" . $post_querystring . "=" . $entity->{$name}->ID : $permalink . "?" . $post_querystring . "=" . $entity->{$name}->ID;
-                            $element["formatted_value"] = "<a href='" . $linktopost . "'>" . $entity->getFormattedValue( $name, $timezoneoffset ) . "</a>";
+                    if ( $entity->{$name} instanceof Entity\EntityReference ) {
+                        $relatedEntityId = $entity->{$name}->ID;
+                        $relatedEntityName = $entity->{$name}->logicalName;
+                        $relatedEntityLabel = $entity->getFormattedValue( $name, $tzOffset );
+                    }
 
-                            $element["value"]      = $entity->{$name};
-                            $element["properties"] = $entity->attributes[ $name ];
-                        } else {
+                    $relatedPost = DataBinding::getDefaultPost( $relatedEntityName );
 
-                            $element["formatted_value"] = self::getFormattedValue( $entity, $name, $timezoneoffset );
-                            $element["value"]           = $entity->{$name};
-                            $element["properties"]      = $entity->attributes[ $name ];
-                        }
-                    } else {
+                    if ( ( $entity->{$name} instanceof Entity\EntityReference && !is_null( $relatedPost ) )
+                          || ( $name == $primaryName && !is_null( $relatedPost ) ) ) {
+                        $relatedPostPermalink = get_permalink( $relatedPost );
+                        $querystringParameter = maybe_unserialize( get_post_meta( $relatedPost->ID, '_wordpresscrm_databinding_querystring', true ) );
+                        $relatedPostUrlDivider = ( strpos( $relatedPostPermalink, '?' ) !== false )? '&' : '?';
 
-                        if ( $name == $primaryName && $post = DataBinding::getDefaultPost( $entity->logicalname ) ) {
-                            $permalink                  = get_permalink( $post->ID );
-                            $post_querystring           = maybe_unserialize( get_post_meta( $post->ID, '_wordpresscrm_databinding_querystring', true ) );
-                            $linktopost                 = ( strpos( $permalink, "?" ) ) ? $permalink . "&" . $post_querystring . "=" . $entity->ID : $permalink . "?" . $post_querystring . "=" . $entity->ID;
-                            $element["formatted_value"] = "<a href='" . $linktopost . "'>" . self::getFormattedValue( $entity, $name, $timezoneoffset ) . "</a>";
+                        $relatedPostUrl = $relatedPostPermalink . $relatedPostUrlDivider
+                                          . $querystringParameter . '=' . $relatedEntityId;
 
-                            $element["value"]      = trim( $entity->{$name} );
-                            $element["properties"] = $entity->attributes[ $name ];
-                        } else {
-                            $element["formatted_value"] = self::getFormattedValue( $entity, $name, $timezoneoffset );
-                            $element["value"]           = trim( $entity->{$name} );
-                            $element["properties"]      = $entity->attributes[ $name ];
-                        }
+                        $element['formatted_value'] = '<a href="' . esc_attr( $relatedPostUrl ) . '">' . $relatedEntityLabel . '</a>';
                     }
                 }
 
@@ -193,19 +189,18 @@ class View {
      * @return string
      */
     public static function getFormattedValue( $entity, $name, $timezoneoffset ) {
-
         $value = htmlentities( trim( $entity->getFormattedValue( $name, $timezoneoffset ) ) );
 
         if ( isset( $entity->attributes[ $name ] ) ) {
             switch ( $entity->attributes[ $name ]->format ) {
                 case "Email":
-                    $value = "<a href='mailto:" . $value . "'>" . $value . "</a>";
+                    $value = '<a href="mailto:' . esc_attr( $value ) . '">' . $value . '</a>';
                     break;
                 case "Url":
-                    $value = "<a href='" . $value . "'>" . $value . "</a>";
+                    $value = '<a href="' . esc_attr( $value ) . '">' . $value . '</a>';
                     break;
                 case "Phone":
-                    $value = "<a href='tel:" . $value . "'>" . $value . "</a>";
+                    $value = '<a href="tel:' . esc_attr( $value ) . '">' . $value . '</a>';
                     break;
             }
         }
