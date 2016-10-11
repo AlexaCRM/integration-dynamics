@@ -159,4 +159,58 @@ class DataBinding {
         return $fields;
     }
 
+    /**
+     * Retrieves the default post that is bound to the given entity.
+     *
+     * Used by the View shortcode and Lookup Dialog to link records of the specified entity to that post.
+     *
+     * @param string $logicalName Logical name of the entity
+     *
+     * @return \WP_Post|null NULL is returned if the given entity is not linked to any post
+     */
+    public static function getDefaultPost( $logicalName ) {
+        $transientName = static::getDefaultPostTransientName( $logicalName );
+
+        $post = get_transient( $transientName );
+        if ( $post !== false ) {
+            return $post;
+        }
+
+        $args = [
+            'post_type'  => [ 'page', 'post' ],
+            'meta_query' => [
+                [
+                    'key'   => '_wordpresscrm_databinding_entity',
+                    'value' => $logicalName
+                ],
+                [
+                    'key'   => '_wordpresscrm_databinding_isdefaultview',
+                    'value' => 'true'
+                ]
+            ]
+        ];
+        $posts = get_posts( $args );
+
+        if ( !count( $posts ) ) {
+            return null;
+        }
+
+        set_transient( $transientName, $posts[0], 2 * 60 * 60 * 24 );
+
+        return $post[0];
+    }
+
+    /**
+     * Returns the transient key for a given entity name.
+     *
+     * @see DataBinding::getDefaultPost()
+     *
+     * @param $logicalName
+     *
+     * @return string
+     */
+    public static function getDefaultPostTransientName( $logicalName ) {
+        return 'wpcrm_databinding_' . $logicalName;
+    }
+
 }

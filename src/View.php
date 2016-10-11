@@ -142,10 +142,10 @@ class View {
 
                     if ( ( $entity->{$name} ) instanceof Entity ) {
 
-                        if ( $post = Field::getDataBindPage( $entity->{$name}->LOGICALNAME ) ) {
-                            $premalink                  = get_permalink( $post[0]->ID );
-                            $post_querystring           = maybe_unserialize( get_post_meta( $post[0]->ID, '_wordpresscrm_databinding_querystring', true ) );
-                            $linktopost                 = ( strpos( $premalink, "?" ) ) ? $premalink . "&" . $post_querystring . "=" . $entity->{$name}->ID : $premalink . "?" . $post_querystring . "=" . $entity->{$name}->ID;
+                        if ( $post = DataBinding::getDefaultPost( $entity->{$name}->LOGICALNAME ) ) {
+                            $permalink                  = get_permalink( $post->ID );
+                            $post_querystring           = maybe_unserialize( get_post_meta( $post->ID, '_wordpresscrm_databinding_querystring', true ) );
+                            $linktopost                 = ( strpos( $permalink, "?" ) ) ? $permalink . "&" . $post_querystring . "=" . $entity->{$name}->ID : $permalink . "?" . $post_querystring . "=" . $entity->{$name}->ID;
                             $element["formatted_value"] = "<a href='" . $linktopost . "'>" . $entity->getFormattedValue( $name, $timezoneoffset ) . "</a>";
 
                             $element["value"]      = $entity->{$name};
@@ -158,10 +158,10 @@ class View {
                         }
                     } else {
 
-                        if ( $name == $primaryName && $post = Field::getDataBindPage( $entity->logicalname ) ) {
-                            $premalink                  = get_permalink( $post[0]->ID );
-                            $post_querystring           = maybe_unserialize( get_post_meta( $post[0]->ID, '_wordpresscrm_databinding_querystring', true ) );
-                            $linktopost                 = ( strpos( $premalink, "?" ) ) ? $premalink . "&" . $post_querystring . "=" . $entity->ID : $premalink . "?" . $post_querystring . "=" . $entity->ID;
+                        if ( $name == $primaryName && $post = DataBinding::getDefaultPost( $entity->logicalname ) ) {
+                            $permalink                  = get_permalink( $post->ID );
+                            $post_querystring           = maybe_unserialize( get_post_meta( $post->ID, '_wordpresscrm_databinding_querystring', true ) );
+                            $linktopost                 = ( strpos( $permalink, "?" ) ) ? $permalink . "&" . $post_querystring . "=" . $entity->ID : $permalink . "?" . $post_querystring . "=" . $entity->ID;
                             $element["formatted_value"] = "<a href='" . $linktopost . "'>" . self::getFormattedValue( $entity, $name, $timezoneoffset ) . "</a>";
 
                             $element["value"]      = trim( $entity->{$name} );

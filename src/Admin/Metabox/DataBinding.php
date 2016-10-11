@@ -168,7 +168,7 @@ class DataBinding {
             delete_post_meta( $post->ID, '_wordpresscrm_databinding_isdefaultview' );
         }
 
-        $transientName = 'wpcrm_databind_' . $entity;
+        $transientName = \AlexaCRM\WordpressCRM\DataBinding::getDefaultPostTransientName( $entity );
         delete_transient( $transientName );
     }
 

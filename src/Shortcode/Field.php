@@ -280,36 +280,4 @@ class Field extends Shortcode {
         return $output;
     }
 
-    /**
-     * @param string $entityLogicalName
-     *
-     * @return array
-     */
-    public static function getDataBindPage( $entityLogicalName ) {
-        $transientName = 'wpcrm_databind_' . $entityLogicalName;
-        $posts = get_transient( $transientName );
-        if ( $posts !== false ) {
-            return $posts;
-        }
-
-        $args  = array(
-            'post_type'  => array( 'page', 'post' ),
-            'meta_query' => array(
-                array(
-                    'key'   => '_wordpresscrm_databinding_entity',
-                    'value' => $entityLogicalName
-                ),
-                array(
-                    'key'   => '_wordpresscrm_databinding_isdefaultview',
-                    'value' => 'true'
-                )
-            )
-        );
-        $posts = get_posts( $args );
-
-        set_transient( $transientName, $posts, 2 * 60 * 60 * 24 );
-
-        return $posts;
-    }
-
 }

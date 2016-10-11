@@ -5,6 +5,7 @@ namespace AlexaCRM\WordpressCRM;
 
 use AlexaCRM\CRMToolkit\AbstractClient;
 use AlexaCRM\CRMToolkit\Entity;
+use AlexaCRM\CRMToolkit\Entity\EntityReference;
 use AlexaCRM\WordpressCRM\Shortcode\Field;
 use DOMDocument;
 use Exception;
@@ -96,7 +97,7 @@ class Lookup {
                         }
                         if ( $linkedEntityName != null ) {
                             $linkedRecord = $invoices->Entities[0]->{$linkedEntityName};
-                            if ( $linkedRecord instanceof Entity\EntityReference ) {
+                            if ( $linkedRecord instanceof EntityReference ) {
                                 $linkedRecord = ASDK()->entity( $linkedRecord->logicalName, $linkedRecord->id );
                             }
 
@@ -127,14 +128,13 @@ class Lookup {
 
                             $output .= $invoice->{$parts[0]}->getFormattedValue( $parts[1] );
                         } else {
+                            if ( ( $invoice->{(string) $cell["name"]} ) instanceof EntityReference ) {
 
-                            if ( ( $invoice->{(string) $cell["name"]} ) instanceof Entity ) {
+                                if ( $post = DataBinding::getDefaultPost( $invoice->{(string) $cell["name"]}->LOGICALNAME ) ) {
 
-                                if ( $post = Field::getDataBindPage( $invoice->{(string) $cell["name"]}->LOGICALNAME ) ) {
+                                    $permalink = get_permalink( $post );
 
-                                    $premalink = get_permalink( $post[0]->ID );
-
-                                    $linktopost = ( strpos( $premalink, "?" ) ) ? $premalink . "&id=" . $invoice->{(string) $cell["name"]}->ID : $premalink . "?id=" . $invoice->{(string) $cell["name"]}->ID;
+                                    $linktopost = ( strpos( $permalink, "?" ) ) ? $permalink . "&id=" . $invoice->{(string) $cell["name"]}->ID : $permalink . "?id=" . $invoice->{(string) $cell["name"]}->ID;
 
                                     $output .= "<a href='" . $linktopost . "'>" . (string) $invoice->getFormattedValue( (string) $cell["name"] ) . "</a>";
                                 } else {
@@ -264,7 +264,7 @@ class Lookup {
                     }
                     if ( $linkedEntityName != null ) {
                         $linkedRecord = $invoices->Entities[0]->{$linkedEntityName};
-                        if ( $linkedRecord instanceof Entity\EntityReference ) {
+                        if ( $linkedRecord instanceof EntityReference ) {
                             $linkedRecord = ASDK()->entity( $linkedRecord->logicalName, $linkedRecord->id );
                         }
 
@@ -304,7 +304,7 @@ class Lookup {
                             }
                         }
 
-                        if ( $linkedRecord instanceof Entity\EntityReference ) {
+                        if ( $linkedRecord instanceof EntityReference ) {
                             $linkedRecord = ASDK()->entity( $linkedRecord->logicalName, $linkedRecord->id );
                         }
 
@@ -313,13 +313,13 @@ class Lookup {
                         }
                     } else {
 
-                        if ( ( $invoice->{(string) $cell["name"]} ) instanceof Entity ) {
+                        if ( ( $invoice->{(string) $cell["name"]} ) instanceof EntityReference ) {
 
-                            if ( $post = Field::getDataBindPage( $invoice->{(string) $cell["name"]}->LOGICALNAME ) ) {
+                            if ( $post = DataBinding::getDefaultPost( $invoice->{(string) $cell["name"]}->LOGICALNAME ) ) {
 
-                                $premalink = get_permalink( $post[0]->ID );
+                                $permalink = get_permalink( $post );
 
-                                $linktopost = ( strpos( $premalink, "?" ) ) ? $premalink . "&id=" . $invoice->{(string) $cell["name"]}->ID : $premalink . "?id=" . $invoice->{(string) $cell["name"]}->ID;
+                                $linktopost = ( strpos( $permalink, "?" ) ) ? $permalink . "&id=" . $invoice->{(string) $cell["name"]}->ID : $permalink . "?id=" . $invoice->{(string) $cell["name"]}->ID;
 
                                 $output .= "<a href='" . $linktopost . "'>" . (string) $invoice->getFormattedValue( (string) $cell["name"] ) . "</a>";
                             } else {
