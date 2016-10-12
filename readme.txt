@@ -44,6 +44,12 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.16 =
+
+* Fixed: misleading message regarding inline views
+* Fixed: cell width would not be set correctly for linked record fields in views
+* Internal: data-binding refactoring
+
 = 1.1.15 =
 
 * Performance optimizations for data-bound posts and pages
