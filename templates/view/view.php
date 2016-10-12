@@ -11,8 +11,8 @@ if ( $rows ) { ?>
     <table class="mscrm-listview table">
         <thead>
         <tr>
-            <?php foreach ( current( $rows ) as $cell ) {
-                $cellWidth = $cells[ $cell['properties']->logicalName ]['width'];
+            <?php foreach ( current( $rows ) as $cellName => $cell ) {
+                $cellWidth = $cells[$cellName]['width'];
                 ?>
                 <th style="width:<?php echo round( ( $cellWidth / $rowWidth * 100 ), 3 ); ?>%;"><?php echo $cell["head"]; ?></th>
             <?php } ?>
