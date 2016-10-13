@@ -562,7 +562,7 @@ class FormInstance extends AbstractForm {
                             break;
                         case "Email":
                             if ( $value && !$this->validator->validateItem( $value, 'email' ) ) {
-                                $this->entityErrors[ $field ] = __( 'Incorrect email', 'integration-dynamics' );
+                                $this->entityErrors[ $field ] = sprintf( __( '%s must be a valid email address', 'integration-dynamics' ), $control->label );
                             }
                             break;
                     }
