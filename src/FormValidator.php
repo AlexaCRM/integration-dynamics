@@ -19,7 +19,7 @@ class FormValidator {
      * @ignore
      * @var array regular expressions
      */
-    public static $regexes = Array(
+    public static $regexes = [
         'date'        => "[0-9]{1,2}\/[0-9]{1,2}\/[0-9][0-9]",
         'amount'      => "^[-]?[0-9]+\$",
         'number'      => "^[-]?[0-9,]+\$",
@@ -35,7 +35,7 @@ class FormValidator {
         '2digitopt'   => "^\d+(\,\d{2})?\$",
         '2digitforce' => "^\d+\,\d\d\$",
         'anything'    => "^[\d\D]{1,}\$"
-    );
+    ];
 
     /**
      * @ignore
@@ -58,17 +58,15 @@ class FormValidator {
      *
      * @param array $items
      *
-     * @ignore
-     * @return Boolean True if valid, False if not
+     * @return bool Validation result
      */
     public function validate( $items ) {
-
         $this->fields = $items;
         $haveFailures = false;
 
         foreach ( $items as $key => $val ) {
-
-            if ( ( strlen( $val ) == 0 || array_search( $key, $this->validations ) === false ) && array_search( $key, $this->mandatories ) === false ) {
+            if ( ( strlen( $val ) == 0 || array_search( $key, $this->validations ) === false )
+                 && array_search( $key, $this->mandatories ) === false ) {
                 $this->corrects[] = $key;
                 continue;
             }
@@ -87,115 +85,31 @@ class FormValidator {
     }
 
     /**
-     * Adds unvalidated class to those elements that are not validated. Removes them from classes that are.
-     *
-     * @ignore
-     * @return string
-     */
-    public function getScript() {
-        $output = '';
-
-        if ( !empty( $this->errors ) ) {
-            $errors = array();
-            foreach ( $this->errors as $key => $val ) {
-                $errors[] = "'INPUT[name={$key}]'";
-            }
-
-            $output = '$$(' . implode( ',', $errors ) . ').addClass("unvalidated");';
-            $output .= "alert('there are errors in the form');"; // or your nice validation here
-        }
-
-        if ( !empty( $this->corrects ) ) {
-            $corrects = array();
-            foreach ( $this->corrects as $key ) {
-                $corrects[] = "'INPUT[name={$key}]'";
-            }
-            $output .= '$$(' . implode( ',', $corrects ) . ').removeClass("unvalidated");';
-        }
-        $output = "<script type='text/javascript'>{$output} </script>";
-
-        return ( $output );
-    }
-
-    /**
-     * Sanitizes an array of items according to the $this->sanitations
-     * sanitations will be standard of type string, but can also be specified.
-     * For ease of use, this syntax is accepted:
-     * $sanatations = array('fieldname', 'otherfieldname'=>'float');
-     *
-     * @return array
-     * @ignore
-     */
-    public function sanatize( $items ) {
-
-        foreach ( $items as $key => $val ) {
-
-            if ( array_search( $key, $this->sanatations ) === false && !array_key_exists( $key, $this->sanatations ) ) {
-                continue;
-            }
-            $items[ $key ] = self::sanatizeItem( $val, $this->validations[ $key ] );
-        }
-
-        return ( $items );
-    }
-
-    /**
      * Adds an error to the errors array.
      *
-     * @ignore
+     * @param string $field
+     * @param string $type
      */
     private function addError( $field, $type = 'string' ) {
-
         $this->errors[ $field ] = $type;
     }
 
     /**
-     * Sanatize a single var according to $type.
-     * Allows for static calling to allow simple sanatization
-     *
-     * @ignore
-     */
-    public static function sanatizeItem( $var, $type ) {
-
-        $flags = null;
-        switch ( $type ) {
-
-            case 'url':
-                $filter = FILTER_SANITIZE_URL;
-                break;
-            case 'int':
-                $filter = FILTER_SANITIZE_NUMBER_INT;
-                break;
-            case 'float':
-                $filter = FILTER_SANITIZE_NUMBER_FLOAT;
-                $flags  = FILTER_FLAG_ALLOW_FRACTION | FILTER_FLAG_ALLOW_THOUSAND;
-                break;
-            case 'email':
-                $var    = substr( $var, 0, 254 );
-                $filter = FILTER_SANITIZE_EMAIL;
-                break;
-            case 'string':
-            default:
-                $filter = FILTER_SANITIZE_STRING;
-                $flags  = FILTER_FLAG_NO_ENCODE_QUOTES;
-                break;
-        }
-
-        $output = filter_var( $var, $filter, $flags );
-
-        return ( $output );
-    }
-
-    /**
      * Validates a single var according to $type.
-     * Allows for static calling to allow simple validation.
      *
-     * @ignore
+     * @param mixed $value Value to validate.
+     * @param string $type One of FormValidator::$regexes keys or email, int, boolean, ip, url.
+     *
+     * @return bool Validation result
      */
-    public static function validateItem( $var, $type ) {
-
+    public static function validateItem( $value, $type ) {
         if ( array_key_exists( $type, self::$regexes ) ) {
-            $returnValue = filter_var( $var, FILTER_VALIDATE_REGEXP, array( "options" => array( "regexp" => '!' . self::$regexes[ $type ] . '!i' ) ) ) !== false;
+            $filterOptions = [
+                'options' => [
+                    'regexp' => '!' . self::$regexes[ $type ] . '!i',
+                ],
+            ];
+            $returnValue = ( filter_var( $value, FILTER_VALIDATE_REGEXP, $filterOptions ) !== false );
 
             return ( $returnValue );
         }
@@ -204,13 +118,14 @@ class FormValidator {
 
         switch ( $type ) {
             case 'email':
-                $var    = substr( $var, 0, 254 );
+                $value  = substr( $value, 0, 254 );
                 $filter = FILTER_VALIDATE_EMAIL;
                 break;
             case 'int':
                 $filter = FILTER_VALIDATE_INT;
                 break;
             case 'boolean':
+            case 'bool':
                 $filter = FILTER_VALIDATE_BOOLEAN;
                 break;
             case 'ip':
@@ -221,7 +136,7 @@ class FormValidator {
                 break;
         }
 
-        return ( $filter === false ) ? false : filter_var( $var, $filter ) !== false ? true : false;
+        return ( $filter === false ) ? false : filter_var( $value, $filter ) !== false ? true : false;
     }
 
 }
