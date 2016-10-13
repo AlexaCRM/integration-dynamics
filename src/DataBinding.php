@@ -197,7 +197,7 @@ class DataBinding {
 
         set_transient( $transientName, $posts[0], 2 * 60 * 60 * 24 );
 
-        return $post[0];
+        return $posts[0];
     }
 
     /**
