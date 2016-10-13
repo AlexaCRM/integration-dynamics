@@ -4,7 +4,7 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 if ( $control->visible ) {
-    wordpresscrm_field_start();
+    wordpresscrm_field_start( $control );
     switch ( $control->labelPosition ) {
         case "Top":
             wordpresscrm_field_label( $control );
@@ -18,8 +18,8 @@ if ( $control->visible ) {
             wordpresscrm_field_label( $control );
             ?><div class="col-sm-8"><?php
                 wordpresscrm_field_type( $control );
+                wordpresscrm_field_error( $control );
             ?></div><?php
-            wordpresscrm_field_error( $control );
             break;
     }
     wordpresscrm_field_end();
