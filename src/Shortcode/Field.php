@@ -57,12 +57,12 @@ class Field extends Shortcode {
                 'format'   => null,
                 'locale'   => null,
                 'add_form' => null,
-                'nowrap'   => false,
+                'nowrap'   => true,
             ), $atts );
 
             $format = null;
 
-            $nowrap = $a["nowrap"];
+            $nowrap = ( $a["nowrap"] === true || trim( $a['nowrap'] ) === 'true' );
 
             if ( isset( $a["format"] ) ) {
 
