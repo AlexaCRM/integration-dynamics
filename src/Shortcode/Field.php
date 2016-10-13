@@ -203,7 +203,7 @@ class Field extends Shortcode {
             if ( $nowrap ) {
                 return $value;
             } else {
-                return apply_filters( "wordpresscrm_field_wrapper", "<p>" . $value . "</p>" );
+                return apply_filters( "wordpresscrm_field_wrapper", "<p>" . $value . "</p>", $value );
             }
         }
 
