@@ -44,6 +44,13 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.17 =
+
+* Fixed: Back-end validation would not have error messages styled correctly
+* Fixed: Front-end form validator would allow emails like <example@contoso>
+* Field shortcode is now not wrapped in a paragraph by default
+* Fixed: first row in the view would not be linked to a data-bound page in certain scenarios
+
 = 1.1.16 =
 
 * Fixed: misleading message regarding inline views
