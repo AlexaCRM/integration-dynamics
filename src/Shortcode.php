@@ -17,19 +17,18 @@ abstract class Shortcode {
     public abstract function shortcode( $attributes, $content = null, $tagName );
 
     public static function returnError( $error ) {
-
-        $args = array(
-            "error" => $error,
-        );
+        $args = [
+            'error' => $error,
+        ];
 
         return Template::printTemplate( "error.php", $args );
     }
 
     public static function returnExceptionError( $exception = null ) {
-        $args = array(
+        $args = [
             'error' => __( 'An error occurred, please try again later or contact site administration', 'integration-dynamics' ),
             'exception' => $exception,
-        );
+        ];
 
         return Template::printTemplate( "exception.php", $args );
     }
@@ -38,47 +37,60 @@ abstract class Shortcode {
         return self::returnError( __( "Wordpress CRM Plugin is not connected to Dynamics CRM", 'integration-dynamics' ) );
     }
 
-    /* "{key}, {key}" */
-    public static function parseKeyArrayShortcodeAttribute( $paramsAttibute = null ) {
-        $params = Array();
-        /* Check default fields */
-        if ( $paramsAttibute ) {
-
-            $paramsAttibute = preg_replace( "/[{}]/", "", $paramsAttibute );
-
-            if ( strstr( $paramsAttibute, ',' ) ) {
-                $params = explode( ',', $paramsAttibute );
-            } else {
-                $params = array( 0 => $paramsAttibute );
-            }
+    /**
+     * Parses the list of brackets-enclosed parameters into the array.
+     *
+     * Example: {arg1},{arg2},{arg3} => [ 'arg1', 'arg2', 'arg3' ]
+     *
+     * @param string $parameters
+     *
+     * @return array
+     */
+    public static function parseKeyArrayShortcodeAttribute( $parameters = null ) {
+        if ( !$parameters ) {
+            return [];
         }
 
-        return $params;
+        $parameters = preg_replace( '/[{}]/', '', $parameters );
+        if ( strstr( $parameters, ',' ) ) {
+            return explode( ',', $parameters );
+        }
+
+        return [ 0 => $parameters ];
     }
 
-    /* "{key:value}, {key:value}" */
+    /**
+     * Parses a list of brackets-enclosed key-value parameters into the array.
+     *
+     * Example: {arg1:val1},{arg2:val2} => [ 'arg1' => 'val1', 'arg2' => 'val2' ]
+     *
+     * @param string $defaultValues
+     *
+     * @return array
+     */
     public static function parseKeyValueArrayShortcodeAttribute( $defaultValues ) {
-        $default = array();
-        /* Check default fields */
-        if ( $defaultValues ) {
-            /* Remove enclosing braces */
-            $array = array_filter( preg_split( "/[{}]/", $defaultValues ) );
-            /* Extract field name and default values */
-            foreach ( $array as $arr ) {
-                $temp                = explode( ":", $arr );
-                $default[ $temp[0] ] = $temp[1];
-            }
-            /* Remove empty field names */
-            if ( isset( $default[""] ) ) {
-                unset( $default[""] );
-            }
-            /* Remove empty default values */
-            $default = array_filter( $default );
-            /* Set variable to NULL if array is empty */
-            if ( empty( $default ) ) {
-                $default = array();
-            }
+        if ( !$defaultValues ) {
+            return [];
         }
+
+        $default = [];
+
+        /* Remove enclosing braces */
+        $parameters = array_filter( preg_split( '/[{}]/', $defaultValues ) );
+
+        /* Extract field name and default values */
+        foreach ( $parameters as $parameter ) {
+            $parameterMap = explode( ":", $parameter );
+
+            if ( $parameterMap[0] == '' ) {
+                continue;
+            }
+
+            $default[ $parameterMap[0] ] = $parameterMap[1];
+        }
+
+        /* Remove empty default values */
+        $default = array_filter( $default );
 
         return $default;
     }

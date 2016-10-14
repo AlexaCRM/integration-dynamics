@@ -124,7 +124,7 @@ class FetchXML {
      *
      * @return string fetchXML with replaced conditions
      */
-    public static function replaceLookupConditionsByLookupsArray( $fetchXML, $lookups = Array() ) {
+    public static function replaceLookupConditionsByLookupsArray( $fetchXML, $lookups = [] ) {
         foreach ( $lookups as $key => $param ) {
             $param = explode( ".", $param );
             $type  = trim( $param[0] );
