@@ -9,7 +9,7 @@ if ( !defined( 'ABSPATH' ) ) {
     <?php if ( isset( $exception ) ) : ?>
         <p>&nbsp;</p>
         <p style="color: black;">
-            <?php echo $exception; ?>
+            <?php echo $exception->getMessage(); ?>
         </p>
     <?php endif; ?>
 

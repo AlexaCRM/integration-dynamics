@@ -26,19 +26,10 @@ abstract class Shortcode {
     }
 
     public static function returnExceptionError( $exception = null ) {
-        $errorMessage = Messages::getMessage( "error", "sdk_exception" );
-
         $args = array(
-            "error" => ( !empty( $errorMessage ) ) ? $errorMessage : __( 'An error occurred, please try again later or contact site administration', 'integration-dynamics' ),
+            'error' => __( 'An error occurred, please try again later or contact site administration', 'integration-dynamics' ),
+            'exception' => $exception,
         );
-
-        $showEx = ACRM()->option( "messages" );
-
-        $showException = ( isset( $showEx["error"]["show_exception"] ) && $showEx["error"]["show_exception"] ) ? true : false;
-
-        if ( $showException ) {
-            $args["exception"] = $exception;
-        }
 
         return Template::printTemplate( "exception.php", $args );
     }

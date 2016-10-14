@@ -109,6 +109,22 @@ class FormInstance extends AbstractForm {
         } else {
             $formData = $_POST;
         }
+
+        $isPost = $_SERVER['REQUEST_METHOD'] === 'POST';
+
+        if ( !$isPost ) {
+            return null;
+        }
+
+        if ( !array_key_exists( 'form_name', $formData ) && !array_key_exists( '_wpnonce', $formData ) ) {
+            throw new Exception( __( 'Form submission couldn\'t pass security check. Please try again', 'integration-dynamics' ) );
+        }
+
+        $nonceActionName = 'wpcrm-form-' . $formData['form_name'];
+        if ( count( $formData ) && !wp_verify_nonce( $formData['_wpnonce'], $nonceActionName ) ) {
+            throw new Exception( __( 'Form submission couldn\'t pass security check. Please try again', 'integration-dynamics' ) );
+        }
+
         if ( isset( $formData["entity"] ) &&
              isset( $formData["entity_form_entity"] ) &&
              isset( $formData["entity_form_name"] ) &&
