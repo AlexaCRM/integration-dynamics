@@ -3,6 +3,7 @@
 namespace AlexaCRM\WordpressCRM;
 
 use AlexaCRM\WordpressCRM\Admin\Metabox\DataBinding;
+use AlexaCRM\WordpressCRM\Admin\Metabox\ShortcodeWizard;
 
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
@@ -54,6 +55,7 @@ class Admin {
         add_action( 'admin_notices', [ $this, 'admin_errors' ] );
 
         new DataBinding();
+        new ShortcodeWizard();
     }
 
     /**
