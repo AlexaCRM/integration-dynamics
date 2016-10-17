@@ -561,6 +561,30 @@ allow from 127.0.0.1";
         switch ( $api ) {
             case 'files':
                 return self::files_purge();
+            case "pdo":
+                return self::pdo_cleanup();
+                break;
+            case "mpdo":
+                return self::pdo_cleanup();
+                break;
+            case "memcache":
+                return self::memcache_cleanup();
+                break;
+            case "memcached":
+                return self::memcached_cleanup();
+                break;
+            case "wincache":
+                return self::wincache_cleanup();
+                break;
+            case "apc":
+                return self::apc_cleanup();
+                break;
+            case "xcache":
+                return self::xcache_cleanup();
+                break;
+            default:
+                return self::pdo_cleanup();
+                break;
         }
     }
 
