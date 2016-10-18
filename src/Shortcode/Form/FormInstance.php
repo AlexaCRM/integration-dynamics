@@ -192,12 +192,18 @@ class FormInstance extends AbstractForm {
             $this->disableLayout = ( $this->attributes["enable_layout"] != "true" );
             /* Retrieve parameter name */
             $id = self::parseParameterName( $this->attributes["parameter_name"], $this->mode );
-            /* Retrieve record entity based on parameter name, if ID is defined entity will be data filled */
-            if ( isset( $id ) && $id ) {
-                $this->entity = ASDK()->entity( $entityName, $id );
+
+            // allow $id to be an entity record
+            if ( $id instanceof Entity ) {
+                $this->entity = $id;
             } else {
-                $this->entity = ASDK()->entity( $entityName );
+                if ( $id ) {
+                    $this->entity = ASDK()->entity( $entityName, $id );
+                } else {
+                    $this->entity = ASDK()->entity( $entityName );
+                }
             }
+
             /* Check that the entity or entity record exists */
             if ( !$this->entity ) {
                 array_push( $this->errors, "Entity " . $entityName . " doesn't exist" );
