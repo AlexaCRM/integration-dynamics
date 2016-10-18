@@ -44,6 +44,12 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.18 =
+
+* Fixed: Self-signed certificate would not allow to connect
+* Fixed: Cache purging for some caching engines
+* Fixed: Forms didn't have a nonce
+
 = 1.1.17 =
 
 * Fixed: Back-end validation would not have error messages styled correctly

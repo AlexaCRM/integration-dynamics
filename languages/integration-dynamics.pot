@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Dynamics CRM Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics CRM Integration 1.1.17\n"
+"Project-Id-Version: Dynamics CRM Integration 1.1.18\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/integration-dynamics\n"
-"POT-Creation-Date: 2016-10-13 16:48:43+00:00\n"
+"POT-Creation-Date: 2016-10-18 15:13:24+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -245,7 +245,7 @@ msgstr ""
 msgid "%s is required"
 msgstr ""
 
-#: src/Shortcode/Form/Control.php:90 src/Shortcode/Form/FormInstance.php:565
+#: src/Shortcode/Form/Control.php:90 src/Shortcode/Form/FormInstance.php:587
 msgid "%s must be a valid email address"
 msgstr ""
 
@@ -259,31 +259,36 @@ msgid_plural "%1$s must be less than %2$d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Shortcode/Form/FormInstance.php:481
+#: src/Shortcode/Form/FormInstance.php:120
+#: src/Shortcode/Form/FormInstance.php:125
+msgid "Form submission couldn't pass security check. Please try again"
+msgstr ""
+
+#: src/Shortcode/Form/FormInstance.php:503
 msgid "Unsupported lookup type for [%1$s], or entity {%2$s} not found"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:553
+#: src/Shortcode/Form/FormInstance.php:575
 msgid "Must be less than %d characters"
 msgid_plural "Must be less than %d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Shortcode/Form/FormInstance.php:560
+#: src/Shortcode/Form/FormInstance.php:582
 msgid "Incorrect text value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:578
+#: src/Shortcode/Form/FormInstance.php:600
 msgid "Invalid number value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:583
+#: src/Shortcode/Form/FormInstance.php:605
 msgid ""
 "Invalid number value. Enter a decimal number without currency symbol or "
 "thousands separator."
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:588
+#: src/Shortcode/Form/FormInstance.php:610
 msgid ""
 "Invalid money value. Enter a decimal number without currency symbol or "
 "thousands separator."
@@ -334,12 +339,12 @@ msgstr ""
 msgid "Unable to get the specified SavedQuery [%1$s] for the entity {%2$s}"
 msgstr ""
 
-#: src/Shortcode.php:32
+#: src/Shortcode.php:29
 msgid ""
 "An error occurred, please try again later or contact site administration"
 msgstr ""
 
-#: src/Shortcode.php:47
+#: src/Shortcode.php:37
 msgid "Wordpress CRM Plugin is not connected to Dynamics CRM"
 msgstr ""
 
@@ -380,7 +385,7 @@ msgstr ""
 msgid "Remove Value"
 msgstr ""
 
-#: templates/form/field/submit.php:7
+#: templates/form/field/submit.php:10
 msgid "Submit"
 msgstr ""
 
