@@ -36,6 +36,7 @@ class General extends Tab {
         "crmRegion"              => "",
         "port"                   => "",
         "useSsl"                 => false,
+        "ignoreSslErrors"        => false,
         "organizationUrl"        => "",
         "organizationDataUrl"    => "",
         "organizationName"       => "",
@@ -145,6 +146,10 @@ class General extends Tab {
             $options["password"] = trim( $options["password"] );
         }
 
+        if ( isset( $options['ignoreSslErrors'] ) && $options['ignoreSslErrors'] == '1' ) {
+            $options['ignoreSslErrors'] = true;
+        }
+
         return $options;
     }
 
@@ -219,7 +224,10 @@ class General extends Tab {
                                         <input id="wpcrmFAddress" type="text" class="regular-text code wpcrm-setting"
                                                placeholder="https://contoso.yourdomain.com"
                                                name="<?php echo $this->get_field_name( 'serverUrl' ); ?>"
-                                               value="<?php echo esc_attr( $this->get_field_value( 'serverUrl' ) ); ?>"/>
+                                               value="<?php echo esc_attr( $this->get_field_value( 'serverUrl' ) ); ?>">
+                                        <p>
+                                            <label><input type="checkbox" class="wpcrm-setting" name="<?php echo esc_attr( $this->get_field_name( 'ignoreSslErrors' ) ); ?>" value="1" <?php checked( $this->get_field_value( 'ignoreSslErrors' ) ); ?>> <?php _e( 'Ignore invalid certificate errors', 'integration-dynamics' ); ?></label>
+                                        </p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -276,7 +284,10 @@ class General extends Tab {
                                         <input id="wpcrmOFAddress" type="text" class="regular-text code wpcrm-setting"
                                                placeholder="https://contoso.crm.dynamics.com"
                                                name="<?php echo $this->get_field_name( 'serverUrl' ); ?>"
-                                               value="<?php echo esc_attr( $this->get_field_value( 'serverUrl' ) ); ?>"/>
+                                               value="<?php echo esc_attr( $this->get_field_value( 'serverUrl' ) ); ?>">
+                                        <p>
+                                            <label><input type="checkbox" class="wpcrm-setting" name="<?php echo esc_attr( $this->get_field_name( 'ignoreSslErrors' ) ); ?>" value="1" <?php checked( $this->get_field_value( 'ignoreSslErrors' ) ); ?>> <?php _e( 'Ignore invalid certificate errors', 'integration-dynamics' ); ?></label>
+                                        </p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -356,7 +367,7 @@ class General extends Tab {
                     $('#table-Federation input[type=submit], #table-OnlineFederation input[type=submit]').prop('disabled', false);
                 };
                 $('.wpcrm-setting').keypress(activateReconnect);
-                $('.wpcrm-setting[type=radio]').change(activateReconnect);
+                $('.wpcrm-setting[type=radio],.wpcrm-setting[type=checkbox]').change(activateReconnect);
             })(jQuery, "[name='<?php echo ACRM()->prefix . 'options'; ?>[authMode]']");
             //]]>
         </script>
