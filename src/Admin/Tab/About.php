@@ -35,18 +35,18 @@ class About extends Tab {
     public function render() {
         ?>
         <div class="wrap">
-            <?php Admin::renderSettingsTabs(); ?>
-
-            <?php $this->renderAboutInformation(); ?>
+            <?php
+            Admin::renderSettingsTabs();
+            $this->renderAboutInformation();
+            do_action( 'wordpresscrm_after_settings_about', $this );
+            ?>
         </div>
         <?php
     }
 
     public function renderAboutInformation() {
         ?>
-
         <h2><?php _e( "About", 'integration-dynamics' ) ?></h2>
-
         <p>
             <?php echo ACRM()->full_plugin_name; ?><br>
             <?php printf( __( 'Version: %s', 'integration-dynamics' ), ACRM()->version ); ?><br>
@@ -55,10 +55,7 @@ class About extends Tab {
             <?php printf( __( '<a href="%s" target="_blank">Documentation</a>', 'integration-dynamics' ), ACRM()->plugin_documentation_homepage ); ?><br>
             <a href="mailto:<?php echo ACRM()->support_email; ?>"><?php echo ACRM()->support_email; ?></a>
         </p>
-
         <?php
-
-        do_action( 'wordpresscrm_after_settings_about', $this );
     }
 }
 
