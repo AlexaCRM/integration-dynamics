@@ -54,7 +54,7 @@ final class Plugin {
      *
      * @var string
      */
-    public $plugin_documentation_homepage = 'docs.alexacrm.com';
+    public $plugin_documentation_homepage = 'http://docs.alexacrm.com/wpcrm/';
 
     /**
      * Plugin author name
