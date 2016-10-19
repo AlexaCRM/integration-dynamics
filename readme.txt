@@ -44,6 +44,11 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.19 =
+
+* Fixed: Proper handling of invalid certificate errors.
+* Added a control to allow ignoring invalid SSL certificates.
+
 = 1.1.18 =
 
 * Fixed: Self-signed certificate would not allow to connect

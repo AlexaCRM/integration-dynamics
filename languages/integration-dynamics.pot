@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Dynamics CRM Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics CRM Integration 1.1.18\n"
+"Project-Id-Version: Dynamics CRM Integration 1.1.19\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/integration-dynamics\n"
-"POT-Creation-Date: 2016-10-18 15:13:24+00:00\n"
+"POT-Creation-Date: 2016-10-19 09:41:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -78,92 +78,96 @@ msgstr ""
 msgid "Secret key <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:61
+#: src/Admin/Tab/General.php:62
 msgid "Metadata cache has been purged and now will be rebuilt gradually."
 msgstr ""
 
-#: src/Admin/Tab/General.php:69
+#: src/Admin/Tab/General.php:70
 msgid "Connection"
 msgstr ""
 
-#: src/Admin/Tab/General.php:113
+#: src/Admin/Tab/General.php:114
 msgid "Connection to Dynamics CRM <%s> has been successfully established."
 msgstr ""
 
-#: src/Admin/Tab/General.php:116
+#: src/Admin/Tab/General.php:117
 msgid ""
 "Unable to connect to Dynamics CRM using provided address, username and/or "
 "password."
 msgstr ""
 
-#: src/Admin/Tab/General.php:121
+#: src/Admin/Tab/General.php:122
 msgid "Unable to connect to Dynamics CRM: %s"
 msgstr ""
 
-#: src/Admin/Tab/General.php:165
+#: src/Admin/Tab/General.php:170
 msgid "Reconnect"
 msgstr ""
 
-#: src/Admin/Tab/General.php:165
+#: src/Admin/Tab/General.php:170
 msgid "Connect"
 msgstr ""
 
-#: src/Admin/Tab/General.php:172
+#: src/Admin/Tab/General.php:177
 msgid "Configure the plugin to connect to your Dynamics CRM instance."
 msgstr ""
 
-#: src/Admin/Tab/General.php:179 src/Admin/Tab/General.php:183
+#: src/Admin/Tab/General.php:184 src/Admin/Tab/General.php:188
 msgid "Deployment Type"
 msgstr ""
 
-#: src/Admin/Tab/General.php:216 src/Admin/Tab/General.php:273
+#: src/Admin/Tab/General.php:221 src/Admin/Tab/General.php:281
 msgid ""
 "Dynamics CRM Address (URL) <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:227
+#: src/Admin/Tab/General.php:229 src/Admin/Tab/General.php:289
+msgid "Ignore invalid certificate errors"
+msgstr ""
+
+#: src/Admin/Tab/General.php:235
 msgid "Authentication Source"
 msgstr ""
 
-#: src/Admin/Tab/General.php:231
+#: src/Admin/Tab/General.php:239
 msgid "Internet-facing deployment (IFD)"
 msgstr ""
 
-#: src/Admin/Tab/General.php:237 src/Admin/Tab/General.php:284
+#: src/Admin/Tab/General.php:245 src/Admin/Tab/General.php:295
 msgid "User Name <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:243 src/Admin/Tab/General.php:290
+#: src/Admin/Tab/General.php:251 src/Admin/Tab/General.php:301
 msgid "CRM user login"
 msgstr ""
 
-#: src/Admin/Tab/General.php:248 src/Admin/Tab/General.php:295
+#: src/Admin/Tab/General.php:256 src/Admin/Tab/General.php:306
 msgid "Password <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:254 src/Admin/Tab/General.php:301
+#: src/Admin/Tab/General.php:262 src/Admin/Tab/General.php:312
 msgid "CRM user password"
 msgstr ""
 
-#: src/Admin/Tab/General.php:314
+#: src/Admin/Tab/General.php:325
 msgid "Metadata Settings"
 msgstr ""
 
-#: src/Admin/Tab/General.php:315
+#: src/Admin/Tab/General.php:326
 msgid ""
 "If you have changed your Dynamics CRM entities metadata recently, please "
 "regenerate local metadata cache to keep it up to date."
 msgstr ""
 
-#: src/Admin/Tab/General.php:319
+#: src/Admin/Tab/General.php:330
 msgid "Regenerate Metadata Cache"
 msgstr ""
 
-#: src/Admin/Tab/General.php:323
+#: src/Admin/Tab/General.php:334
 msgid "F j, Y \\a\\t g:i A"
 msgstr ""
 
-#: src/Admin/Tab/General.php:326
+#: src/Admin/Tab/General.php:337
 msgid "Metadata cache was last regenerated on %s."
 msgstr ""
 
