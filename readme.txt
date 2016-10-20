@@ -44,6 +44,10 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.20 =
+
+* Dynamics CRM Online in the Canada region is now supported.
+
 = 1.1.19 =
 
 * Fixed: Proper handling of invalid certificate errors.
