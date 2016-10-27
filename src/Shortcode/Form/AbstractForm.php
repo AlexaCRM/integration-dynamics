@@ -16,9 +16,14 @@ abstract class AbstractForm extends Shortcode {
 
     protected static function parseShortcodeAttributes( $attributes ) {
         $attrs = shortcode_atts( [
-            'entity_name'                => null,
-            'form_name'                  => null,
-            'form_type'                  => null,
+            'entity' => null,
+            'name' => null,
+            'type' => null,
+
+            'entity_name'                => null, // deprecated
+            'form_name'                  => null, // deprecated
+            'form_type'                  => null, // deprecated
+
             'mode'                       => null,
             'parameter_name'             => null,
             'captcha'                    => null,
@@ -44,6 +49,22 @@ abstract class AbstractForm extends Shortcode {
             'default_mode'               => [ ],
         ], $attributes );
 
+        if ( is_null( $attrs['entity'] ) && !is_null( $attrs['entity_name'] ) ) {
+            $attrs['entity'] = $attrs['entity_name'];
+        }
+
+        if ( is_null( $attrs['name'] ) && !is_null( $attrs['form_name'] ) ) {
+            $attrs['name'] = $attrs['form_name'];
+        }
+
+        if ( is_null( $attrs['type'] ) && !is_null( $attrs['form_type'] ) ) {
+            $attrs['type'] = $attrs['form_type'];
+        }
+
+        unset( $attrs['entity_name'] );
+        unset( $attrs['form_name'] );
+        unset( $attrs['form_type'] );
+
         /* Check required shortcode attributes */
         self::checkRequiredAttributes( $attrs );
         /* Validate attributes */
@@ -61,12 +82,12 @@ abstract class AbstractForm extends Shortcode {
 
     protected static function checkRequiredAttributes( $attributes ) {
         /* Check required shortcode parameters */
-        if ( $attributes["entity_name"] == null ) {
-            throw new Exception( "form_name shortcode attribute is required, please provide form_name attibute" );
+        if ( $attributes["entity"] == null ) {
+            throw new Exception( "entity attribute is required, please provide entity attibute" );
         }
 
-        if ( $attributes["form_name"] == null ) {
-            throw new Exception( "form_name shortcode attribute is required, please provide form_name attibute" );
+        if ( $attributes["name"] == null ) {
+            throw new Exception( "name attribute is required, please provide name attibute" );
         }
 
         if ( $attributes["mode"] == null ) {

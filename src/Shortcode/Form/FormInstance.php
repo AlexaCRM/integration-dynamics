@@ -176,12 +176,12 @@ class FormInstance extends AbstractForm {
             /* Use captcha */
             $captcha = self::parseCaptchaAttribute( $this->attributes["captcha"] );
 
-            $this->formName = strtolower( $this->attributes["form_name"] );
+            $this->formName = strtolower( $this->attributes["name"] );
 
-            $this->formType = $this->attributes["form_type"];
+            $this->formType = $this->attributes["type"];
             /* Generate form unique ID for fronend validation */
             $this->formUid         = uniqid( "entity-form-" );
-            $entityName            = strtolower( $this->attributes["entity_name"] );
+            $entityName            = strtolower( $this->attributes["entity"] );
             $this->success_message = ( $this->attributes["message"] ) ? $this->attributes["message"] : $this->success_message;
             $redirect_url          = $this->attributes["redirect_url"];
             /* Check hide_form attribute exists and it value equals to "true" */
