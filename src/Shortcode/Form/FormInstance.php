@@ -530,6 +530,8 @@ class FormInstance extends AbstractForm {
                     }
 
                     $this->entity->{$key} = $value;
+                } elseif ( $this->entity->attributes[ $key ]->optionSet instanceof Entity\OptionSet && $value !== '' ) {
+                    $this->entity->{$key} = (int)$value;
                 } else {
 
                     $this->entity->{$key} = stripslashes( $value );

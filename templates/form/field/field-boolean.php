@@ -1,4 +1,6 @@
 <?php
+use AlexaCRM\CRMToolkit\OptionSetValue;
+
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
@@ -7,7 +9,7 @@ if ( !defined( 'ABSPATH' ) ) {
     <?php foreach ( $options as $option => $val ) : ?>
         <div class="radio">
             <label>
-                <input <?php if ( $value == (bool) $option ) {
+                <input <?php if ( ( $value instanceof OptionSetValue && (bool)$value->value === (bool)$option ) || ( !( $value instanceof  OptionSetValue ) && $value == (bool) $option ) ) {
                     echo "checked='checked'";
                 } ?> type='radio' name='<?php echo $inputname; ?>'
                      value='<?php echo $option; ?>' <?php echo( ( $disabled ) ? "disabled='disabled'" : "" ); ?> <?php echo( ( $readonly ) ? "readonly='readonly'" : "" ); ?>> <?php echo $val; ?>
