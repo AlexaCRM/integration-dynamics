@@ -62,49 +62,6 @@ function ASDK() {
     return Plugin::instance()->sdk;
 }
 
-/**
- * Merge user defined arguments into defaults array.
- *
- * This function is used throughout wordpresscrm to allow for either a string or array
- * to be merged into another array. It is identical to wp_parse_args() except
- * it allows for arguments to be passively or aggressively filtered using the
- * optional $filter_key parameter.
- *
- * @param string|array $args Value to merge with $defaults
- * @param array $defaults Array that serves as the defaults.
- * @param string $filter_key String to key the filters from
- * @return array Merged user defined values with defaults.
- */
-function wordpresscrm_parse_args( $args, $defaults = array(), $filter_key = '' ) {
-
-    // Setup a temporary array from $args
-    if ( is_object( $args ) ) {
-        $r = get_object_vars( $args );
-    } elseif ( is_array( $args ) ) {
-        $r =& $args;
-    } else {
-        wp_parse_str( $args, $r );
-    }
-
-    // Passively filter the args before the parse
-    if ( !empty( $filter_key ) ) {
-        $r = apply_filters( 'wordpresscrm_before_' . $filter_key . '_parse_args', $r );
-    }
-
-    // Parse
-    if ( is_array( $defaults ) && !empty( $defaults ) ) {
-        $r = array_merge( $defaults, $r );
-    }
-
-    // Aggressively filter the args after the parse
-    if ( !empty( $filter_key ) ) {
-        $r = apply_filters( 'wordpresscrm_after_' . $filter_key . '_parse_args', $r );
-    }
-
-    // Return the parsed results
-    return $r;
-}
-
 /*
  * Run the plugin
  */
