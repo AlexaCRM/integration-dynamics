@@ -3,3 +3,5 @@
 /storage/cache/
 /storage/metadata/
 /storage/images/
+
+/storage/*.log

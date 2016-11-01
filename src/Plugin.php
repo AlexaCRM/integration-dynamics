@@ -4,6 +4,7 @@ namespace AlexaCRM\WordpressCRM;
 
 use AlexaCRM\CRMToolkit\Client;
 use AlexaCRM\CRMToolkit\Entity\MetadataCollection;
+use AlexaCRM\CRMToolkit\LoggerInterface;
 use AlexaCRM\CRMToolkit\Settings;
 use AlexaCRM\WordpressCRM\Image\AnnotationImage;
 use AlexaCRM\WordpressCRM\Image\CustomImage;
@@ -104,6 +105,13 @@ final class Plugin {
     public $imageStorage = null;
 
     /**
+     * Logging facility.
+     *
+     * @var LoggerInterface
+     */
+    public $log = null;
+
+    /**
      * Plugin general and connection options (msdyncrm_options)
      *
      * @var array
@@ -158,6 +166,11 @@ final class Plugin {
      * @return void
      */
     public function init() {
+        // Initialize logging early
+        $logSeverityLevel = WP_DEBUG? Log::LOG_ALL : Log::LOG_FAULTS;
+        $this->log = new Log( WORDPRESSCRM_STORAGE, $logSeverityLevel );
+        $this->log->info( 'Initializing Dynamics CRM Integration.' );
+
         // Include required files
         $this->includes();
 
@@ -207,6 +220,8 @@ final class Plugin {
             return;
         }
 
+        $this->log->info( 'Initializing cache.' );
+
         if ( defined( 'WORDPRESSCRM_CACHESERVER' ) && defined( 'WORDPRESSCRM_CACHEPORT' ) ) {
             $this->options['cache'] = [
                 'server' => constant( 'WORDPRESSCRM_CACHESERVER' ),
@@ -227,10 +242,16 @@ final class Plugin {
     private function initCrmConnection() {
         $options = $this->options;
 
+        $this->log->info( 'Initializing PHP CRM Toolkit.' );
+
+        $this->log->debug( 'PHP CRM Toolkit configuration.', array( 'options' => $options ) );
         $clientSettings = new Settings( $options );
         $this->sdk      = new Client( $clientSettings, $this->cache );
 
+        $this->log->debug( 'Finished initializing PHP CRM Toolkit.' );
+
         // initialize Metadata storage
+        $this->log->info( 'Initializing PHP CRM Toolkit Metadata storage.' );
         MetadataCollection::instance( $this->sdk )->setStorage( $this->metadataStorage );
     }
 
