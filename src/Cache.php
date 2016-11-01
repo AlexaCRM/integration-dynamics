@@ -119,6 +119,15 @@ class Cache implements CacheInterface {
     }
 
     /**
+     * Deletes a key from cache.
+     *
+     * @param string $key
+     */
+    public function delete( $key ) {
+        $this->storage->delete( $key );
+    }
+
+    /**
      * Checks whether given cache key exists and is valid
      *
      * @param string $key

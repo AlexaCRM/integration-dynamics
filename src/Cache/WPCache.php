@@ -29,13 +29,16 @@ class WPCache {
         }
     }
 
-    public function cleanup( $option = "" ) {
+    public function delete( $name ) {
+        delete_transient( $name );
+    }
 
-        if ( $option != "" ) {
-            return delete_transient( $option );
-        } else {
-            return wp_cache_flush();
-        }
+    /**
+     * @return bool
+     * @deprecated
+     */
+    public function cleanup() {
+        return $this->purge();
     }
 
     public function purge() {
