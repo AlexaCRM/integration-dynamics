@@ -47,6 +47,7 @@ class ShortcodeManager {
          * @param array $shortcodes List of supported shortcodes
          */
         $this->shortcodes = apply_filters( 'wordpresscrm_shortcodes', $this->shortcodes );
+        ACRM()->log->debug( sprintf( 'Registered %d shortcode handlers.', count( $this->shortcodes ) ), [ 'shortcodes' => array_keys( $this->shortcodes ) ] );
 
         foreach ( $this->shortcodes as $shortcodeName => $shortcodeClass ) {
             $fullShortcodeName = $this->getFullShortcodeName( $shortcodeName );
@@ -66,27 +67,13 @@ class ShortcodeManager {
     public function render( $attributes, $content = null, $tagName ) {
         $shortcodeName = $this->getUnprefixedShortcodeName( $tagName );
 
-        if ( !$this->isShortcodeSupported( $shortcodeName ) ) {
-            return '';
-        }
-
         if ( !array_key_exists( $shortcodeName, $this->shortcodeProcessors ) ) {
             $shortcodeClassName                          = $this->shortcodes[ $shortcodeName ];
             $this->shortcodeProcessors[ $shortcodeName ] = new $shortcodeClassName();
         }
 
+        ACRM()->log->info( "Rendering shortcode [{$tagName}]." );
         return $this->shortcodeProcessors[ $shortcodeName ]->shortcode( $attributes, $content, $tagName );
-    }
-
-    /**
-     * Checks whether given shortcode name is supported
-     *
-     * @param string $shortcodeName
-     *
-     * @return bool
-     */
-    public function isShortcodeSupported( $shortcodeName ) {
-        return array_key_exists( $shortcodeName, $this->shortcodes );
     }
 
     /**

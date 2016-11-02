@@ -182,10 +182,10 @@ final class Plugin {
         $this->initCache();
 
         if ( $options && isset( $options['connected'] ) && $options['connected'] == true ) {
-
             try {
                 $this->initCrmConnection();
             } catch ( Exception $ex ) {
+                $this->log->warning( 'Caught exception while initializing connection to CRM.', [ 'exception' => $ex ] );
                 $this->options['connected'] = $options['connected'] = false;
                 update_option( $this->prefix . 'options', $options );
             }
@@ -196,6 +196,7 @@ final class Plugin {
         }
 
         if ( is_admin() ) {
+            $this->log->info( 'Initializing admin UI.' );
             new Admin();
         }
 
@@ -203,9 +204,12 @@ final class Plugin {
 
         add_action( 'admin_init', array( $this, 'admin_init' ) );
 
-        add_action( 'after_setup_theme', function() {
-            new ShortcodeManager();
-        } );
+        if ( !is_admin() ) {
+            add_action( 'after_setup_theme', function() {
+                $this->log->info( 'Initializing shortcodes.' );
+                new ShortcodeManager();
+            } );
+        }
 
         // Loaded action
         do_action( 'wordpresscrm_loaded' );
@@ -306,11 +310,13 @@ final class Plugin {
         /* Hooks */
         add_action( 'wp_ajax_wpcrm_log', function() {
             header( 'Content-Type: text/plain' );
+            $this->log->info( 'Displaying log.' );
             echo file_get_contents( $this->log->logTarget );
             die();
         } );
 
         add_action( 'widgets_init', function () {
+            $this->log->info( 'Initializing widgets' );
             do_action( 'wordpresscrm_widgets_init' );
         }, 10 );
 
@@ -442,6 +448,7 @@ final class Plugin {
     public function purgeCache() {
         $this->initCache();
 
+        $this->log->notice( 'Purging all caches and storage.' );
         $this->cache->cleanup();
         $this->metadataStorage->cleanup();
         $this->imageStorage->cleanup();
