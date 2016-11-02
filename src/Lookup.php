@@ -15,333 +15,175 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 
+/**
+ * Implements the Lookup Dialog.
+ *
+ * @package AlexaCRM\WordpressCRM
+ */
 class Lookup {
 
+    /**
+     * Lookup constructor.
+     */
     public function __construct() {
-        $asd = ACRM();
         add_action( 'wp_ajax_retrieve_lookup_request', array( &$this, 'retrieve_lookup_request' ) );
         add_action( 'wp_ajax_search_lookup_request', array( &$this, 'search_lookup_request' ) );
         add_action( 'wp_ajax_nopriv_retrieve_lookup_request', array( &$this, 'retrieve_lookup_request' ) );
         add_action( 'wp_ajax_nopriv_search_lookup_request', array( &$this, 'search_lookup_request' ) );
     }
 
+    /**
+     * Creates a response for the lookup request.
+     */
     public function retrieve_lookup_request() {
-        // The $_REQUEST contains all the data sent via ajax
-        if ( isset( $_REQUEST ) ) {
-            $lookupType = $_REQUEST['lookupType'];
-
-            $pagingCookie = null;
-
-            if ( isset( $_REQUEST['pagingCookie'] ) && ( strlen( $_REQUEST['pagingCookie'] ) > 2 ) ) {
-                $pagingCookie = urldecode( $_REQUEST['pagingCookie'] );
-            }
-
-            $pagingNumber = null;
-
-            if ( isset( $_REQUEST['pageNumber'] ) && ( strlen( $_REQUEST['pageNumber'] ) > 0 ) ) {
-                $pagingNumber = $_REQUEST['pageNumber'];
-            }
-
-            if ( $lookupType ) {
-                $entity = ASDK()->entity( $lookupType );
-
-                $returnedTypeCode = $entity->metadata()->objectTypeCode;
-                $lookup = $this->retrieveLookupView( $returnedTypeCode, 64, $entity->metadata()->primaryNameAttribute );
-
-                $fetchDom = new DOMDocument();
-                $fetchDom->loadXML( $lookup['fetchxml'] );
-
-                $invoices = ASDK()->retrieveMultiple( $lookup['fetchxml'], false, $pagingCookie, 50, $pagingNumber );
-
-                $noRecordsMessage = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">'
-                                    . __( 'No records are available in this view.', 'integration-dynamics' )
-                                    . '</td></tr></table>';
-
-                if ( !$invoices || $invoices->Count < 1 ) {
-                    echo $noRecordsMessage;
-                    die();
-                }
-
-                if ( $invoices->MoreRecords && $invoices->PagingCookie != null ) {
-                    $pagingCookie = urlencode( $invoices->PagingCookie );
-                } else {
-                    $pagingCookie = null;
-                }
-
-                $output = "";
-
-                $layout = new SimpleXMLElement( $lookup['layoutxml'] );
-
-                $cells = $layout->xpath( ".//cell" );
-
-                $output .= '<table class="lookup-table"><thead>
-                                <tr><th></th>';
-
-                foreach ( $cells as $cell ) :
-
-                    $output .= '<th><span>';
-
-                    if ( strpos( (string) $cell["name"], "." ) ) {
-                        $parts = explode( ".", (string) $cell["name"] );
-
-                        $linkedEntities = $fetchDom->getElementsByTagName( 'link-entity' );
-
-                        $linkedEntityName = null;
-
-                        for ( $i = 0; $i < $linkedEntities->length; $i ++ ) {
-
-                            if ( $parts[0] == $linkedEntities->item( $i )->attributes->getNamedItem( 'alias' )->value ) {
-
-                                $linkedEntityName = $linkedEntities->item( $i )->attributes->getNamedItem( 'to' )->value;
-                            }
-                        }
-                        if ( $linkedEntityName != null ) {
-                            $linkedRecord = $invoices->Entities[0]->{$linkedEntityName};
-                            if ( $linkedRecord instanceof EntityReference ) {
-                                $linkedRecord = ASDK()->entity( $linkedRecord->logicalName, $linkedRecord->id );
-                            }
-
-                            if ( $linkedRecord instanceof Entity ) {
-                                $output .= $linkedRecord->getPropertyLabel( $parts[1] );
-                            }
-                        }
-                    } else {
-
-                        $output .= $invoices->Entities[0]->getPropertyLabel( (string) $cell["name"] );
-                    }
-
-                    $output .= '</span></th>';
-
-                endforeach;
-
-                $output .= '</tr></thead><tbody>';
-
-                foreach ( $invoices->Entities as $invoice ) :
-
-                    $output .= '<tr class="body-row" data-enitityid="' . $invoice->ID . '"  data-name="' . $invoice->displayname . '"><td><div class="lookup-checkbox"></div></td>';
-                    foreach ( $cells as $cell ) :
-
-                        $output .= '<td>';
-
-                        if ( strpos( (string) $cell["name"], "." ) ) {
-                            $parts = explode( ".", (string) $cell["name"] );
-
-                            $output .= $invoice->{$parts[0]}->getFormattedValue( $parts[1] );
-                        } else {
-                            if ( ( $invoice->{(string) $cell["name"]} ) instanceof EntityReference ) {
-
-                                if ( $post = DataBinding::getDefaultPost( $invoice->{(string) $cell["name"]}->LOGICALNAME ) ) {
-
-                                    $permalink = get_permalink( $post );
-
-                                    $linktopost = ( strpos( $permalink, "?" ) ) ? $permalink . "&id=" . $invoice->{(string) $cell["name"]}->ID : $permalink . "?id=" . $invoice->{(string) $cell["name"]}->ID;
-
-                                    $output .= "<a href='" . $linktopost . "'>" . (string) $invoice->getFormattedValue( (string) $cell["name"] ) . "</a>";
-                                } else {
-
-                                    $output .= (string) $invoice->getFormattedValue( (string) $cell["name"] );
-                                }
-                            } else {
-
-                                $output .= (string) $invoice->getFormattedValue( (string) $cell["name"] );
-                            }
-                        }
-
-                        $output .= '</td>';
-
-                    endforeach;
-
-                    $output .= '</tr>';
-
-                endforeach;
-
-                $output .= '</tbody></table>';
-
-                $json["data"]         = $output;
-                $json["pagingcookie"] = $pagingCookie;
-                $json["morerecords"]  = ( $invoices->MoreRecords ) ? "1" : "0";
-
-                $json = json_encode( $json );
-
-                echo $json;
-            }
+        if ( !isset( $_REQUEST ) ) {
+            die();
         }
+
+        $lookupType = $_REQUEST['lookupType'];
+        if ( !$lookupType ) {
+            die();
+        }
+
+        $pagingCookie = null;
+
+        if ( isset( $_REQUEST['pagingCookie'] ) && ( strlen( $_REQUEST['pagingCookie'] ) > 2 ) ) {
+            $pagingCookie = urldecode( $_REQUEST['pagingCookie'] );
+        }
+
+        $pagingNumber = null;
+
+        if ( isset( $_REQUEST['pageNumber'] ) && ( strlen( $_REQUEST['pageNumber'] ) > 0 ) ) {
+            $pagingNumber = $_REQUEST['pageNumber'];
+        }
+
+        $entity = ASDK()->entity( $lookupType );
+
+        $returnedTypeCode = $entity->metadata()->objectTypeCode;
+        $lookup = $this->retrieveLookupView( $returnedTypeCode, 64, $entity->metadata()->primaryNameAttribute );
+
+        $fetchDom = new DOMDocument();
+        $fetchDom->loadXML( $lookup['fetchxml'] );
+
+        $invoices = ASDK()->retrieveMultiple( $lookup['fetchxml'], false, $pagingCookie, 50, $pagingNumber );
+
+        $noRecordsMessage = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">'
+                            . __( 'No records are available in this view.', 'integration-dynamics' )
+                            . '</td></tr></table>';
+
+        if ( !$invoices || $invoices->Count < 1 ) {
+            echo $noRecordsMessage;
+            die();
+        }
+
+        if ( $invoices->MoreRecords && $invoices->PagingCookie != null ) {
+            $pagingCookie = urlencode( $invoices->PagingCookie );
+        } else {
+            $pagingCookie = null;
+        }
+
+        $layout = new SimpleXMLElement( $lookup['layoutxml'] );
+
+        $cells = $layout->xpath( ".//cell" );
+
+        $output = '<table class="lookup-table">'
+            . $this->renderTableHeader( $cells, $fetchDom, $invoices->Entities )
+            . '<tbody>'
+            . $this->renderTableResults( $cells, $fetchDom, $invoices->Entities )
+            . '</tbody></table>';
+
+        $response = [
+            'data' => $output,
+            'pagingcookie' => $pagingCookie,
+            'morerecords' => ( $invoices->MoreRecords ) ? '1' : '0',
+        ];
+
+        echo json_encode( $response );
 
         // Always die in functions echoing ajax content
         die();
     }
 
+    /**
+     * Creates a response for the lookup request with search.
+     */
     public function search_lookup_request() {
         // The $_REQUEST contains all the data sent via ajax
-        if ( isset( $_REQUEST ) && isset( $_REQUEST["lookupType"] ) && isset( $_REQUEST["searchstring"] ) ) {
-            $lookupType = $_REQUEST['lookupType'];
-            $entity = ASDK()->entity( $lookupType );
+        if ( !isset( $_REQUEST ) || !isset( $_REQUEST['lookupType'] ) || !isset( $_REQUEST['searchstring'] ) ) {
+            die();
+        }
 
-            $returnedTypeCode = $entity->metadata()->objectTypeCode;
+        $lookupType = $_REQUEST['lookupType'];
+        $entity = ASDK()->entity( $lookupType );
 
-            $searchString = urldecode( $_REQUEST["searchstring"] );
+        $returnedTypeCode = $entity->metadata()->objectTypeCode;
 
-            if ( $searchString != "" ) {
-                $searchView = $this->retrieveLookupView( $returnedTypeCode, 4, $entity->metadata()->primaryNameAttribute );
+        $searchString = urldecode( $_REQUEST["searchstring"] );
 
-                $fetchXML   = new SimpleXMLElement( $searchView['fetchxml'] );
-                $conditions = $fetchXML->xpath( './/condition[@value]' );
+        if ( $searchString != "" ) {
+            $searchView = $this->retrieveLookupView( $returnedTypeCode, 4, $entity->metadata()->primaryNameAttribute );
 
-                $searchXML = $fetchXML->asXML();
+            $fetchXML   = new SimpleXMLElement( $searchView['fetchxml'] );
+            $conditions = $fetchXML->xpath( './/condition[@value]' );
 
-                foreach ( $conditions as $condition ) {
+            $searchXML = $fetchXML->asXML();
 
-                    $attribute = (string) $condition["attribute"][0];
-                    $value     = (string) $condition["value"][0];
+            foreach ( $conditions as $condition ) {
+                $attribute = (string) $condition["attribute"][0];
+                $value     = (string) $condition["value"][0];
 
-                    $oldCondition = $condition[0]->asXML();
+                $oldCondition = $condition[0]->asXML();
 
-                    if ( $value == "{0}" ) {
-                        if ( $entity->attributes[ $attribute ]->isLookup == true ) {
-                            if ( preg_match( '/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/', $searchString ) ) {
-                                $newCondition             = $condition;
-                                $newCondition[0]["value"] = $searchString;
-                                $searchXML                = str_replace( $oldCondition, $newCondition[0]->asXML(), $searchXML );
-                            } else {
-                                $newCondition             = $condition;
-                                $newCondition[0]["value"] = AbstractClient::EmptyGUID;
-                                $searchXML                = str_replace( $oldCondition, $newCondition[0]->asXML(), $searchXML );
-                            }
+                if ( $value == "{0}" ) {
+                    if ( $entity->attributes[ $attribute ]->isLookup ) {
+                        if ( preg_match( '/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/', $searchString ) ) {
+                            $newCondition             = $condition;
+                            $newCondition[0]["value"] = $searchString;
+                            $searchXML                = str_replace( $oldCondition, $newCondition[0]->asXML(), $searchXML );
                         } else {
                             $newCondition             = $condition;
-                            $newCondition[0]["value"] = "%{$searchString}%";
-                            $newCondition[0]["operator"] = 'like';
+                            $newCondition[0]["value"] = AbstractClient::EmptyGUID;
                             $searchXML                = str_replace( $oldCondition, $newCondition[0]->asXML(), $searchXML );
                         }
-                    }
-                }
-
-                $invoices = ASDK()->retrieveMultiple( $searchXML );
-            } else {
-                $invoices = ASDK()->retrieveMultipleEntities( $lookupType );
-            }
-
-            $lookup = $this->retrieveLookupView( $returnedTypeCode, 64, $entity->metadata()->primaryNameAttribute );
-
-            $fetchDom = new DOMDocument();
-            $fetchDom->loadXML( $lookup['fetchxml'] );
-
-            $noRecordsMessage = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">'
-                                . __( 'No records are available in this view.', 'integration-dynamics' )
-                                . '</td></tr></table>';
-
-            if ( !$invoices || $invoices->Count < 1 ) {
-                echo $noRecordsMessage;
-                die();
-            }
-
-            $output = "";
-
-            $layout = new SimpleXMLElement( $lookup['layoutxml'] );
-
-            $cells = $layout->xpath( ".//cell" );
-
-            $output .= '<table class="lookup-table"><thead>
-                                <tr><th></th>';
-
-            foreach ( $cells as $cell ) {
-
-                $output .= '<th><span>';
-
-                if ( strpos( (string) $cell["name"], "." ) ) {
-                    $parts = explode( ".", (string) $cell["name"] );
-
-                    $linkedEntities = $fetchDom->getElementsByTagName( 'link-entity' );
-
-                    $linkedEntityName = null;
-
-                    for ( $i = 0; $i < $linkedEntities->length; $i ++ ) {
-
-                        if ( $parts[0] == $linkedEntities->item( $i )->attributes->getNamedItem( 'alias' )->value ) {
-
-                            $linkedEntityName = $linkedEntities->item( $i )->attributes->getNamedItem( 'to' )->value;
-                        }
-                    }
-                    if ( $linkedEntityName != null ) {
-                        $linkedRecord = $invoices->Entities[0]->{$linkedEntityName};
-                        if ( $linkedRecord instanceof EntityReference ) {
-                            $linkedRecord = ASDK()->entity( $linkedRecord->logicalName, $linkedRecord->id );
-                        }
-
-                        $output .= $linkedRecord->getPropertyLabel( $parts[1] );
-                    }
-                } else {
-
-                    $output .= $invoices->Entities[0]->getPropertyLabel( (string) $cell["name"] );
-                }
-
-                $output .= '</span></th>';
-            }
-
-            $output .= '</tr></thead><tbody>';
-
-            foreach ( $invoices->Entities as $invoice ) {
-                $output .= '<tr class="body-row" data-enitityid="' . $invoice->ID . '"  data-name="' . $invoice->displayname . '"><td><div class="lookup-checkbox"></div></td>';
-                foreach ( $cells as $cell ) {
-
-                    $output .= '<td>';
-
-                    if ( strpos( (string) $cell["name"], "." ) ) {
-                        $parts = explode( ".", (string) $cell["name"] );
-
-                        $linkedRecord = $invoice->{$parts[0]};
-                        if ( is_null( $linkedRecord ) ) {
-                            /*
-                             * Related entity not found. Perhaps the link-entity wasn't present in the search FetchXML.
-                             * Here we look into the Lookup FetchXML to find out via what field the entity is linked
-                             * using the alias.
-                             */
-                            $xpath = new \DOMXPath( $fetchDom );
-                            $query = $xpath->query( "//link-entity[@alias='{$parts[0]}']" );
-                            if ( $query->length ) {
-                                $resolvedRelationName = $query->item( 0 )->getAttribute( 'from' );
-                                $linkedRecord = $invoice->{$resolvedRelationName};
-                            }
-                        }
-
-                        if ( $linkedRecord instanceof EntityReference ) {
-                            $linkedRecord = ASDK()->entity( $linkedRecord->logicalName, $linkedRecord->id );
-                        }
-
-                        if ( $linkedRecord instanceof Entity ) {
-                            $output .= $linkedRecord->getFormattedValue( $parts[1] );
-                        }
                     } else {
-
-                        if ( ( $invoice->{(string) $cell["name"]} ) instanceof EntityReference ) {
-
-                            if ( $post = DataBinding::getDefaultPost( $invoice->{(string) $cell["name"]}->LOGICALNAME ) ) {
-
-                                $permalink = get_permalink( $post );
-
-                                $linktopost = ( strpos( $permalink, "?" ) ) ? $permalink . "&id=" . $invoice->{(string) $cell["name"]}->ID : $permalink . "?id=" . $invoice->{(string) $cell["name"]}->ID;
-
-                                $output .= "<a href='" . $linktopost . "'>" . (string) $invoice->getFormattedValue( (string) $cell["name"] ) . "</a>";
-                            } else {
-
-                                $output .= (string) $invoice->getFormattedValue( (string) $cell["name"] );
-                            }
-                        } else {
-
-                            $output .= (string) $invoice->getFormattedValue( (string) $cell["name"] );
-                        }
+                        $newCondition             = $condition;
+                        $newCondition[0]["value"] = "%{$searchString}%";
+                        $newCondition[0]["operator"] = 'like';
+                        $searchXML                = str_replace( $oldCondition, $newCondition[0]->asXML(), $searchXML );
                     }
-
-                    $output .= '</td>';
                 }
-
-                $output .= '</tr>';
             }
 
-            $output .= '</tbody></table>';
-
-            echo $output;
+            $invoices = ASDK()->retrieveMultiple( $searchXML );
+        } else {
+            $invoices = ASDK()->retrieveMultipleEntities( $lookupType );
         }
+
+        $lookup = $this->retrieveLookupView( $returnedTypeCode, 64, $entity->metadata()->primaryNameAttribute );
+
+        $fetchDom = new DOMDocument();
+        $fetchDom->loadXML( $lookup['fetchxml'] );
+
+        $noRecordsMessage = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">'
+                            . __( 'No records are available in this view.', 'integration-dynamics' )
+                            . '</td></tr></table>';
+
+        if ( !$invoices || $invoices->Count < 1 ) {
+            echo $noRecordsMessage;
+            die();
+        }
+
+        $layout = new SimpleXMLElement( $lookup['layoutxml'] );
+
+        $cells = $layout->xpath( ".//cell" );
+
+        $output = '<table class="lookup-table">'
+                  . $this->renderTableHeader( $cells, $fetchDom, $invoices->Entities )
+                  . '<tbody>'
+                  . $this->renderTableResults( $cells, $fetchDom, $invoices->Entities )
+                  . '</tbody></table>';
+
+        echo $output;
 
         // Always die in functions echoing ajax content
         die();
@@ -407,6 +249,121 @@ class Lookup {
         $cache->set( $cacheKey, $lookup, 2* 60 * 60 * 24 );
 
         return $lookup;
+    }
+
+    /**
+     * @param $cells
+     * @param DOMDocument $fetchDom
+     * @param Entity[] $records
+     *
+     * @return string
+     */
+    private function renderTableHeader( $cells, $fetchDom, $records ) {
+        $result = '<thead><tr><th></th>';
+
+        foreach ( $cells as $cell ) {
+            $result .= '<th><span>';
+
+            if ( strpos( (string) $cell["name"], "." ) ) {
+                $parts = explode( ".", (string) $cell["name"] );
+
+                $linkedEntities = $fetchDom->getElementsByTagName( 'link-entity' );
+
+                $linkedEntityName = null;
+
+                for ( $i = 0; $i < $linkedEntities->length; $i ++ ) {
+                    if ( $parts[0] == $linkedEntities->item( $i )->attributes->getNamedItem( 'alias' )->value ) {
+                        $linkedEntityName = $linkedEntities->item( $i )->attributes->getNamedItem( 'to' )->value;
+                    }
+                }
+
+                if ( $linkedEntityName != null ) {
+                    $linkedRecord = $records[0]->{$linkedEntityName};
+                    if ( $linkedRecord instanceof EntityReference ) {
+                        $linkedRecord = ASDK()->entity( $linkedRecord->logicalName, $linkedRecord->id );
+                    }
+
+                    if ( $linkedRecord instanceof Entity ) {
+                        $result .= $linkedRecord->getPropertyLabel( $parts[1] );
+                    }
+                }
+            } else {
+                $result .= $records[0]->getPropertyLabel( (string) $cell["name"] );
+            }
+
+            $result .= '</span></th>';
+        }
+
+        $result .= '</tr></thead>';
+
+        return $result;
+    }
+
+    /**
+     * @param $cells
+     * @param DOMDocument $fetchDom
+     * @param Entity[] $records
+     *
+     * @return string
+     */
+    private function renderTableResults( $cells, $fetchDom, $records ) {
+        $result = '';
+
+        foreach ( $records as $record ) {
+            $result .= '<tr class="body-row" data-enitityid="' . $record->ID . '"  data-name="' . $record->displayname . '"><td><div class="lookup-checkbox"></div></td>';
+            foreach ( $cells as $cell ) {
+                $result .= '<td>';
+
+                $cellName = (string)$cell['name'];
+
+                if ( strpos( $cellName, "." ) ) {
+                    $parts = explode( ".", $cellName );
+
+                    $linkedRecord = $record->{$parts[0]};
+                    if ( is_null( $linkedRecord ) ) {
+                        /*
+                         * Related entity not found. Perhaps the link-entity wasn't present in the search FetchXML.
+                         * Here we look into the Lookup FetchXML to find out via what field the entity is linked
+                         * using the alias.
+                         */
+                        $xpath = new \DOMXPath( $fetchDom );
+                        $query = $xpath->query( "//link-entity[@alias='{$parts[0]}']" );
+                        if ( $query->length ) {
+                            $resolvedRelationName = $query->item( 0 )->getAttribute( 'from' );
+                            $linkedRecord = $record->{$resolvedRelationName};
+                        }
+                    }
+
+                    if ( !( $linkedRecord instanceof Entity ) && $linkedRecord instanceof EntityReference ) {
+                        $linkedRecord = ASDK()->entity( $linkedRecord->logicalName, $linkedRecord->id );
+                    }
+
+                    if ( $linkedRecord instanceof Entity ) {
+                        $result .= 'linked' . $linkedRecord->getFormattedValue( $parts[1] );
+                    }
+                } else {
+                    $formattedCellValue = $record->getFormattedValue( $cellName );
+
+                    $cellValue = $formattedCellValue;
+
+                    if ( ( $record->{$cellName} ) instanceof EntityReference
+                         && ( $post = DataBinding::getDefaultPost( $record->{$cellName}->LOGICALNAME ) )
+                    ) {
+                        $permalink = get_permalink( $post );
+                        $linkToPost = $permalink . ( strpos( $permalink, "?" )? '&' : '?' ) . "id={$record->{$cellName}->ID}";
+                        $cellValue = "<a href=\"{$linkToPost}\">{$formattedCellValue}</a>";
+                    }
+
+                    $result .= $cellValue;
+                }
+
+                $result .= '</td>';
+            }
+
+            $result .= '</tr>';
+        }
+
+        return $result;
     }
 }
 
