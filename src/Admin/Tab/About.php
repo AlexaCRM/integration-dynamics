@@ -56,7 +56,7 @@ class About extends Tab {
             <a href="mailto:<?php echo ACRM()->support_email; ?>"><?php echo ACRM()->support_email; ?></a>
         </p>
 
-        <h3>Error reporting</h3>
+        <h3><?php _e( 'Error reporting', 'integration-dynamics' ); ?></h3>
         <p><?php printf( __( 'If you experience problems while using Dynamics CRM Integration plugin and eventually report them, please <a href="%s">download the log file</a> and provide it if asked.', 'integration-dynamics' ), admin_url( 'admin-ajax.php?action=wpcrm_log' ) ); ?></p>
         <?php
     }
