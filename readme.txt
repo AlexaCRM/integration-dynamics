@@ -44,6 +44,12 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.21 =
+
+* Added logging.
+* Fixed: boolean fields in forms.
+* Fixed: consistent form shortcode attributes.
+
 = 1.1.20 =
 
 * Dynamics CRM Online in the Canada region is now supported.
