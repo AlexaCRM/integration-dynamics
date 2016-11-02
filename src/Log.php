@@ -88,7 +88,7 @@ class Log implements LoggerInterface {
      *
      * @var string
      */
-    private $logTarget = '';
+    public $logTarget = '';
 
     /**
      * Allowed log levels.

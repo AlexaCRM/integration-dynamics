@@ -107,7 +107,7 @@ final class Plugin {
     /**
      * Logging facility.
      *
-     * @var LoggerInterface
+     * @var Log
      */
     public $log = null;
 
@@ -304,6 +304,11 @@ final class Plugin {
      */
     private function includes() {
         /* Hooks */
+        add_action( 'wp_ajax_wpcrm_log', function() {
+            header( 'Content-Type: text/plain' );
+            echo file_get_contents( $this->log->logTarget );
+            die();
+        } );
 
         add_action( 'widgets_init', function () {
             do_action( 'wordpresscrm_widgets_init' );
