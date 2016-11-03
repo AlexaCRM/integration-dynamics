@@ -56,6 +56,10 @@ class About extends Tab {
             <a href="mailto:<?php echo ACRM()->support_email; ?>"><?php echo ACRM()->support_email; ?></a>
         </p>
 
+        <?php if ( !defined( 'WORDPRESSCRM_PREMIUM_PLUGIN' ) ) { ?>
+        <p><?php printf( __( '<strong>Want to take more from your Dynamics?</strong> Check out the <a href="%s">premium plugin</a>.', 'integration-dynamics' ), 'https://alexacrm.com/dynamics-crm-integration-premium/' ); ?></p>
+        <?php } ?>
+
         <h3><?php _e( 'Error reporting', 'integration-dynamics' ); ?></h3>
         <p><?php printf( __( 'If you experience problems while using Dynamics CRM Integration plugin and eventually report them, please <a href="%s">download the log file</a> and provide it if asked.', 'integration-dynamics' ), admin_url( 'admin-ajax.php?action=wpcrm_log' ) ); ?></p>
         <?php
