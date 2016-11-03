@@ -339,7 +339,7 @@ class Lookup {
                     }
 
                     if ( $linkedRecord instanceof Entity ) {
-                        $result .= 'linked' . $linkedRecord->getFormattedValue( $parts[1] );
+                        $result .= $linkedRecord->getFormattedValue( $parts[1] );
                     }
                 } else {
                     $formattedCellValue = $record->getFormattedValue( $cellName );
