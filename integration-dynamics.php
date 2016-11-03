@@ -16,6 +16,14 @@ if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
+/**
+ * Checking for the current PHP version.
+ * We support 5.4+
+ */
+if ( version_compare( phpversion(), '5.4', '<' ) ) {
+    return;
+}
+
 define( 'WORDPRESSCRM_DIR', __DIR__ );
 define( 'WORDPRESSCRM_STORAGE', WORDPRESSCRM_DIR . '/storage' );
 
