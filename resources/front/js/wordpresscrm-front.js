@@ -255,7 +255,7 @@ jQuery(document).ready(function () {
         if (typeof jQuery(this).attr("disabled") == "undefined"){
             var popup = jQuery(this).parent().parent().parent();
 
-            var id = popup.find(".body-row.selected-row").attr("data-enitityid");
+            var id = popup.find(".body-row.selected-row").attr("data-entityid");
             var name = popup.find(".body-row.selected-row").attr("data-name");
 
             popup.parent().parent().find(".crm-lookup-textfield").attr("value", name);

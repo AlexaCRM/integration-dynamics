@@ -310,7 +310,7 @@ class Lookup {
         $result = '';
 
         foreach ( $records as $record ) {
-            $result .= '<tr class="body-row" data-enitityid="' . $record->ID . '"  data-name="' . $record->displayname . '"><td><div class="lookup-checkbox"></div></td>';
+            $result .= '<tr class="body-row" data-entityid="' . $record->ID . '"  data-name="' . $record->displayname . '"><td><div class="lookup-checkbox"></div></td>';
             foreach ( $cells as $cell ) {
                 $result .= '<td>';
 
