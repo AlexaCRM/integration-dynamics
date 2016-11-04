@@ -8,6 +8,15 @@ if ( !defined( 'ABSPATH' ) ) {
 
 class Messages {
 
+    /**
+     * Retrieves a user-defined message.
+     *
+     * @param $key
+     * @param $value
+     * @param array $args
+     *
+     * @return mixed|string
+     */
     public static function getMessage( $key, $value, $args = [] ) {
         $options = ACRM()->option( 'messages' );
 
@@ -20,14 +29,12 @@ class Messages {
                 }
             }
 
-            return __( $message, 'integration-dynamics' );
+            return $message;
         }
 
-        $trace = debug_backtrace();
-        trigger_error( 'Undefined message with Key: ' . $key . ' Value:' . $value
-                       . ' in ' . $trace[0]['file'] . ' on line ' . $trace[0]['line'], E_USER_NOTICE );
+        ACRM()->log->warning( 'Undefined message ' . $key . '.' . $value . 'invoked.', [ 'trace' => debug_backtrace() ] );
 
-        return null;
+        return '';
     }
 }
 
