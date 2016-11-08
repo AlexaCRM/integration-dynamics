@@ -58,7 +58,7 @@ if ( version_compare( phpversion(), '5.4', '<' ) ) {
             ?>
             <div class="notice notice-error">
                 <p>
-                    <?php printf( __( 'Dynamics CRM Integration detected that your environment has PHP %s. The plugin requires at least PHP %s to work. Please upgrade your PHP installation to fully enable the plugin.', 'integration-dynamics' ), phpversion(), '5.4' ); ?>
+                    <?php printf( __( 'Dynamics CRM Integration detected that your environment has PHP %1$s. The plugin requires at least PHP %2$s to work. Please upgrade your PHP installation to fully enable the plugin.', 'integration-dynamics' ), phpversion(), '5.4' ); ?>
                 </p>
             </div>
             <?php
