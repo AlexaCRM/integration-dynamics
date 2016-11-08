@@ -71,7 +71,7 @@ class Log implements LoggerInterface {
      *
      * @var array
      */
-    private static $levels = [
+    private static $levels = array(
         0 => 'unknown',
         1 => 'emergency',
         2 => 'alert',
@@ -81,7 +81,7 @@ class Log implements LoggerInterface {
         32 => 'notice',
         64 => 'info',
         128 => 'debug',
-    ];
+    );
 
     /**
      * Target to write logs into.
@@ -121,7 +121,7 @@ class Log implements LoggerInterface {
      * @return void
      */
     public function emergency( $message, $context = null ) {
-        $this->recordMessage( $message, static::LOG_EMERGENCY, $context );
+        $this->recordMessage( $message, self::LOG_EMERGENCY, $context );
     }
 
     /**
@@ -133,7 +133,7 @@ class Log implements LoggerInterface {
      * @return void
      */
     public function alert( $message, $context = null ) {
-        $this->recordMessage( $message, static::LOG_ALERT, $context );
+        $this->recordMessage( $message, self::LOG_ALERT, $context );
     }
 
     /**
@@ -145,7 +145,7 @@ class Log implements LoggerInterface {
      * @return void
      */
     public function critical( $message, $context = null ) {
-        $this->recordMessage( $message, static::LOG_CRITICAL, $context );
+        $this->recordMessage( $message, self::LOG_CRITICAL, $context );
     }
 
     /**
@@ -157,7 +157,7 @@ class Log implements LoggerInterface {
      * @return void
      */
     public function error( $message, $context = null ) {
-        $this->recordMessage( $message, static::LOG_ERROR, $context );
+        $this->recordMessage( $message, self::LOG_ERROR, $context );
     }
 
     /**
@@ -169,7 +169,7 @@ class Log implements LoggerInterface {
      * @return void
      */
     public function warning( $message, $context = null ) {
-        $this->recordMessage( $message, static::LOG_WARNING, $context );
+        $this->recordMessage( $message, self::LOG_WARNING, $context );
     }
 
     /**
@@ -181,7 +181,7 @@ class Log implements LoggerInterface {
      * @return void
      */
     public function notice( $message, $context = null ) {
-        $this->recordMessage( $message, static::LOG_NOTICE, $context );
+        $this->recordMessage( $message, self::LOG_NOTICE, $context );
     }
 
     /**
@@ -193,7 +193,7 @@ class Log implements LoggerInterface {
      * @return void
      */
     public function info( $message, $context = null ) {
-        $this->recordMessage( $message, static::LOG_INFO, $context );
+        $this->recordMessage( $message, self::LOG_INFO, $context );
     }
 
     /**
@@ -205,7 +205,7 @@ class Log implements LoggerInterface {
      * @return void
      */
     public function debug( $message, $context = null ) {
-        $this->recordMessage( $message, static::LOG_DEBUG, $context );
+        $this->recordMessage( $message, self::LOG_DEBUG, $context );
     }
 
     /**
@@ -221,11 +221,11 @@ class Log implements LoggerInterface {
             return;
         }
 
-        if ( !array_key_exists( $level, static::$levels ) ) {
+        if ( !array_key_exists( $level, self::$levels ) ) {
             $level = 0;
         }
 
-        $levelLabel = strtoupper( static::$levels[$level] );
+        $levelLabel = strtoupper( self::$levels[$level] );
         $timestamp = \DateTime::createFromFormat( 'U.u', microtime( true ) );
 
         $record = "[{$levelLabel}]\t({$timestamp->format( 'Y-m-d H:i:s.u' )}) {$message}\n";

@@ -163,12 +163,10 @@ final class Plugin {
     /**
      * Initialize plugin
      *
-     * @return void
+     * @param Log $log
      */
-    public function init() {
-        // Initialize logging early
-        $logSeverityLevel = WP_DEBUG? Log::LOG_ALL : Log::LOG_FAULTS;
-        $this->log = new Log( WORDPRESSCRM_STORAGE, $logSeverityLevel );
+    public function init( Log $log ) {
+        $this->log = $log;
         $this->log->info( 'Initializing Dynamics CRM Integration.' );
 
         // Include required files

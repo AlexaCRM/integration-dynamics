@@ -10,18 +10,11 @@
  * Domain Path: /languages
  */
 
+use AlexaCRM\WordpressCRM\Log;
 use AlexaCRM\WordpressCRM\Plugin;
 
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
-}
-
-/**
- * Checking for the current PHP version.
- * We support 5.4+
- */
-if ( version_compare( phpversion(), '5.4', '<' ) ) {
-    return;
 }
 
 define( 'WORDPRESSCRM_DIR', __DIR__ );
@@ -49,6 +42,31 @@ spl_autoload_register( function ( $className ) {
 
 require_once __DIR__ . '/libraries/php-crm-toolkit/init.php'; // CRM Toolkit for PHP autoloader
 
+$logSeverityLevel = WP_DEBUG? Log::LOG_ALL : Log::LOG_FAULTS;
+$logger = new Log( WORDPRESSCRM_STORAGE, $logSeverityLevel );
+
+/**
+ * Checking for the current PHP version.
+ * We support 5.4+
+ */
+if ( version_compare( phpversion(), '5.4', '<' ) ) {
+    $logger->critical( 'PHP version is less than 5.4. Cannot proceed further.', array( 'phpversion' => phpversion() ) );
+
+    add_action( 'admin_notices', function() {
+        $screen = get_current_screen();
+        if ( $screen->base === 'plugins' ) {
+            ?>
+            <div class="notice notice-error">
+                <p>
+                    <?php printf( __( 'Dynamics CRM Integration detected that your environment has PHP %s. The plugin requires at least PHP %s to work. Please upgrade your PHP installation to fully enable the plugin.', 'integration-dynamics' ), phpversion(), '5.4' ); ?>
+                </p>
+            </div>
+            <?php
+        }
+    } );
+    return;
+}
+
 load_plugin_textdomain( 'integration-dynamics', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
 // run migrations
@@ -73,4 +91,4 @@ function ASDK() {
 /*
  * Run the plugin
  */
-ACRM()->init();
+ACRM()->init( $logger );
