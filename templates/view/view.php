@@ -40,7 +40,7 @@ if ( $rows ) { ?>
                         ?><a href="?viewPage=<?php echo esc_attr( $currentPage - 1 ); ?>" class="btn btn-outline-primary"><?php _e( '&larr; Previous', 'integration-dynamics' ); ?></a> <?php /* the prepended space is purposeful */
                     }
                     if ( $entities->MoreRecords ) {
-                        ?><a href="?viewPage=<?php echo esc_attr( $currentPage + 1 ); ?>" class="btn btn-outline-primary"><?php _e( '&rarr; Next', 'integration-dynamics' ); ?></a><?php
+                        ?><a href="?viewPage=<?php echo esc_attr( $currentPage + 1 ); ?>" class="btn btn-outline-primary"><?php _e( 'Next &rarr;', 'integration-dynamics' ); ?></a><?php
                     }
                     ?>
                 </td>
