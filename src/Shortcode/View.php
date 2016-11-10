@@ -51,6 +51,11 @@ class View extends Shortcode {
             'parameters'  => null,
             'lookups'     => array(),
             'allfields'   => false,
+
+            /**
+             * Specifies the number of records per page, enables pagination.
+             */
+            'count' => null,
         ), $atts );
     }
 
@@ -60,15 +65,15 @@ class View extends Shortcode {
      * @param string $fetchXML fetch to retrieve the records for view
      * @param array $parameters that contain key => value array where key is placeholder to replace and value which can be simple string, currentuser, querystring and currentrecord fields
      * @param array $lookups array of lookup values that contain ["attribute"] => name with type_of_replacement.field that be currentuser, querystring, currentrecord
-     * @param array $atrributes msdyncrm_view shortcode attributes array('name' => null, 'entity' => null, 'entity_name' => null, 'parameters' => null, 'lookups' => null, 'allfields' => false, )
+     * @param array $attributes msdyncrm_view shortcode attributes array('name' => null, 'entity' => null, 'entity_name' => null, 'parameters' => null, 'lookups' => null, 'allfields' => false, )
      *
      * @return string the result fetchxml
      */
-    public function constructFetchForView( $fetchXML, $parameters, $lookups, $atrributes = null ) {
+    public function constructFetchForView( $fetchXML, $parameters, $lookups, $attributes = null ) {
         /* Replace the placeholders in condition statements in fetchXML with new values based on simple string or currentuser, querystring and currentrecord fields */
         $fetchXML = FetchXML::replacePlaceholderValuesByParametersArray( $fetchXML, $parameters );
         /* Replace <attribute/> tags with <all-attributes/> tag in fetchxml query*/
-        $fetchXML = ( $atrributes["allfields"] == "true" ) ? FetchXML::constructAllAttributesFetch( $fetchXML ) : $fetchXML;
+        $fetchXML = ( $attributes["allfields"] == "true" ) ? FetchXML::constructAllAttributesFetch( $fetchXML ) : $fetchXML;
         $oldXML   = $fetchXML;
         /* Replacing the condition statements in fetchXML with new coditions based on currentuser, querystring and currentrecord fields */
         $fetchXML = FetchXML::replaceLookupConditionsByLookupsArray( $fetchXML, $lookups );
@@ -79,9 +84,19 @@ class View extends Shortcode {
         /* Replacing the condition statements in fetchXML with new coditions based on currentuser, querystring and currentrecord fields */
         $fetchXML = FetchXML::findAndReplaceParameters( $fetchXML );
 
-        /* Apply filters on the result fetchxml before send request to the Dynamics CRM */
+        // add pagination
+        if ( is_array( $attributes ) && array_key_exists( 'count', $attributes ) && (int)$attributes['count'] > 0 ) {
+            $perPage = (int)$attributes['count'];
+            $fetchXML = str_replace( '<fetch ', '<fetch count="' . $perPage . '" ', $fetchXML );
 
-        return apply_filters( "wordpresscrm_view_construct_fetch", $fetchXML, $atrributes["entity"], $atrributes["name"] );
+            if ( array_key_exists( 'viewPage', $_GET ) && (int)$_GET['viewPage'] > 1 ) {
+                $pageNumber = (int)$_GET['viewPage'];
+                $fetchXML = str_replace( '<fetch ', '<fetch page="' . $pageNumber . '" ', $fetchXML );
+            }
+        }
+
+        /* Apply filters on the result fetchxml before send request to the Dynamics CRM */
+        return apply_filters( "wordpresscrm_view_construct_fetch", $fetchXML, $attributes["entity"], $attributes["name"] );
     }
 
     /**
