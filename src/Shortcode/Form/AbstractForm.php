@@ -24,6 +24,11 @@ abstract class AbstractForm extends Shortcode {
             'form_name'                  => null, // deprecated
             'form_type'                  => null, // deprecated
 
+            /**
+             * Contains DOM selector to put errors and notices into.
+             */
+            'message_container'          => null,
+
             'mode'                       => null,
             'parameter_name'             => null,
             'captcha'                    => null,

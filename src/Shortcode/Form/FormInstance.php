@@ -64,6 +64,8 @@ class FormInstance extends AbstractForm {
 
     private $success_message = '';
 
+    private $messageContainer = '';
+
     private $showForm = true;
 
     private $formXML = null;
@@ -293,6 +295,23 @@ class FormInstance extends AbstractForm {
                     }
                 }
             }
+
+            add_action( 'wordpresscrm_after_form_end', function( $form ) {
+                $messageContainer = $form->attributes['message_container'];
+                if ( is_null( $messageContainer ) ) {
+                    return;
+                }
+
+                add_action( 'wp_footer', function() use ( $messageContainer ) {
+                    ?><script>
+                        ( function( $ ) {
+                            $( '.form-notices,.form-errors' ).detach().appendTo( <?php echo json_encode( $messageContainer ); ?> );
+                        } )( jQuery );
+                    </script>
+
+                    <?php
+                } );
+            } );
 
             return apply_filters( "wordpresscrm_form_print_form", $this->printForm( $captcha ) );
         } catch ( Exception $ex ) {

@@ -50,4 +50,4 @@ wordpresscrm_form_end();
 
 wordpresscrm_form_validation( $form->uid, $form );
 
-do_action( 'wordpresscrm_after_form_end' );
+do_action( 'wordpresscrm_after_form_end', $form );
