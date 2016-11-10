@@ -62,7 +62,7 @@ class FormInstance extends AbstractForm {
 
     private $entityErrors = [ ];
 
-    private $success_message = "<strong>Success!</strong>";
+    private $success_message = '';
 
     private $showForm = true;
 
@@ -77,6 +77,8 @@ class FormInstance extends AbstractForm {
     public function __construct() {
         $this->captcha   = new GCaptcha();
         $this->validator = new FormValidator();
+
+        $this->success_message = __( '<strong>Success!</strong>', 'integration-dynamics' );
     }
 
     public function __get( $name ) {
