@@ -26,7 +26,7 @@ if ( $disabled || $readonly ) { ?>
                 <div class="crm-lookup-popup-header">
                     <a title="<?php _e( 'Cancel', 'integration-dynamics' ); ?>" class="crm-popup-cancel" href="#" tabindex="2">
                         <img style="height:16px;width:16px;"
-                             src="<?php echo ACRM()->plugin_url(); ?>/resources/front/images/CloseDialog.png" alt="x"/>
+                             src="<?php echo ACRM()->getPluginURL(); ?>/resources/front/images/CloseDialog.png" alt="x"/>
                     </a>
                     <div class="crm-header-title"><?php _e( 'Look up record', 'integration-dynamics' ); ?></div>
                 </div>
@@ -60,7 +60,7 @@ if ( $disabled || $readonly ) { ?>
                         <table>
                             <tr>
                                 <td align="center" style="vertical-align: middle">
-                                    <img src="<?php echo ACRM()->plugin_url(); ?>/resources/front/images/progress.gif"
+                                    <img src="<?php echo ACRM()->getPluginURL(); ?>/resources/front/images/progress.gif"
                                          alt=""
                                          id="DialogLoadingDivImg">
                                     <br><?php _e( 'Loading...', 'integration-dynamics' ); ?>

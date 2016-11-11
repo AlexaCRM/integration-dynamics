@@ -30,8 +30,9 @@ class CustomImage extends Image {
             try {
 
                 if ( !$json ) {
-
-                    ACRM()->session_start();
+                    if ( !session_id() ) {
+                        session_start();
+                    }
 
                     $etag = md5( "custom" . $id );
 

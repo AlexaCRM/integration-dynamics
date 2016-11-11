@@ -280,7 +280,7 @@ class FormInstance extends AbstractForm {
                                 $this->proccessAttachments( $objectid );
 
                                 if ( $redirect_url ) {
-                                    ACRM()->javascript_redirect( $redirect_url );
+                                    wordpresscrm_javascript_redirect( $redirect_url );
                                 }
 
                                 array_push( $this->notices, $this->success_message );
@@ -913,7 +913,7 @@ class FormInstance extends AbstractForm {
         wp_enqueue_script( 'jquery-ui-autocomplete' );
         wp_enqueue_script( 'jquery-validation' );
 
-        wp_enqueue_style( 'jquery-style', ACRM()->plugin_url() . '/resources/front/css/wordpresscrm-jqueryui-css.css' );
+        wp_enqueue_style( 'jquery-style', ACRM()->getPluginURL() . '/resources/front/css/wordpresscrm-jqueryui-css.css' );
     }
 
     public static function getFormEntity( $formName, $entity, $formType = null ) {

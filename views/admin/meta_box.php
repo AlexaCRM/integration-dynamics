@@ -37,7 +37,7 @@ if ( !defined( 'ABSPATH' ) ) {
 
         ?>
     </select> <img id="wordpressDatabindingParameternameProgress"
-                   src="<?php echo ACRM()->plugin_url(); ?>/resources/front/images/progress.gif" alt="" width="16"
+                   src="<?php echo ACRM()->getPluginURL(); ?>/resources/front/images/progress.gif" alt="" width="16"
                    height="16" style="vertical-align: middle;display:none;">
 
     <p><strong><?php _e( 'Query string parameter name', 'integration-dynamics' ); ?></strong></p>

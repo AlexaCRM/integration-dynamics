@@ -4,7 +4,6 @@ namespace AlexaCRM\WordpressCRM;
 
 use AlexaCRM\CRMToolkit\Client;
 use AlexaCRM\CRMToolkit\Entity\MetadataCollection;
-use AlexaCRM\CRMToolkit\LoggerInterface;
 use AlexaCRM\CRMToolkit\Settings;
 use AlexaCRM\WordpressCRM\Image\AnnotationImage;
 use AlexaCRM\WordpressCRM\Image\CustomImage;
@@ -29,7 +28,7 @@ final class Plugin {
     /**
      * @var string
      */
-    public $plugin_name = 'Dynamics CRM Integration';
+    public $pluginName = 'Dynamics CRM Integration';
 
     /**
      * Shortcode prefix
@@ -100,10 +99,13 @@ final class Plugin {
      * @access private
      */
     public function __construct() {
-        add_action( 'init', [ $this, 'session_start' ], 0 );
+        if ( !defined( 'WORDPRESSCRM_TEMPLATE_DEBUG_MODE' ) ) {
+            define( 'WORDPRESSCRM_TEMPLATE_DEBUG_MODE', false );
+        }
 
-        // Define constants
-        $this->define_constants();
+        if ( !defined( 'WORDPRESSCRM_PLUGIN_PREFIX' ) ) {
+            define( 'WORDPRESSCRM_PLUGIN_PREFIX', $this->prefix );
+        }
     }
 
     /**
@@ -136,7 +138,13 @@ final class Plugin {
         }
 
         if ( $this->sdk ) {
-            $this->extended_includes();
+            new LookupDialog();
+            new CustomImage();
+            new AnnotationImage( $this->imageStorage );
+
+            do_action( 'wordpresscrm_extended_includes' );
+
+            include_once( WORDPRESSCRM_DIR . '/includes/template-shortcuts.php' );
         }
 
         if ( is_admin() ) {
@@ -145,8 +153,6 @@ final class Plugin {
         }
 
         DataBinding::instance();
-
-        add_action( 'admin_init', array( $this, 'admin_init' ) );
 
         if ( !is_admin() ) {
             add_action( 'after_setup_theme', function() {
@@ -170,13 +176,12 @@ final class Plugin {
 
         $this->log->info( 'Initializing cache.' );
 
+        $this->options['cache'] = [ 'server' => 'localhost', 'port' => 11211 ];
         if ( defined( 'WORDPRESSCRM_CACHESERVER' ) && defined( 'WORDPRESSCRM_CACHEPORT' ) ) {
             $this->options['cache'] = [
-                'server' => constant( 'WORDPRESSCRM_CACHESERVER' ),
-                'port'   => constant( 'WORDPRESSCRM_CACHEPORT' )
+                'server' => WORDPRESSCRM_CACHESERVER,
+                'port'   => WORDPRESSCRM_CACHEPORT,
             ];
-        } else {
-            $this->options['cache'] = [ 'server' => 'localhost', 'port' => 11211 ];
         }
 
         $this->cache = new Cache( $this->options['cache'] );
@@ -192,8 +197,16 @@ final class Plugin {
 
         $this->log->info( 'Initializing PHP CRM Toolkit.' );
 
-        $this->log->debug( 'PHP CRM Toolkit configuration.', array( 'options' => $options ) );
         $clientSettings = new Settings( $options );
+
+        /*
+         * Log configuration with sensitive data redacted.
+         */
+        $logSettings = clone $clientSettings;
+        $logSettings->password = $logSettings->oauthClientId = $logSettings->oauthClientSecret = '__redacted__';
+        $this->log->debug( 'PHP CRM Toolkit configuration.', array( 'settings' => $logSettings ) );
+        unset( $logSettings );
+
         $this->sdk      = new Client( $clientSettings, $this->cache );
 
         $this->log->debug( 'Finished initializing PHP CRM Toolkit.' );
@@ -217,15 +230,6 @@ final class Plugin {
     }
 
     /**
-     * Initiate a session if no session has been started
-     */
-    public function session_start() {
-        if ( !session_id() ) {
-            session_start();
-        }
-    }
-
-    /**
      * Check Dynamics CRM connection status
      *
      * @return boolean TRUE if connected, FALSE if not
@@ -235,30 +239,10 @@ final class Plugin {
     }
 
     /**
-     * Define WordpressCRM plugin constants and include default config (wordpress-crm/config.php)
-     */
-    private function define_constants() {
-        if ( !defined( 'WORDPRESSCRM_TEMPLATE_DEBUG_MODE' ) ) {
-            define( 'WORDPRESSCRM_TEMPLATE_DEBUG_MODE', false );
-        }
-
-        if ( !defined( 'WORDPRESSCRM_PLUGIN_PREFIX' ) ) {
-            define( 'WORDPRESSCRM_PLUGIN_PREFIX', $this->prefix );
-        }
-    }
-
-    /**
      * Include required core files used in admin and on the frontend.
      */
     private function includes() {
         /* Hooks */
-        add_action( 'wp_ajax_wpcrm_log', function() {
-            header( 'Content-Type: text/plain' );
-            $this->log->info( 'Displaying log.' );
-            echo file_get_contents( $this->log->logTarget );
-            die();
-        } );
-
         add_action( 'widgets_init', function () {
             $this->log->info( 'Initializing widgets' );
             do_action( 'wordpresscrm_widgets_init' );
@@ -293,61 +277,15 @@ final class Plugin {
     }
 
     /**
-     * Include files that's require established Dynamics CRM connection
-     */
-    public function extended_includes() {
-        new LookupDialog();
-        new CustomImage();
-        new AnnotationImage( $this->imageStorage );
-
-        do_action( 'wordpresscrm_extended_includes' );
-
-        include_once( WORDPRESSCRM_DIR . '/includes/template-shortcuts.php' );
-    }
-
-    /**
-     * Initialize values on admin init
-     */
-    public function admin_init() {
-        $plugin_data   = get_plugin_data( WORDPRESSCRM_DIR . '/integration-dynamics.php' );
-        $this->version = $plugin_data['Version'];
-    }
-
-    /**
-     * Forces a JavaScript redirect when headers have been already sent.
-     *
-     * Execution is halted after calling this method.
-     *
-     * @param string $location
-     */
-    public function javascript_redirect( $location = null ) {
-        // redirect after header here can't use wp_redirect($location);
-        ?>
-        <script type="text/javascript">
-            <!--
-            window.location = <?php echo ( $location ) ? "'" . $location . "'" : 'window.location.href'; ?>;
-            //-->
-        </script>
-        <?php
-        exit;
-    }
-
-    /**
      * Get the plugin url.
      *
      * @return string
      */
-    public function plugin_url() {
-        return untrailingslashit( plugins_url( '', WORDPRESSCRM_DIR . '/integration-dynamics.php' ) );
-    }
+    public function getPluginURL() {
+        $pluginURL = untrailingslashit( plugins_url( '', WORDPRESSCRM_DIR . '/integration-dynamics.php' ) );
 
-    /**
-     * Get the template path.
-     *
-     * @return string
-     */
-    public function template_path() {
-        return apply_filters( 'wordpress_template_path', 'wordpress-crm/' );
+        // strip the protocol
+        return preg_replace( '~^https?://~', '//',  $pluginURL);
     }
 
     /**
@@ -360,17 +298,6 @@ final class Plugin {
         $this->cache->cleanup();
         $this->metadataStorage->cleanup();
         $this->imageStorage->cleanup();
-    }
-
-    /**
-     * Force 404 error to WP_Query, page or post will display page not found
-     *
-     * @return void
-     */
-    public function force404() {
-        global $wp_query;
-        $wp_query->set_404();
-        status_header( 404 );
     }
 
 }

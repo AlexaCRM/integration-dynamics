@@ -76,7 +76,12 @@ class Template {
      */
     public static function locateTemplate( $template_name, $template_path = '', $default_path = '' ) {
         if ( !$template_path ) {
-            $template_path = ACRM()->template_path();
+            /**
+             * Filters the default path for templates.
+             *
+             * @param string $path Template path with a trailing slash.
+             */
+            $template_path = apply_filters( 'wordpress_template_path', 'wordpress-crm/' );
         }
 
         if ( !$default_path ) {

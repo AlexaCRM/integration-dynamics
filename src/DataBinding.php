@@ -64,7 +64,9 @@ class DataBinding {
 
             if ( ( !$this->entity || !$this->entity->exists ) && $force404
                  && apply_filters( "wordpresscrm_data_binding_404", $force404 ) ) {
-                ACRM()->force404();
+                global $wp_query;
+                $wp_query->set_404();
+                status_header( 404 );
             }
         }
     }

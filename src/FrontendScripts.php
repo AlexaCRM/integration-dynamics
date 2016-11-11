@@ -40,19 +40,19 @@ class FrontendScripts {
 
         return apply_filters( 'wordpresscrm_enqueue_styles', array(
             'wordpresscrm-layout'   => array(
-                'src'     => ACRM()->plugin_url() . '/resources/front/css/wordpresscrm.css',
+                'src'     => ACRM()->getPluginURL() . '/resources/front/css/wordpresscrm.css',
                 'deps'    => '',
                 'version' => ACRM()->version,
                 'media'   => 'all'
             ),
             'wordpresscrm-jquery'   => array(
-                'src'     => ACRM()->plugin_url() . '/resources/front/css/wordpresscrm-jqueryui-css.css',
+                'src'     => ACRM()->getPluginURL() . '/resources/front/css/wordpresscrm-jqueryui-css.css',
                 'deps'    => '',
                 'version' => ACRM()->version,
                 'media'   => 'all'
             ),
             'jquery-datetimepicker' => array(
-                'src'     => ACRM()->plugin_url() . '/resources/front/css/jquery.datetimepicker.css',
+                'src'     => ACRM()->getPluginURL() . '/resources/front/css/jquery.datetimepicker.css',
                 'deps'    => '',
                 'version' => ACRM()->version,
                 'media'   => 'all'
@@ -70,7 +70,7 @@ class FrontendScripts {
         global $post, $wp;
 
         $suffix               = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-        $assets_path          = str_replace( [ 'http:', 'https:' ], '', ACRM()->plugin_url() ) . '/resources/';
+        $assets_path          = str_replace( [ 'http:', 'https:' ], '', ACRM()->getPluginURL() ) . '/resources/';
         $frontend_script_path = $assets_path . 'front/js/';
 
         // Register any scripts for later use, or used as dependencies
@@ -119,7 +119,7 @@ class FrontendScripts {
         }
 
         $suffix               = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-        $assets_path          = str_replace( [ 'http:', 'https:' ], '', ACRM()->plugin_url() ) . '/resources/';
+        $assets_path          = str_replace( [ 'http:', 'https:' ], '', ACRM()->getPluginURL() ) . '/resources/';
         $frontend_script_path = $assets_path . 'front/js/';
 
         wp_enqueue_script( 'wordpresscrm-front', $frontend_script_path . 'wordpresscrm-front' . $suffix . '.js' );
