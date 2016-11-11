@@ -9,68 +9,17 @@
     padding: 8px;
 }
 
-.entity-form{
-
-}
-
-.entity-form label{
-
-}
-
-.entity-form input[readonly], .entity-form textarea[readonly], .entity-form select[readonly]{
-
-}
-
-.entity-form select, .entity-form input[type="text"]{
-
-}
-
-.crm-text{
-
-}
-
-.crm-select{
-
-}
-.crm-picklist{
-
-}
-.crm-integer{
-
-}
-.crm-datetime{
-
-}
-.crm-memo{
-
-}
-.crm-boolean{
-
-}
-.crm-money{
-
-}
-
-.crm-lookup{
-
-}
-.crm-lookup-textfield{
-
-}
-
 .crm-lookup-textfield[readonly]{
     background-color: #FFF !important;
     cursor: default !important;
 }
 
-.crm-lookup-wrapper{
-
-}
 .crm-lookup-field-wrapper{
         border: 0 solid !important;
         margin: 0 !important;
         padding:0 !important;
 }
+
 .crm-lookup-popup-overlay {
     display: none;
     height: 100%;
@@ -80,6 +29,7 @@
     width: 100%;
     z-index: 1000;
 }
+
 .crm-lookup-popup-overlay-bg{
     background-color: grey;
     height: 100%;
@@ -105,18 +55,19 @@
     border: 1px solid #d6d6d6;
     box-shadow: 0 0 1em black;
 }
+
 .crm-lookup-popup-header{
     padding-top: 10px;
-    /*position: absolute;
-    top: 0;*/
     width: 100%;
 }
+
 .crm-header-title{
     color: #262626;
     font-size: 27px;
     font-weight: lighter;
     line-height: 40px;
 }
+
 .crm-popup-cancel{
     display: block;
     text-decoration: none;
@@ -133,6 +84,7 @@
     font-size: 11px;
     color: #333;
 }
+
 .crm-lookup-popup-body-header table{
     border-bottom-style: solid;
     border-bottom-width: 1px;
@@ -146,35 +98,31 @@
     border-top-color: #d6d6d6;
 
 }
-.crm-lookup-popup-body-header td{
-    /*padding: 5px 0;
-    min-width: 20%;*/
-}
+
 .crm-lookup-popup-body-header td span{
     border-left: 1px solid #d6d6d6;
     padding-left: 8px;
-
 }
+
 .crm-lookup-popup-body-header td:first-child{
     width: 30px;
     border-left: none;
 }
 
-
 .crm-lookup-popup-body{
     width:100%;
-    /*position: absolute;*/
-    /*padding-top: 20px;*/
     margin-top: 30px;
     overflow: hidden;
     height: 333px;
     position: relative;
 }
+
 .crm-lookup-body-grid{
     height: 311px;
     width:100%;
     overflow-y: scroll;
 }
+
 .crm-lookup-body-grid table{
     white-space: nowrap;
 }
@@ -188,39 +136,42 @@
     word-wrap: normal;
 }
 
-
 .crm-lookup-body-grid table th{
     color: #333;
     font-size: 11px;
     font-weight: normal;
 }
+
 .crm-lookup-body-grid table th:first-child {
     border-left: medium none;
     width: 30px;
 }
+
 .crm-lookup-body-grid table th span {
     border-left: 1px solid #d6d6d6;
     padding-left: 8px;
     padding-right: 8px;
 }
 
-.crm-lookup-body-grid tr{
+.crm-lookup-body-grid tr {
     background: #FFFFFF;
     cursor: pointer;
 }
-.crm-lookup-body-grid tr:hover{
+
+.crm-lookup-body-grid tr:hover {
     background: #d7ebf9;
 }
-.crm-lookup-body-grid thead tr:hover{
+
+.crm-lookup-body-grid thead tr:hover {
     background:  #FFFFFF;
     cursor: auto;
 }
 
-.crm-lookup-body-grid tr.selected-row{
+.crm-lookup-body-grid tr.selected-row {
     background: #b1d6f0;
 }
 
-.crm-lookup-popup-body-loader{
+.crm-lookup-popup-body-loader {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -231,12 +182,12 @@
     background: #FFFFFF;
 }
 
-.crm-lookup-popup-body-loader table{
+.crm-lookup-popup-body-loader table {
     width: 100%;
     height: 100%;
 }
 
-.crm-lookup-body-grid td{
+.crm-lookup-body-grid td {
     font-size: 11px;
     padding-left: 8px;
     height: 28px;
@@ -244,7 +195,7 @@
     text-overflow: ellipsis;
 
 }
-.crm-lookup-body-grid td nobr{
+.crm-lookup-body-grid td nobr {
     display: block;
     height: 19px;
     line-height: 19px;
@@ -253,87 +204,88 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.crm-lookup-body-grid .lookup-checkbox{
-    background: url("../images/grid_ctrl_imgs.png") no-repeat scroll -172px -84px transparent;
+
+.crm-lookup-body-grid .lookup-checkbox,
+.crm-lookup-body-grid tr:hover .lookup-checkbox,
+.crm-lookup-body-grid .selected-row:hover .lookup-checkbox,
+.crm-lookup-body-grid .selected-row .lookup-checkbox {
+    background: url("../images/grid_ctrl_imgs.png") no-repeat scroll transparent;
+}
+
+.crm-lookup-body-grid .lookup-checkbox {
+    background-position: -172px -84px;
     height: 10px;
     overflow: hidden;
     width: 12px;
     visibility: hidden;
 }
-.crm-lookup-body-grid tr:hover .lookup-checkbox{
-    background: url("../images/grid_ctrl_imgs.png") no-repeat scroll -172px -84px transparent;
-    visibility: visible;
-}
-.crm-lookup-body-grid .selected-row:hover .lookup-checkbox,
-.crm-lookup-body-grid .selected-row .lookup-checkbox{
-    background: url("../images/grid_ctrl_imgs.png") no-repeat scroll -157px -101px transparent;
+
+.crm-lookup-body-grid tr:hover .lookup-checkbox {
+    background-position: -172px -84px;
     visibility: visible;
 }
 
-.crm-lookup-body-grid td:first-child{
+.crm-lookup-body-grid .selected-row:hover .lookup-checkbox,
+.crm-lookup-body-grid .selected-row .lookup-checkbox {
+    background-position: -157px -101px;
+    visibility: visible;
+}
+
+.crm-lookup-body-grid td:first-child {
     padding-right: 6px;
     width: 30px;
 }
-.body-row{
+
+.body-row {
     width: 100%;
     padding-top: 5px;
     padding-bottom: 5px;
     background: #00A8EF;
 }
-.body-row:hover{
+
+.body-row:hover {
     background: #00A8EF;
 }
 
-.crm-lookup-popup-foot{
+.crm-lookup-popup-foot {
     height: 60px;
     padding-top: 20px;
     width: 100%;
 }
-.crm-lookup-popup-foot-right{
+
+.crm-lookup-popup-foot-right {
     float: right;
 }
-.crm-lookup-popup-foot-right button{
 
-}
-.crm-lookup-search-area{
+.crm-lookup-search-area {
     margin-top: 8px;
 }
-.crm-lookup-search-area table{
 
-}
-
-.crm-lookup-search-area tr{
-
-}
-.crm-lookup-search-area td{
+.crm-lookup-search-area td {
     font-size: 11px;
     padding: 5px;
 }
-.crm-lookup-search-area td.label-td{
-   /* width: 80px;*/
+.crm-lookup-search-area td.label-td {
     padding: 0;
 }
 
-.crm-lookup-search-area td label{
+.crm-lookup-search-area td label {
     font-weight: bold;
     margin-bottom: 0;
 }
 
-.crm-lookup-search-area td select{
-    border-color: #c6c6c6;
-    border-style: solid;
-    border-width: 1px;
+.crm-lookup-search-area td select {
+    border: 1px solid #c6c6c6;
     font-size: 11px;
     height: 20px;
     width: 100%;
 }
-.crm-lookup-search-area td select:disabled{
-    color: #666666;
+.crm-lookup-search-area td select:disabled {
+    color: #666;
 }
-.crm-lookup-search-area td input[type="text"]{
-    border-color: #c6c6c6;
-    border-style: solid;
-    border-width: 1px;
+
+.crm-lookup-search-area td input[type="text"] {
+    border: 1px solid #c6c6c6;
     font-size: 11px;
     background-color: #ffffff;
     height: 18px;
@@ -342,12 +294,13 @@
     padding: 1px 7px 2px;
     width: 100%;
 }
-.crm-lookup-search-area input[type="text"].crm-lookup-searchfield{
+.crm-lookup-search-area input[type="text"].crm-lookup-searchfield {
     width: 200px;
     border-right: none;
     float: left;
 }
-.crm-lookup-search-area td .crm-lookup-searchfield-button{
+
+.crm-lookup-search-area td .crm-lookup-searchfield-button {
     background: url("../images/search_normal.gif") no-repeat scroll center center transparent;
     border-right: 1px solid #c6c6c6;
     border-bottom: 1px solid #c6c6c6;
@@ -357,10 +310,12 @@
     height: 18px;
     width: 20px;
 }
-.crm-lookup-search-area td .crm-lookup-searchfield-button:hover{
+
+.crm-lookup-search-area td .crm-lookup-searchfield-button:hover {
     background: url("../images/search_hover.gif") no-repeat scroll center center transparent;
 }
-.crm-lookup-search-area td .crm-lookup-searchfield-delete-search{
+
+.crm-lookup-search-area td .crm-lookup-searchfield-delete-search {
    background: url("../images/control_imgs.png") no-repeat scroll -150px -158px transparent;
     border-right: 1px solid #c6c6c6;
     border-bottom: 1px solid #c6c6c6;
@@ -372,11 +327,11 @@
     display: none;
 }
 
-.crm-lookup-search-area td .crm-lookup-searchfield-delete-search:hover{
+.crm-lookup-search-area td .crm-lookup-searchfield-delete-search:hover {
     background: url("../images/control_imgs.png") no-repeat scroll -127px -158px transparent;
 }
 
-.crm-lookup-popup-foot button{
+.crm-lookup-popup-foot button {
     background-repeat: repeat-x;
     cursor: pointer;
     line-height: 16px;
@@ -394,18 +349,20 @@
     color: #444444;
     font-size: 12px;
 }
-.crm-lookup-popup-foot button:hover{
+
+.crm-lookup-popup-foot button:hover {
     background-color: #d7ebf9;
 }
-.crm-lookup-popup-foot button:disabled, .crm-lookup-popup-foot button:disabled:hover{
+.crm-lookup-popup-foot button:disabled, .crm-lookup-popup-foot button:disabled:hover {
     color: #b1b1b1;
 }
-.crm-lookup-field-wrapper{
+
+.crm-lookup-field-wrapper {
     position: relative;
 }
 
-.crm-lookup-textfield-button{
-     background: url("../images/search_normal.gif") no-repeat scroll center center transparent;
+.crm-lookup-textfield-button {
+    background: url("../images/search_normal.gif") no-repeat scroll center center transparent;
     cursor: pointer;
     height: 18px;
     position: absolute;
@@ -413,13 +370,14 @@
     top: 20%;
     width: 20px;
 }
-.crm-lookup-textfield-button:hover{
+
+.crm-lookup-textfield-button:hover {
     background: url("../images/search_hover.gif") no-repeat scroll center center transparent;
 }
 
-.crm-lookup-textfield-delete-value{
+.crm-lookup-textfield-delete-value {
     background: url("../images/control_imgs.png") no-repeat scroll -150px -158px transparent;
-     cursor: pointer;
+    cursor: pointer;
     display: block;
     height: 18px;
     position: absolute;
@@ -428,11 +386,11 @@
     width: 20px;
 }
 
-.crm-lookup-textfield-delete-value:hover{
+.crm-lookup-textfield-delete-value:hover {
     background: url("../images/control_imgs.png") no-repeat scroll -127px -158px transparent;
 }
 
-.crm-lookup-popup-body-foot{
+.crm-lookup-popup-body-foot {
     border-top: 1px solid #d6d6d6;
     color: #444444;
     font-size: 11px;
@@ -440,16 +398,17 @@
     width: 100%;
     text-align: right;
 }
-.crm-lookup-popup-body-foot table td{
+
+.crm-lookup-popup-body-foot table td {
     vertical-align: middle;
 }
 
-.crm-lookup-popup-body-foot table{
+.crm-lookup-popup-body-foot table {
     height: 22px;
     width: 100%;
 }
 
-.crm-lookup-popup-first-page{
+.crm-lookup-popup-first-page {
     background: url("../images/grid_ctrl_imgs.png") no-repeat scroll -157px -113px transparent;
     height: 9px;
     overflow: hidden;
@@ -460,10 +419,12 @@
     padding: 0;
     vertical-align: middle;
 }
-.crm-lookup-popup-first-page:disabled, .crm-lookup-popup-first-page:hover{
-     background: url("../images/grid_ctrl_imgs.png") no-repeat scroll -157px -135px transparent;
+
+.crm-lookup-popup-first-page:disabled, .crm-lookup-popup-first-page:hover {
+    background: url("../images/grid_ctrl_imgs.png") no-repeat scroll -157px -135px transparent;
 }
-.crm-lookup-popup-prev-page{
+
+.crm-lookup-popup-prev-page {
     background: url("../images/grid_ctrl_imgs.png") no-repeat scroll -171px -107px transparent;
     height: 9px;
     overflow: hidden;
@@ -474,10 +435,12 @@
     padding: 0;
     vertical-align: middle;
 }
-.crm-lookup-popup-prev-page:disabled, .crm-lookup-popup-prev-page:hover{
+
+.crm-lookup-popup-prev-page:disabled, .crm-lookup-popup-prev-page:hover {
     background: url("../images/grid_ctrl_imgs.png") no-repeat scroll -167px -118px transparent;
 }
-.crm-lookup-popup-next-page{
+
+.crm-lookup-popup-next-page {
     background: url("../images/grid_ctrl_imgs.png") no-repeat scroll -157px -124px transparent;
     height: 9px;
     overflow: hidden;
@@ -488,10 +451,9 @@
     padding: 0;
     vertical-align: middle;
 }
-.crm-lookup-popup-next-page:disabled, .crm-lookup-popup-next-page:hover{
+
+.crm-lookup-popup-next-page:disabled, .crm-lookup-popup-next-page:hover {
     background: url("../images/grid_ctrl_imgs.png") no-repeat scroll -95px -159px transparent;
-
-
 }
 
 .crm-popup-no-results{
@@ -512,6 +474,7 @@
     margin-bottom: 20px;
     padding: 15px;
 }
+
 .alert h4 {
     color: inherit;
     margin-top: 0;
