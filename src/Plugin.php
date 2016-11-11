@@ -350,7 +350,7 @@ final class Plugin {
      * Include files that's require established Dynamics CRM connection
      */
     public function extended_includes() {
-        new Lookup();
+        new LookupDialog();
         new CustomImage();
         new AnnotationImage( $this->imageStorage );
 

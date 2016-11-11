@@ -20,7 +20,7 @@ if ( !defined( 'ABSPATH' ) ) {
  *
  * @package AlexaCRM\WordpressCRM
  */
-class Lookup {
+class LookupDialog {
 
     /**
      * Lookup constructor.
@@ -366,5 +366,3 @@ class Lookup {
         return $result;
     }
 }
-
-
