@@ -72,7 +72,7 @@ class DataBinding {
                 $post_isdefaultview = 'checked="checked"';
             }
 
-            include( ACRM()->plugin_path() . '/views/admin/meta_box.php' );
+            include( WORDPRESSCRM_DIR . '/views/admin/meta_box.php' );
         }
     }
 

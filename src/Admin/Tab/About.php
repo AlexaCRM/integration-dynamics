@@ -48,12 +48,12 @@ class About extends Tab {
         ?>
         <h2><?php _e( "About", 'integration-dynamics' ) ?></h2>
         <p>
-            <?php echo ACRM()->full_plugin_name; ?><br>
+            <?php echo ACRM()->plugin_name; ?><br>
             <?php printf( __( 'Version: %s', 'integration-dynamics' ), ACRM()->version ); ?><br>
-            <?php printf( __( 'Copyright &copy; %1$d %2$s', 'integration-dynamics' ), date( 'Y' ), ACRM()->author_name ); ?><br>
-            <?php printf( __( '<a href="%s" target="_blank">Plugin website</a>', 'integration-dynamics' ), ACRM()->plugin_homepage ) ?><br>
-            <?php printf( __( '<a href="%s" target="_blank">Documentation</a>', 'integration-dynamics' ), ACRM()->plugin_documentation_homepage ); ?><br>
-            <a href="mailto:<?php echo ACRM()->support_email; ?>"><?php echo ACRM()->support_email; ?></a>
+            <?php printf( __( 'Copyright &copy; %1$d %2$s', 'integration-dynamics' ), date( 'Y' ), 'AlexaCRM' ); ?><br>
+            <?php printf( __( '<a href="%s" target="_blank">Plugin website</a>', 'integration-dynamics' ), 'https://wordpress.org/plugins/integration-dynamics/' ) ?><br>
+            <?php printf( __( '<a href="%s" target="_blank">Documentation</a>', 'integration-dynamics' ), 'http://docs.alexacrm.com/wpcrm/' ); ?><br>
+            <a href="mailto:support@alexacrm.com">support@alexacrm.com</a>
         </p>
 
         <?php if ( !defined( 'WORDPRESSCRM_PREMIUM_PLUGIN' ) ) { ?>

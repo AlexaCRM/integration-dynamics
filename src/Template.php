@@ -80,7 +80,7 @@ class Template {
         }
 
         if ( !$default_path ) {
-            $default_path = ACRM()->plugin_path() . '/templates/';
+            $default_path = WORDPRESSCRM_DIR . '/templates/';
         }
 
         // Look within passed path within the theme - this is priority

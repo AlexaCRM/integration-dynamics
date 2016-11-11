@@ -72,23 +72,25 @@ load_plugin_textdomain( 'integration-dynamics', false, dirname( plugin_basename(
 // run migrations
 require_once __DIR__ . '/update.php';
 
+$pluginInstance = new Plugin();
+$pluginInstance->init(  $logger );
+
 /**
- * Returns the only instance of WordpressCRM plugin container
+ * Returns the main plugin object.
  *
  * @return Plugin
  */
 function ACRM() {
-    return Plugin::instance();
+    global $pluginInstance;
+
+    return $pluginInstance;
 }
 
 /**
+ * Returns the CRM Toolkit object.
+ *
  * @return \AlexaCRM\CRMToolkit\Client
  */
 function ASDK() {
-    return Plugin::instance()->sdk;
+    return ACRM()->sdk;
 }
-
-/*
- * Run the plugin
- */
-ACRM()->init( $logger );

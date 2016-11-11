@@ -24,17 +24,12 @@ final class Plugin {
     /**
      * @var string
      */
-    public $plugin_name = 'Dynamics CRM Integration';
-
-    /**
-     * @var string
-     */
     public $version = '';
 
     /**
      * @var string
      */
-    public $full_plugin_name = 'Dynamics CRM Integration';
+    public $plugin_name = 'Dynamics CRM Integration';
 
     /**
      * Shortcode prefix
@@ -42,39 +37,6 @@ final class Plugin {
      * @var string
      */
     public $prefix = 'msdyncrm_';
-
-    /**
-     * Plugin home page
-     *
-     * @var string
-     */
-    public $plugin_homepage = '';
-
-    /**
-     * Plugin home page
-     *
-     * @var string
-     */
-    public $plugin_documentation_homepage = 'http://docs.alexacrm.com/wpcrm/';
-
-    /**
-     * Plugin author name
-     *
-     * @var string
-     */
-    public $author_name = 'AlexaCRM';
-
-    /**
-     * Plugin support email
-     *
-     * @var string
-     */
-    public $support_email = 'support@alexacrm.com';
-
-    /**
-     * @var Plugin The single instance of the class
-     */
-    private static $_instance = null;
 
     /**
      * Client class object
@@ -119,22 +81,6 @@ final class Plugin {
     public $options = null;
 
     /**
-     * Main WordpressCRM Instance
-     * Ensures only one instance of WordpressCRM is loaded or can be loaded.
-     *
-     * @static
-     * @see ACRM()
-     * @return Plugin Main instance
-     */
-    public static function instance() {
-        if ( static::$_instance == null ) {
-            static::$_instance = new static();
-        }
-
-        return static::$_instance;
-    }
-
-    /**
      * Cloning is forbidden.
      */
     public function __clone() {
@@ -153,7 +99,7 @@ final class Plugin {
      *
      * @access private
      */
-    private function __construct() {
+    public function __construct() {
         add_action( 'init', [ $this, 'session_start' ], 0 );
 
         // Define constants
@@ -342,7 +288,7 @@ final class Plugin {
 
         /* Frontend includes */
         if ( !is_admin() || defined( 'DOING_AJAX' ) ) {
-            $this->frontend_includes();
+            new FrontendScripts();
         }
     }
 
@@ -360,20 +306,11 @@ final class Plugin {
     }
 
     /**
-     * Include required frontend files.
-     */
-    public function frontend_includes() {
-        // inject front-end scripts
-        new FrontendScripts();
-    }
-
-    /**
      * Initialize values on admin init
      */
     public function admin_init() {
-        $plugin_data           = get_plugin_data( WORDPRESSCRM_DIR . '/integration-dynamics.php' );
-        $this->version         = $plugin_data['Version'];
-        $this->plugin_homepage = $plugin_data['PluginURI'];
+        $plugin_data   = get_plugin_data( WORDPRESSCRM_DIR . '/integration-dynamics.php' );
+        $this->version = $plugin_data['Version'];
     }
 
     /**
@@ -402,33 +339,6 @@ final class Plugin {
      */
     public function plugin_url() {
         return untrailingslashit( plugins_url( '', WORDPRESSCRM_DIR . '/integration-dynamics.php' ) );
-    }
-
-    /**
-     * Get the plugin dir url.
-     *
-     * @return string
-     */
-    public function plugin_dir_url() {
-        return untrailingslashit( plugin_dir_url( WORDPRESSCRM_DIR . '/integration-dynamics.php' ) );
-    }
-
-    /**
-     * Get the plugin path.
-     *
-     * @return string
-     */
-    public function plugin_path() {
-        return WORDPRESSCRM_DIR;
-    }
-
-    /**
-     * Get the plugin basename.
-     *
-     * @return string
-     */
-    public function plugin_basename() {
-        return untrailingslashit( plugin_basename( __FILE__ ) );
     }
 
     /**
