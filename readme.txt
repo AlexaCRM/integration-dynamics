@@ -44,6 +44,12 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.22 =
+
+* Add pagination for views.
+* Allow specifying a target DOM selector for form messages.
+* Fixed: Fatal crash on environments with PHP < 5.4.
+
 = 1.1.21 =
 
 * Added logging.

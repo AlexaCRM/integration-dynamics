@@ -2,15 +2,22 @@
 # This file is distributed under the same license as the Dynamics CRM Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics CRM Integration 1.1.21\n"
+"Project-Id-Version: Dynamics CRM Integration 1.1.22\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/integration-dynamics\n"
-"POT-Creation-Date: 2016-11-02 14:33:56+00:00\n"
+"POT-Creation-Date: 2016-11-14 10:58:30+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: integration-dynamics.php:61
+msgid ""
+"Dynamics CRM Integration detected that your environment has PHP %1$s. The "
+"plugin requires at least PHP %2$s to work. Please upgrade your PHP "
+"installation to fully enable the plugin."
+msgstr ""
 
 #: src/Admin/Metabox/DataBinding.php:49
 msgid "Dynamics CRM Data Binding"
@@ -36,11 +43,17 @@ msgstr ""
 msgid "<a href=\"%s\" target=\"_blank\">Documentation</a>"
 msgstr ""
 
-#: src/Admin/Tab/About.php:59
+#: src/Admin/Tab/About.php:60
+msgid ""
+"<strong>Want to take more from your Dynamics?</strong> Check out the <a href="
+"\"%s\">premium plugin</a>."
+msgstr ""
+
+#: src/Admin/Tab/About.php:63
 msgid "Error reporting"
 msgstr ""
 
-#: src/Admin/Tab/About.php:60
+#: src/Admin/Tab/About.php:64
 msgid ""
 "If you experience problems while using Dynamics CRM Integration plugin and "
 "eventually report them, please <a href=\"%s\">download the log file</a> and "
@@ -244,23 +257,23 @@ msgid ""
 "href=\"admin.php?page=wordpresscrm\">on this page</a>."
 msgstr ""
 
-#: src/Lookup.php:71 src/Lookup.php:168
+#: src/LookupDialog.php:71 src/LookupDialog.php:168
 msgid "No records are available in this view."
 msgstr ""
 
-#: src/Plugin.php:141 src/Plugin.php:148
+#: src/Plugin.php:86 src/Plugin.php:93
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: src/Plugin.php:337
+#: src/Plugin.php:265
 msgid "Settings"
 msgstr ""
 
-#: src/Shortcode/Form/AbstractForm.php:262 src/Shortcode/Form/Control.php:73
+#: src/Shortcode/Form/AbstractForm.php:267 src/Shortcode/Form/Control.php:73
 msgid "%s is required"
 msgstr ""
 
-#: src/Shortcode/Form/Control.php:90 src/Shortcode/Form/FormInstance.php:589
+#: src/Shortcode/Form/Control.php:90 src/Shortcode/Form/FormInstance.php:612
 msgid "%s must be a valid email address"
 msgstr ""
 
@@ -274,56 +287,60 @@ msgid_plural "%1$s must be less than %2$d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Shortcode/Form/FormInstance.php:120
-#: src/Shortcode/Form/FormInstance.php:125
+#: src/Shortcode/Form/FormInstance.php:81
+msgid "<strong>Success!</strong>"
+msgstr ""
+
+#: src/Shortcode/Form/FormInstance.php:122
+#: src/Shortcode/Form/FormInstance.php:127
 msgid "Form submission couldn't pass security check. Please try again"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:503
+#: src/Shortcode/Form/FormInstance.php:526
 msgid "Unsupported lookup type for [%1$s], or entity {%2$s} not found"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:577
+#: src/Shortcode/Form/FormInstance.php:600
 msgid "Must be less than %d characters"
 msgid_plural "Must be less than %d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Shortcode/Form/FormInstance.php:584
+#: src/Shortcode/Form/FormInstance.php:607
 msgid "Incorrect text value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:602
+#: src/Shortcode/Form/FormInstance.php:625
 msgid "Invalid number value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:607
+#: src/Shortcode/Form/FormInstance.php:630
 msgid ""
 "Invalid number value. Enter a decimal number without currency symbol or "
 "thousands separator."
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:612
+#: src/Shortcode/Form/FormInstance.php:635
 msgid ""
 "Invalid money value. Enter a decimal number without currency symbol or "
 "thousands separator."
 msgstr ""
 
-#: src/Shortcode/View.php:117
+#: src/Shortcode/View.php:132
 msgid ""
 "Inline view templates are not supported in the free version. Get <a href="
 "\"http://alexacrm.com/dynamics-crm-integration-premium/\">the premium "
 "extension</a> today!"
 msgstr ""
 
-#: src/Shortcode/View.php:120
+#: src/Shortcode/View.php:135
 msgid ""
 "Error in inline template body, please check the inline template for unclosed "
 "or empty tags. <br/> Note that inline template must be well formatted xml "
 "document"
 msgstr ""
 
-#: src/Shortcode/View.php:125
+#: src/Shortcode/View.php:140
 msgid ""
 "<strong>The &lt;fetch&gt;, &lt;results&gt; and &lt;noresults&gt; nodes are "
 "required for inline templates</strong>, please construct fetch query and the "
@@ -332,25 +349,25 @@ msgid ""
 "results&gt;&lt;noresults&gt;...&lt;/noresults&gt;[/msdyncrm_view]"
 msgstr ""
 
-#: src/Shortcode/View.php:135
+#: src/Shortcode/View.php:150
 msgid ""
 "\"entity_name\" shortcode attribute is deprecated, use \"entity\" shortcode "
 "attribute instead with result records entity type"
 msgstr ""
 
-#: src/Shortcode/View.php:139
+#: src/Shortcode/View.php:154
 msgid ""
 "\"entity\" shortcode attribute is required, please add entity="
 "\"entity_logical_name\" to the msdyncrm_view shortcode attributes"
 msgstr ""
 
-#: src/Shortcode/View.php:143
+#: src/Shortcode/View.php:158
 msgid ""
 "\"name\" shortcode attribute is required, please add name=\"View Name\" to "
 "the msdyncrm_view shortcode attributes"
 msgstr ""
 
-#: src/Shortcode/View.php:154
+#: src/Shortcode/View.php:169
 msgid "Unable to get the specified SavedQuery [%1$s] for the entity {%2$s}"
 msgstr ""
 
@@ -404,7 +421,15 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: templates/view/view.php:32
+#: templates/view/view.php:40
+msgid "&larr; Previous"
+msgstr ""
+
+#: templates/view/view.php:43
+msgid "Next &rarr;"
+msgstr ""
+
+#: templates/view/view.php:55
 msgid "<p>No results</p>"
 msgstr ""
 
