@@ -64,8 +64,6 @@ class FormInstance extends AbstractForm {
 
     private $success_message = '';
 
-    private $messageContainer = '';
-
     private $showForm = true;
 
     private $formXML = null;
