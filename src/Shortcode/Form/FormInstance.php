@@ -317,33 +317,37 @@ class FormInstance extends AbstractForm {
         }
     }
 
+    /**
+     * Uploads received form attachments to the CRM.
+     *
+     * @param $entity
+     */
     private function proccessAttachments( $entity ) {
-
-        if ( isset( $_FILES['entity'] ) && isset( $_FILES['entity']['name']['notescontrol'] ) && $_FILES['entity']['name']['notescontrol'] ) {
-            $file_name = $_FILES['entity']['name']['notescontrol'];
-            $file_size = $_FILES['entity']['size']['notescontrol'];
-            $file_tmp  = $_FILES['entity']['tmp_name']['notescontrol'];
-            $file_type = $_FILES['entity']['type']['notescontrol'];
-
-            $type   = pathinfo( $file_tmp, PATHINFO_EXTENSION );
-            $base64 = base64_encode( file_get_contents( $file_tmp ) );
-
-            $newAnnotation = ASDK()->entity( 'annotation' );
-
-            if ( $entity instanceof Entity ) {
-                $newAnnotation->objectid = $entity;
-            } else {
-                $entityObject            = ASDK()->entity( $this->entity->logicalname );
-                $entityObject->id        = $entity;
-                $newAnnotation->objectid = $entityObject;
-            }
-            $newAnnotation->subject      = "Attachment file " . $file_name;
-            $newAnnotation->documentbody = $base64;
-            $newAnnotation->mimetype     = $file_type;
-            $newAnnotation->filename     = $file_name;
-
-            $annocation = ASDK()->create( $newAnnotation );
+        if ( !( isset( $_FILES['entity'] ) && isset( $_FILES['entity']['name']['notescontrol'] ) && $_FILES['entity']['name']['notescontrol'] ) ) {
+            return;
         }
+
+        $fileName = $_FILES['entity']['name']['notescontrol'];
+        $filePath  = $_FILES['entity']['tmp_name']['notescontrol'];
+        $fileType = $_FILES['entity']['type']['notescontrol'];
+
+        $base64 = base64_encode( file_get_contents( $filePath ) );
+
+        $newAnnotation = ASDK()->entity( 'annotation' );
+
+        if ( $entity instanceof Entity ) {
+            $newAnnotation->objectid = $entity;
+        } else {
+            $entityObject            = ASDK()->entity( $this->entity->logicalname );
+            $entityObject->id        = $entity;
+            $newAnnotation->objectid = $entityObject;
+        }
+        $newAnnotation->subject      = "Attachment file " . $fileName;
+        $newAnnotation->documentbody = $base64;
+        $newAnnotation->mimetype     = $fileType;
+        $newAnnotation->filename     = $fileName;
+
+        ASDK()->create( $newAnnotation );
     }
 
     private function setupDefaultControlsAndValues() {
