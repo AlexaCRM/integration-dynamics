@@ -11,7 +11,7 @@
     var Shortcode = Backbone.Model.extend( {
 
         initialize: function() {
-            _.bind( this.generateCode, this );
+            this.generateCode = _.bind( this.generateCode, this );
         },
 
         generateCode: function() {
@@ -63,7 +63,7 @@
                 }, this );
             }
 
-            _.bind( this.getView, this );
+            this.getView = _.bind( this.getView, this );
         },
 
         getValues: function() {
@@ -111,6 +111,9 @@
             switch ( this.get( 'type' ) ) {
                 case 'dropdown':
                     this.view = new ShortcodeDropdownFieldView( { model: this } );
+                    break;
+                case 'number':
+                    this.view = new ShortcodeNumberFieldView( { model: this } );
                     break;
                 default:
                     this.view = new ShortcodeFieldView( { model: this } );
@@ -246,9 +249,25 @@
 
         loadingTemplate: _.template( $( '#tpl-wpcrmShortcodeWizardShortcodeFieldLoading' ).html() ),
 
+        events: {
+            'change .value': 'valueChange'
+        },
+
+        initialize: function() {
+            //this.valueChange = _.debounce( this.valueChange, 300 );
+        },
+
         render: function() {
             this.$el.html( this.template( { field: this.model } ) );
             return this;
+        },
+
+        valueChange: _.debounce( function() {
+            this.model.setFieldValue( this.getValue() );
+        }, 300 ),
+
+        getValue: function() {
+            return this.$el.find( '.value' ).val();
         }
 
     } );
@@ -256,10 +275,6 @@
     var ShortcodeDropdownFieldView = ShortcodeFieldView.extend( {
 
         template: _.template( $( '#tpl-wpcrmShortcodeWizardShortcodeDropdownField' ).html() ),
-
-        events: {
-            'change .dropdown-value': 'valueChange'
-        },
 
         render: function() {
             var view = this;
@@ -274,14 +289,27 @@
                 } );
 
             return this;
-        },
+        }
 
-        valueChange: function() {
-            this.model.setFieldValue( this.getValue() );
-        },
+    } );
 
-        getValue: function() {
-            return this.$el.find( '.dropdown-value' ).val();
+    var ShortcodeNumberFieldView = ShortcodeFieldView.extend( {
+
+        template: _.template( $( '#tpl-wpcrmShortcodeWizardShortcodeNumberField' ).html() ),
+
+        render: function() {
+            var view = this, values = {};
+
+            view.$el.html( view.loadingTemplate( { fieldName: view.model.get( 'displayName' ) } ) );
+
+            //this.model.getValues().done( function( values ) {
+                view.$el.html( view.template( { field: view.model, values: values } ) );
+            /*} )
+                .fail( function( response ) {
+                    view.$el.html( view.errorTemplate( { message: response.message } ) );
+                } );*/
+
+            return this;
         }
 
     } );

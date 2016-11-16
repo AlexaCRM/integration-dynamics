@@ -48,6 +48,11 @@ class Field {
     protected $valueGenerator;
 
     /**
+     * @var \Closure
+     */
+    protected $staticValueGenerator;
+
+    /**
      * Field constructor.
      *
      * @param string $name
@@ -64,11 +69,16 @@ class Field {
      * @return mixed
      */
     public function getValue( $args = [] ) {
-        if ( !( $this->valueGenerator instanceof \Closure ) ) {
-            return '';
+        switch ( true ) {
+            case $this->isStaticValueAvailable():
+                $generator = $this->staticValueGenerator;
+                break;
+            case $this->isApiAvailable():
+                $generator = $this->valueGenerator;
+                break;
+            default:
+                return null;
         }
-
-        $generator = $this->valueGenerator;
 
         return $generator( $args );
     }
@@ -84,6 +94,30 @@ class Field {
         $this->valueGenerator = $generator;
 
         return $this;
+    }
+
+    public function setStaticValueGenerator( \Closure $generator ) {
+        $this->staticValueGenerator = $generator;
+
+        return $this;
+    }
+
+    /**
+     * Tells whether this field can retrieve default or possible values via API.
+     *
+     * @return bool
+     */
+    public function isApiAvailable() {
+        return ( $this->valueGenerator instanceof \Closure );
+    }
+
+    /**
+     * Tells whether this field has a static default value or possible values.
+     *
+     * @return bool
+     */
+    public function isStaticValueAvailable() {
+        return ( $this->staticValueGenerator instanceof \Closure );
     }
 
 }

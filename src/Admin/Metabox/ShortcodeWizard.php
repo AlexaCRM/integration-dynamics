@@ -143,12 +143,22 @@ Ditch it.
 <p>
     <label>
         <%- field.get( 'displayName' ) %><br>
-        <select class="dropdown-value">
+        <select class="value">
             <option value=""><?php _e( '— Select —', 'integration-dynamics' ); ?></option>
             <% _.each( values, function( valueName, value ) { %>
                     <option value="<%- value %>"><%- valueName %></option>
             <% } ); %>
         </select>
+    </label><br>
+    <span class="description"><%- field.get( 'description' ) %></span>
+</p>
+</script>
+<script type="text/template" id="tpl-wpcrmShortcodeWizardShortcodeNumberField">
+<p>
+    <label>
+        <%- field.get( 'displayName' ) %><br>
+        <input type="number" class="value" value="" min="0">
+        <!-- variable available: values -->
     </label><br>
     <span class="description"><%- field.get( 'description' ) %></span>
 </p>
@@ -195,10 +205,17 @@ Ditch it.
                     'description' => $field->description,
                     'type' => $field::TYPE,
                     'value' => [
-                        'source' => 'api', //TODO: make configurable
+                        'source' => 'none',
                         'args' => $field->bindingFields,
                     ],
                 ];
+
+                if ( $field->isApiAvailable() ) {
+                    $fieldDefinition['value']['source'] = 'api';
+                } elseif ( $field->isStaticValueAvailable() ) {
+                    $fieldDefinition['value']['source'] = 'static';
+                    $fieldDefinition['value']['values'] = $field->getValue();
+                }
 
                 $shortcodeDefinition['fields'][$fieldName] = $fieldDefinition;
             }
