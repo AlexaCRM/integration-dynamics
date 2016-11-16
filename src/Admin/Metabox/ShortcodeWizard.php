@@ -2,7 +2,7 @@
 
 namespace AlexaCRM\WordpressCRM\Admin\Metabox;
 
-use AlexaCRM\CRMToolkit\Entity\MetadataCollection;
+use AlexaCRM\WordpressCRM\Admin\Metabox\ShortcodeWizard\Shortcode;
 
 /**
  * Shortcode Wizard for the WordPress Post edit screen
@@ -12,16 +12,70 @@ use AlexaCRM\CRMToolkit\Entity\MetadataCollection;
 class ShortcodeWizard {
 
     /**
+     * Collection of registered shortcodes.
+     *
+     * @var Shortcode[]
+     */
+    protected $shortcodes = [];
+
+    /**
      * ShortcodeWizard constructor.
      */
     public function __construct() {
         add_action( 'add_meta_boxes', [ $this, 'registerMetabox' ] );
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueueScripts' ] );
 
+        /**
+         * Allows to register shortcodes for the wizard.
+         *
+         * @param ShortcodeWizard $shortcodeWizard
+         */
+        do_action( 'wordpresscrm_sw_register', $this );
+
         // register AJAX handlers
-        add_action( 'wp_ajax_wpcrm_sw_result', [ $this, 'handlerResult' ] );
-        add_action( 'wp_ajax_wpcrm_sw_entities', [ $this, 'handlerEntities' ] );
-        add_action( 'wp_ajax_wpcrm_sw_entity_views', [ $this, 'handlerEntityViews' ] );
+        add_action( 'wp_ajax_wpcrm_sw_result', [ $this, 'handleResultRequest' ] );
+        add_action( 'wp_ajax_wpcrm_sw_field', [ $this, 'handleFieldRequest' ] );
+    }
+
+    /**
+     * Registers a shortcode in the Shortcode Wizard.
+     *
+     * If the shortcode has been registered already, it is overwritten with the new object reference.
+     *
+     * @param Shortcode $shortcode
+     *
+     * @return $this
+     */
+    public function registerShortcode( Shortcode $shortcode ) {
+        $this->shortcodes[$shortcode->name] = $shortcode;
+
+        return $this;
+    }
+
+    /**
+     * Returns a shortcode definition for the Shortcode Wizard.
+     *
+     * @param string $shortcodeName
+     *
+     * @return Shortcode
+     */
+    public function getShortcode( $shortcodeName ) {
+        if ( !$this->isSupported( $shortcodeName ) ) {
+            throw new \InvalidArgumentException( "Shortcode [{$shortcodeName}] is not supported" );
+        }
+
+        return $this->shortcodes[$shortcodeName];
+    }
+
+    /**
+     * Tells whether the given shortcode is supported.
+     *
+     * @param string $shortcodeName
+     *
+     * @return bool
+     */
+    public function isSupported( $shortcodeName ) {
+        return array_key_exists( $shortcodeName, $this->shortcodes );
     }
 
     /**
@@ -124,41 +178,42 @@ Ditch it.
 
         wp_enqueue_script( 'wordpresscrm-shortcode-wizard', $scriptPath, [ 'jquery', 'underscore', 'backbone' ], false, true );
 
-        wp_localize_script( 'wordpresscrm-shortcode-wizard', 'wpcrmShortcodeWizard', [
-            'shortcodes' => [
-                'view' => [
-                    'name' => 'view',
-                    'displayName' => __( 'View', 'integration-dynamics' ),
-                    'description' => __( 'Renders a Dynamics CRM View as a table.', 'integration-dynamics' ),
-                    'fields' => [
-                        'entity' => [
-                            'name' => 'entity',
-                            'displayName' => __( 'Entity name', 'integration-dynamics' ),
-                            'description' => __( 'Name of the entity to display a view of.', 'integration-dynamics' ),
-                            'type' => 'dropdown',
-                            'value' => [
-                                'source' => 'ajax',
-                                'action' => 'wpcrm_sw_entities',
-                            ],
-                        ],
-                        'view' => [
-                            'name' => 'view',
-                            'displayName' => __( 'Entity View name', 'integration-dynamics' ),
-                            'description' => __( 'Name of the view to display.', 'integration-dynamics' ),
-                            'type' => 'dropdown',
-                            'value' => [
-                                'source' => 'ajax',
-                                'action' => 'wpcrm_sw_entity_views',
-                                'args' => [ 'entity' ], // cannot use 'arguments' per JavaScript restrictions
-                            ],
-                        ],
+        $wizardDefinition = [ 'shortcodes' => [] ];
+        foreach ( $this->shortcodes as $shortcodeName => $shortcode ) {
+            $shortcodeDefinition = [
+                'name' => $shortcode->name,
+                'displayName' => $shortcode->displayName,
+                'description' => $shortcode->description,
+                'fields' => [],
+            ];
+
+            foreach ( $shortcode->getFields() as $fieldName => $field ) {
+                $fieldDefinition = [
+                    'name' => $field->name,
+                    'displayName' => $field->displayName,
+                    'description' => $field->description,
+                    'type' => $field::TYPE,
+                    'value' => [
+                        'source' => 'api', //TODO: make configurable
+                        'args' => $field->bindingFields,
                     ],
-                ],
-            ],
-        ] );
+                ];
+
+                $shortcodeDefinition['fields'][$fieldName] = $fieldDefinition;
+            }
+
+            $wizardDefinition['shortcodes'][$shortcodeName] = $shortcodeDefinition;
+        }
+
+        wp_localize_script( 'wordpresscrm-shortcode-wizard', 'wpcrmShortcodeWizard', $wizardDefinition );
     }
 
-    public function handlerResult() {
+    /**
+     * Handles the "result" request from the wizard.
+     *
+     * Generates the shortcode based on given field values.
+     */
+    public function handleResultRequest() {
         if ( !array_key_exists( 'name', $_POST ) ) {
             wp_send_json_error( [ 'message' => __( 'Invalid request - shortcode name is absent', 'integration-dynamics' ) ] );
         }
@@ -174,78 +229,51 @@ Ditch it.
             wp_send_json_error( [ 'message' => __( 'Invalid request - shortcode arguments must be an array', 'integration-dynamics' ) ] );
         }
 
-        if ( $shortcodeName !== 'view' ) {
+        if ( !$this->isSupported( $shortcodeName ) ) {
             wp_send_json_error( [ 'message' => __( 'Shortcode is not supported', 'integration-dynamics' ) ] );
         }
 
-        $resultTemplate = '[msdyncrm_view entity="%1$s" name="%2$s"]';
-
-        $result = sprintf( $resultTemplate, $shortcodeFields['entity'], $shortcodeFields['view'] );
+        $result = $this->getShortcode( $shortcodeName )->generateCode( $shortcodeFields );
 
         wp_send_json_success( [ 'result' => $result ] );
     }
 
     /**
-     * Returns the list of CRM entities.
+     * Handles the "field" request.
+     *
+     * Returns the value(s) for the requested shortcode field, with optional binding values
+     * that may influence the output.
      */
-    public function handlerEntities() {
-        try {
-            $entities = MetadataCollection::instance()->getEntitiesList();
-            asort( $entities );
+    public function handleFieldRequest() {
+        if ( !array_key_exists( 'shortcode', $_POST ) ) {
+            wp_send_json_error( [ 'message' => __( 'Invalid request - shortcode name is absent', 'integration-dynamics' ) ] );
+        }
 
-            wp_send_json_success( $entities );
-        } catch ( \Exception $e ) {
+        if ( !array_key_exists( 'field', $_POST ) ) {
+            wp_send_json_error( [ 'message' => __( 'Invalid request - field name is absent', 'integration-dynamics' ) ] );
+        }
+
+        if ( !array_key_exists( 'values', $_POST ) ) {
+            $_POST['values'] = [];
+        }
+
+        $shortcodeName = trim( $_POST['shortcode'] );
+        $fieldName = trim( $_POST['field'] );
+        $values = $_POST['values']; // values that the field depends on
+
+        if ( !is_array( $values ) ) {
+            wp_send_json_error( [ 'message' => __( 'Invalid request - values for the field must be an array', 'integration-dynamics' ) ] );
+        }
+
+        try {
+            $fieldValue = $this->getShortcode( $shortcodeName )->getFieldValue( $fieldName, $values );
+
+            wp_send_json_success( $fieldValue );
+        } catch ( \InvalidArgumentException $e ) {
+            wp_send_json_error( [ 'message' => sprintf( __( 'Invalid request. %s', 'integration-dynamics' ), $e->getMessage() ) ] );
+        } catch( \Exception $e ) {
             wp_send_json_error( [ 'message' => $e->getMessage() ] );
         }
-    }
-
-    /**
-     * Returns the list of views for a CRM entity.
-     */
-    public function handlerEntityViews() {
-        $views = [];
-
-        $entityName = trim( $_POST['entity'] );
-
-        if ( $entityName === '' ) {
-            wp_send_json_error( [ 'message' => __( 'Empty entity name in the request', 'integration-dynamics' ) ] );
-        }
-
-        $entity = ASDK()->entity( $entityName );
-
-        $fetch = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
-						<entity name="userquery">
-							<attribute name="name" />
-							<attribute name="returnedtypecode" />
-							 <filter type="and">
-								<condition attribute="returnedtypecode" operator="eq" value="' . $entity->metadata()->objectTypeCode . '" />
-							  </filter>
-						</entity>
-					  </fetch>';
-
-        $userQueries = ASDK()->retrieveMultiple( $fetch );
-
-        $fetch = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
-						<entity name="savedquery">
-							<attribute name="name" />
-							<attribute name="returnedtypecode" />
-							 <filter type="and">
-								<condition attribute="returnedtypecode" operator="eq" value="' . $entity->metadata()->objectTypeCode . '" />
-							  </filter>
-						</entity>
-					  </fetch>';
-
-        $savedQueries = ASDK()->retrieveMultiple( $fetch );
-
-        $viewEntities = array_merge( $userQueries->Entities, $savedQueries->Entities );
-
-        foreach ( $viewEntities as $viewEntity ) {
-            $views[$viewEntity->displayname] = $viewEntity->displayname;
-        }
-
-        asort( $views );
-
-        wp_send_json_success( $views );
     }
 
 }

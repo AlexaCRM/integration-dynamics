@@ -65,11 +65,11 @@
         },
 
         getValues: function() {
-            var model = this, valueSettings, args = {};
+            var model = this, valueSettings, payload = {}, args = {};
 
             valueSettings = this.get( 'value' );
-            if ( valueSettings.source !== 'ajax' ) {
-                return [];
+            if ( valueSettings.source !== 'api' ) {
+                return []; //FIXME: return a promise anyway
             }
 
             if ( valueSettings.args && valueSettings.args.length ) {
@@ -78,7 +78,13 @@
                 }, this );
             }
 
-            return wp.ajax.post( valueSettings.action, args );
+            payload = {
+                shortcode: this.collection.shortcode.get( 'name' ),
+                field: this.get( 'name' ),
+                values: args
+            };
+
+            return wp.ajax.post( 'wpcrm_sw_field', payload );
         },
 
         getFieldValue: function() {
