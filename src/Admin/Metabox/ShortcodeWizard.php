@@ -207,6 +207,10 @@ Ditch it.
         }
 
         wp_localize_script( 'wordpresscrm-shortcode-wizard', 'wpcrmShortcodeWizard', $wizardDefinition );
+
+        wp_localize_script( 'wordpresscrm-shortcode-wizard', 'wpcrmShortcodeWizardI18n', [
+            'generating-shortcode' => __( 'Generating the shortcode...', 'integration-dynamics' ),
+        ] );
     }
 
     /**

@@ -21,6 +21,8 @@
                 args[field.get( 'name' )] = field.getFieldValue();
             } );
 
+            this.view.startUpdatingResult();
+
             wp.ajax.post( 'wpcrm_sw_result', {
                 name: this.get('name'),
                 fields: args
@@ -219,6 +221,10 @@
         render: function() {
             this.$el.html( this.template( { fields: this.model.fields } ) );
             return this;
+        },
+
+        startUpdatingResult: function() {
+            this.$el.find( '.shortcode-result textarea' ).val( wpcrmShortcodeWizardI18n['generating-shortcode'] );
         },
 
         updateResult: function( result ) {
