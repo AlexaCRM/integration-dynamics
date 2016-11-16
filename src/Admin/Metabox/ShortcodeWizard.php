@@ -149,7 +149,8 @@ Ditch it.
                     <option value="<%- value %>"><%- valueName %></option>
             <% } ); %>
         </select>
-    </label>
+    </label><br>
+    <span class="description"><%- field.get( 'description' ) %></span>
 </p>
 </script>
 <script type="text/html" id="tpl-wpcrmShortcodeWizardShortcodeFieldError">
