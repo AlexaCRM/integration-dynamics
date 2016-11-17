@@ -359,7 +359,7 @@ class View extends Shortcode {
         foreach ( $node->attributes() as $key => $atr ) {
             if ( preg_match_all( '/\\$cell/', $atr, $matches ) ) {
                 foreach ( array_unique( $matches[0] ) as $match ) {
-                    $atr = str_replace( $match, ( !empty( $rows["formatted_value"] ) ? $rows["formatted_value"] : "" ), $atr );
+                    $atr = str_replace( $match, ( !empty( $cell["formatted_value"] ) ? $cell["formatted_value"] : "" ), $atr );
                 }
             } elseif ( preg_match_all( '/\\$row(\\.[a-zA-Z0-9_]+)+/', $atr, $matches ) ) {
                 foreach ( array_unique( $matches[0] ) as $match ) {
