@@ -97,7 +97,7 @@ class Template {
         );
 
         // Get default template
-        if ( !$template || WORDPRESSCRM_TEMPLATE_DEBUG_MODE ) {
+        if ( !$template ) {
             $template = $default_path . $template_name;
         }
 

@@ -9,6 +9,7 @@
  * @package    WordpressCRM/Uninstaller
  * @version     1.0.35
  */
+use AlexaCRM\WordpressCRM\Plugin;
 
 /**
  * Main update class, used to update the options, pages metadata and other database things that was changed
@@ -56,37 +57,37 @@ class WordpressCRM_Update {
                 "connected"              => $options["connected"],
             );
             /* Update the deprecated options with new prefix WORDPRESSCRM_PLUGIN_PREFIX */
-            if ( update_option( WORDPRESSCRM_PLUGIN_PREFIX . "options", $newOptions ) ) {
+            if ( update_option( Plugin::PREFIX . "options", $newOptions ) ) {
                 delete_option( "alexacrm_options" );
             }
             /* Update the deprecated alexacrm_forms_options */
             $formOptions = get_option( "alexacrm_forms_options" );
             if ( $formOptions ) {
-                update_option( WORDPRESSCRM_PLUGIN_PREFIX . "forms", $formOptions );
+                update_option( Plugin::PREFIX . "forms", $formOptions );
                 delete_option( "alexacrm_forms_options" );
             }
             /* Update the deprecated alexacrm_oauth_options */
             $oauthOptions = get_option( "alexacrm_oauth_options" );
             if ( $oauthOptions ) {
-                update_option( WORDPRESSCRM_PLUGIN_PREFIX . "oauth", $oauthOptions );
+                update_option( Plugin::PREFIX . "oauth", $oauthOptions );
                 delete_option( "alexacrm_oauth_options" );
             }
             /* Update the deprecated wordpresscrm_registration_options */
             $registrationOptions = get_option( "wordpresscrm_registration_options" );
             if ( $registrationOptions ) {
-                update_option( WORDPRESSCRM_PLUGIN_PREFIX . "registration", $registrationOptions );
+                update_option( Plugin::PREFIX . "registration", $registrationOptions );
                 delete_option( "wordpresscrm_registration_options" );
             }
             /* Update the deprecated alexacrm_role_options */
             $rolesOptions = get_option( "alexacrm_role_options" );
             if ( $rolesOptions ) {
-                update_option( WORDPRESSCRM_PLUGIN_PREFIX . "roles", $rolesOptions );
+                update_option( Plugin::PREFIX . "roles", $rolesOptions );
                 delete_option( "alexacrm_role_options" );
             }
             /* Update the deprecated wordpresscrm_search_options */
             $searchOptions = get_option( "wordpresscrm_search_options" );
             if ( $searchOptions ) {
-                update_option( WORDPRESSCRM_PLUGIN_PREFIX . "search", $searchOptions );
+                update_option( Plugin::PREFIX . "search", $searchOptions );
                 delete_option( "wordpresscrm_search_options" );
             }
         }

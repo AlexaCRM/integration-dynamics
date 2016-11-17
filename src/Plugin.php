@@ -87,21 +87,6 @@ final class Plugin {
     }
 
     /**
-     * Plugin constructor
-     *
-     * @access private
-     */
-    public function __construct() {
-        if ( !defined( 'WORDPRESSCRM_TEMPLATE_DEBUG_MODE' ) ) {
-            define( 'WORDPRESSCRM_TEMPLATE_DEBUG_MODE', false );
-        }
-
-        if ( !defined( 'WORDPRESSCRM_PLUGIN_PREFIX' ) ) {
-            define( 'WORDPRESSCRM_PLUGIN_PREFIX', static::PREFIX );
-        }
-    }
-
-    /**
      * Initialize plugin
      *
      * @param Log $log
