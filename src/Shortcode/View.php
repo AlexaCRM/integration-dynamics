@@ -69,7 +69,7 @@ class View extends Shortcode {
      *
      * @return string the result fetchxml
      */
-    public function constructFetchForView( $fetchXML, $parameters, $lookups, $attributes = null ) {
+    private function constructFetchForView( $fetchXML, $parameters, $lookups, $attributes = null ) {
         /* Replace the placeholders in condition statements in fetchXML with new values based on simple string or currentuser, querystring and currentrecord fields */
         $fetchXML = FetchXML::replacePlaceholderValuesByParametersArray( $fetchXML, $parameters );
         /* Replace <attribute/> tags with <all-attributes/> tag in fetchxml query*/
@@ -179,6 +179,7 @@ class View extends Shortcode {
 
             $fetchXML = $view['fetchxml'];
         }
+
         /* Replace the lookups and parameter condition in fetchxml, and add <all-attributes/> tag if it's configured in shortcode attributes */
         $fetchXML = $this->constructFetchForView( $fetchXML, $parameters, $lookups, $attributes );
 
@@ -239,7 +240,7 @@ class View extends Shortcode {
      * @param $entities
      * @param null $rows
      */
-    public static function recursiveOut( $results, $entities, $rows = null ) {
+    private static function recursiveOut( $results, $entities, $rows = null ) {
         foreach ( $results as $key => $result ) {
             if ( $result->count() ) {
                 if ( in_array( $key, array( "foreachentity", "foreach" ) ) ) {
@@ -333,7 +334,7 @@ class View extends Shortcode {
      *
      * @return mixed
      */
-    public static function replaceRow( $result, $match, $rows ) {
+    private static function replaceRow( $result, $match, $rows ) {
 
         $key = str_replace( "\$row.", "", $match );
 
@@ -357,7 +358,7 @@ class View extends Shortcode {
      *
      * @return string
      */
-    public static function addAttributes( $node, $entity = null, $cell = null ) {
+    private static function addAttributes( $node, $entity = null, $cell = null ) {
         $attributes = '';
         foreach ( $node->attributes() as $key => $atr ) {
             if ( preg_match_all( '/\\$cell/', $atr, $matches ) ) {
@@ -389,31 +390,10 @@ class View extends Shortcode {
      *
      * @return mixed
      */
-    function retrieveRecords( $fetchXML, $attributes, $parameters, $lookups ) {
+    private function retrieveRecords( $fetchXML, $attributes, $parameters, $lookups ) {
         $entities = ASDK()->retrieveMultiple( $fetchXML );
 
         return apply_filters( "wordpresscrm_view_entities", $entities, $attributes["entity"], $attributes["name"], $parameters, $lookups );
-    }
-
-    /**
-     * @param $content
-     *
-     * @return string
-     */
-    function prepareXML( $content ) {
-        return "<content>" . htmlspecialchars_decode( $this->removeSmartQuotes( $this->reverse_wpautop( $content ) ), ENT_QUOTES ) . "</content>";
-    }
-
-    /**
-     * @param $content
-     *
-     * @return mixed
-     */
-    function removeSmartQuotes( $content ) {
-        return str_replace( array( "&#8220;", "&#8221;", "&#8243;" ), "&quot;", str_replace( array(
-            "&#8216;",
-            "&#8217;"
-        ), "&#39;", $content ) );
     }
 
     /**
@@ -421,39 +401,9 @@ class View extends Shortcode {
      *
      * @return mixed
      */
-    function reverse_wpautop( $s ) {
+    private function reverse_wpautop( $s ) {
         //remove any new lines already in there
         return str_replace( array( "<br />", "<br>", "<br/>", "<p>", "</p>" ), "", $s );
-    }
-
-    /**
-     * Checks whether given XML is valid
-     *
-     * @param string $xml
-     *
-     * @return bool|string
-     */
-    public function isValidXML( $xml ) {
-        if ( function_exists( 'libxml_use_internal_errors' ) ) {
-            libxml_use_internal_errors( true );
-            $doc = simplexml_load_string( $xml );
-            if ( $doc === false ) {
-                foreach ( libxml_get_errors() as $error ) {
-                    echo "\n \t", $error->message;
-                }
-
-                return false;
-            } else {
-                return $xml; //this is valid
-            }
-        } else {
-            $doc = @simplexml_load_string( $xml );
-            if ( $doc ) {
-                return $xml; //this is valid
-            } else {
-                return false; //this is not valid
-            }
-        }
     }
 
 }
