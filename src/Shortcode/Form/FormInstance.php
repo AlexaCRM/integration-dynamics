@@ -661,9 +661,9 @@ class FormInstance extends AbstractForm {
 
         $path = ( $this->disableLayout ) ? 'form/inline-form' : 'form/form';
 
-        $templatePath = Template::locateShortcodeTemplate( $path, $this->entity->logicalname, $this->formName );
+        $templatePath = ACRM()->template->locateShortcodeTemplate( $path, $this->entity->logicalname, $this->formName );
 
-        return Template::printTemplate( $templatePath, $args );
+        return ACRM()->template->printTemplate( $templatePath, $args );
     }
 
     private function setupControls( $formXML ) {

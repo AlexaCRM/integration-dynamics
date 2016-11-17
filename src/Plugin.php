@@ -66,6 +66,13 @@ final class Plugin {
     public $log = null;
 
     /**
+     * Access to templates.
+     *
+     * @var Template
+     */
+    public $template = null;
+
+    /**
      * Plugin general and connection options (msdyncrm_options)
      *
      * @var array
@@ -138,6 +145,8 @@ final class Plugin {
 
                 new ShortcodeManager();
             } );
+
+            $this->template = new Template();
         }
 
         // Loaded action

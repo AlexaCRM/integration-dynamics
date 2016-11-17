@@ -223,9 +223,9 @@ class View extends Shortcode {
             return ob_get_clean();
         }
 
-        $templatePath = Template::locateShortcodeTemplate( "view/view", $attributes["entity"], $attributes["name"] );
+        $templatePath = ACRM()->template->locateShortcodeTemplate( "view/view", $attributes["entity"], $attributes["name"] );
 
-        return Template::printTemplate( $templatePath, array(
+        return ACRM()->template->printTemplate( $templatePath, array(
             "rows"       => $rows,
             "entities"   => $entities,
             "cells"      => $cells,

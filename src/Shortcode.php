@@ -21,7 +21,7 @@ abstract class Shortcode {
             'error' => $error,
         ];
 
-        return Template::printTemplate( "error.php", $args );
+        return ACRM()->template->printTemplate( "error.php", $args );
     }
 
     public static function returnExceptionError( $exception = null ) {
@@ -30,7 +30,7 @@ abstract class Shortcode {
             'exception' => $exception,
         ];
 
-        return Template::printTemplate( "exception.php", $args );
+        return ACRM()->template->printTemplate( "exception.php", $args );
     }
 
     public static function notConnected() {
