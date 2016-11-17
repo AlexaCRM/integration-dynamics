@@ -335,18 +335,14 @@ class View extends Shortcode {
      * @return mixed
      */
     private static function replaceRow( $result, $match, $rows ) {
-
         $key = str_replace( "\$row.", "", $match );
+        $value = (string)$rows[ $key ]["value"];
 
-        $value = "";
-        if ( !empty( $rows[ $key ]["formatted_value"] ) ) {
-            $value = $rows[ $key ]["formatted_value"];
-        }
-        if ( !$value ) {
-            $value = (string) $rows[ $key ]["value"];
+        if ( !empty( $rows[ $key ]['formatted_value'] ) ) {
+            $value = $rows[ $key ]['formatted_value'];
         }
 
-        return str_replace( $match, ( !empty( $rows[ str_replace( "\$row.", "", $match ) ]["formatted_value"] ) ? $rows[ str_replace( "\$row.", "", $match ) ]["formatted_value"] : "" ), $result );
+        return str_replace( $match, $value, $result );
     }
 
     /**
@@ -394,16 +390,6 @@ class View extends Shortcode {
         $entities = ASDK()->retrieveMultiple( $fetchXML );
 
         return apply_filters( "wordpresscrm_view_entities", $entities, $attributes["entity"], $attributes["name"], $parameters, $lookups );
-    }
-
-    /**
-     * @param $s
-     *
-     * @return mixed
-     */
-    private function reverse_wpautop( $s ) {
-        //remove any new lines already in there
-        return str_replace( array( "<br />", "<br>", "<br/>", "<p>", "</p>" ), "", $s );
     }
 
 }

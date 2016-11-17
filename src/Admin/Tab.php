@@ -3,6 +3,7 @@
 namespace AlexaCRM\WordpressCRM\Admin;
 
 use AlexaCRM\CRMToolkit\Entity\MetadataCollection;
+use AlexaCRM\WordpressCRM\Plugin;
 use Exception;
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -36,7 +37,7 @@ abstract class Tab {
 
     public function __construct() {
         $this->displayName   = $this->getDisplayName();
-        $this->settingsField = ACRM()->prefix . $this->settingsField;
+        $this->settingsField = Plugin::PREFIX . $this->settingsField;
         $this->options       = get_option( $this->settingsField );
 
         $this->init();
@@ -59,7 +60,7 @@ abstract class Tab {
             $notices = [ ];
         }
         array_push( $notices, htmlentities( $string ) );
-        update_option( ACRM()->prefix . 'deferred_admin_notices', $notices );
+        update_option( Plugin::PREFIX . 'deferred_admin_notices', $notices );
     }
 
     public static function set_errors( $string ) {
@@ -68,7 +69,7 @@ abstract class Tab {
             $notices = array();
         }
         array_push( $notices, htmlentities( $string ) );
-        update_option( ACRM()->prefix . 'deferred_admin_errors', $notices );
+        update_option( Plugin::PREFIX . 'deferred_admin_errors', $notices );
     }
 
     public static function get_all_entities() {

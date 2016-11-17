@@ -5,6 +5,7 @@ use AlexaCRM\CRMToolkit\Client;
 use AlexaCRM\CRMToolkit\Settings;
 use AlexaCRM\WordpressCRM\Admin;
 use AlexaCRM\WordpressCRM\Admin\Tab;
+use AlexaCRM\WordpressCRM\Plugin;
 use Error;
 use Exception;
 use AlexaCRM\WordpressCRM\Connection;
@@ -82,7 +83,7 @@ class General extends Tab {
 
             Connection::setConnectionStatus( false );
 
-            $options = get_option( ACRM()->prefix . 'options' );
+            $options = get_option( Plugin::PREFIX . 'options' );
 
             if ( !isset( $options["serverUrl"] ) ||
                  !isset( $options["username"] ) ||
@@ -108,7 +109,7 @@ class General extends Tab {
 
                 if ( isset( $client ) && $whoAmI = $client->executeAction( "WhoAmI" ) ) {
                     $options['connected'] = true;
-                    update_option( ACRM()->prefix . 'options', $options );
+                    update_option( Plugin::PREFIX . 'options', $options );
                     $this->options = $options;
 
                     $noticeText = sprintf( __( 'Connection to Dynamics CRM <%s> has been successfully established.', 'integration-dynamics' ), $options['organizationName'] );
@@ -368,7 +369,7 @@ class General extends Tab {
                 };
                 $('.wpcrm-setting').keypress(activateReconnect);
                 $('.wpcrm-setting[type=radio],.wpcrm-setting[type=checkbox]').change(activateReconnect);
-            })(jQuery, "[name='<?php echo ACRM()->prefix . 'options'; ?>[authMode]']");
+            })(jQuery, "[name='<?php echo Plugin::PREFIX . 'options'; ?>[authMode]']");
             //]]>
         </script>
         <?php

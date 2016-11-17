@@ -2,6 +2,8 @@
 
 namespace AlexaCRM\WordpressCRM\Admin\Metabox\ShortcodeWizard;
 
+use AlexaCRM\WordpressCRM\Plugin;
+
 /**
  * Shortcode definition consumed by the Shortcode Wizard.
  *
@@ -95,7 +97,7 @@ class Shortcode {
      * @return string
      */
     public function generateCode( $fieldValues ) {
-        $shortcodePrefix = ACRM()->prefix;
+        $shortcodePrefix = Plugin::PREFIX;
 
         /*
          * %1$s - shortcode prefix

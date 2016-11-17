@@ -133,7 +133,7 @@ class DataBinding {
         global $post;
 
         $content = $post->post_content;
-        $shortcodeRegex = get_shortcode_regex( [ ACRM()->prefix . 'field' ] );
+        $shortcodeRegex = get_shortcode_regex( [ Plugin::PREFIX . 'field' ] );
 
         $count = preg_match_all( '/' . $shortcodeRegex . '/', $content, $shortcodes );
 

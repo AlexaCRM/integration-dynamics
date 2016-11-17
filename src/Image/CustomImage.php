@@ -3,6 +3,7 @@
 namespace AlexaCRM\WordpressCRM\Image;
 
 use AlexaCRM\WordpressCRM\Image;
+use AlexaCRM\WordpressCRM\Plugin;
 use Exception;
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -16,7 +17,7 @@ class CustomImage extends Image {
         add_action( 'wp_ajax_msdyncrm_custom_image', array( &$this, 'imageUrl' ) );
         add_action( 'wp_ajax_nopriv_msdyncrm_custom_image', array( &$this, 'imageUrl' ) );
 
-        $this->options = get_option( ACRM()->prefix . "attachments" );
+        $this->options = get_option( Plugin::PREFIX . "attachments" );
     }
 
     public function imageUrl() {

@@ -21,21 +21,14 @@ if ( !defined( 'ABSPATH' ) ) {
 final class Plugin {
 
     /**
+     * Shortcode and option name prefix.
+     */
+    const PREFIX = 'msdyncrm_';
+
+    /**
      * @var string
      */
     public $version = '';
-
-    /**
-     * @var string
-     */
-    public $pluginName = 'Dynamics CRM Integration';
-
-    /**
-     * Shortcode prefix
-     *
-     * @var string
-     */
-    public $prefix = 'msdyncrm_';
 
     /**
      * Client class object
@@ -104,7 +97,7 @@ final class Plugin {
         }
 
         if ( !defined( 'WORDPRESSCRM_PLUGIN_PREFIX' ) ) {
-            define( 'WORDPRESSCRM_PLUGIN_PREFIX', $this->prefix );
+            define( 'WORDPRESSCRM_PLUGIN_PREFIX', static::PREFIX );
         }
     }
 
@@ -123,7 +116,7 @@ final class Plugin {
         // Action to call the options update, see wordpress-crm/update.php file
         do_action( 'wordpresscrm_before_load' );
 
-        $options       = get_option( $this->prefix . 'options' );
+        $options       = get_option( static::PREFIX . 'options' );
         $this->options = $options;
         $this->initCache();
 
@@ -133,7 +126,7 @@ final class Plugin {
             } catch ( Exception $ex ) {
                 $this->log->warning( 'Caught exception while initializing connection to CRM.', [ 'exception' => $ex ] );
                 $this->options['connected'] = $options['connected'] = false;
-                update_option( $this->prefix . 'options', $options );
+                update_option( static::PREFIX . 'options', $options );
             }
         }
 
@@ -157,6 +150,7 @@ final class Plugin {
         if ( !is_admin() ) {
             add_action( 'after_setup_theme', function() {
                 $this->log->info( 'Initializing shortcodes.' );
+
                 new ShortcodeManager();
             } );
         }
@@ -223,10 +217,10 @@ final class Plugin {
      * @param mixed $default Default value
      *
      * @return mixed
-     * @see Plugin::$prefix
+     * @see Plugin::PREFIX
      */
     public function option( $field, $default = null ) {
-        return get_option( $this->prefix . $field, $default );
+        return get_option( static::PREFIX . $field, $default );
     }
 
     /**

@@ -3,6 +3,7 @@ namespace AlexaCRM\WordpressCRM\Admin\Tab;
 
 use AlexaCRM\WordpressCRM\Admin;
 use AlexaCRM\WordpressCRM\Admin\Tab;
+use AlexaCRM\WordpressCRM\Plugin;
 
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
@@ -69,7 +70,7 @@ class Messages extends Tab {
 
     public function updateMessages() {
         if ( !$this->options ) {
-            update_option( ACRM()->prefix . 'messages', static::$default_settings );
+            update_option( Plugin::PREFIX . 'messages', static::$default_settings );
         } else {
             foreach ( static::$default_settings as $sectionKey => $section ) {
                 if ( !isset( $this->options[ $sectionKey ] ) ) {

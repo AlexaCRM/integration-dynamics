@@ -59,9 +59,9 @@ class Connection {
      * @param bool $status
      */
     public static function setConnectionStatus( $status ) {
-        $options              = get_option( ACRM()->prefix . 'options' );
+        $options              = get_option( Plugin::PREFIX . 'options' );
         $options["connected"] = $status;
-        update_option( ACRM()->prefix . 'options', $options );
+        update_option( Plugin::PREFIX . 'options', $options );
         static::$connectionStatus = true;
     }
 

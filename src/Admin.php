@@ -219,7 +219,7 @@ class Admin {
                 </div>
                 <?php
             }
-            delete_option( ACRM()->prefix . 'deferred_admin_notices' );
+            delete_option( Plugin::PREFIX . 'deferred_admin_notices' );
         }
     }
 
@@ -247,7 +247,7 @@ class Admin {
                 </div>
                 <?php
             }
-            delete_option( ACRM()->prefix . 'deferred_admin_errors' );
+            delete_option( Plugin::PREFIX . 'deferred_admin_errors' );
         }
     }
 

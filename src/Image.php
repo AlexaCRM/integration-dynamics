@@ -61,7 +61,7 @@ class Image {
 
         if ( $entity != null && $entity->ID ) {
 
-            $options = get_option( ACRM()->prefix . "attachments" );
+            $options = get_option( Plugin::PREFIX . "attachments" );
 
             $customEntity = ( $options && self::checkOptions( $options ) );
 

@@ -84,7 +84,7 @@ class ShortcodeManager {
      * @return string
      */
     protected function getFullShortcodeName( $shortcodeName ) {
-        return ACRM()->prefix . $shortcodeName;
+        return Plugin::PREFIX . $shortcodeName;
     }
 
     /**
@@ -95,6 +95,6 @@ class ShortcodeManager {
      * @return string
      */
     protected function getUnprefixedShortcodeName( $shortcodeName ) {
-        return str_replace( ACRM()->prefix, '', $shortcodeName );
+        return str_replace( Plugin::PREFIX, '', $shortcodeName );
     }
 }
