@@ -18,17 +18,14 @@ function loadLookupData(popup, pagingcookie, pageNumber){
                 'pageNumber' : pageNumber
             },
             success:function(data) {
+                popup.find(".crm-lookup-body-grid").html(data.data);
 
-                var out = jQuery.parseJSON(data);
-
-                popup.find(".crm-lookup-body-grid").html(out.data);
-
-                if (out.pagingcookie){
+                if (data.pagingcookie){
 
                     popup.find(".crm-lookup-popup-next-page").attr("data-pagingcookie", popup.find(".crm-lookup-popup-next-page").attr("data-pagingcookie"));
 
-                    popup.find(".crm-lookup-popup-next-page").attr("data-pagingcookie", out.pagingcookie);
-                    popup.find(".crm-lookup-popup-prev-page").attr("data-pagingcookie", out.pagingcookie);
+                    popup.find(".crm-lookup-popup-next-page").attr("data-pagingcookie", data.pagingcookie);
+                    popup.find(".crm-lookup-popup-prev-page").attr("data-pagingcookie", data.pagingcookie);
                 }
 
 
@@ -41,7 +38,7 @@ function loadLookupData(popup, pagingcookie, pageNumber){
                     popup.find(".crm-lookup-popup-prev-page").attr("disabled", "disabled");
                 }
 
-                if (out.morerecords !== "0"){
+                if (data.morerecords !== "0"){
                     popup.find(".crm-lookup-popup-next-page").removeAttr("disabled");
                 }else{
                     popup.find(".crm-lookup-popup-next-page").attr("disabled", "disabled");

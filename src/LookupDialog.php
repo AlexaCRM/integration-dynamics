@@ -26,102 +26,85 @@ class LookupDialog {
      * Lookup constructor.
      */
     public function __construct() {
-        add_action( 'wp_ajax_retrieve_lookup_request', array( &$this, 'retrieve_lookup_request' ) );
-        add_action( 'wp_ajax_search_lookup_request', array( &$this, 'search_lookup_request' ) );
-        add_action( 'wp_ajax_nopriv_retrieve_lookup_request', array( &$this, 'retrieve_lookup_request' ) );
-        add_action( 'wp_ajax_nopriv_search_lookup_request', array( &$this, 'search_lookup_request' ) );
+        add_action( 'wp_ajax_retrieve_lookup_request', [ $this, 'retrieve' ] );
+        add_action( 'wp_ajax_search_lookup_request', [ $this, 'search' ] );
+        add_action( 'wp_ajax_nopriv_retrieve_lookup_request', [ $this, 'retrieve' ] );
+        add_action( 'wp_ajax_nopriv_search_lookup_request', [ $this, 'search' ] );
     }
 
     /**
      * Creates a response for the lookup request.
      */
-    public function retrieve_lookup_request() {
-        if ( !isset( $_REQUEST ) ) {
-            die();
-        }
-
-        $lookupType = $_REQUEST['lookupType'];
-        if ( !$lookupType ) {
-            die();
-        }
+    public function retrieve() {
+        $lookupType = $_GET['lookupType'];
 
         $pagingCookie = null;
-
-        if ( isset( $_REQUEST['pagingCookie'] ) && ( strlen( $_REQUEST['pagingCookie'] ) > 2 ) ) {
-            $pagingCookie = urldecode( $_REQUEST['pagingCookie'] );
+        if ( isset( $_GET['pagingCookie'] ) && ( strlen( $_GET['pagingCookie'] ) > 2 ) ) {
+            $pagingCookie = urldecode( $_GET['pagingCookie'] );
         }
 
         $pagingNumber = null;
-
-        if ( isset( $_REQUEST['pageNumber'] ) && ( strlen( $_REQUEST['pageNumber'] ) > 0 ) ) {
-            $pagingNumber = $_REQUEST['pageNumber'];
+        if ( isset( $_GET['pageNumber'] ) && ( strlen( $_GET['pageNumber'] ) > 0 ) ) {
+            $pagingNumber = $_GET['pageNumber'];
         }
 
         $entity = ASDK()->entity( $lookupType );
 
         $returnedTypeCode = $entity->metadata()->objectTypeCode;
-        $lookup = $this->retrieveLookupView( $returnedTypeCode, 64, $entity->metadata()->primaryNameAttribute );
+        $primaryNameAttr = $entity->metadata()->primaryNameAttribute;
+        $lookup = $this->retrieveLookupView( $returnedTypeCode, 64, $primaryNameAttr );
 
-        $fetchDom = new DOMDocument();
-        $fetchDom->loadXML( $lookup['fetchxml'] );
-
-        $invoices = ASDK()->retrieveMultiple( $lookup['fetchxml'], false, $pagingCookie, 50, $pagingNumber );
+        $records = ASDK()->retrieveMultiple( $lookup['fetchxml'], false, $pagingCookie, 10, $pagingNumber );
 
         $noRecordsMessage = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">'
                             . __( 'No records are available in this view.', 'integration-dynamics' )
                             . '</td></tr></table>';
 
-        if ( !$invoices || $invoices->Count < 1 ) {
-            echo $noRecordsMessage;
-            die();
+        if ( !$records || $records->Count < 1 ) {
+            wp_die( $noRecordsMessage );
         }
 
-        if ( $invoices->MoreRecords && $invoices->PagingCookie != null ) {
-            $pagingCookie = urlencode( $invoices->PagingCookie );
-        } else {
-            $pagingCookie = null;
+        $pagingCookie = null;
+        if ( $records->MoreRecords && $records->PagingCookie != null ) {
+            $pagingCookie = urlencode( $records->PagingCookie );
         }
+
+        $fetchDom = new DOMDocument();
+        $fetchDom->loadXML( $lookup['fetchxml'] );
 
         $layout = new SimpleXMLElement( $lookup['layoutxml'] );
 
         $cells = $layout->xpath( ".//cell" );
 
         $output = '<table class="lookup-table">'
-            . $this->renderTableHeader( $cells, $fetchDom, $invoices->Entities )
+            . $this->renderTableHeader( $cells, $fetchDom, $records->Entities )
             . '<tbody>'
-            . $this->renderTableResults( $cells, $fetchDom, $invoices->Entities )
+            . $this->renderTableResults( $cells, $fetchDom, $records->Entities )
             . '</tbody></table>';
 
         $response = [
             'data' => $output,
             'pagingcookie' => $pagingCookie,
-            'morerecords' => ( $invoices->MoreRecords ) ? '1' : '0',
+            'morerecords' => ( $records->MoreRecords ) ? '1' : '0',
         ];
 
-        echo json_encode( $response );
-
-        // Always die in functions echoing ajax content
-        die();
+        wp_send_json( $response );
     }
 
     /**
      * Creates a response for the lookup request with search.
      */
-    public function search_lookup_request() {
-        // The $_REQUEST contains all the data sent via ajax
-        if ( !isset( $_REQUEST ) || !isset( $_REQUEST['lookupType'] ) || !isset( $_REQUEST['searchstring'] ) ) {
-            die();
-        }
-
-        $lookupType = $_REQUEST['lookupType'];
+    public function search() {
+        $lookupType = $_GET['lookupType'];
         $entity = ASDK()->entity( $lookupType );
 
         $returnedTypeCode = $entity->metadata()->objectTypeCode;
+        $primaryNameAttr = $entity->metadata()->primaryNameAttribute;
 
-        $searchString = urldecode( $_REQUEST["searchstring"] );
+        $searchString = urldecode( $_GET["searchstring"] );
 
         if ( $searchString != "" ) {
-            $searchView = $this->retrieveLookupView( $returnedTypeCode, 4, $entity->metadata()->primaryNameAttribute );
+            $searchView = $this->retrieveLookupView( $returnedTypeCode, 4, $primaryNameAttr );
 
             $fetchXML   = new SimpleXMLElement( $searchView['fetchxml'] );
             $conditions = $fetchXML->xpath( './/condition[@value]' );
@@ -133,60 +116,53 @@ class LookupDialog {
                 $value     = (string) $condition["value"][0];
 
                 $oldCondition = $condition[0]->asXML();
+                $newCondition = $condition;
 
                 if ( $value == "{0}" ) {
+                    $newCondition[0]["value"] = "%{$searchString}%";
+                    $newCondition[0]["operator"] = 'like';
+
                     if ( $entity->attributes[ $attribute ]->isLookup ) {
-                        if ( preg_match( '/^\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/', $searchString ) ) {
-                            $newCondition             = $condition;
+                        $newCondition[0]["value"] = AbstractClient::EmptyGUID;
+
+                        if ( AbstractClient::isGuid( $searchString ) ) {
                             $newCondition[0]["value"] = $searchString;
-                            $searchXML                = str_replace( $oldCondition, $newCondition[0]->asXML(), $searchXML );
-                        } else {
-                            $newCondition             = $condition;
-                            $newCondition[0]["value"] = AbstractClient::EmptyGUID;
-                            $searchXML                = str_replace( $oldCondition, $newCondition[0]->asXML(), $searchXML );
                         }
-                    } else {
-                        $newCondition             = $condition;
-                        $newCondition[0]["value"] = "%{$searchString}%";
-                        $newCondition[0]["operator"] = 'like';
-                        $searchXML                = str_replace( $oldCondition, $newCondition[0]->asXML(), $searchXML );
                     }
+
+                    $searchXML = str_replace( $oldCondition, $newCondition[0]->asXML(), $searchXML );
                 }
             }
 
-            $invoices = ASDK()->retrieveMultiple( $searchXML );
+            $records = ASDK()->retrieveMultiple( $searchXML );
         } else {
-            $invoices = ASDK()->retrieveMultipleEntities( $lookupType );
+            $records = ASDK()->retrieveMultipleEntities( $lookupType );
         }
 
-        $lookup = $this->retrieveLookupView( $returnedTypeCode, 64, $entity->metadata()->primaryNameAttribute );
-
-        $fetchDom = new DOMDocument();
-        $fetchDom->loadXML( $lookup['fetchxml'] );
+        $lookup = $this->retrieveLookupView( $returnedTypeCode, 64, $primaryNameAttr );
 
         $noRecordsMessage = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">'
                             . __( 'No records are available in this view.', 'integration-dynamics' )
                             . '</td></tr></table>';
 
-        if ( !$invoices || $invoices->Count < 1 ) {
-            echo $noRecordsMessage;
-            die();
+        if ( !$records || $records->Count < 1 ) {
+            wp_die( $noRecordsMessage );
         }
+
+        $fetchDom = new DOMDocument();
+        $fetchDom->loadXML( $lookup['fetchxml'] );
 
         $layout = new SimpleXMLElement( $lookup['layoutxml'] );
 
         $cells = $layout->xpath( ".//cell" );
 
         $output = '<table class="lookup-table">'
-                  . $this->renderTableHeader( $cells, $fetchDom, $invoices->Entities )
+                  . $this->renderTableHeader( $cells, $fetchDom, $records->Entities )
                   . '<tbody>'
-                  . $this->renderTableResults( $cells, $fetchDom, $invoices->Entities )
+                  . $this->renderTableResults( $cells, $fetchDom, $records->Entities )
                   . '</tbody></table>';
 
-        echo $output;
-
-        // Always die in functions echoing ajax content
-        die();
+        wp_die( $output );
     }
 
     /**
