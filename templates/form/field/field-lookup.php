@@ -97,3 +97,5 @@ if ( $disabled || $readonly ) { ?>
         </div>
     </div><?php
 }
+
+wp_enqueue_script( 'wordpresscrm-lookup-dialog' );

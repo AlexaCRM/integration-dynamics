@@ -6,6 +6,11 @@ if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
+/**
+ * Implements form control.
+ *
+ * @package AlexaCRM\WordpressCRM\Shortcode\Form
+ */
 class Control {
 
     public $name;
@@ -115,23 +120,5 @@ class Control {
                 'message' => sprintf( translate_nooped_plural( $message, $property->maxLength, 'integration-dynamics' ), $this->label, $property->maxLength ),
             ];
         }
-    }
-
-    /*
-    public function set(){
-
-    }
-
-    public function get(){
-
-    }*/
-
-    function validator() {
-        array(
-            'required'     => true,
-            'stringLength' => 100,
-            'regexp'       => '',
-            'emailAddress' => true,
-        );
     }
 }

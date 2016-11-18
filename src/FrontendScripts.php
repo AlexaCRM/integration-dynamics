@@ -79,9 +79,10 @@ class FrontendScripts {
         // Global frontend scripts
         wp_enqueue_script( 'recaptcha' );
 
-        wp_register_script( 'wordpresscrm-front', $frontend_script_path . 'wordpresscrm-front' . $suffix . '.js' );
-        wp_register_script( 'jquery-datetimepicker', $frontend_script_path . 'jquery.datetimepicker.js' );
-        wp_register_script( 'jquery-validation', $frontend_script_path . 'jquery.validate.min.js' );
+        wp_register_script( 'jquery-datetimepicker', $frontend_script_path . 'jquery.datetimepicker.js', [ 'jquery' ] );
+        wp_register_script( 'wordpresscrm-front', $frontend_script_path . 'wordpresscrm-front' . $suffix . '.js', [ 'jquery-datetimepicker' ] );
+        wp_register_script( 'jquery-validation', $frontend_script_path . 'jquery.validate.min.js', [ 'jquery' ] );
+        wp_register_script( 'wordpresscrm-lookup-dialog', $frontend_script_path . 'lookup-dialog.js', [ 'jquery' ] );
 
         // localize scripts
         $wpcrmFrontLocalizations = [
@@ -117,13 +118,6 @@ class FrontendScripts {
             wp_register_script( 'jquery', includes_url( 'js/jquery/jquery.js' ), array(), '1.8' );
             wp_enqueue_script( 'jquery' );
         }
-
-        $suffix               = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-        $assets_path          = str_replace( [ 'http:', 'https:' ], '', ACRM()->getPluginURL() ) . '/resources/';
-        $frontend_script_path = $assets_path . 'front/js/';
-
-        wp_enqueue_script( 'wordpresscrm-front', $frontend_script_path . 'wordpresscrm-front' . $suffix . '.js' );
-        wp_enqueue_script( 'jquery-datetimepicker', $frontend_script_path . 'jquery.datetimepicker.js' );
     }
 
 }

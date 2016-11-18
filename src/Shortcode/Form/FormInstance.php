@@ -663,6 +663,8 @@ class FormInstance extends AbstractForm {
 
         $templatePath = ACRM()->template->locateShortcodeTemplate( $path, $this->entity->logicalname, $this->formName );
 
+        wp_enqueue_script( 'wordpresscrm-front', false, [], false, true );
+
         return ACRM()->template->printTemplate( $templatePath, $args );
     }
 
@@ -676,7 +678,10 @@ class FormInstance extends AbstractForm {
         $columns    = [ ];
 
         foreach ( $columnsXML as $columnXmlKey => $columnXML ) {
-            $controls = [ ];
+            /**
+             * @var Control[] $controls
+             */
+            $controls = [];
 
             $section = $columnXML->xpath( ".//section" );
 
@@ -805,22 +810,22 @@ class FormInstance extends AbstractForm {
                             $controls["firstname"]->inputname = "entity[firstname]";
                             $controls["firstname"]->label     = "First name";
                             $controls["firstname"]->disabled  = false;
-                            if ( $properties["firstname"]->requiredLevel != 'None' && $properties["firstname"]->requiredLevel != 'Recommended' ) {
+                            $controls["firstname"]->required = false;
+
+                            if ( $properties["fullname"]->requiredLevel != 'None' && $properties["fullname"]->requiredLevel != 'Recommended' ) {
                                 $controls["firstname"]->required = true;
-                            } else {
-                                $controls["firstname"]->required = false;
                             }
 
                             $controls["lastname"]->name      = "lastname";
                             $controls["lastname"]->inputname = "entity[lastname]";
                             $controls["lastname"]->label     = "Last name";
                             $controls["lastname"]->disabled  = false;
+                            $controls["lastname"]->required = false;
 
-                            if ( $properties["lastname"]->requiredLevel != 'None' && $properties["lastname"]->requiredLevel != 'Recommended' ) {
-                                $controls["lastname"]->required = true;
-                            } else {
-                                $controls["lastname"]->required = false;
+                            if ( $properties["fullname"]->requiredLevel != 'None' && $properties["lastname"]->requiredLevel != 'Recommended' ) {
+                                $controls["fullname"]->required = true;
                             }
+
                             unset( $controls[ $name ] );
                         }
 
