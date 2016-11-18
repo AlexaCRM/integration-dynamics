@@ -812,19 +812,23 @@ class FormInstance extends AbstractForm {
                             $controls["firstname"]->disabled  = false;
                             $controls["firstname"]->required = false;
 
-                            if ( $properties["fullname"]->requiredLevel != 'None' && $properties["fullname"]->requiredLevel != 'Recommended' ) {
+                            if ( $properties["firstname"]->requiredLevel != 'None' && $properties["firstname"]->requiredLevel != 'Recommended' ) {
                                 $controls["firstname"]->required = true;
+                                $controls["firstname"]->jsValidators['required'] = [
+                                    'value'   => true,
+                                    'message' => sprintf( __( '%s is required', 'integration-dynamics' ), $controls["lastname"]->label ),
+                                ];
                             }
 
                             $controls["lastname"]->name      = "lastname";
                             $controls["lastname"]->inputname = "entity[lastname]";
                             $controls["lastname"]->label     = "Last name";
                             $controls["lastname"]->disabled  = false;
-                            $controls["lastname"]->required = false;
-
-                            if ( $properties["fullname"]->requiredLevel != 'None' && $properties["lastname"]->requiredLevel != 'Recommended' ) {
-                                $controls["fullname"]->required = true;
-                            }
+                            $controls["lastname"]->required = true; // required by Dynamics CRM
+                            $controls["lastname"]->jsValidators['required'] = [
+                                'value'   => true,
+                                'message' => sprintf( __( '%s is required', 'integration-dynamics' ), $controls["lastname"]->label ),
+                            ];
 
                             unset( $controls[ $name ] );
                         }
