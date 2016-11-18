@@ -16,17 +16,17 @@ class Template {
     /**
      * Prints or returns template body.
      *
-     * @param string $template_name
+     * @param string $templateName
      * @param array $args Array of variables to make available inside the template
-     * @param string $template_path Path to the template
-     * @param string $default_path Default path to the template
+     * @param string $templatePath Path to the template
+     * @param string $defaultPath Default path to the template
      *
      * @return string|void
      */
-    public function printTemplate( $template_name, $args = [], $template_path = '', $default_path = '' ) {
+    public function printTemplate( $templateName, $args = [], $templatePath = '', $defaultPath = '' ) {
         ob_start();
 
-        $this->getTemplate( $template_name, $args, $template_path, $default_path );
+        $this->getTemplate( $templateName, $args, $templatePath, $defaultPath );
 
         return ob_get_clean();
     }
@@ -34,17 +34,17 @@ class Template {
     /**
      * Prints the template body.
      *
-     * @param string $template_name
+     * @param string $templateName
      * @param array $args Array of variables to make available inside the template
-     * @param string $template_path Path to the template
-     * @param string $default_path Default path to the template
+     * @param string $templatePath Path to the template
+     * @param string $defaultPath Default path to the template
      */
-    public function getTemplate( $template_name, $args = [], $template_path = '', $default_path = '' ) {
+    public function getTemplate( $templateName, $args = [], $templatePath = '', $defaultPath = '' ) {
         if ( $args && is_array( $args ) ) {
             extract( $args );
         }
 
-        $located = $this->locateTemplate( $template_name, $template_path, $default_path );
+        $located = $this->locateTemplate( $templateName, $templatePath, $defaultPath );
 
         if ( !file_exists( $located ) ) {
             _doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', $located ), '1.0' );
@@ -53,53 +53,53 @@ class Template {
         }
 
         // Allow 3rd party plugin filter template file from their plugin
-        $located = apply_filters( 'wordpresscrm_get_template', $located, $template_name, $args, $template_path, $default_path );
+        $located = apply_filters( 'wordpresscrm_get_template', $located, $templateName, $args, $templatePath, $defaultPath );
 
-        do_action( 'wordpresscrm_before_template_part', $template_name, $template_path, $located, $args );
+        do_action( 'wordpresscrm_before_template_part', $templateName, $templatePath, $located, $args );
 
         include( $located );
 
-        do_action( 'wordpresscrm_after_template_part', $template_name, $template_path, $located, $args );
+        do_action( 'wordpresscrm_after_template_part', $templateName, $templatePath, $located, $args );
     }
 
     /**
      * Locates the template file.
      *
-     * @param string $template_name
-     * @param string $template_path
-     * @param string $default_path
+     * @param string $templateName
+     * @param string $templatePath
+     * @param string $defaultPath
      *
      * @return string Full path to the template file
      */
-    public function locateTemplate( $template_name, $template_path = '', $default_path = '' ) {
-        if ( !$template_path ) {
+    public function locateTemplate( $templateName, $templatePath = '', $defaultPath = '' ) {
+        if ( !$templatePath ) {
             /**
              * Filters the default path for templates.
              *
              * @param string $path Template path with a trailing slash.
              */
-            $template_path = apply_filters( 'wordpress_template_path', 'wordpress-crm/' );
+            $templatePath = apply_filters( 'wordpress_template_path', 'wordpress-crm/' );
         }
 
-        if ( !$default_path ) {
-            $default_path = WORDPRESSCRM_DIR . '/templates/';
+        if ( !$defaultPath ) {
+            $defaultPath = WORDPRESSCRM_DIR . '/templates/';
         }
 
         // Look within passed path within the theme - this is priority
         $template = locate_template(
             array(
-                trailingslashit( $template_path ) . $template_name,
-                $template_name
+                trailingslashit( $templatePath ) . $templateName,
+                $templateName
             )
         );
 
         // Get default template
         if ( !$template ) {
-            $template = $default_path . $template_name;
+            $template = $defaultPath . $templateName;
         }
 
         // Return what we found
-        return apply_filters( 'wordpresscrm_locate_template', $template, $template_name, $template_path );
+        return apply_filters( 'wordpresscrm_locate_template', $template, $templateName, $templatePath );
     }
 
     /**
