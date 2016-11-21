@@ -37,7 +37,6 @@ class FrontendScripts {
      * @return array
      */
     public static function get_styles() {
-
         return apply_filters( 'wordpresscrm_enqueue_styles', array(
             'wordpresscrm-layout'   => array(
                 'src'     => ACRM()->getPluginURL() . '/resources/front/css/wordpresscrm.css',
@@ -67,11 +66,9 @@ class FrontendScripts {
      * @return void
      */
     public function load_scripts() {
-        global $post, $wp;
-
-        $suffix               = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-        $assets_path          = str_replace( [ 'http:', 'https:' ], '', ACRM()->getPluginURL() ) . '/resources/';
-        $frontend_script_path = $assets_path . 'front/js/';
+        $suffix     = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+        $assetsPath = str_replace( [ 'http:', 'https:' ], '', ACRM()->getPluginURL() ) . '/resources/';
+        $scriptPath = $assetsPath . 'front/js/';
 
         // Register any scripts for later use, or used as dependencies
         wp_register_script( 'recaptcha', 'https://www.google.com/recaptcha/api.js' );
@@ -79,22 +76,22 @@ class FrontendScripts {
         // Global frontend scripts
         wp_enqueue_script( 'recaptcha' );
 
-        wp_register_script( 'jquery-datetimepicker', $frontend_script_path . 'jquery.datetimepicker.js', [ 'jquery' ] );
-        wp_register_script( 'wordpresscrm-front', $frontend_script_path . 'wordpresscrm-front' . $suffix . '.js', [ 'jquery-datetimepicker' ] );
-        wp_register_script( 'jquery-validation', $frontend_script_path . 'jquery.validate.min.js', [ 'jquery' ] );
-        wp_register_script( 'wordpresscrm-lookup-dialog', $frontend_script_path . 'lookup-dialog.js', [ 'jquery' ] );
+        wp_register_script( 'jquery-datetimepicker', $scriptPath . 'jquery.datetimepicker.js', [ 'jquery' ] );
+        wp_register_script( 'wordpresscrm-front', $scriptPath . 'wordpresscrm-front' . $suffix . '.js', [ 'jquery-datetimepicker' ] );
+        wp_register_script( 'jquery-validation', $scriptPath . 'jquery.validate.min.js', [ 'jquery' ] );
+        wp_register_script( 'wordpresscrm-lookup-dialog', $scriptPath . 'lookup-dialog.js', [ 'jquery' ] );
 
         // localize scripts
-        $wpcrmFrontLocalizations = [
+        $wpcrmL10n = [
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
         ];
-        wp_localize_script( 'wordpresscrm-front', 'wpcrm', $wpcrmFrontLocalizations );
+        wp_localize_script( 'wordpresscrm-front', 'wpcrm', $wpcrmL10n );
 
         // CSS Styles
-        $enqueue_styles = $this->get_styles();
+        $enqueuedStyles = $this->get_styles();
 
-        if ( $enqueue_styles ) {
-            foreach ( $enqueue_styles as $handle => $args ) {
+        if ( $enqueuedStyles ) {
+            foreach ( $enqueuedStyles as $handle => $args ) {
                 wp_enqueue_style( $handle, $args['src'], $args['deps'] );
             }
         }
@@ -110,10 +107,10 @@ class FrontendScripts {
      * @return void
      */
     public function check_jquery() {
-        global $wp_scripts;
+        $wpScripts = wp_scripts();
 
         // Enforce minimum version of jQuery
-        if ( !empty( $wp_scripts->registered['jquery']->ver ) && !empty( $wp_scripts->registered['jquery']->src ) && 0 >= version_compare( $wp_scripts->registered['jquery']->ver, '1.8' ) ) {
+        if ( !empty( $wpScripts->registered['jquery']->ver ) && !empty( $wpScripts->registered['jquery']->src ) && 0 >= version_compare( $wpScripts->registered['jquery']->ver, '1.8' ) ) {
             wp_deregister_script( 'jquery' );
             wp_register_script( 'jquery', includes_url( 'js/jquery/jquery.js' ), array(), '1.8' );
             wp_enqueue_script( 'jquery' );
