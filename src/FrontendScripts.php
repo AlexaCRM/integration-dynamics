@@ -27,8 +27,8 @@ class FrontendScripts {
      * Constructor
      */
     public function __construct() {
-        add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ), 25 );
-        add_action( 'wp_print_scripts', array( $this, 'check_jquery' ), 25 );
+        add_action( 'wp_enqueue_scripts', array( $this, 'loadAssets' ), 25 );
+        add_action( 'wp_print_scripts', array( $this, 'checkJquery' ), 25 );
     }
 
     /**
@@ -36,7 +36,7 @@ class FrontendScripts {
      *
      * @return array
      */
-    public static function get_styles() {
+    public function getStyles() {
         return apply_filters( 'wordpresscrm_enqueue_styles', array(
             'wordpresscrm-layout'   => array(
                 'src'     => ACRM()->getPluginURL() . '/resources/front/css/wordpresscrm.css',
@@ -65,7 +65,7 @@ class FrontendScripts {
      * @access public
      * @return void
      */
-    public function load_scripts() {
+    public function loadAssets() {
         $suffix     = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
         $assetsPath = str_replace( [ 'http:', 'https:' ], '', ACRM()->getPluginURL() ) . '/resources/';
         $scriptPath = $assetsPath . 'front/js/';
@@ -88,7 +88,7 @@ class FrontendScripts {
         wp_localize_script( 'wordpresscrm-front', 'wpcrm', $wpcrmL10n );
 
         // CSS Styles
-        $enqueuedStyles = $this->get_styles();
+        $enqueuedStyles = $this->getStyles();
 
         if ( $enqueuedStyles ) {
             foreach ( $enqueuedStyles as $handle => $args ) {
@@ -106,7 +106,7 @@ class FrontendScripts {
      * @access public
      * @return void
      */
-    public function check_jquery() {
+    public function checkJquery() {
         $wpScripts = wp_scripts();
 
         // Enforce minimum version of jQuery
