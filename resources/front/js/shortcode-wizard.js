@@ -44,6 +44,9 @@
 
         initialize: function() {
             this.setFieldValue( null );
+            if ( this.get( 'value' ).source === 'static' ) {
+                this.setFieldValue( this.get( 'value' ).values );
+            }
 
             var providingFields = this.get( 'value' ).args;
             if ( providingFields && providingFields.length ) {
@@ -70,8 +73,12 @@
             var model = this, valueSettings, payload = {}, args = {};
 
             valueSettings = this.get( 'value' );
-            if ( valueSettings.source !== 'api' ) {
-                return []; //FIXME: return a promise anyway
+            if ( valueSettings.source === 'none' ) {
+                return [];
+            }
+
+            if ( valueSettings.source === 'static' ) {
+                return valueSettings.values;
             }
 
             if ( valueSettings.args && valueSettings.args.length ) {
@@ -114,6 +121,9 @@
                     break;
                 case 'number':
                     this.view = new ShortcodeNumberFieldView( { model: this } );
+                    break;
+                case 'hidden':
+                    this.view = new ShortcodeHiddenFieldView( { model: this } );
                     break;
                 default:
                     this.view = new ShortcodeFieldView( { model: this } );
@@ -253,10 +263,6 @@
             'change .value': 'valueChange'
         },
 
-        initialize: function() {
-            //this.valueChange = _.debounce( this.valueChange, 300 );
-        },
-
         render: function() {
             this.$el.html( this.template( { field: this.model } ) );
             return this;
@@ -270,6 +276,18 @@
             return this.$el.find( '.value' ).val();
         }
 
+    } );
+
+    var ShortcodeHiddenFieldView = ShortcodeFieldView.extend( {
+        events: {},
+
+        render: function() {
+            return this;
+        },
+
+        getValue: function() {
+            return this.model.getValues();
+        }
     } );
 
     var ShortcodeDropdownFieldView = ShortcodeFieldView.extend( {

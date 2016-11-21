@@ -10,6 +10,8 @@
  * Domain Path: /languages
  */
 
+use AlexaCRM\CRMToolkit\Entity\MetadataCollection;
+use AlexaCRM\WordpressCRM\Admin\Metabox\ShortcodeWizard;
 use AlexaCRM\WordpressCRM\Log;
 use AlexaCRM\WordpressCRM\Plugin;
 
@@ -86,6 +88,122 @@ add_action( 'init', function() {
         session_start();
     }
 }, 0 );
+
+/* Shortcode Wizard init */
+// view shortcode
+add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWizard ) {
+    $view = new ShortcodeWizard\Shortcode( 'view', __( 'View', 'integration-dynamics' ) );
+    $view->description = __( 'Renders a Dynamics CRM View as a table.', 'integration-dynamics' );
+
+    $entityField = new ShortcodeWizard\Field\Dropdown( 'entity', __( 'Entity name', 'integration-dynamics' ) );
+    $entityField->description = __( 'Name of the entity to display a view of.', 'integration-dynamics' );
+    $entityField->setValueGenerator( function() {
+        try {
+            $entities = MetadataCollection::instance()->getEntitiesList();
+            asort( $entities );
+
+            return $entities;
+        } catch ( \Exception $e ) {
+            throw $e;
+        }
+    } );
+    $view->registerField( $entityField );
+
+    $viewField = new ShortcodeWizard\Field\Dropdown( 'view', __( 'Entity View name', 'integration-dynamics' ) );
+    $viewField->description = __( 'Name of the view to display.', 'integration-dynamics' );
+    $viewField->bindingFields = [ 'entity' ];
+    $viewField->setValueGenerator( function( $values ) {
+        $views = [];
+
+        if ( !array_key_exists( 'entity', $values ) ) {
+            throw new \InvalidArgumentException( __( 'Entity name is not specified', 'integration-dynamics' ) );
+        }
+
+        $entityName = trim( $values['entity'] );
+
+        if ( $entityName === '' ) {
+            throw new \InvalidArgumentException( __( 'Empty entity name in the request', 'integration-dynamics' ) );
+        }
+
+        $entity = ASDK()->entity( $entityName );
+
+        $fetch = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+						<entity name="userquery">
+							<attribute name="name" />
+							<attribute name="returnedtypecode" />
+							 <filter type="and">
+								<condition attribute="returnedtypecode" operator="eq" value="' . $entity->metadata()->objectTypeCode . '" />
+							  </filter>
+						</entity>
+					  </fetch>';
+
+        $userQueries = ASDK()->retrieveMultiple( $fetch );
+
+        $fetch = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+						<entity name="savedquery">
+							<attribute name="name" />
+							<attribute name="returnedtypecode" />
+							 <filter type="and">
+								<condition attribute="returnedtypecode" operator="eq" value="' . $entity->metadata()->objectTypeCode . '" />
+							  </filter>
+						</entity>
+					  </fetch>';
+
+        $savedQueries = ASDK()->retrieveMultiple( $fetch );
+
+        $viewEntities = array_merge( $userQueries->Entities, $savedQueries->Entities );
+
+        foreach ( $viewEntities as $viewEntity ) {
+            $views[$viewEntity->displayname] = $viewEntity->displayname;
+        }
+
+        asort( $views );
+
+        return $views;
+    } );
+    $view->registerField( $viewField );
+
+    $countField = new ShortcodeWizard\Field\Number( 'count', __( 'Records per page', 'integration-dynamics' ) );
+    $countField->description = __( '0 disables pagination for the view.', 'integration-dynamics' );
+    /*$countField->setStaticValueGenerator( function() {
+        return 10;
+    } );*/
+    $view->registerField( $countField );
+
+    $shortcodeWizard->registerShortcode( $view );
+} );
+
+// field shortcode
+add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWizard ) {
+    $field = new ShortcodeWizard\Shortcode( 'field', __( 'Field', 'integration-dynamics' ) );
+    $field->description = __( 'Renders a field value for the current CRM record on a data-bound page.', 'integration-dynamics' );
+
+    $entityField = new ShortcodeWizard\Field\Hidden( 'entity' );
+    $entityField->setStaticValueGenerator( function() {
+        return trim( maybe_unserialize( get_post_meta( $_GET['post'], '_wordpresscrm_databinding_entity', true ) ) );
+    } );
+    $field->registerField( $entityField );
+
+    $attributeField = new ShortcodeWizard\Field\Dropdown( 'field', __( 'Attribute name', 'integration-dynamics' ) );
+    $attributeField->description = __( 'Entity attribute to render.', 'integration-dynamics' );
+    $attributeField->bindingFields = [ 'entity' ];
+    $attributeField->setValueGenerator( function( $values ) {
+        $attributes = [];
+
+        $entity = ASDK()->entity( $values['entity'] );
+
+        foreach ( $entity->attributes as $attribute ) {
+            $attributes[$attribute->logicalName] = $attribute->logicalName . ' (' . $attribute->label . ')';
+        }
+
+        asort( $attributes );
+
+        return $attributes;
+    } );
+
+    $field->registerField( $attributeField );
+    $shortcodeWizard->registerShortcode( $field );
+} );
 
 $pluginInstance = new Plugin();
 $pluginInstance->init(  $logger );

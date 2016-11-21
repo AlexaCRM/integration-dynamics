@@ -2,6 +2,7 @@
 
 namespace AlexaCRM\WordpressCRM\Admin\Metabox\ShortcodeWizard;
 
+use AlexaCRM\WordpressCRM\Admin\Metabox\ShortcodeWizard\Field\Hidden;
 use AlexaCRM\WordpressCRM\Plugin;
 
 /**
@@ -105,6 +106,15 @@ class Shortcode {
          * %2$s - shortcode arguments
          */
         $shortcodeTemplate = '[%1$s%2$s %3$s]';
+
+        // filter empty fields
+        $fieldValues = array_filter( $fieldValues );
+
+        // filter hidden fields
+        $allowedFieldNames = array_filter( array_keys( $fieldValues ), function( $fieldName ) {
+            return !( $this->getField( $fieldName ) instanceof Hidden );
+        } );
+        $fieldValues = array_intersect_key( $fieldValues, array_flip( $allowedFieldNames ) );
 
         $shortcodeArguments = $this->_arrayToAttributes( $fieldValues );
 
