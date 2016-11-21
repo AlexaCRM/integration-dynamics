@@ -104,7 +104,7 @@ class Shortcode {
          * %2$s - shortcode name
          * %2$s - shortcode arguments
          */
-        $shortcodeTemplate = '[%1$s%2$2 %3$s]';
+        $shortcodeTemplate = '[%1$s%2$s %3$s]';
 
         $shortcodeArguments = $this->_arrayToAttributes( $fieldValues );
 
