@@ -165,9 +165,9 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
 
     $countField = new ShortcodeWizard\Field\Number( 'count', __( 'Records per page', 'integration-dynamics' ) );
     $countField->description = __( '0 disables pagination for the view.', 'integration-dynamics' );
-    /*$countField->setStaticValueGenerator( function() {
+    $countField->setStaticValueGenerator( function() {
         return 10;
-    } );*/
+    } );
     $view->registerField( $countField );
 
     $shortcodeWizard->registerShortcode( $view );

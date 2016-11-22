@@ -157,7 +157,7 @@ Ditch it.
 <p>
     <label>
         <%- field.get( 'displayName' ) %><br>
-        <input type="number" class="value" value="" min="0">
+        <input type="number" class="value" value="<%- values %>" min="0">
         <!-- variable available: values -->
     </label><br>
     <span class="description"><%- field.get( 'description' ) %></span>

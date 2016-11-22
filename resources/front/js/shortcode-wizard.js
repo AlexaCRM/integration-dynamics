@@ -183,6 +183,8 @@
      */
     var ShortcodeWizardView = Backbone.View.extend( {
 
+        currentShortcode: null,
+
         template: _.template( $( '#tpl-wpcrmShortcodeWizard' ).html() ),
 
         events: {
@@ -195,16 +197,17 @@
         },
 
         select: function() {
-            var $selector = this.$el.find( '.wpcrm-sw-selector' ),
-                $description = this.$el.find( '.wpcrm-sw-container .shortcode-description' ),
+            var $selector = this.$( '.wpcrm-sw-selector' ),
+                $description = this.$( '.wpcrm-sw-container .shortcode-description' ),
                 selectedShortcode;
 
             if ( !$selector.val() ) {
-                this.$el.find( '.wpcrm-sw-container' ).hide();
+                this.$( '.wpcrm-sw-container' ).hide();
+                this.currentShortcode = null;
                 return;
             }
 
-            this.$el.find( '.wpcrm-sw-container' ).show();
+            this.$( '.wpcrm-sw-container' ).show();
 
             selectedShortcode = this.collection.findWhere( { name: $selector.val() } );
 
@@ -212,14 +215,18 @@
                 return;
             }
 
+            if ( this.currentShortcode ) {
+                this.currentShortcode.view.remove();
+            }
+
+            this.currentShortcode = selectedShortcode;
+
             $description.find( '.name' ).text( selectedShortcode.get( 'displayName' ) );
             $description.find( '.description' ).text( selectedShortcode.get( 'description' ) );
 
-            if ( !selectedShortcode.view ) {
-                selectedShortcode.view = new ShortcodeView( { model: selectedShortcode } );
-            }
+            selectedShortcode.view = new ShortcodeView( { model: selectedShortcode } );
 
-            this.$el.find( '.wpcrm-sw-container .shortcode-container' ).append( selectedShortcode.view.render().$el );
+            this.$( '.wpcrm-sw-container .shortcode-container' ).append( selectedShortcode.view.render().$el );
         }
 
     } );
@@ -229,6 +236,8 @@
      */
     var ShortcodeView = Backbone.View.extend( {
 
+        tagName: 'div',
+
         template: _.template( $( '#tpl-wpcrmShortcodeWizardShortcode' ).html() ),
 
         render: function() {
@@ -236,12 +245,19 @@
             return this;
         },
 
+        remove: function() {
+            this.model.fields.forEach( function( field ) {
+                field.getView().remove();
+            } );
+            return Backbone.View.prototype.remove.call( this );
+        },
+
         startUpdatingResult: function() {
-            this.$el.find( '.shortcode-result textarea' ).val( wpcrmShortcodeWizardI18n['generating-shortcode'] );
+            this.$( '.shortcode-result textarea' ).val( wpcrmShortcodeWizardI18n['generating-shortcode'] );
         },
 
         updateResult: function( result ) {
-            this.$el.find( '.shortcode-result' ).show().find( 'textarea' ).val( result );
+            this.$( '.shortcode-result' ).show().find( 'textarea' ).val( result );
 
             return this;
         }
@@ -273,7 +289,7 @@
         }, 300 ),
 
         getValue: function() {
-            return this.$el.find( '.value' ).val();
+            return this.$( '.value' ).val();
         }
 
     } );
@@ -299,13 +315,18 @@
 
             view.$el.html( view.loadingTemplate( { fieldName: view.model.get( 'displayName' ) } ) );
 
-            this.model.getValues().done( function( values ) {
-                view.$el.html( view.template( { field: view.model, values: values } ) );
-            } )
-                .fail( function( response ) {
-                    view.$el.html( view.errorTemplate( { message: response.message } ) );
-                } );
+            if ( typeof this.model.getValues().done === 'function' ) {
+                this.model.getValues().done( function( values ) {
+                    view.$el.html( view.template( { field: view.model, values: values } ) );
+                } )
+                    .fail( function( response ) {
+                        view.$el.html( view.errorTemplate( { message: response.message } ) );
+                    } );
 
+                return this;
+            }
+
+            view.$el.html( view.template( { field: view.model, values: this.model.getValues() } ) );
             return this;
         }
 
@@ -320,13 +341,18 @@
 
             view.$el.html( view.loadingTemplate( { fieldName: view.model.get( 'displayName' ) } ) );
 
-            //this.model.getValues().done( function( values ) {
-                view.$el.html( view.template( { field: view.model, values: values } ) );
-            /*} )
-                .fail( function( response ) {
-                    view.$el.html( view.errorTemplate( { message: response.message } ) );
-                } );*/
+            if ( typeof this.model.getValues().done === 'function' ) {
+                this.model.getValues().done( function( values ) {
+                    view.$el.html( view.template( { field: view.model, values: values } ) );
+                } )
+                    .fail( function( response ) {
+                        view.$el.html( view.errorTemplate( { message: response.message } ) );
+                    } );
 
+                return this;
+            }
+
+            view.$el.html( view.template( { field: view.model, values: this.model.getValues() } ) )
             return this;
         }
 
