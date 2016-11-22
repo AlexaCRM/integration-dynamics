@@ -216,7 +216,7 @@
             }
 
             if ( this.currentShortcode ) {
-                this.currentShortcode.view.remove();
+                this.currentShortcode.view.$el.hide();
             }
 
             this.currentShortcode = selectedShortcode;
@@ -224,9 +224,13 @@
             $description.find( '.name' ).text( selectedShortcode.get( 'displayName' ) );
             $description.find( '.description' ).text( selectedShortcode.get( 'description' ) );
 
-            selectedShortcode.view = new ShortcodeView( { model: selectedShortcode } );
+            if ( !selectedShortcode.view ) {
+                selectedShortcode.view = new ShortcodeView( { model: selectedShortcode } );
+                this.$( '.wpcrm-sw-container .shortcode-container' ).append( selectedShortcode.view.render().$el );
+            } else {
+                selectedShortcode.view.$el.show();
+            }
 
-            this.$( '.wpcrm-sw-container .shortcode-container' ).append( selectedShortcode.view.render().$el );
         }
 
     } );
@@ -242,14 +246,10 @@
 
         render: function() {
             this.$el.html( this.template( { fields: this.model.fields } ) );
-            return this;
-        },
-
-        remove: function() {
             this.model.fields.forEach( function( field ) {
-                field.getView().remove();
-            } );
-            return Backbone.View.prototype.remove.call( this );
+                this.$( '.shortcode-fields' ).append( field.getView().render().$el );
+            }, this );
+            return this;
         },
 
         startUpdatingResult: function() {

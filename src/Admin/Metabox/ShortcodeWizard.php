@@ -128,9 +128,7 @@ class ShortcodeWizard {
 </div>
 </script>
 <script type="text/template" id="tpl-wpcrmShortcodeWizardShortcode">
-<% fields.forEach( function( field ) {
-    jQuery( '.wpcrm-sw-container .shortcode-container' ).append( field.getView().render().$el );
-} ); %>
+<div class="shortcode-fields"></div>
 <div class="shortcode-result" style="border-top: 1px solid #eceeef; padding-top: 10px; display: none;">
     <textarea style="width:100%" rows="6" readonly></textarea>
     <p class="description"><?php _e( 'Copy the generated code and paste into the editor window.', 'integration-dynamics' ); ?></p>
