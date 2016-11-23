@@ -43,16 +43,16 @@ class Form extends Shortcode {
     /**
      * Shortcode handler
      *
-     * @param array $atts
+     * @param array $attributes
      * @param string $content
      * @param string $tagName
      *
      * @return string
      */
-    public function shortcode( $atts, $content = null, $tagName ) {
+    public function shortcode( $attributes, $content = null, $tagName ) {
         $form = new FormInstance();
 
-        return $form->shortcode( $atts );
+        return $form->shortcode( $attributes );
     }
 
 }

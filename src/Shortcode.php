@@ -16,6 +16,11 @@ abstract class Shortcode {
 
     public abstract function shortcode( $attributes, $content = null, $tagName );
 
+    /**
+     * @param string $error
+     *
+     * @return string
+     */
     public static function returnError( $error ) {
         $args = [
             'error' => $error,
@@ -24,6 +29,11 @@ abstract class Shortcode {
         return ACRM()->template->printTemplate( "error.php", $args );
     }
 
+    /**
+     * @param \Exception $exception
+     *
+     * @return string
+     */
     public static function returnExceptionError( $exception = null ) {
         $args = [
             'error' => __( 'An error occurred, please try again later or contact site administration', 'integration-dynamics' ),
@@ -33,6 +43,9 @@ abstract class Shortcode {
         return ACRM()->template->printTemplate( "exception.php", $args );
     }
 
+    /**
+     * @return string
+     */
     public static function notConnected() {
         return self::returnError( __( "Wordpress CRM Plugin is not connected to Dynamics CRM", 'integration-dynamics' ) );
     }

@@ -153,70 +153,89 @@ class FormInstance extends AbstractForm {
     }
 
     /**
-     * @param string $entity_name $entity the Entity to retrieve - must have an ID specified
-     * @param string $form_name
-     * @param string $mode
-     * @param string $parameter_name
+     * @param array $attributes
+     * @param bool $ajax
+     * @param null $shortcodeName
+     *
+     * @return string
      */
-    public function shortcode( $atts, $ajax = false, $_ = null ) {
+    public function shortcode( $attributes, $ajax = false, $shortcodeName = null ) {
         /* Check CRM connection */
         if ( !ACRM()->connected() ) {
             return self::notConnected();
         }
+
         try {
-            /* Parse shortcode atts */
-            $this->attributes = self::parseShortcodeAttributes( $atts );
+            /* Parse shortcode attributes */
+            $this->attributes = self::parseShortcodeAttributes( $attributes );
+
             /* Lowercase mode parameter */
             $this->mode = self::parseModeAttribute( $this->attributes["mode"], $this->attributes["parameter_name"] );
+
             /* Disable default values when in create mode or in creade mode for upsert */
             $this->disableDefaultForCreate = ( $this->attributes["disable_default_for_create"] == "false" || !$this->attributes["disable_default_for_create"] ) ? false : true;
+
             /* Disable default values when in edit mode or in edit mode for upsert */
             $this->disableDefaultForEdit = ( $this->attributes["disable_default_for_edit"] == "false" || !$this->attributes["disable_default_for_edit"] ) ? false : true;
+
             /* Get default values array Entity form field as key, value definition as value ("value", "currentuser", "currentuser.field") */
             $this->default = self::parseDefaultAttribute( $this->attributes["default"] );
+
             /* Parse the mode attributes for default values */
             $this->defaultMode = self::parseKeyArrayShortcodeAttribute( $this->attributes["default_mode"] );
+
             /* Get ajax shortcode attribute */
             $this->ajax = $this->attributes["ajax"];
+
             /* Restrict entity types for lookup fields */
             $this->lookupTypes = self::parseLookupTypesAttribute( $this->attributes["lookuptypes"] );
+
             /* Set custom lookup views for fields */
             $this->lookupViews = self::parseLookupTypesAttribute( $this->attributes["lookupviews"] );
+
             /* Parse required entity fields */
             $this->requiredFields = self::parseFieldPropertiesAttributes( $this->attributes["required"] );
+
             /* Parse optional entity fields */
             $this->optionalFields = self::parseFieldPropertiesAttributes( $this->attributes["optional"] );
+
             /* Detect need to use attachments */
             $this->attachment = self::parseAttachmentAttribute( $this->attributes["attachment"] );
+
             /* Use captcha */
             $captcha = self::parseCaptchaAttribute( $this->attributes["captcha"] );
 
             $this->formName = strtolower( $this->attributes["name"] );
-
             $this->formType = $this->attributes["type"];
+
             /* Generate form unique ID for fronend validation */
-            $this->formUid        = uniqid( "entity-form-" );
-            $entityName           = strtolower( $this->attributes["entity"] );
-            $this->successMessage = ( $this->attributes["message"] ) ? $this->attributes["message"] : $this->successMessage;
-            $redirectUrl          = $this->attributes["redirect_url"];
+            $this->formUid = uniqid( "entity-form-" );
+
+            $entityName  = strtolower( $this->attributes["entity"] );
+            $redirectUrl = $this->attributes["redirect_url"];
+
+            if ( $this->attributes['message'] ) {
+                $this->successMessage = $this->attributes['message'];
+            }
+
             /* Check hide_form attribute exists and it value equals to "true" */
             $hideForm = ( $this->attributes["hide_form"] && $this->attributes["hide_form"] == "true" );
+
             /* Parse attachment label attribute for notescontrol form control label */
             $this->attachmentLabel = $this->attributes["attachment_label"];
 
             $this->disableLayout = ( $this->attributes["enable_layout"] != "true" );
+
             /* Retrieve parameter name */
             $id = self::parseParameterName( $this->attributes["parameter_name"], $this->mode );
+
+            $this->entity = ASDK()->entity( $entityName ); // An empty entity record doesn't have performance penalty.
 
             // allow $id to be an entity record
             if ( $id instanceof Entity ) {
                 $this->entity = $id;
-            } else {
-                if ( $id ) {
-                    $this->entity = ASDK()->entity( $entityName, $id );
-                } else {
-                    $this->entity = ASDK()->entity( $entityName );
-                }
+            } elseif ( $id ) {
+                $this->entity = ASDK()->entity( $entityName, $id );
             }
 
             /* Check that the entity or entity record exists */
@@ -225,39 +244,44 @@ class FormInstance extends AbstractForm {
 
                 return self::printFormErrors( $this->errors );
             }
+
             /* Get the entity form xml */
             $this->formXML = $this->getFormXML( $this->formName );
+
             /* Retrieve form controls */
             if ( $this->formXML ) {
                 $this->controls = $this->setupControls( $this->formXML );
             } else {
-                array_push( $this->errors, "Can not get form definition" );
+                array_push( $this->errors, __( 'Can not get form definition', 'integration-dynamics' ) );
 
                 return self::printFormErrors( $this->errors );
             }
+
             /* Set required attributes from shortcode attribute to form controls */
             if ( !empty( $this->requiredFields ) ) {
                 $this->controls = self::setupRequiredControlsFromAttributes( $this->controls, $this->requiredFields );
             }
+
             /* Set optional attributes from shortcode attribute to form controls */
             if ( !empty( $this->optionalFields ) ) {
                 $this->controls = self::setupOptionalControlsFromAttributes( $this->controls, $this->optionalFields );
             }
+
             /* Set default values to controls */
             if ( !empty( $this->default ) ) {
                 $this->setupDefaultControlsAndValues();
             }
+
             /* Set values from entity record to controls */
             $this->controls = self::setValuesToControls( $this->controls, $this->entity );
+
             /* Enqueue javascript */
             self::enqueueFormScripts();
 
             if ( $this->mode == "readonly" ) {
-
                 $captcha = null;
             } else {
                 if ( $postData = $this->getFormPostData( $ajax ) ) {
-
                     $this->processForm( $postData, $this->controls );
 
                     if ( $this->mode == "edit" ) {
@@ -727,7 +751,7 @@ class FormInstance extends AbstractForm {
                 $controls[ $name ]->label = ( $label ) ? $label : $this->entity->getPropertyLabel( $name );
 
                 if ( $cellLabelAlignment !== '' ) {
-                    $controls[$name]->labelAligment = $cellLabelAlignment;
+                    $controls[$name]->labelAlignment = $cellLabelAlignment;
 
                     // left, center, or right
                     $controls[$name]->labelClass = 'text-' . strtolower( $cellLabelAlignment );
@@ -935,17 +959,24 @@ class FormInstance extends AbstractForm {
         wp_enqueue_style( 'jquery-style', ACRM()->getPluginURL() . '/resources/front/css/wordpresscrm-jqueryui-css.css' );
     }
 
-    public static function getFormEntity( $formName, $entity, $formType = null ) {
+    /**
+     * Retrieves a form record from Dynamics CRM.
+     *
+     * @param string $formName
+     *
+     * @return Entity
+     */
+    private function getFormEntity( $formName ) {
         $fetch = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
                     <entity name="systemform">
                             <attribute name="objecttypecode"/>
                             <attribute name="name"/>
                             <attribute name="formxml"/>
                             <filter type="and">
-                              <condition attribute="objecttypecode" operator="eq" value="' . $entity->metadata()->objectTypeCode . '" />
+                              <condition attribute="objecttypecode" operator="eq" value="' . $this->entity->metadata()->objectTypeCode . '" />
                               <condition attribute="name" operator="eq" value="' . $formName . '" />';
-        if ( $formType ) {
-            $fetch .= '<condition attribute="typename" operator="eq" value="' . $formType . '" />';
+        if ( $this->formType ) {
+            $fetch .= '<condition attribute="typename" operator="eq" value="' . $this->formType . '" />';
         }
         $fetch .= '</filter>;
                         </entity>
@@ -967,7 +998,7 @@ class FormInstance extends AbstractForm {
 
         $formXML = $cache->get( $cacheKey );
         if ( $formXML == null ) {
-            $form = self::getFormEntity( $formName, $this->entity, $this->formType );
+            $form = $this->getFormEntity( $formName );
 
             $formXML = $form->formXML;
             $cache->set( $cacheKey, $formXML, 2 * 60 * 60 * 24 );

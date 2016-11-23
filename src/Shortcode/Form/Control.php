@@ -23,7 +23,7 @@ class Control {
 
     public $labelPosition = "Left";
 
-    public $labelAligment = "Left";
+    public $labelAlignment = "Left";
 
     public $labelClass = "";
 

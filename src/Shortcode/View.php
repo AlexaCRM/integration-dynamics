@@ -102,13 +102,13 @@ class View extends Shortcode {
     /**
      * Shortcode handler
      *
-     * @param array $atts
+     * @param array $attributes
      * @param string $content
      * @param string $tagName
      *
      * @return string
      */
-    public function shortcode( $atts, $content = null, $tagName ) {
+    public function shortcode( $attributes, $content = null, $tagName ) {
         /* Check the connection to Dynamics CRM */
         if ( !ACRM()->connected() ) {
             /* Return error template if it's not connected function located in AlexaCRM\WordpressCRM\Shortcode::notConnected() */
@@ -116,7 +116,7 @@ class View extends Shortcode {
         }
         //try {
         /* Parse msdyncrm_view shortcode attributes */
-        $attributes = self::parseAttributes( $atts );
+        $attributes = self::parseAttributes( $attributes );
         /* Parse shortcode parameters attribute values if they exists */
         $parameters = self::parseKeyArrayShortcodeAttribute( $attributes["parameters"] );
         /* Parse shortcode lookups attribute values if they exists */

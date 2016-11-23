@@ -38,13 +38,13 @@ class Field extends Shortcode {
     /**
      * Shortcode handler
      *
-     * @param array $atts
+     * @param array $attributes
      * @param string $content
      * @param string $tagName
      *
      * @return string
      */
-    public function shortcode( $atts, $content = null, $tagName ) {
+    public function shortcode( $attributes, $content = null, $tagName ) {
 
         try {
 
@@ -58,7 +58,7 @@ class Field extends Shortcode {
                 'locale'   => null,
                 'add_form' => null,
                 'nowrap'   => true,
-            ), $atts );
+            ), $attributes );
 
             $format = null;
 

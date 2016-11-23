@@ -21,7 +21,7 @@ class Template {
      * @param string $templatePath Path to the template
      * @param string $defaultPath Default path to the template
      *
-     * @return string|void
+     * @return string
      */
     public function printTemplate( $templateName, $args = [], $templatePath = '', $defaultPath = '' ) {
         ob_start();
