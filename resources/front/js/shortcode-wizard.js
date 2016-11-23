@@ -344,4 +344,4 @@
         'ShortcodeField': ShortcodeField,
         'ShortcodeCollection': ShortcodeCollection
     } );
-} )( jQuery );
+}( jQuery ) );
