@@ -12,6 +12,11 @@ if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
+/**
+ * Implements form shortcode.
+ *
+ * @package AlexaCRM\WordpressCRM\Shortcode\Form
+ */
 class FormInstance extends AbstractForm {
 
     private $attributes;
@@ -26,6 +31,11 @@ class FormInstance extends AbstractForm {
 
     private $formType = null;
 
+    /**
+     * Form mode. May be 'readonly', 'create', 'update', or 'edit'.
+     *
+     * @var string
+     */
     private $mode;
 
     /**
@@ -41,7 +51,7 @@ class FormInstance extends AbstractForm {
 
     private $default = [ ];
 
-    private $default_mode = [ ];
+    private $defaultMode = [ ];
 
     private $lookupTypes = [ ];
 
@@ -62,7 +72,7 @@ class FormInstance extends AbstractForm {
 
     private $entityErrors = [ ];
 
-    private $success_message = '';
+    private $successMessage = '';
 
     private $showForm = true;
 
@@ -74,11 +84,14 @@ class FormInstance extends AbstractForm {
 
     private $ajax = false;
 
+    /**
+     * FormInstance constructor.
+     */
     public function __construct() {
         $this->captcha   = new GCaptcha();
         $this->validator = new FormValidator();
 
-        $this->success_message = __( '<strong>Success!</strong>', 'integration-dynamics' );
+        $this->successMessage = __( '<strong>Success!</strong>', 'integration-dynamics' );
     }
 
     public function __get( $name ) {
@@ -162,7 +175,7 @@ class FormInstance extends AbstractForm {
             /* Get default values array Entity form field as key, value definition as value ("value", "currentuser", "currentuser.field") */
             $this->default = self::parseDefaultAttribute( $this->attributes["default"] );
             /* Parse the mode attributes for default values */
-            $this->default_mode = self::parseKeyArrayShortcodeAttribute( $this->attributes["default_mode"] );
+            $this->defaultMode = self::parseKeyArrayShortcodeAttribute( $this->attributes["default_mode"] );
             /* Get ajax shortcode attribute */
             $this->ajax = $this->attributes["ajax"];
             /* Restrict entity types for lookup fields */
@@ -182,12 +195,12 @@ class FormInstance extends AbstractForm {
 
             $this->formType = $this->attributes["type"];
             /* Generate form unique ID for fronend validation */
-            $this->formUid         = uniqid( "entity-form-" );
-            $entityName            = strtolower( $this->attributes["entity"] );
-            $this->success_message = ( $this->attributes["message"] ) ? $this->attributes["message"] : $this->success_message;
-            $redirect_url          = $this->attributes["redirect_url"];
+            $this->formUid        = uniqid( "entity-form-" );
+            $entityName           = strtolower( $this->attributes["entity"] );
+            $this->successMessage = ( $this->attributes["message"] ) ? $this->attributes["message"] : $this->successMessage;
+            $redirectUrl          = $this->attributes["redirect_url"];
             /* Check hide_form attribute exists and it value equals to "true" */
-            $hide_form = ( $this->attributes["hide_form"] && $this->attributes["hide_form"] == "true" );
+            $hideForm = ( $this->attributes["hide_form"] && $this->attributes["hide_form"] == "true" );
             /* Parse attachment label attribute for notescontrol form control label */
             $this->attachmentLabel = $this->attributes["attachment_label"];
 
@@ -263,8 +276,6 @@ class FormInstance extends AbstractForm {
 
                     if ( empty( $this->errors ) ) {
                         try {
-                            $result = false;
-
                             if ( $this->mode == "edit" ) {
                                 $result = ASDK()->update( $this->entity );
                             } else {
@@ -274,16 +285,16 @@ class FormInstance extends AbstractForm {
                             if ( !$result ) {
                                 array_push( $this->errors, ( $this->attributes["submit_error"] ) ? $this->attributes["submit_error"] : Messages::getMessage( "form", "crm_error" ) );
                             } else {
-                                $objectid = ( $this->mode == "edit" ) ? $this->entity->id : $result;
-                                $this->proccessAttachments( $objectid );
+                                $objectId = ( $this->mode == "edit" ) ? $this->entity->id : $result;
+                                $this->processAttachments( $objectId );
 
-                                if ( $redirect_url ) {
-                                    wordpresscrm_javascript_redirect( $redirect_url );
+                                if ( $redirectUrl ) {
+                                    wordpresscrm_javascript_redirect( $redirectUrl );
                                 }
 
-                                array_push( $this->notices, $this->success_message );
+                                array_push( $this->notices, $this->successMessage );
 
-                                $this->showForm = !$hide_form;
+                                $this->showForm = !$hideForm;
                             }
                         } catch ( Exception $ex ) {
                             array_push( $this->errors, $ex->getMessage() );
@@ -322,7 +333,7 @@ class FormInstance extends AbstractForm {
      *
      * @param $entity
      */
-    private function proccessAttachments( $entity ) {
+    private function processAttachments( $entity ) {
         if ( !( isset( $_FILES['entity'] ) && isset( $_FILES['entity']['name']['notescontrol'] ) && $_FILES['entity']['name']['notescontrol'] ) ) {
             return;
         }
@@ -350,18 +361,25 @@ class FormInstance extends AbstractForm {
         ASDK()->create( $newAnnotation );
     }
 
+    /**
+     * Sets up default values for respective controls.
+     *
+     * @return void
+     */
     private function setupDefaultControlsAndValues() {
-
-        if ( ( $this->disableDefaultForCreate && $this->mode == "create" ) || ( $this->disableDefaultForEdit && $this->mode == "edit" ) ) {
+        if ( ( $this->disableDefaultForCreate && $this->mode === 'create' )
+             || ( $this->disableDefaultForEdit && $this->mode === 'edit' )
+        ) {
             return;
         }
 
         $counter = - 1;
-        foreach ( $this->default as $key => $value ) {
+        foreach ( $this->default as $attributeName => $attributeValue ) {
             $counter ++;
-            if ( isset( $this->default_mode[ $counter ] ) &&
-                 strtolower( $this->default_mode[ $counter ] != "upsert" ) &&
-                 strtolower( $this->default_mode[ $counter ] ) != $this->mode
+
+            if ( isset( $this->defaultMode[ $counter ] ) &&
+                 strtolower( $this->defaultMode[ $counter ] ) !== 'upsert' &&
+                 strtolower( $this->defaultMode[ $counter ] ) !== $this->mode
             ) {
                 continue;
             }
@@ -372,47 +390,47 @@ class FormInstance extends AbstractForm {
 
             $k = null;
 
-            foreach ( $this->controls as $colomnKey => $col ) {
-                if ( isset( $this->controls[ $colomnKey ]["controls"][ $key ] ) ) {
-                    $k = $key;
+            foreach ( $this->controls as $controlKey => $control ) {
+                if ( isset( $this->controls[ $controlKey ]["controls"][ $attributeName ] ) ) {
+                    $k = $attributeName;
                 }
             }
 
-            if ( isset( $this->entity->{$key} ) ) {
+            if ( isset( $this->entity->{$attributeName} ) ) {
                 try {
                     /* Check $_GET parameter for defaults */
-                    if ( strpos( $value, '.' ) !== false ) {
-                        if ( strpos( $value, 'querystring' ) ) {
-                            $explode = explode( ".", $value );
+                    if ( strpos( $attributeValue, '.' ) !== false ) {
+                        if ( strpos( $attributeValue, 'querystring' ) ) {
+                            $explode = explode( ".", $attributeValue );
 
-                            $qparams = $this->parseQueryString();
+                            $queryParams = $this->parseQueryString();
 
-                            if ( isset( $qparams[ $explode[1] ] ) && $qparams[ $explode[1] ] ) {
+                            if ( isset( $queryParams[ $explode[1] ] ) && $queryParams[ $explode[1] ] ) {
 
-                                $queryvalue = $qparams[ $explode[1] ];
+                                $queryValue = $queryParams[ $explode[1] ];
 
                                 if ( $k == null ) {
-                                    $this->controls[ $last ]["controls"][ $key ]          = new Control( $key );
-                                    $this->controls[ $last ]["controls"][ $key ]->visible = false;
-                                    $this->controls[ $last ]["controls"][ $key ]->value   = $queryvalue;
-                                    $this->entity->{$key}                                 = $queryvalue;
+                                    $this->controls[ $last ]["controls"][ $attributeName ]          = new Control( $attributeName );
+                                    $this->controls[ $last ]["controls"][ $attributeName ]->visible = false;
+                                    $this->controls[ $last ]["controls"][ $attributeName ]->value   = $queryValue;
+                                    $this->entity->{$attributeName}                                 = $queryValue;
                                 } else {
                                     /* Simple value string */
-                                    if ( $this->entity->attributes[ $key ]->isLookup ) {
-                                        foreach ( $this->entity->attributes[ $key ]->lookupTypes as $entityType ) {
+                                    if ( $this->entity->attributes[ $attributeName ]->isLookup ) {
+                                        foreach ( $this->entity->attributes[ $attributeName ]->lookupTypes as $entityType ) {
                                             try {
-                                                $lookup = ASDK()->entity( $entityType, $queryvalue );
+                                                $lookup = ASDK()->entity( $entityType, $queryValue );
                                             } catch ( Exception $ex ) {
                                                 continue;
                                             }
-                                            $this->entity->{$key} = $lookup;
+                                            $this->entity->{$attributeName} = $lookup;
                                         }
                                     } else {
-                                        $this->entity->{$key} = $queryvalue;
+                                        $this->entity->{$attributeName} = $queryValue;
                                     }
                                 }
                             } else {
-                                unset( $this->default[ $key ] );
+                                unset( $this->default[ $attributeName ] );
                             }
                         }
 
@@ -421,12 +439,12 @@ class FormInstance extends AbstractForm {
                          * {var.field} (dot-notation)
                          *
                          * @param FormInstance $form Form instance
-                         * @param string $value Variable name (e.g. for {var.field} $value == "var.field")
+                         * @param string $attributeValue Variable name (e.g. for {var.field} $value == "var.field")
                          * @param string|null $k Associated form control name if one exists, null otherwise
-                         * @param string $key Field name to associate value with
+                         * @param string $attributeName Field name to associate value with
                          * @param string $last
                          */
-                        do_action( 'wordpresscrm_form_setup_with_comma', $this, $value, $k, $key, $last );
+                        do_action( 'wordpresscrm_form_setup_with_comma', $this, $attributeValue, $k, $attributeName, $last );
                     } else {
                         /**
                          * Allows to add support for custom variables in the "default" shortcode argument with syntax
@@ -434,35 +452,35 @@ class FormInstance extends AbstractForm {
                          *
                          * @param bool $setupDefault Whether to setup default (handler must return false!)
                          * @param FormInstance $form Form instance
-                         * @param string $value Variable name (e.g. for {var.field} $value == "var.field")
+                         * @param string $attributeValue Variable name (e.g. for {var.field} $value == "var.field")
                          * @param string|null $k Associated form control name if one exists, null otherwise
-                         * @param string $key Field name to associate value with
+                         * @param string $attributeName Field name to associate value with
                          * @param string $last
                          */
-                        $setupDefault = apply_filters( 'wordpresscrm_form_setup_without_comma', true, $this, $value, $k, $key, $last );
+                        $setupDefault = apply_filters( 'wordpresscrm_form_setup_without_comma', true, $this, $attributeValue, $k, $attributeName, $last );
 
                         if ( $setupDefault ) {
                             if ( $k == null ) {
 
-                                $this->controls[ $last ]["controls"][ $key ]          = new Control( $key );
-                                $this->controls[ $last ]["controls"][ $key ]->visible = false;
-                                $this->controls[ $last ]["controls"][ $key ]->value   = $value;
-                                $this->entity->{$key}                                 = $value;
+                                $this->controls[ $last ]["controls"][ $attributeName ]          = new Control( $attributeName );
+                                $this->controls[ $last ]["controls"][ $attributeName ]->visible = false;
+                                $this->controls[ $last ]["controls"][ $attributeName ]->value   = $attributeValue;
+                                $this->entity->{$attributeName}                                 = $attributeValue;
                             } else {
                                 /* Simple value string */
-                                if ( $this->entity->attributes[ $key ]->isLookup ) {
-                                    foreach ( $this->entity->attributes[ $key ]->lookupTypes as $entityType ) {
+                                if ( $this->entity->attributes[ $attributeName ]->isLookup ) {
+                                    foreach ( $this->entity->attributes[ $attributeName ]->lookupTypes as $entityType ) {
                                         try {
 
-                                            $lookup = ASDK()->entity( $entityType, $value );
+                                            $lookup = ASDK()->entity( $entityType, $attributeValue );
                                         } catch ( Exception $ex ) {
                                             continue;
                                         }
 
-                                        $this->entity->{$key} = $lookup;
+                                        $this->entity->{$attributeName} = $lookup;
                                     }
                                 } else {
-                                    $this->entity->{$key} = $value;
+                                    $this->entity->{$attributeName} = $attributeValue;
                                 }
                             }
                         }
@@ -470,7 +488,7 @@ class FormInstance extends AbstractForm {
                 } catch ( Exception $ex ) {
                     array_push( $this->errors, $ex->getMessage() );
 
-                    return self::printFormErrors( $this->errors );
+                    self::printFormErrors( $this->errors );
                 }
             }
         }
@@ -669,7 +687,6 @@ class FormInstance extends AbstractForm {
     }
 
     private function setupControls( $formXML ) {
-
         $properties = $this->entity->attributes;
 
         $formSimpleXML = simplexml_load_string( $formXML );
@@ -685,76 +702,72 @@ class FormInstance extends AbstractForm {
 
             $section = $columnXML->xpath( ".//section" );
 
-            $cellLabelAligment = (string) $section[0]["celllabelalignment"];
+            $cellLabelAlignment = (string) $section[0]["celllabelalignment"];
             $cellLabelPosition = (string) $section[0]["celllabelposition"];
 
             $cells = $columnXML->xpath( ".//cell" );
             foreach ( $cells as $cell ) {
                 $controlXml = $cell->xpath( ".//control" );
 
-                if ( isset( $controlXml[0] ) ) {
-                    $control  = $controlXml[0];
-                    $labelXml = $cell->xpath( ".//label" );
+                if ( !isset( $controlXml[0] ) ) {
+                    continue;
+                }
 
-                    $label = (string) $labelXml[0]["description"];
+                $control  = $controlXml[0];
+                $name = strtolower( $control["id"] );
 
-                    $name = strtolower( $control["id"] );
+                if ( !isset( $properties[$name] ) ) {
+                    continue;
+                }
 
-                    if ( isset( $properties[ $name ] ) ) {
-                        $controls[ $name ]        = new Control( $name, $this->entity );
-                        $controls[ $name ]->label = ( $label ) ? $label : $this->entity->getPropertyLabel( $name );
+                $labelXml = $cell->xpath( ".//label" );
+                $label = (string) $labelXml[0]["description"];
 
-                        if ( isset( $cellLabelAligment ) ) {
-                            $controls[ $name ]->labelAligment = $cellLabelAligment;
+                $controls[ $name ]        = new Control( $name, $this->entity );
+                $controls[ $name ]->label = ( $label ) ? $label : $this->entity->getPropertyLabel( $name );
 
-                            switch ( $controls[ $name ]->labelAligment ) {
-                                case "Left":
-                                    $controls[ $name ]->labelClass = "text-left";
-                                    break;
-                                case "Center":
-                                    $controls[ $name ]->labelClass = "text-center";
-                                    break;
-                                case "Right":
-                                    $controls[ $name ]->labelClass = "text-right";
-                                    break;
+                if ( $cellLabelAlignment !== '' ) {
+                    $controls[$name]->labelAligment = $cellLabelAlignment;
+
+                    // left, center, or right
+                    $controls[$name]->labelClass = 'text-' . strtolower( $cellLabelAlignment );
+                }
+
+                if ( $cellLabelPosition !== '' ) {
+                    $controls[ $name ]->labelPosition = $cellLabelPosition;
+                }
+
+                $controls[ $name ]->type       = strtolower( $properties[ $name ]->type );
+                $controls[ $name ]->recordName = null;
+
+                if ( $properties[ $name ]->isLookup ) {
+                    $controls[ $name ]->type       = 'lookup';
+                    $controls[ $name ]->recordName = ( isset( $this->entity->{$name} ) && $this->entity->{$name} ) ? $this->entity->{$name}->displayname : null;
+
+                    $controls[ $name ]->lookupTypes = array();
+
+                    foreach ( $properties[ $name ]->lookupTypes as $entityLookupType ) {
+                        $entityType                                          = ASDK()->entity( $entityLookupType );
+                        $controls[ $name ]->lookupTypes[ $entityLookupType ] = $entityType->entityLogicalName;
+
+                        if ( !array_key_exists( $name, $this->lookupTypes ) ) {
+                            continue;
+                        }
+
+                        foreach ( $this->lookupTypes[ $name ] as $lookupType ) {
+                            if ( $lookupType == $entityLookupType ) {
+                                $entityType                                          = ASDK()->entity( $entityLookupType );
+                                $controls[ $name ]->lookupTypes[ $entityLookupType ] = $entityType->entityLogicalName;
                             }
                         }
+                    }
+                }
 
-                        if ( isset( $cellLabelPosition ) ) {
-                            $controls[ $name ]->labelPosition = $cellLabelPosition;
-                        }
+                if ( !empty( $this->lookupViews[ $name ] ) ) {
 
-                        if ( $properties[ $name ]->isLookup ) {
-                            $controls[ $name ]->type       = 'lookup';
-                            $controls[ $name ]->recordName = ( isset( $this->entity->{$name} ) && $this->entity->{$name} ) ? $this->entity->{$name}->displayname : null;
+                    $controls[ $name ]->type = 'lookup-picklist';
 
-                            $controls[ $name ]->lookupTypes = array();
-
-                            if ( key_exists( $name, $this->lookupTypes ) ) {
-                                foreach ( $properties[ $name ]->lookupTypes as $entityLookupType ) {
-                                    foreach ( $this->lookupTypes[ $name ] as $lookupType ) {
-                                        if ( $lookupType == $entityLookupType ) {
-                                            $entityType                                          = ASDK()->entity( $entityLookupType );
-                                            $controls[ $name ]->lookupTypes[ $entityLookupType ] = $entityType->entityLogicalName;
-                                        }
-                                    }
-                                }
-                            } else {
-                                foreach ( $properties[ $name ]->lookupTypes as $entityLookupType ) {
-                                    $entityType                                          = ASDK()->entity( $entityLookupType );
-                                    $controls[ $name ]->lookupTypes[ $entityLookupType ] = $entityType->entityLogicalName;
-                                }
-                            }
-                        } else {
-                            $controls[ $name ]->type       = strtolower( $properties[ $name ]->type );
-                            $controls[ $name ]->recordName = null;
-                        }
-
-                        if ( !empty( $this->lookupViews[ $name ] ) ) {
-
-                            $controls[ $name ]->type = 'lookup-picklist';
-
-                            $fetchView = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+                    $fetchView = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
                                                 <entity name="savedquery">
                                                   <attribute name="name" />
                                                   <attribute name="fetchxml" />
@@ -764,83 +777,78 @@ class FormInstance extends AbstractForm {
                                                 </entity>
                                           </fetch>';
 
-                            $lookupView = ASDK()->retrieveSingle( $fetchView );
+                    $lookupView = ASDK()->retrieveSingle( $fetchView );
 
-                            $options = ASDK()->retrieveMultiple( $lookupView->fetchxml );
+                    $options = ASDK()->retrieveMultiple( $lookupView->fetchxml );
 
-                            foreach ( $options->Entities as $optionEntity ) {
-                                $controls[ $name ]->options[ $optionEntity->ID ] = $optionEntity->displayname;
-                            }
-                        }
-
-                        $controls[ $name ]->classid = strtoupper( (string) $control['classid'] );
-
-                        if ( $properties[ $name ]->type == 'Picklist' || $properties[ $name ]->type == 'Boolean' ) {
-
-                            $controls[ $name ]->options = $properties[ $name ]->optionSet->options;
-                        } else if ( empty( $controls[ $name ]->options ) ) {
-                            $controls[ $name ]->options = null;
-                        }
-
-                        if ( !$cell["showlabel"] || (string) $cell["showlabel"] == "true" ) {
-                            $controls[ $name ]->showlabel = true;
-                        } else {
-                            $controls[ $name ]->showlabel = false;
-                        }
-
-                        $controls[ $name ]->readonly = (bool) ( $this->mode == "readonly" );
-
-                        if ( strtolower( $control['disabled'] ) == "true" ) {
-                            $controls[ $name ]->readonly = true;
-                        }
-
-                        if ( isset( $cell["visible"] ) && $cell["visible"] == "false" ) {
-                            $controls[ $name ]->visible = false;
-                        }
-
-                        $controls[ $name ]->fromEntity( $this->entity, $this->mode );
-
-                        if ( $name == "fullname" ) {
-                            $arr = (array) $controls[ $name ];
-
-                            $controls["firstname"] = (object) $arr;
-                            $controls["lastname"]  = (object) $arr;
-
-                            $controls["firstname"]->name      = "firstname";
-                            $controls["firstname"]->inputname = "entity[firstname]";
-                            $controls["firstname"]->label     = "First name";
-                            $controls["firstname"]->disabled  = false;
-                            $controls["firstname"]->required = false;
-
-                            if ( $properties["firstname"]->requiredLevel != 'None' && $properties["firstname"]->requiredLevel != 'Recommended' ) {
-                                $controls["firstname"]->required = true;
-                                $controls["firstname"]->jsValidators['required'] = [
-                                    'value'   => true,
-                                    'message' => sprintf( __( '%s is required', 'integration-dynamics' ), $controls["lastname"]->label ),
-                                ];
-                            }
-
-                            $controls["lastname"]->name      = "lastname";
-                            $controls["lastname"]->inputname = "entity[lastname]";
-                            $controls["lastname"]->label     = "Last name";
-                            $controls["lastname"]->disabled  = false;
-                            $controls["lastname"]->required = true; // required by Dynamics CRM
-                            $controls["lastname"]->jsValidators['required'] = [
-                                'value'   => true,
-                                'message' => sprintf( __( '%s is required', 'integration-dynamics' ), $controls["lastname"]->label ),
-                            ];
-
-                            unset( $controls[ $name ] );
-                        }
-
-                        /* Replace address memo control with editable address containing controls */
-                        if ( strpos( $name, "_composite" ) && $this->mode != "readonly" ) {
-                            $controls = array_merge( $controls, $this->getCompositeAddressControls( $controls[ $name ] ) );
-                            unset( $controls[ $name ] );
-                        }
-                        $control = apply_filters( "wordpresscrm_form_" . $this->formName . "_control_" . $name, $control );
+                    foreach ( $options->Entities as $optionEntity ) {
+                        $controls[ $name ]->options[ $optionEntity->ID ] = $optionEntity->displayname;
                     }
                 }
+
+                $controls[ $name ]->classid = strtoupper( (string) $control['classid'] );
+
+                if ( $properties[ $name ]->type == 'Picklist' || $properties[ $name ]->type == 'Boolean' ) {
+
+                    $controls[ $name ]->options = $properties[ $name ]->optionSet->options;
+                } else if ( empty( $controls[ $name ]->options ) ) {
+                    $controls[ $name ]->options = null;
+                }
+
+                $controls[ $name ]->showlabel = false;
+                if ( !$cell["showlabel"] || (string) $cell["showlabel"] == "true" ) {
+                    $controls[ $name ]->showlabel = true;
+                }
+
+                $controls[ $name ]->readonly = (bool) ( $this->mode == "readonly" );
+
+                if ( strtolower( $control['disabled'] ) == "true" ) {
+                    $controls[ $name ]->readonly = true;
+                }
+
+                if ( isset( $cell["visible"] ) && $cell["visible"] == "false" ) {
+                    $controls[ $name ]->visible = false;
+                }
+
+                $controls[ $name ]->fromEntity( $this->entity, $this->mode );
+
+                if ( $name == "fullname" ) {
+                    $controls["firstname"] = clone $controls[ $name ];
+                    $controls["lastname"]  = clone $controls[ $name ];
+
+                    $controls["firstname"]->name      = "firstname";
+                    $controls["firstname"]->inputname = "entity[firstname]";
+                    $controls["firstname"]->label     = "First name";
+                    $controls["firstname"]->disabled  = false;
+                    $controls["firstname"]->required = false;
+
+                    if ( $properties["firstname"]->requiredLevel != 'None' && $properties["firstname"]->requiredLevel != 'Recommended' ) {
+                        $controls["firstname"]->required = true;
+                        $controls["firstname"]->jsValidators['required'] = [
+                            'value'   => true,
+                            'message' => sprintf( __( '%s is required', 'integration-dynamics' ), $controls["lastname"]->label ),
+                        ];
+                    }
+
+                    $controls["lastname"]->name      = "lastname";
+                    $controls["lastname"]->inputname = "entity[lastname]";
+                    $controls["lastname"]->label     = "Last name";
+                    $controls["lastname"]->disabled  = false;
+                    $controls["lastname"]->required = true; // required by Dynamics CRM
+                    $controls["lastname"]->jsValidators['required'] = [
+                        'value'   => true,
+                        'message' => sprintf( __( '%s is required', 'integration-dynamics' ), $controls["lastname"]->label ),
+                    ];
+
+                    unset( $controls[ $name ] );
+                }
+
+                /* Replace address memo control with editable address containing controls */
+                if ( strpos( $name, "_composite" ) && $this->mode != "readonly" ) {
+                    $controls = array_merge( $controls, $this->getCompositeAddressControls( $controls[ $name ] ) );
+                    unset( $controls[ $name ] );
+                }
+                $control = apply_filters( "wordpresscrm_form_" . $this->formName . "_control_" . $name, $control );
             }
 
             $columns[ $columnXmlKey ]["attributes"] = current( $columnXML[0]->attributes() );
