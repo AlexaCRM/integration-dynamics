@@ -179,9 +179,11 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
     $field->description = __( 'Renders a field value for the current CRM record on a data-bound page.', 'integration-dynamics' );
 
     $entityField = new ShortcodeWizard\Field\Hidden( 'entity' );
-    $entityField->setStaticValueGenerator( function() {
-        return trim( maybe_unserialize( get_post_meta( $_GET['post'], '_wordpresscrm_databinding_entity', true ) ) );
-    } );
+    if ( array_key_exists( 'post', $_GET ) ) {
+        $entityField->setStaticValueGenerator( function() {
+            return trim( maybe_unserialize( get_post_meta( $_GET['post'], '_wordpresscrm_databinding_entity', true ) ) );
+        } );
+    }
     $field->registerField( $entityField );
 
     $attributeField = new ShortcodeWizard\Field\Dropdown( 'field', __( 'Attribute name', 'integration-dynamics' ) );
