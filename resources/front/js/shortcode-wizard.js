@@ -280,7 +280,23 @@
         },
 
         render: function() {
-            this.$el.html( this.template( { field: this.model } ) );
+            var view = this;
+
+            view.$el.html( view.loadingTemplate( { fieldName: view.model.get( 'displayName' ) } ) );
+
+            if ( typeof this.model.getValues().done === 'function' ) {
+                this.model.getValues().done( function( values ) {
+                    view.$el.html( view.template( { field: view.model, values: values } ) );
+                } )
+                    .fail( function( response ) {
+                        view.$el.html( view.errorTemplate( { message: response.message } ) );
+                    } );
+
+                return this;
+            }
+
+            view.$el.html( view.template( { field: view.model, values: this.model.getValues() } ) );
+
             return this;
         },
 
@@ -307,55 +323,11 @@
     } );
 
     var ShortcodeDropdownFieldView = ShortcodeFieldView.extend( {
-
-        template: _.template( $( '#tpl-wpcrmShortcodeWizardShortcodeDropdownField' ).html() ),
-
-        render: function() {
-            var view = this;
-
-            view.$el.html( view.loadingTemplate( { fieldName: view.model.get( 'displayName' ) } ) );
-
-            if ( typeof this.model.getValues().done === 'function' ) {
-                this.model.getValues().done( function( values ) {
-                    view.$el.html( view.template( { field: view.model, values: values } ) );
-                } )
-                    .fail( function( response ) {
-                        view.$el.html( view.errorTemplate( { message: response.message } ) );
-                    } );
-
-                return this;
-            }
-
-            view.$el.html( view.template( { field: view.model, values: this.model.getValues() } ) );
-            return this;
-        }
-
+        template: _.template( $( '#tpl-wpcrmShortcodeWizardShortcodeDropdownField' ).html() )
     } );
 
     var ShortcodeNumberFieldView = ShortcodeFieldView.extend( {
-
-        template: _.template( $( '#tpl-wpcrmShortcodeWizardShortcodeNumberField' ).html() ),
-
-        render: function() {
-            var view = this, values = {};
-
-            view.$el.html( view.loadingTemplate( { fieldName: view.model.get( 'displayName' ) } ) );
-
-            if ( typeof this.model.getValues().done === 'function' ) {
-                this.model.getValues().done( function( values ) {
-                    view.$el.html( view.template( { field: view.model, values: values } ) );
-                } )
-                    .fail( function( response ) {
-                        view.$el.html( view.errorTemplate( { message: response.message } ) );
-                    } );
-
-                return this;
-            }
-
-            view.$el.html( view.template( { field: view.model, values: this.model.getValues() } ) )
-            return this;
-        }
-
+        template: _.template( $( '#tpl-wpcrmShortcodeWizardShortcodeNumberField' ).html() )
     } );
 
     $( function() {
