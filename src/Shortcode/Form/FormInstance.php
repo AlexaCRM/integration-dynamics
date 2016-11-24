@@ -186,17 +186,17 @@ class FormInstance extends AbstractForm {
     }
 
     private function getFormPostData( $ajax = false ) {
-        $postData = null;
-        if ( $ajax ) {
-            parse_str( $_POST['form'], $formData );
-        } else {
-            $formData = $_POST;
+        $request = ACRM()->request;
+
+        if ( !$request->isMethod( 'POST' ) ) {
+            return null;
         }
 
-        $isPost = $_SERVER['REQUEST_METHOD'] === 'POST';
+        $postData = null;
 
-        if ( !$isPost ) {
-            return null;
+        $formData = $request->request->all();
+        if ( $ajax ) {
+            parse_str( $request->request->get( 'form' ), $formData );
         }
 
         if ( !array_key_exists( 'form_name', $formData ) && !array_key_exists( '_wpnonce', $formData ) ) {

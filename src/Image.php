@@ -27,13 +27,23 @@ class Image {
     );
 
     protected static function cacheNotModified( $etag ) {
-        if ( isset( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) && isset( $_SERVER['HTTP_IF_NONE_MATCH'] ) ) {
-            if ( ( strtotime( $_SERVER['HTTP_IF_MODIFIED_SINCE'] ) > time() - self::$cacheExpiryTime ) && str_replace( '"', '', stripslashes( $_SERVER['HTTP_IF_NONE_MATCH'] ) ) == $etag ) {
-                header( "Cache-Control: public, max-age=86400, pre-check=86400" );
-                header( "Pragma: private" );
-                header( 'HTTP/1.1 304 Not Modified' );
-                exit();
-            }
+        $request = ACRM()->request->server;
+
+        $ifModifiedSince = $request->get( 'HTTP_IF_MODIFIED_SINCE' );
+        $ifNoneMatch = $request->get( 'HTTP_IF_NONE_MATCH' );
+
+        if ( !$ifModifiedSince || !$ifNoneMatch ) {
+            return;
+        }
+
+        $minHittingTime = time() - self::$cacheExpiryTime;
+        $requestEtag = str_replace( '"', '', stripslashes( $ifNoneMatch ) );
+
+        if ( ( strtotime( $ifModifiedSince ) > $minHittingTime ) && $requestEtag === $etag ) {
+            header( "Cache-Control: public, max-age=86400, pre-check=86400" );
+            header( "Pragma: private" );
+            header( 'HTTP/1.1 304 Not Modified' );
+            exit();
         }
     }
 

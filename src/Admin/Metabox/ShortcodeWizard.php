@@ -234,16 +234,18 @@ Ditch it.
      * Generates the shortcode based on given field values.
      */
     public function handleResultRequest() {
-        if ( !array_key_exists( 'name', $_POST ) ) {
+        $query = ACRM()->request->request;
+
+        if ( !$query->has( 'post' ) ) {
             wp_send_json_error( [ 'message' => __( 'Invalid request - shortcode name is absent', 'integration-dynamics' ) ] );
         }
 
-        if ( !array_key_exists( 'fields', $_POST ) ) {
+        if ( !$query->has( 'fields' ) ) {
             wp_send_json_error( [ 'message' => __( 'Invalid request - shortcode arguments are absent', 'integration-dynamics' ) ] );
         }
 
-        $shortcodeName = trim( $_POST['name'] );
-        $shortcodeFields = $_POST['fields'];
+        $shortcodeName = trim( $query->get( 'post' ) );
+        $shortcodeFields = $query->get( 'fields' );
 
         if ( !is_array( $shortcodeFields ) ) {
             wp_send_json_error( [ 'message' => __( 'Invalid request - shortcode arguments must be an array', 'integration-dynamics' ) ] );
@@ -265,21 +267,19 @@ Ditch it.
      * that may influence the output.
      */
     public function handleFieldRequest() {
-        if ( !array_key_exists( 'shortcode', $_POST ) ) {
+        $query = ACRM()->request->request;
+
+        if ( !$query->has( 'shortcode' ) ) {
             wp_send_json_error( [ 'message' => __( 'Invalid request - shortcode name is absent', 'integration-dynamics' ) ] );
         }
 
-        if ( !array_key_exists( 'field', $_POST ) ) {
+        if ( !$query->has( 'field' ) ) {
             wp_send_json_error( [ 'message' => __( 'Invalid request - field name is absent', 'integration-dynamics' ) ] );
         }
 
-        if ( !array_key_exists( 'values', $_POST ) ) {
-            $_POST['values'] = [];
-        }
-
-        $shortcodeName = trim( $_POST['shortcode'] );
-        $fieldName = trim( $_POST['field'] );
-        $values = $_POST['values']; // values that the field depends on
+        $shortcodeName = trim( $query->get( 'shortcode' ) );
+        $fieldName = trim( $query->get( 'field' ) );
+        $values = $query->get( 'values', [] ); // values that the field depends on
 
         if ( !is_array( $values ) ) {
             wp_send_json_error( [ 'message' => __( 'Invalid request - values for the field must be an array', 'integration-dynamics' ) ] );

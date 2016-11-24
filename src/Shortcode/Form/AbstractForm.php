@@ -121,32 +121,26 @@ abstract class AbstractForm extends Shortcode {
     }
 
     protected static function parseQueryString() {
-        $query = $_SERVER['QUERY_STRING'];
+        $queryString = ACRM()->request->getQueryString();
 
-        $result = array();
-        $r      = array();
+        $result = [];
+        foreach ( explode( '&', $queryString ) as $argumentPairString ) {
+            list( $argName, $argValue ) = explode( '=', $argumentPairString );
 
-        foreach ( explode( "&", $query ) as $q ) {
-            $exploded = explode( "=", $q );
+            if ( !$argName ) {
+                continue;
+            }
 
-            if ( $exploded[0] ) {
+            if ( !array_key_exists( $argName, $result ) ) {
+                $result[$argName] = [];
+            }
 
-                if ( isset( $r[ $exploded[0] ] ) && $r[ $exploded[0] ] && isset( $exploded[1] ) ) {
-
-                    array_push( $r[ $exploded[0] ], $exploded[1] );
-                }
-
-                if ( !isset( $r[ $exploded[0] ] ) ) {
-                    $r[ $exploded[0] ] = array();
-
-                    $evalue = ( isset( $exploded[1] ) ) ? $exploded[1] : "";
-
-                    array_push( $r[ $exploded[0] ], $evalue );
-                }
+            if ( $argValue ) {
+                array_push( $result[$argName], $argValue );
             }
         }
 
-        foreach ( $r as $key => $value ) {
+        foreach ( $result as $key => $value ) {
             $result[ $key ] = implode( ", ", $value );
         }
 
