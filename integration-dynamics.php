@@ -42,7 +42,7 @@ spl_autoload_register( function ( $className ) {
     }
 } );
 
-require_once __DIR__ . '/libraries/php-crm-toolkit/init.php'; // CRM Toolkit for PHP autoloader
+require_once __DIR__ . '/vendor/autoload.php'; // Composer autoloader
 
 $logSeverityLevel = WP_DEBUG? Log::LOG_ALL : Log::LOG_FAULTS;
 $logger = new Log( WORDPRESSCRM_STORAGE, $logSeverityLevel );

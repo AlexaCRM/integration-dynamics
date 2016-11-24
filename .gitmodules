@@ -1,3 +1,0 @@
-[submodule "libraries/php-crm-toolkit"]
-	path = libraries/php-crm-toolkit
-	url = git@github.com:AlexaCRM/php-crm-toolkit.git

@@ -5,3 +5,6 @@
 /storage/images/
 
 /storage/*.log
+
+/vendor/
+/composer.lock
