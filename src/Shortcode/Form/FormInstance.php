@@ -19,16 +19,34 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 class FormInstance extends AbstractForm {
 
-    private $attributes;
-
+    /**
+     * @var GCaptcha
+     */
     public $captcha = null;
 
+    /**
+     * @var array
+     */
     private $errors = [ ];
 
+    /**
+     * @var array
+     */
     private $notices = [ ];
 
+    /**
+     * Dynamics CRM form name.
+     *
+     * @var string
+     */
     private $formName = null;
 
+    /**
+     * Dynamics CRM form type.
+     *
+     * @var int
+     * @see https://msdn.microsoft.com/en-us/library/mt607589.aspx
+     */
     private $formType = null;
 
     /**
@@ -39,26 +57,53 @@ class FormInstance extends AbstractForm {
     private $mode;
 
     /**
+     * Entity that the form belongs to.
+     *
      * @var Entity
      */
     public $entity = null;
 
+    /**
+     * List of controls per form column.
+     *
+     * @var array
+     */
     public $controls = [ ];
 
     private $attachment = false;
 
     private $attachmentLabel = "";
 
+    /**
+     * Definitions of default field values.
+     *
+     * @var array
+     */
     private $default = [ ];
 
+    /**
+     * Form mode constraints for default values.
+     *
+     * @var array
+     */
     private $defaultMode = [ ];
 
     private $lookupTypes = [ ];
 
     private $lookupViews = [ ];
 
+    /**
+     * List of required fields overrides.
+     *
+     * @var array
+     */
     private $requiredFields = [ ];
 
+    /**
+     * List of optional fields overrides.
+     *
+     * @var array
+     */
     private $optionalFields = [ ];
 
     private $disableDefaultForCreate = false;
@@ -70,19 +115,44 @@ class FormInstance extends AbstractForm {
      */
     private $validator = null;
 
+    /**
+     * Form validation result after submitting the form.
+     *
+     * @var array
+     */
     private $entityErrors = [ ];
 
+    /**
+     * Success message.
+     *
+     * @var string
+     */
     private $successMessage = '';
 
-    private $showForm = true;
-
+    /**
+     * FormXML definition of the form. Retrieved from Dynamics CRM.
+     *
+     * @var string
+     */
     private $formXML = null;
 
+    /**
+     * Whether to honor FormXML layout preferences or not.
+     *
+     * @var bool
+     */
     private $disableLayout = false;
 
+    /**
+     * Unique form ID.
+     *
+     * @var string
+     */
     private $formUid;
 
     private $ajax = false;
+
+    private $showForm = true;
 
     /**
      * FormInstance constructor.
@@ -110,8 +180,6 @@ class FormInstance extends AbstractForm {
                 return ( $this->showForm ) ? true : false;
             case "uid":
                 return $this->formUid;
-            case "attributes":
-                return $this->attributes;
             case "ajax":
                 return $this->ajax;
         }
@@ -167,67 +235,67 @@ class FormInstance extends AbstractForm {
 
         try {
             /* Parse shortcode attributes */
-            $this->attributes = self::parseShortcodeAttributes( $attributes );
+            $attributes = self::parseShortcodeAttributes( $attributes );
 
             /* Lowercase mode parameter */
-            $this->mode = self::parseModeAttribute( $this->attributes["mode"], $this->attributes["parameter_name"] );
+            $this->mode = self::parseModeAttribute( $attributes["mode"], $attributes["parameter_name"] );
 
             /* Disable default values when in create mode or in creade mode for upsert */
-            $this->disableDefaultForCreate = ( $this->attributes["disable_default_for_create"] == "false" || !$this->attributes["disable_default_for_create"] ) ? false : true;
+            $this->disableDefaultForCreate = ( $attributes["disable_default_for_create"] == "false" || !$attributes["disable_default_for_create"] ) ? false : true;
 
             /* Disable default values when in edit mode or in edit mode for upsert */
-            $this->disableDefaultForEdit = ( $this->attributes["disable_default_for_edit"] == "false" || !$this->attributes["disable_default_for_edit"] ) ? false : true;
+            $this->disableDefaultForEdit = ( $attributes["disable_default_for_edit"] == "false" || !$attributes["disable_default_for_edit"] ) ? false : true;
 
             /* Get default values array Entity form field as key, value definition as value ("value", "currentuser", "currentuser.field") */
-            $this->default = self::parseDefaultAttribute( $this->attributes["default"] );
+            $this->default = self::parseDefaultAttribute( $attributes["default"] );
 
             /* Parse the mode attributes for default values */
-            $this->defaultMode = self::parseKeyArrayShortcodeAttribute( $this->attributes["default_mode"] );
+            $this->defaultMode = self::parseKeyArrayShortcodeAttribute( $attributes["default_mode"] );
 
             /* Get ajax shortcode attribute */
-            $this->ajax = $this->attributes["ajax"];
+            $this->ajax = $attributes["ajax"];
 
             /* Restrict entity types for lookup fields */
-            $this->lookupTypes = self::parseLookupTypesAttribute( $this->attributes["lookuptypes"] );
+            $this->lookupTypes = self::parseLookupTypesAttribute( $attributes["lookuptypes"] );
 
             /* Set custom lookup views for fields */
-            $this->lookupViews = self::parseLookupTypesAttribute( $this->attributes["lookupviews"] );
+            $this->lookupViews = self::parseLookupTypesAttribute( $attributes["lookupviews"] );
 
             /* Parse required entity fields */
-            $this->requiredFields = self::parseFieldPropertiesAttributes( $this->attributes["required"] );
+            $this->requiredFields = self::parseFieldPropertiesAttributes( $attributes["required"] );
 
             /* Parse optional entity fields */
-            $this->optionalFields = self::parseFieldPropertiesAttributes( $this->attributes["optional"] );
+            $this->optionalFields = self::parseFieldPropertiesAttributes( $attributes["optional"] );
 
             /* Detect need to use attachments */
-            $this->attachment = self::parseAttachmentAttribute( $this->attributes["attachment"] );
+            $this->attachment = self::parseAttachmentAttribute( $attributes["attachment"] );
 
             /* Use captcha */
-            $captcha = self::parseCaptchaAttribute( $this->attributes["captcha"] );
+            $captcha = self::parseCaptchaAttribute( $attributes["captcha"] );
 
-            $this->formName = strtolower( $this->attributes["name"] );
-            $this->formType = $this->attributes["type"];
+            $this->formName = strtolower( $attributes["name"] );
+            $this->formType = $attributes["type"];
 
             /* Generate form unique ID for fronend validation */
             $this->formUid = uniqid( "entity-form-" );
 
-            $entityName  = strtolower( $this->attributes["entity"] );
-            $redirectUrl = $this->attributes["redirect_url"];
+            $entityName  = strtolower( $attributes["entity"] );
+            $redirectUrl = $attributes["redirect_url"];
 
-            if ( $this->attributes['message'] ) {
-                $this->successMessage = $this->attributes['message'];
+            if ( $attributes['message'] ) {
+                $this->successMessage = $attributes['message'];
             }
 
             /* Check hide_form attribute exists and it value equals to "true" */
-            $hideForm = ( $this->attributes["hide_form"] && $this->attributes["hide_form"] == "true" );
+            $hideForm = ( $attributes["hide_form"] && $attributes["hide_form"] == "true" );
 
             /* Parse attachment label attribute for notescontrol form control label */
-            $this->attachmentLabel = $this->attributes["attachment_label"];
+            $this->attachmentLabel = $attributes["attachment_label"];
 
-            $this->disableLayout = ( $this->attributes["enable_layout"] != "true" );
+            $this->disableLayout = ( $attributes["enable_layout"] != "true" );
 
             /* Retrieve parameter name */
-            $id = self::parseParameterName( $this->attributes["parameter_name"], $this->mode );
+            $id = self::parseParameterName( $attributes["parameter_name"], $this->mode );
 
             $this->entity = ASDK()->entity( $entityName ); // An empty entity record doesn't have performance penalty.
 
@@ -289,7 +357,7 @@ class FormInstance extends AbstractForm {
                     }
 
                     if ( !empty( $this->entityErrors ) ) {
-                        array_push( $this->errors, ( $this->attributes["validation_error"] ) ? $this->attributes["validation_error"] : Messages::getMessage( "form", "validation_error" ) );
+                        array_push( $this->errors, ( $attributes["validation_error"] ) ? $attributes["validation_error"] : Messages::getMessage( "form", "validation_error" ) );
                     }
 
                     if ( $this->captcha->enable_captcha && ( !$this->captcha->checkResponse() || !$this->captcha->checkCaptcha() ) ) {
@@ -307,7 +375,7 @@ class FormInstance extends AbstractForm {
                             }
 
                             if ( !$result ) {
-                                array_push( $this->errors, ( $this->attributes["submit_error"] ) ? $this->attributes["submit_error"] : Messages::getMessage( "form", "crm_error" ) );
+                                array_push( $this->errors, ( $attributes["submit_error"] ) ? $attributes["submit_error"] : Messages::getMessage( "form", "crm_error" ) );
                             } else {
                                 $objectId = ( $this->mode == "edit" ) ? $this->entity->id : $result;
                                 $this->processAttachments( $objectId );
@@ -623,7 +691,12 @@ class FormInstance extends AbstractForm {
         foreach ( $this->controls as $column ) {
             if ( isset( $column["controls"][ $field ] ) ) {
                 $control = $column["controls"][ $field ];
+                break;
             }
+        }
+
+        if ( !isset( $control ) ) {
+            return $errorsFound;
         }
 
         if ( $control->required && !$value ) {
@@ -889,33 +962,31 @@ class FormInstance extends AbstractForm {
     }
 
     private function addNotesControl( $controls ) {
-        /* Adding notes control to form if needed */
-        if ( array_key_exists( 'notescontrol', $controls ) && $this->attachment == "null" ) {
-            // Do nothing, default display attachment form if it's exists
-        } else if ( array_key_exists( 'notescontrol', $controls ) && $this->attachment == "false" ) {
-            unset( $controls["notescontrol"] );
-        } else if ( $this->attachment == "true" && !array_key_exists( 'notescontrol', $controls ) ) {
-            $controls["notescontrol"]            = new Control( "notescontrol" );
-            $controls["notescontrol"]->type      = "attachment";
-            $controls["notescontrol"]->showlabel = false;
-        }
-        /* Add attachment label */
-        if ( isset( $controls["notescontrol"] ) && $this->attachmentLabel ) {
-            $controls["notescontrol"]->label     = $this->attachmentLabel;
-            $controls["notescontrol"]->showlabel = true;
-        }
-
         $annotationSupported = false;
         foreach ( $this->entity->oneToManyRelationships as $oneToManyRelationship ) {
             if ( $oneToManyRelationship->referencingEntity == "annotation" ) {
                 $annotationSupported = true;
+                break;
             }
         }
 
-        if ( !$annotationSupported && $this->attachment != "true" ) {
+        if ( $this->attachment === false || ( !$annotationSupported && $this->attachment === null ) ) {
             unset( $controls["notescontrol"] );
-        } elseif ( $annotationSupported && $this->attachment == "false" ) {
-            unset( $controls["notescontrol"] );
+
+            return $controls;
+        }
+
+        /* Adding notes control to form if needed */
+        if ( $this->attachment === true && !array_key_exists( 'notescontrol', $controls ) ) {
+            $controls["notescontrol"]            = new Control( "notescontrol" );
+            $controls["notescontrol"]->type      = "attachment";
+            $controls["notescontrol"]->showlabel = false;
+        }
+
+        /* Add attachment label */
+        if ( isset( $controls["notescontrol"] ) && $this->attachmentLabel ) {
+            $controls["notescontrol"]->label     = $this->attachmentLabel;
+            $controls["notescontrol"]->showlabel = true;
         }
 
         return $controls;

@@ -109,12 +109,12 @@ abstract class AbstractForm extends Shortcode {
     }
 
     protected static function parseAttachmentAttribute( $attachmentAttribute ) {
-        if ( $attachmentAttribute && $attachmentAttribute == "true" ) {
-            $attachment = "true";
+        $attachment = null;
+
+        if ( $attachmentAttribute && $attachmentAttribute === "true" ) {
+            $attachment = true;
         } elseif ( $attachmentAttribute && $attachmentAttribute == "false" ) {
-            $attachment = "false";
-        } else {
-            $attachment = "null";
+            $attachment = false;
         }
 
         return $attachment;
