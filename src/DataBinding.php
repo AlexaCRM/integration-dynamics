@@ -81,44 +81,44 @@ class DataBinding {
      * @return \AlexaCRM\CRMToolkit\Entity|null
      */
     public function getDataBindingEntity( $entityLogicalName, $entityParameterName, $requestValueParameter ) {
-        if ( !$entityLogicalName || !$entityParameterName || !$requestValueParameter ) {
+        $query = ACRM()->request->query;
+
+        if ( !$entityLogicalName || !$entityParameterName || !$requestValueParameter || !$query->has( $requestValueParameter ) || !$query->get( $requestValueParameter ) ) {
             return null;
         }
 
-        if ( isset( $_GET[ $requestValueParameter ] ) && $_GET[ $requestValueParameter ] ) {
-            try {
-                $entityRequestValue = $_GET[ $requestValueParameter ];
+        try {
+            $entityRequestValue = $query->get( $requestValueParameter );
 
-                $columnSet = $this->retrieveCurrentColumnSet();
+            $columnSet = $this->retrieveCurrentColumnSet();
 
-                if ( $entityParameterName == 'id' ) {
-                    return ASDK()->entity( $entityLogicalName, $entityRequestValue, $columnSet );
-                } else {
-                    $entityMetadata = ASDK()->entity( $entityLogicalName )->metadata();
+            if ( $entityParameterName == 'id' ) {
+                return ASDK()->entity( $entityLogicalName, $entityRequestValue, $columnSet );
+            } else {
+                $entityMetadata = ASDK()->entity( $entityLogicalName )->metadata();
 
-                    if ( !array_key_exists( $entityParameterName, $entityMetadata->keys ) ) {
-                        return null;
-                    }
-
-                    /**
-                     * @var $entityKey \AlexaCRM\CRMToolkit\Entity\EntityKey
-                     */
-                    $entityKey          = $entityMetadata->keys[ $entityParameterName ];
-                    $entityKeyAttribute = $entityKey->getKeyAttributes();
-                    if ( is_array( $entityKeyAttribute ) ) {
-                        $entityKeyAttribute = $entityKeyAttribute[0]; //TODO: support for multikeys
-                    }
-
-                    $keyAttribute = new KeyAttributes();
-                    $keyAttribute->add( $entityKeyAttribute, $entityRequestValue );
-
-                    return ASDK()->entity( $entityLogicalName, $keyAttribute, $columnSet );
+                if ( !array_key_exists( $entityParameterName, $entityMetadata->keys ) ) {
+                    return null;
                 }
-            } catch ( NotAuthorizedException $e ) {
-                Connection::setConnectionStatus( false );
-            } catch ( Exception $ex ) {
-                return null;
+
+                /**
+                 * @var $entityKey \AlexaCRM\CRMToolkit\Entity\EntityKey
+                 */
+                $entityKey          = $entityMetadata->keys[ $entityParameterName ];
+                $entityKeyAttribute = $entityKey->getKeyAttributes();
+                if ( is_array( $entityKeyAttribute ) ) {
+                    $entityKeyAttribute = $entityKeyAttribute[0]; //TODO: support for multikeys
+                }
+
+                $keyAttribute = new KeyAttributes();
+                $keyAttribute->add( $entityKeyAttribute, $entityRequestValue );
+
+                return ASDK()->entity( $entityLogicalName, $keyAttribute, $columnSet );
             }
+        } catch ( NotAuthorizedException $e ) {
+            Connection::setConnectionStatus( false );
+        } catch ( Exception $ex ) {
+            return null;
         }
 
         return null;

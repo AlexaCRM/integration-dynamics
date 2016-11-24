@@ -3,6 +3,7 @@
 namespace AlexaCRM\WordpressCRM;
 
 use AlexaCRM\CRMToolkit\AbstractClient;
+use AlexaCRM\CRMToolkit\Entity;
 use SimpleXMLElement;
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -26,7 +27,14 @@ class FetchXML {
      * @return string fetchxml with replaced placeholder with value from the GET parameter if it exists, if GET parameter doesn't set return the input fetchxml
      */
     public static function replaceConditionPlaceholderByQuerystringValue( $fetchXML, $placeholder, $value ) {
-        return ( !empty( $_GET[ $value ] ) ) ? str_replace( $placeholder, htmlspecialchars( $_GET[ $value ] ), $fetchXML ) : $fetchXML;
+        $query = ACRM()->request->query;
+
+        $queryStringValue = $query->get( $value );
+        if ( $queryStringValue ) {
+            return str_replace( $placeholder, htmlspecialchars( $queryStringValue ), $fetchXML );
+        }
+
+        return $fetchXML;
     }
 
     /**
@@ -117,39 +125,48 @@ class FetchXML {
     }
 
     /**
-     * Replacing the condition statements in fetchXML with new coditions based on currentuser, querystring and currentrecord fields from $lookups array
+     * Replace condition statements in FetchXML using conditions provided in $lookups.
      *
-     * @param string $fetchXML fetch to retrieve the records for view
-     * @param array $lookups array of lookup values that contain ["attribute"] => name with type_of_replacement.field that be currentuser, querystring, currentrecord
+     * @param string $fetchXML FetchXML to retrieve the records for view.
+     * @param array $lookups Array of lookup values [ attribute => lookupCondition ].
      *
-     * @return string fetchXML with replaced conditions
+     * @return string FetchXML with replaced conditions.
      */
     public static function replaceLookupConditionsByLookupsArray( $fetchXML, $lookups = [] ) {
         foreach ( $lookups as $key => $param ) {
             $param = explode( ".", $param );
             $type  = trim( $param[0] );
             $value = trim( $param[1] );
-            /* Replace values with current data bound page (if data-binding or current entity exists) */
-            if ( $type == "currentrecord" && $value ) {
-                $record = DataBinding::instance()->entity;
-                if ( $record != null && $record->ID /*&& strtolower($key) == $record->logicalname*/ ) {
-                    $fetchXML = self::replaceCondition( $fetchXML, 'attribute', $key, $record->ID );
-                } else {
-                    $fetchXML = self::replaceCondition( $fetchXML, 'attribute', $key, AbstractClient::EmptyGUID );
-                    add_filter( "wordpresscrm_view_entities", "__return_false" );
-                }
+
+            if ( !in_array( $type, [ 'currentrecord', 'querystring' ], true ) || $value === '' ) {
+                $fetchXML = apply_filters( 'wordpresscrm_replace_lookups', $fetchXML, $key, $value, $type );
+
+                continue;
             }
-            /* Replace the lookup condition with querystring values for lookups */
-            if ( $type == "querystring" && $value ) {
-                if ( isset( $_GET[ $value ] ) && $_GET[ $value ] ) {
-                    $fetchXML = self::replaceCondition( $fetchXML, 'attribute', $key, $_GET[ $value ] );
-                } else {
-                    $fetchXML = self::replaceCondition( $fetchXML, 'attribute', $key, AbstractClient::EmptyGUID );
-                    add_filter( "wordpresscrm_view_entities", "__return_false" );
+
+            $replaceValue = null;
+            if ( $type === 'currentrecord' ) {
+                /* Replace values with current data bound page (if data-binding or current entity exists) */
+                $record = DataBinding::instance()->entity;
+
+                if ( $record instanceof Entity && $record->ID ) {
+                    $replaceValue = $record->ID;
+                }
+            } elseif ( $type === 'querystring' ) {
+                /* Replace values with querystring values */
+                $query = ACRM()->request->query;
+
+                if ( $query->get( $value, '' ) !== '' ) {
+                    $replaceValue = $query->get( $value );
                 }
             }
 
-            $fetchXML = apply_filters( 'wordpresscrm_replace_lookups', $fetchXML, $key, $value, $type );
+            if ( $replaceValue === null ) {
+                $replaceValue = AbstractClient::EmptyGUID;
+                add_filter( "wordpresscrm_view_entities", "__return_false" );
+            }
+
+            $fetchXML = self::replaceCondition( $fetchXML, 'attribute', $key, $replaceValue );
         }
 
         return $fetchXML;
@@ -210,44 +227,4 @@ class FetchXML {
         return $fetchXML;
     }
 
-    /**
-     * Replacing the condition statements in fetchXML with new coditions based on currentuser, querystring and currentrecord fields from $lookups array
-     *
-     * @deprecated since version 1.0.37
-     *
-     * @param string $fetchXML fetch to retrieve the records for view
-     * @param array $lookups array of lookup values that contain ["uitype"] => type_of_replacement.field type of replacement can be currentuser, querystring, currentrecord
-     *
-     * @return string fetchXML with replaced conditions
-     */
-    public static function constructFetchForLookups( $fetchXML, $lookups = Array() ) {
-        foreach ( $lookups as $key => $param ) {
-            $param = explode( ".", $param );
-            $type  = trim( $param[0] );
-            $value = trim( $param[1] );
-            /* Replace values with current data bound page (if data-binding or current entity exists) */
-            if ( $type == "currentrecord" && $value ) {
-                $record = DataBinding::instance()->entity;
-                if ( $record != null && $record->ID && strtolower( $key ) == $record->logicalname ) {
-                    $fetchXML = self::replaceCondition( $fetchXML, 'uitype', $key, $record->ID );
-                } else {
-                    $fetchXML = self::replaceCondition( $fetchXML, 'uitype', $key, AbstractClient::EmptyGUID );
-                    add_filter( "wordpresscrm_view_entities", "__return_false" );
-                }
-            }
-            /* Replace the lookup condition with querystring values for lookups */
-            if ( $type == "querystring" && $value ) {
-                if ( isset( $_GET[ $value ] ) && $_GET[ $value ] ) {
-                    $fetchXML = self::replaceCondition( $fetchXML, 'uitype', $key, $_GET[ $value ] );
-                } else {
-                    $fetchXML = self::replaceCondition( $fetchXML, 'uitype', $key, AbstractClient::EmptyGUID );
-                    add_filter( "wordpresscrm_view_entities", "__return_false" );
-                }
-            }
-
-            $fetchXML = apply_filters( 'wordpresscrm_construct_fetch', $fetchXML, $key, $value, $type );
-        }
-
-        return $fetchXML;
-    }
 }

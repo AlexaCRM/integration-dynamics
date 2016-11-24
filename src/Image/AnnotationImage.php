@@ -39,20 +39,22 @@ class AnnotationImage extends Image {
      * Serves requested image to the user-agent
      */
     public function serveImage() {
-        $isJsonExpected = array_key_exists( 'json', $_GET );
+        $query = ACRM()->request->query;
 
-        if ( !array_key_exists( 'id', $_GET ) ) {
+        $isJsonExpected = $query->has( 'json' );
+
+        if ( !$query->has( 'id' ) ) {
             $this->sendError( 'Query parameter "id" is required.', 400, $isJsonExpected );
         }
 
-        $imageId = $_GET['id'];
+        $imageId = $query->get( 'id' );
         if ( !AbstractClient::isGuid( $imageId ) ) {
             $this->sendError( 'Query parameter "id" must be a GUID.', 400, $isJsonExpected );
         }
 
-        $imageWidth = ( array_key_exists( 'width', $_GET )? (int)$_GET['width'] : 0 );
+        $imageWidth = $query->getInt( 'width' );
 
-        $imageCode = sha1( $imageId . ( $imageWidth > 0? (string)$imageWidth : '' ) );
+        $imageCode = sha1( $imageId . ( ( $imageWidth > 0 )? $imageWidth : '' ) );
 
         if ( $this->storage->exists( $imageCode ) ) {
             $this->sendResponse( $imageCode, $this->storage->get( $imageCode ), $isJsonExpected );

@@ -72,15 +72,13 @@ class View extends Shortcode {
     private function constructFetchForView( $fetchXML, $parameters, $lookups, $attributes = null ) {
         /* Replace the placeholders in condition statements in fetchXML with new values based on simple string or currentuser, querystring and currentrecord fields */
         $fetchXML = FetchXML::replacePlaceholderValuesByParametersArray( $fetchXML, $parameters );
+
         /* Replace <attribute/> tags with <all-attributes/> tag in fetchxml query*/
         $fetchXML = ( $attributes["allfields"] == "true" ) ? FetchXML::constructAllAttributesFetch( $fetchXML ) : $fetchXML;
-        $oldXML   = $fetchXML;
+
         /* Replacing the condition statements in fetchXML with new coditions based on currentuser, querystring and currentrecord fields */
         $fetchXML = FetchXML::replaceLookupConditionsByLookupsArray( $fetchXML, $lookups );
-        if ( $oldXML == $fetchXML ) {
-            /* Added support for deprecated lookups structure, where lookup condition was selected by uitype */
-            $fetchXML = FetchXML::constructFetchForLookups( $fetchXML, $lookups );
-        }
+
         /* Replacing the condition statements in fetchXML with new coditions based on currentuser, querystring and currentrecord fields */
         $fetchXML = FetchXML::findAndReplaceParameters( $fetchXML );
 
@@ -89,8 +87,8 @@ class View extends Shortcode {
             $perPage = (int)$attributes['count'];
             $fetchXML = str_replace( '<fetch ', '<fetch count="' . $perPage . '" ', $fetchXML );
 
-            if ( array_key_exists( 'viewPage', $_GET ) && (int)$_GET['viewPage'] > 1 ) {
-                $pageNumber = (int)$_GET['viewPage'];
+            $pageNumber = ACRM()->request->query->getInt( 'viewPage', 1 );
+            if ( $pageNumber > 1 ) {
                 $fetchXML = str_replace( '<fetch ', '<fetch page="' . $pageNumber . '" ', $fetchXML );
             }
         }

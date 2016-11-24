@@ -8,6 +8,7 @@ use AlexaCRM\CRMToolkit\Settings;
 use AlexaCRM\WordpressCRM\Image\AnnotationImage;
 use AlexaCRM\WordpressCRM\Image\CustomImage;
 use Exception;
+use Symfony\Component\HttpFoundation\Request;
 
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
@@ -66,6 +67,13 @@ final class Plugin {
     public $log = null;
 
     /**
+     * Current request.
+     *
+     * @var Request
+     */
+    public $request = null;
+
+    /**
      * Access to templates.
      *
      * @var Template
@@ -98,9 +106,11 @@ final class Plugin {
      *
      * @param Log $log
      */
-    public function init( Log $log ) {
+    public function init( Log $log, Request $request ) {
         $this->log = $log;
         $this->log->info( 'Initializing Dynamics CRM Integration.' );
+
+        $this->request = $request;
 
         // Include required files
         $this->includes();

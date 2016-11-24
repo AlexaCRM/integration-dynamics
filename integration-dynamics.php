@@ -14,6 +14,7 @@ use AlexaCRM\CRMToolkit\Entity\MetadataCollection;
 use AlexaCRM\WordpressCRM\Admin\Metabox\ShortcodeWizard;
 use AlexaCRM\WordpressCRM\Log;
 use AlexaCRM\WordpressCRM\Plugin;
+use Symfony\Component\HttpFoundation\Request;
 
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
@@ -208,7 +209,8 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
 } );
 
 $pluginInstance = new Plugin();
-$pluginInstance->init(  $logger );
+$request = Request::createFromGlobals();
+$pluginInstance->init(  $logger, $request );
 
 add_action( 'admin_init', function() use ( $pluginInstance ) {
     $pluginInstance->version = get_plugin_data( __FILE__ )['Version'];

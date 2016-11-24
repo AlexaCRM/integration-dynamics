@@ -155,7 +155,7 @@ abstract class AbstractForm extends Shortcode {
 
     protected static function parseModeAttribute( $mode, $parameterName = null ) {
         $mode = strtolower( $mode );
-        if ( $mode == 'upsert' && $parameterName && isset( $_GET[ $parameterName ] ) ) {
+        if ( $mode == 'upsert' && $parameterName && ACRM()->request->query->has( $parameterName ) ) {
             return 'edit';
         } else if ( $mode == 'upsert' ) {
             return 'create';
@@ -238,9 +238,10 @@ abstract class AbstractForm extends Shortcode {
             return null;
         }
 
-        if ( $parameterName && isset( $_GET[ $parameterName ] ) ) {
+        $parameterValue = ACRM()->request->query->get( $parameterName );
+        if ( $parameterValue !== null ) {
             /* TODO function thar filters entity by attribute that NOT AN ID */
-            return str_replace( "}", "", ( str_replace( "{", "", $_GET[ $parameterName ] ) ) );
+            return str_replace( "}", "", ( str_replace( "{", "", $parameterValue ) ) );
         }
 
         /**

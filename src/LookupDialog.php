@@ -23,6 +23,13 @@ if ( !defined( 'ABSPATH' ) ) {
 class LookupDialog {
 
     /**
+     * Records per page in the Lookup Dialog.
+     *
+     * @const int
+     */
+    const PER_PAGE = 10;
+
+    /**
      * Lookup constructor.
      */
     public function __construct() {
@@ -36,16 +43,18 @@ class LookupDialog {
      * Creates a response for the lookup request.
      */
     public function retrieve() {
-        $lookupType = $_GET['lookupType'];
+        $query = ACRM()->request->query;
 
-        $pagingCookie = null;
-        if ( isset( $_GET['pagingCookie'] ) && ( strlen( $_GET['pagingCookie'] ) > 2 ) ) {
-            $pagingCookie = urldecode( $_GET['pagingCookie'] );
+        $lookupType = $query->get( 'lookupType' );
+
+        $pagingCookie = urldecode( $query->get( 'pagingCookie', '' ) );
+        if ( strlen( $pagingCookie ) < 3 ) {
+            $pagingCookie = null;
         }
 
-        $pagingNumber = null;
-        if ( isset( $_GET['pageNumber'] ) && ( strlen( $_GET['pageNumber'] ) > 0 ) ) {
-            $pagingNumber = $_GET['pageNumber'];
+        $pagingNumber = $query->getInt( 'pageNumber' );
+        if ( !$pagingNumber ) {
+            $pagingNumber = null;
         }
 
         $entity = ASDK()->entity( $lookupType );
@@ -54,7 +63,7 @@ class LookupDialog {
         $primaryNameAttr = $entity->metadata()->primaryNameAttribute;
         $lookup = $this->retrieveLookupView( $returnedTypeCode, 64, $primaryNameAttr );
 
-        $records = ASDK()->retrieveMultiple( $lookup['fetchxml'], false, $pagingCookie, 10, $pagingNumber );
+        $records = ASDK()->retrieveMultiple( $lookup['fetchxml'], false, $pagingCookie, self::PER_PAGE, $pagingNumber );
 
         $noRecordsMessage = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">'
                             . __( 'No records are available in this view.', 'integration-dynamics' )
@@ -95,13 +104,15 @@ class LookupDialog {
      * Creates a response for the lookup request with search.
      */
     public function search() {
-        $lookupType = $_GET['lookupType'];
+        $query = ACRM()->request->query;
+
+        $lookupType = $query->get( 'lookupType' );
         $entity = ASDK()->entity( $lookupType );
 
         $returnedTypeCode = $entity->metadata()->objectTypeCode;
         $primaryNameAttr = $entity->metadata()->primaryNameAttribute;
 
-        $searchString = urldecode( $_GET["searchstring"] );
+        $searchString = urldecode( $query->get( 'searchstring' ) );
 
         if ( $searchString != "" ) {
             $searchView = $this->retrieveLookupView( $returnedTypeCode, 4, $primaryNameAttr );
