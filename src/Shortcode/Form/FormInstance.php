@@ -7,6 +7,7 @@ use AlexaCRM\WordpressCRM\Template;
 use AlexaCRM\WordpressCRM\Messages;
 use AlexaCRM\WordpressCRM\FormValidator;
 use Exception;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
@@ -426,13 +427,20 @@ class FormInstance extends AbstractForm {
      * @param $entity
      */
     private function processAttachments( $entity ) {
-        if ( !( isset( $_FILES['entity'] ) && isset( $_FILES['entity']['name']['notescontrol'] ) && $_FILES['entity']['name']['notescontrol'] ) ) {
+        $files = ACRM()->request->files;
+
+        if ( !array_key_exists( 'notescontrol', $files->get( 'entity', [] ) ) ) {
             return;
         }
 
-        $fileName = $_FILES['entity']['name']['notescontrol'];
-        $filePath  = $_FILES['entity']['tmp_name']['notescontrol'];
-        $fileType = $_FILES['entity']['type']['notescontrol'];
+        /**
+         * @var UploadedFile $uploadedFile
+         */
+        $uploadedFile = $files->get( 'entity' )['notescontrol'];
+
+        $fileName = $uploadedFile->getClientOriginalName();
+        $filePath  = $uploadedFile->getRealPath();
+        $fileType = $uploadedFile->getMimeType();
 
         $base64 = base64_encode( file_get_contents( $filePath ) );
 
@@ -445,7 +453,7 @@ class FormInstance extends AbstractForm {
             $entityObject->id        = $entity;
             $newAnnotation->objectid = $entityObject;
         }
-        $newAnnotation->subject      = "Attachment file " . $fileName;
+        $newAnnotation->subject      = 'Attachment file ' . $fileName;
         $newAnnotation->documentbody = $base64;
         $newAnnotation->mimetype     = $fileType;
         $newAnnotation->filename     = $fileName;
@@ -647,17 +655,9 @@ class FormInstance extends AbstractForm {
 
                     if ( $value ) {
 
-                        $timezoneoffset = null;
+                        $tzOffset = null;
 
-                        if ( isset( $_SESSION["bearer"] ) ) {
-                            $timezoneoffset = ( isset( $_SESSION["bearer"]["timezonebias"] ) ) ? $_SESSION["bearer"]["timezonebias"] : null;
-                        }
-
-                        if ( isset( $_SESSION["alexaWPSDK"] ) ) {
-                            $timezoneoffset = ( isset( $_SESSION["alexaWPSDK"]["timezoneoffset"] ) ) ? $_SESSION["alexaWPSDK"]["timezoneoffset"] : null;
-                        }
-
-                        $value = strtotime( $value ) + $timezoneoffset;
+                        $value = strtotime( $value ) + $tzOffset;
                     } else {
                         $value = null;
                     }

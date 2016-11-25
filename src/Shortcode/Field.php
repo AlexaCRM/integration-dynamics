@@ -75,16 +75,6 @@ class Field extends Shortcode {
 
             $timezoneOffset = null;
 
-            if ( isset( $_SESSION["bearer"] ) ) {
-
-                $timezoneOffset = ( isset( $_SESSION["bearer"]["timezonebias"] ) ) ? $_SESSION["bearer"]["timezonebias"] : null;
-            }
-
-            if ( isset( $_SESSION["alexaWPSDK"] ) ) {
-
-                $timezoneOffset = ( isset( $_SESSION["alexaWPSDK"]["timezoneoffset"] ) ) ? $_SESSION["alexaWPSDK"]["timezoneoffset"] : null;
-            }
-
             if ( $a['field'] == 'notes' ) {
 
                 return $this->printNotes( $a['add_form'] == true );
