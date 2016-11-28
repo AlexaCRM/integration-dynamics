@@ -44,6 +44,11 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.23 =
+
+* Added Shortcode Wizard to quickly generate shortcodes (View and Field supported)
+* Internal: code clean-up, Composer introduced to manage dependencies
+
 = 1.1.22 =
 
 * Add pagination for views.

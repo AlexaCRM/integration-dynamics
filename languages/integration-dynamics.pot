@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Dynamics CRM Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics CRM Integration 1.1.22\n"
+"Project-Id-Version: Dynamics CRM Integration 1.1.23\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/integration-dynamics\n"
-"POT-Creation-Date: 2016-11-14 10:58:30+00:00\n"
+"POT-Creation-Date: 2016-11-28 14:54:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,15 +12,130 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: integration-dynamics.php:61
+#: integration-dynamics.php:64
 msgid ""
 "Dynamics CRM Integration detected that your environment has PHP %1$s. The "
 "plugin requires at least PHP %2$s to work. Please upgrade your PHP "
 "installation to fully enable the plugin."
 msgstr ""
 
+#: integration-dynamics.php:96
+msgid "View"
+msgstr ""
+
+#: integration-dynamics.php:97
+msgid "Renders a Dynamics CRM View as a table."
+msgstr ""
+
+#: integration-dynamics.php:99
+msgid "Entity name"
+msgstr ""
+
+#: integration-dynamics.php:100
+msgid "Name of the entity to display a view of."
+msgstr ""
+
+#: integration-dynamics.php:113
+msgid "Entity View name"
+msgstr ""
+
+#: integration-dynamics.php:114
+msgid "Name of the view to display."
+msgstr ""
+
+#: integration-dynamics.php:120
+msgid "Entity name is not specified"
+msgstr ""
+
+#: integration-dynamics.php:126
+msgid "Empty entity name in the request"
+msgstr ""
+
+#: integration-dynamics.php:167
+msgid "Records per page"
+msgstr ""
+
+#: integration-dynamics.php:168
+msgid "0 disables pagination for the view."
+msgstr ""
+
+#: integration-dynamics.php:179
+msgid "Field"
+msgstr ""
+
+#: integration-dynamics.php:180
+msgid "Renders a field value for the current CRM record on a data-bound page."
+msgstr ""
+
+#: integration-dynamics.php:190
+msgid "Attribute name"
+msgstr ""
+
+#: integration-dynamics.php:191
+msgid "Entity attribute to render."
+msgstr ""
+
 #: src/Admin/Metabox/DataBinding.php:49
 msgid "Dynamics CRM Data Binding"
+msgstr ""
+
+#: src/Admin/Metabox/ShortcodeWizard.php:97
+msgid "Dynamics CRM Shortcode Wizard"
+msgstr ""
+
+#: src/Admin/Metabox/ShortcodeWizard.php:112
+msgid "Pick a shortcode:"
+msgstr ""
+
+#: src/Admin/Metabox/ShortcodeWizard.php:114
+#: src/Admin/Metabox/ShortcodeWizard.php:145 src/Admin/Tab/Attachments.php:95
+#: views/admin/meta_box.php:13
+msgid "— Select —"
+msgstr ""
+
+#: src/Admin/Metabox/ShortcodeWizard.php:134
+msgid "Copy the generated code and paste into the editor window."
+msgstr ""
+
+#: src/Admin/Metabox/ShortcodeWizard.php:167
+msgid "Error: %s"
+msgstr ""
+
+#: src/Admin/Metabox/ShortcodeWizard.php:169
+msgid "Unknown error occurred."
+msgstr ""
+
+#: src/Admin/Metabox/ShortcodeWizard.php:227
+msgid "Generating the shortcode..."
+msgstr ""
+
+#: src/Admin/Metabox/ShortcodeWizard.php:240
+#: src/Admin/Metabox/ShortcodeWizard.php:273
+msgid "Invalid request - shortcode name is absent"
+msgstr ""
+
+#: src/Admin/Metabox/ShortcodeWizard.php:244
+msgid "Invalid request - shortcode arguments are absent"
+msgstr ""
+
+#: src/Admin/Metabox/ShortcodeWizard.php:251
+msgid "Invalid request - shortcode arguments must be an array"
+msgstr ""
+
+#: src/Admin/Metabox/ShortcodeWizard.php:255
+msgid "Shortcode is not supported"
+msgstr ""
+
+#: src/Admin/Metabox/ShortcodeWizard.php:277
+msgid "Invalid request - field name is absent"
+msgstr ""
+
+#: src/Admin/Metabox/ShortcodeWizard.php:285
+msgid "Invalid request - values for the field must be an array"
+msgstr ""
+
+#: src/Admin/Metabox/ShortcodeWizard.php:293
+msgid "Invalid request. %s"
 msgstr ""
 
 #: src/Admin/Tab/About.php:32 src/Admin/Tab/About.php:49
@@ -72,10 +187,6 @@ msgstr ""
 msgid "Use a view to get images"
 msgstr ""
 
-#: src/Admin/Tab/Attachments.php:95 views/admin/meta_box.php:13
-msgid "— Select —"
-msgstr ""
-
 #: src/Admin/Tab/Forms.php:26
 msgid "Forms"
 msgstr ""
@@ -102,132 +213,132 @@ msgstr ""
 msgid "Secret key <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:62
+#: src/Admin/Tab/General.php:63
 msgid "Metadata cache has been purged and now will be rebuilt gradually."
 msgstr ""
 
-#: src/Admin/Tab/General.php:70
+#: src/Admin/Tab/General.php:71
 msgid "Connection"
 msgstr ""
 
-#: src/Admin/Tab/General.php:114
+#: src/Admin/Tab/General.php:115
 msgid "Connection to Dynamics CRM <%s> has been successfully established."
 msgstr ""
 
-#: src/Admin/Tab/General.php:117
+#: src/Admin/Tab/General.php:118
 msgid ""
 "Unable to connect to Dynamics CRM using provided address, username and/or "
 "password."
 msgstr ""
 
-#: src/Admin/Tab/General.php:122
+#: src/Admin/Tab/General.php:123
 msgid "Unable to connect to Dynamics CRM: %s"
 msgstr ""
 
-#: src/Admin/Tab/General.php:170
+#: src/Admin/Tab/General.php:171
 msgid "Reconnect"
 msgstr ""
 
-#: src/Admin/Tab/General.php:170
+#: src/Admin/Tab/General.php:171
 msgid "Connect"
 msgstr ""
 
-#: src/Admin/Tab/General.php:177
+#: src/Admin/Tab/General.php:178
 msgid "Configure the plugin to connect to your Dynamics CRM instance."
 msgstr ""
 
-#: src/Admin/Tab/General.php:184 src/Admin/Tab/General.php:188
+#: src/Admin/Tab/General.php:185 src/Admin/Tab/General.php:189
 msgid "Deployment Type"
 msgstr ""
 
-#: src/Admin/Tab/General.php:221 src/Admin/Tab/General.php:281
+#: src/Admin/Tab/General.php:222 src/Admin/Tab/General.php:282
 msgid ""
 "Dynamics CRM Address (URL) <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:229 src/Admin/Tab/General.php:289
+#: src/Admin/Tab/General.php:230 src/Admin/Tab/General.php:290
 msgid "Ignore invalid certificate errors"
 msgstr ""
 
-#: src/Admin/Tab/General.php:235
+#: src/Admin/Tab/General.php:236
 msgid "Authentication Source"
 msgstr ""
 
-#: src/Admin/Tab/General.php:239
+#: src/Admin/Tab/General.php:240
 msgid "Internet-facing deployment (IFD)"
 msgstr ""
 
-#: src/Admin/Tab/General.php:245 src/Admin/Tab/General.php:295
+#: src/Admin/Tab/General.php:246 src/Admin/Tab/General.php:296
 msgid "User Name <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:251 src/Admin/Tab/General.php:301
+#: src/Admin/Tab/General.php:252 src/Admin/Tab/General.php:302
 msgid "CRM user login"
 msgstr ""
 
-#: src/Admin/Tab/General.php:256 src/Admin/Tab/General.php:306
+#: src/Admin/Tab/General.php:257 src/Admin/Tab/General.php:307
 msgid "Password <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:262 src/Admin/Tab/General.php:312
+#: src/Admin/Tab/General.php:263 src/Admin/Tab/General.php:313
 msgid "CRM user password"
 msgstr ""
 
-#: src/Admin/Tab/General.php:325
+#: src/Admin/Tab/General.php:326
 msgid "Metadata Settings"
 msgstr ""
 
-#: src/Admin/Tab/General.php:326
+#: src/Admin/Tab/General.php:327
 msgid ""
 "If you have changed your Dynamics CRM entities metadata recently, please "
 "regenerate local metadata cache to keep it up to date."
 msgstr ""
 
-#: src/Admin/Tab/General.php:330
+#: src/Admin/Tab/General.php:331
 msgid "Regenerate Metadata Cache"
 msgstr ""
 
-#: src/Admin/Tab/General.php:334
+#: src/Admin/Tab/General.php:335
 msgid "F j, Y \\a\\t g:i A"
 msgstr ""
 
-#: src/Admin/Tab/General.php:337
+#: src/Admin/Tab/General.php:338
 msgid "Metadata cache was last regenerated on %s."
 msgstr ""
 
-#: src/Admin/Tab/Messages.php:32
+#: src/Admin/Tab/Messages.php:33
 msgid "Form validation failed"
 msgstr ""
 
-#: src/Admin/Tab/Messages.php:33
+#: src/Admin/Tab/Messages.php:34
 msgid "An error has occurred submitting the form"
 msgstr ""
 
-#: src/Admin/Tab/Messages.php:34
+#: src/Admin/Tab/Messages.php:35
 msgid "Error: invalid captcha"
 msgstr ""
 
-#: src/Admin/Tab/Messages.php:49
+#: src/Admin/Tab/Messages.php:50
 msgid "Form errors"
 msgstr ""
 
-#: src/Admin/Tab/Messages.php:51
+#: src/Admin/Tab/Messages.php:52
 msgid "Validation error"
 msgstr ""
 
-#: src/Admin/Tab/Messages.php:52
+#: src/Admin/Tab/Messages.php:53
 msgid "Form submit error"
 msgstr ""
 
-#: src/Admin/Tab/Messages.php:53
+#: src/Admin/Tab/Messages.php:54
 msgid "Invalid captcha error"
 msgstr ""
 
-#: src/Admin/Tab/Messages.php:67
+#: src/Admin/Tab/Messages.php:68
 msgid "Messages"
 msgstr ""
 
-#: src/Admin/Tab/Messages.php:119
+#: src/Admin/Tab/Messages.php:120
 msgid "You can adjust messages that are displayed to users."
 msgstr ""
 
@@ -247,100 +358,106 @@ msgstr ""
 msgid "Use images for boolean field values in views"
 msgstr ""
 
-#: src/Admin.php:79
+#: src/Admin.php:83
 msgid "%s &lsaquo; Dynamics CRM"
 msgstr ""
 
-#: src/Admin.php:105
+#: src/Admin.php:109
 msgid ""
 "Dynamics CRM Plugin successfully activated, <b>please configure it</b> <a "
 "href=\"admin.php?page=wordpresscrm\">on this page</a>."
 msgstr ""
 
-#: src/LookupDialog.php:71 src/LookupDialog.php:168
+#: src/LookupDialog.php:69 src/LookupDialog.php:156
 msgid "No records are available in this view."
 msgstr ""
 
-#: src/Plugin.php:86 src/Plugin.php:93
+#: src/Plugin.php:94 src/Plugin.php:101
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: src/Plugin.php:265
+#: src/Plugin.php:263
 msgid "Settings"
 msgstr ""
 
-#: src/Shortcode/Form/AbstractForm.php:267 src/Shortcode/Form/Control.php:73
+#: src/Shortcode/Form/AbstractForm.php:262 src/Shortcode/Form/Control.php:78
+#: src/Shortcode/Form/FormInstance.php:926
+#: src/Shortcode/Form/FormInstance.php:937
 msgid "%s is required"
 msgstr ""
 
-#: src/Shortcode/Form/Control.php:90 src/Shortcode/Form/FormInstance.php:612
+#: src/Shortcode/Form/Control.php:95 src/Shortcode/Form/FormInstance.php:727
 msgid "%s must be a valid email address"
 msgstr ""
 
-#: src/Shortcode/Form/Control.php:98
+#: src/Shortcode/Form/Control.php:103
 msgid "%s must be a valid URL"
 msgstr ""
 
-#: src/Shortcode/Form/Control.php:108
+#: src/Shortcode/Form/Control.php:113
 msgid "%1$s must be less than %2$d character"
 msgid_plural "%1$s must be less than %2$d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Shortcode/Form/FormInstance.php:81
+#: src/Shortcode/Form/FormInstance.php:165
 msgid "<strong>Success!</strong>"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:122
-#: src/Shortcode/Form/FormInstance.php:127
+#: src/Shortcode/Form/FormInstance.php:204
+#: src/Shortcode/Form/FormInstance.php:209
 msgid "Form submission couldn't pass security check. Please try again"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:526
+#: src/Shortcode/Form/FormInstance.php:324
+msgid "Can not get form definition"
+msgstr ""
+
+#: src/Shortcode/Form/FormInstance.php:644
 msgid "Unsupported lookup type for [%1$s], or entity {%2$s} not found"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:600
+#: src/Shortcode/Form/FormInstance.php:715
 msgid "Must be less than %d characters"
 msgid_plural "Must be less than %d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Shortcode/Form/FormInstance.php:607
+#: src/Shortcode/Form/FormInstance.php:722
 msgid "Incorrect text value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:625
+#: src/Shortcode/Form/FormInstance.php:740
 msgid "Invalid number value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:630
+#: src/Shortcode/Form/FormInstance.php:745
 msgid ""
 "Invalid number value. Enter a decimal number without currency symbol or "
 "thousands separator."
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:635
+#: src/Shortcode/Form/FormInstance.php:750
 msgid ""
 "Invalid money value. Enter a decimal number without currency symbol or "
 "thousands separator."
 msgstr ""
 
-#: src/Shortcode/View.php:132
+#: src/Shortcode/View.php:130
 msgid ""
 "Inline view templates are not supported in the free version. Get <a href="
 "\"http://alexacrm.com/dynamics-crm-integration-premium/\">the premium "
 "extension</a> today!"
 msgstr ""
 
-#: src/Shortcode/View.php:135
+#: src/Shortcode/View.php:133
 msgid ""
 "Error in inline template body, please check the inline template for unclosed "
 "or empty tags. <br/> Note that inline template must be well formatted xml "
 "document"
 msgstr ""
 
-#: src/Shortcode/View.php:140
+#: src/Shortcode/View.php:138
 msgid ""
 "<strong>The &lt;fetch&gt;, &lt;results&gt; and &lt;noresults&gt; nodes are "
 "required for inline templates</strong>, please construct fetch query and the "
@@ -349,34 +466,34 @@ msgid ""
 "results&gt;&lt;noresults&gt;...&lt;/noresults&gt;[/msdyncrm_view]"
 msgstr ""
 
-#: src/Shortcode/View.php:150
+#: src/Shortcode/View.php:148
 msgid ""
 "\"entity_name\" shortcode attribute is deprecated, use \"entity\" shortcode "
 "attribute instead with result records entity type"
 msgstr ""
 
-#: src/Shortcode/View.php:154
+#: src/Shortcode/View.php:152
 msgid ""
 "\"entity\" shortcode attribute is required, please add entity="
 "\"entity_logical_name\" to the msdyncrm_view shortcode attributes"
 msgstr ""
 
-#: src/Shortcode/View.php:158
+#: src/Shortcode/View.php:156
 msgid ""
 "\"name\" shortcode attribute is required, please add name=\"View Name\" to "
 "the msdyncrm_view shortcode attributes"
 msgstr ""
 
-#: src/Shortcode/View.php:169
+#: src/Shortcode/View.php:167
 msgid "Unable to get the specified SavedQuery [%1$s] for the entity {%2$s}"
 msgstr ""
 
-#: src/Shortcode.php:29
+#: src/Shortcode.php:39
 msgid ""
 "An error occurred, please try again later or contact site administration"
 msgstr ""
 
-#: src/Shortcode.php:37
+#: src/Shortcode.php:50
 msgid "Wordpress CRM Plugin is not connected to Dynamics CRM"
 msgstr ""
 
@@ -421,15 +538,15 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: templates/view/view.php:40
+#: templates/view/view.php:45
 msgid "&larr; Previous"
 msgstr ""
 
-#: templates/view/view.php:43
+#: templates/view/view.php:53
 msgid "Next &rarr;"
 msgstr ""
 
-#: templates/view/view.php:55
+#: templates/view/view.php:65
 msgid "<p>No results</p>"
 msgstr ""
 
