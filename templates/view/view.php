@@ -37,10 +37,20 @@ if ( $rows ) { ?>
             <tr>
                 <td colspan="<?php echo esc_attr( count( $cells ) ); ?>">
                     <?php if ( $currentPage > 1 ) {
-                        ?><a href="?viewPage=<?php echo esc_attr( $currentPage - 1 ); ?>" class="btn btn-outline-primary"><?php _e( '&larr; Previous', 'integration-dynamics' ); ?></a> <?php /* the prepended space is purposeful */
+                        $url = \Symfony\Component\HttpFoundation\Request::create(
+                            ACRM()->request->getBaseUrl(),
+                            'GET',
+                            array_merge( ACRM()->request->query->all(), [ 'viewPage' => $currentPage - 1 ] )
+                        );
+                        ?><a href="<?php echo esc_attr( $url->getRequestUri() ); ?>" class="btn btn-outline-primary"><?php _e( '&larr; Previous', 'integration-dynamics' ); ?></a> <?php /* the prepended space is purposeful */
                     }
                     if ( $entities->MoreRecords ) {
-                        ?><a href="?viewPage=<?php echo esc_attr( $currentPage + 1 ); ?>" class="btn btn-outline-primary"><?php _e( 'Next &rarr;', 'integration-dynamics' ); ?></a><?php
+                        $url = \Symfony\Component\HttpFoundation\Request::create(
+                            ACRM()->request->getBaseUrl(),
+                            'GET',
+                            array_merge( ACRM()->request->query->all(), [ 'viewPage' => $currentPage + 1 ] )
+                        );
+                        ?><a href="<?php echo esc_attr( $url->getRequestUri() ); ?>" class="btn btn-outline-primary"><?php _e( 'Next &rarr;', 'integration-dynamics' ); ?></a><?php
                     }
                     ?>
                 </td>
