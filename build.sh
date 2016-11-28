@@ -5,8 +5,6 @@ WORKING_DIR=$(
     pwd
 )
 
-TOOLKIT_DIR=${WORKING_DIR}/libraries/php-crm-toolkit
-
 ASSEMBLY_DIR=${WORKING_DIR}/../wordpress-crm-release
 
 if [ $1 ]; then
@@ -37,26 +35,16 @@ git archive --format=tar -o ${ASSEMBLY_DIR}/plugin.tar ${TARGET_VERSION}
 # extract plugin archive
 tar -xf ${ASSEMBLY_DIR}/plugin.tar -C ${ASSEMBLY_TARGET_DIR}
 
-# Toolkit revision linked in the given tag
-TOOLKIT_REV=$(git ls-tree ${TARGET_VERSION} libraries/php-crm-toolkit/ | awk '{print $3}')
-
-cd ${TOOLKIT_DIR}
-
-# archive toolkit repo
-echo "Retrieving toolkit @${TOOLKIT_REV} files..."
-git archive --format=tar -o ${ASSEMBLY_DIR}/toolkit.tar ${TOOLKIT_REV}
+# install Composer dependencies
+cd ${ASSEMBLY_TARGET_DIR}
+composer install
 
 cd ${WORKING_DIR}
 
-# extract toolkit archive
-tar -xf ${ASSEMBLY_DIR}/toolkit.tar -C ${ASSEMBLY_TARGET_DIR}/libraries/php-crm-toolkit
-
-rm ${ASSEMBLY_DIR}/plugin.tar ${ASSEMBLY_DIR}/toolkit.tar
+rm ${ASSEMBLY_DIR}/plugin.tar
 
 # remove files not necessary for public
-rm ${ASSEMBLY_TARGET_DIR}/build.sh ${ASSEMBLY_TARGET_DIR}/.gitignore ${ASSEMBLY_TARGET_DIR}/.gitmodules
-rm ${ASSEMBLY_TARGET_DIR}/libraries/php-crm-toolkit/.gitignore
-rm -r ${ASSEMBLY_TARGET_DIR}/libraries/php-crm-toolkit/examples ${ASSEMBLY_TARGET_DIR}/libraries/php-crm-toolkit/tests
+rm ${ASSEMBLY_TARGET_DIR}/build.sh ${ASSEMBLY_TARGET_DIR}/.gitignore
 
 echo "Creating <integration-dynamics-v${TARGET_VERSION}.zip>..."
 cd ${ASSEMBLY_DIR}
