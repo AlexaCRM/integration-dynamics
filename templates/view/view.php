@@ -37,16 +37,22 @@ if ( $rows ) { ?>
             <tr>
                 <td colspan="<?php echo esc_attr( count( $cells ) ); ?>">
                     <?php if ( $currentPage > 1 ) {
+                        $queryParams = ACRM()->request->query->all();
+                        unset( $queryParams['viewPage'] );
+                        if ( $currentPage > 2 ) {
+                            $queryParams[ 'viewPage'] = $currentPage - 1;
+                        }
+
                         $url = \Symfony\Component\HttpFoundation\Request::create(
-                            ACRM()->request->getBaseUrl(),
+                            ACRM()->request->getPathInfo(),
                             'GET',
-                            array_merge( ACRM()->request->query->all(), [ 'viewPage' => $currentPage - 1 ] )
+                            $queryParams
                         );
                         ?><a href="<?php echo esc_attr( $url->getRequestUri() ); ?>" class="btn btn-outline-primary"><?php _e( '&larr; Previous', 'integration-dynamics' ); ?></a> <?php /* the prepended space is purposeful */
                     }
                     if ( $entities->MoreRecords ) {
                         $url = \Symfony\Component\HttpFoundation\Request::create(
-                            ACRM()->request->getBaseUrl(),
+                            ACRM()->request->getPathInfo(),
                             'GET',
                             array_merge( ACRM()->request->query->all(), [ 'viewPage' => $currentPage + 1 ] )
                         );
