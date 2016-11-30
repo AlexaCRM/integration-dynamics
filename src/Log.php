@@ -2,7 +2,7 @@
 
 namespace AlexaCRM\WordpressCRM;
 
-use AlexaCRM\CRMToolkit\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Log.
@@ -113,109 +113,122 @@ class Log implements LoggerInterface {
     }
 
     /**
-     * Emergency: system is unusable.
+     * System is unusable.
      *
      * @param string $message
-     * @param mixed $context
+     * @param array  $context
      *
      * @return void
      */
-    public function emergency( $message, $context = null ) {
-        $this->recordMessage( $message, self::LOG_EMERGENCY, $context );
+    public function emergency( $message, array $context = [] ) {
+        $this->log( self::LOG_EMERGENCY, $message, $context );
     }
 
     /**
-     * Alert: action must be taken immediately.
+     * Action must be taken immediately.
+     *
+     * Example: Entire website down, database unavailable, etc. This should
+     * trigger the SMS alerts and wake you up.
      *
      * @param string $message
-     * @param mixed $context
+     * @param array  $context
      *
      * @return void
      */
-    public function alert( $message, $context = null ) {
-        $this->recordMessage( $message, self::LOG_ALERT, $context );
+    public function alert( $message, array $context = [] ) {
+        $this->log( self::LOG_ALERT, $message, $context );
     }
 
     /**
-     * Critical: critical conditions.
+     * Critical conditions.
+     *
+     * Example: Application component unavailable, unexpected exception.
      *
      * @param string $message
-     * @param mixed $context
+     * @param array  $context
      *
      * @return void
      */
-    public function critical( $message, $context = null ) {
-        $this->recordMessage( $message, self::LOG_CRITICAL, $context );
+    public function critical( $message, array $context = [] ) {
+        $this->log( self::LOG_CRITICAL, $message, $context );
     }
 
     /**
-     * Error: error conditions.
+     * Runtime errors that do not require immediate action but should typically
+     * be logged and monitored.
      *
      * @param string $message
-     * @param mixed $context
+     * @param array  $context
      *
      * @return void
      */
-    public function error( $message, $context = null ) {
-        $this->recordMessage( $message, self::LOG_ERROR, $context );
+    public function error( $message, array $context = [] ) {
+        $this->log( self::LOG_ERROR, $message, $context );
     }
 
     /**
-     * Warning: warning conditions.
+     * Exceptional occurrences that are not errors.
+     *
+     * Example: Use of deprecated APIs, poor use of an API, undesirable things
+     * that are not necessarily wrong.
      *
      * @param string $message
-     * @param mixed $context
+     * @param array  $context
      *
      * @return void
      */
-    public function warning( $message, $context = null ) {
-        $this->recordMessage( $message, self::LOG_WARNING, $context );
+    public function warning( $message, array $context = [] ) {
+        $this->log( self::LOG_WARNING, $message, $context );
     }
 
     /**
-     * Notice: normal but significant condition.
+     * Normal but significant events.
      *
      * @param string $message
-     * @param mixed $context
+     * @param array  $context
      *
      * @return void
      */
-    public function notice( $message, $context = null ) {
-        $this->recordMessage( $message, self::LOG_NOTICE, $context );
+    public function notice( $message, array $context = [] ) {
+        $this->log( self::LOG_NOTICE, $message, $context );
     }
 
     /**
-     * Informational: informational messages.
+     * Interesting events.
+     *
+     * Example: User logs in, SQL logs.
      *
      * @param string $message
-     * @param mixed $context
+     * @param array  $context
      *
      * @return void
      */
-    public function info( $message, $context = null ) {
-        $this->recordMessage( $message, self::LOG_INFO, $context );
+    public function info( $message, array $context = [] ) {
+        $this->log( self::LOG_INFO, $message, $context );
     }
 
     /**
-     * Debug: debug-level messages.
+     * Detailed debug information.
      *
      * @param string $message
-     * @param mixed $context
+     * @param array  $context
      *
      * @return void
      */
-    public function debug( $message, $context = null ) {
-        $this->recordMessage( $message, self::LOG_DEBUG, $context );
+    public function debug( $message, array $context = [] ) {
+        $this->log( self::LOG_DEBUG, $message, $context );
     }
 
     /**
-     * Records the message into log.
+     * Logs with an arbitrary level.
      *
+     * @param int    $level
      * @param string $message
-     * @param int $level
-     * @param mixed $context
+     * @param array  $context
+     *
+     * @return void
      */
-    private function recordMessage( $message, $level, $context = null ) {
+    public function log( $level, $message, array $context = [] ) {
         $shouldBeRecorded = (bool)( $this->logLevels & $level );
         if ( !$shouldBeRecorded ) {
             return;
@@ -229,7 +242,7 @@ class Log implements LoggerInterface {
         $timestamp = \DateTime::createFromFormat( 'U.u', microtime( true ) );
 
         $record = "[{$levelLabel}]\t({$timestamp->format( 'Y-m-d H:i:s.u' )}) {$message}\n";
-        if ( $context !== null ) {
+        if ( count( $context ) ) {
             $record .= "-----------------------\n"
                 . "Message context:\n"
                 . print_r( $context, true )
