@@ -96,6 +96,15 @@ class Field {
         return $this;
     }
 
+    /**
+     * Sets the static value generator for this field.
+     *
+     * Static values are supplied to the front-end during field initialization and are not requested via API.
+     *
+     * @param \Closure $generator
+     *
+     * @return $this
+     */
     public function setStaticValueGenerator( \Closure $generator ) {
         $this->staticValueGenerator = $generator;
 
