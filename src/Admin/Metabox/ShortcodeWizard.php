@@ -236,7 +236,7 @@ Ditch it.
     public function handleResultRequest() {
         $query = ACRM()->request->request;
 
-        if ( !$query->has( 'post' ) ) {
+        if ( !$query->has( 'name' ) ) {
             wp_send_json_error( [ 'message' => __( 'Invalid request - shortcode name is absent', 'integration-dynamics' ) ] );
         }
 
@@ -244,7 +244,7 @@ Ditch it.
             wp_send_json_error( [ 'message' => __( 'Invalid request - shortcode arguments are absent', 'integration-dynamics' ) ] );
         }
 
-        $shortcodeName = trim( $query->get( 'post' ) );
+        $shortcodeName = trim( $query->get( 'name' ) );
         $shortcodeFields = $query->get( 'fields' );
 
         if ( !is_array( $shortcodeFields ) ) {
