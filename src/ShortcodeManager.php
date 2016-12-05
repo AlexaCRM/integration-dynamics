@@ -73,7 +73,15 @@ class ShortcodeManager {
         }
 
         ACRM()->log->info( "Rendering shortcode [{$tagName}]." );
-        return $this->shortcodeProcessors[ $shortcodeName ]->shortcode( $attributes, $content, $tagName );
+
+        $output = '';
+        try {
+            $output = $this->shortcodeProcessors[ $shortcodeName ]->shortcode( $attributes, $content, $tagName );
+        } catch ( \Exception $e ) {
+            $output = 'Unexpected error: ' . $e->getMessage();
+        }
+
+        return $output;
     }
 
     /**
