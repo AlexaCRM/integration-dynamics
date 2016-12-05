@@ -2,6 +2,8 @@
 
 namespace AlexaCRM\WordpressCRM;
 
+use AlexaCRM\CRMToolkit\OrganizationDisabledException;
+
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
@@ -77,6 +79,9 @@ class ShortcodeManager {
         $output = '';
         try {
             $output = $this->shortcodeProcessors[ $shortcodeName ]->shortcode( $attributes, $content, $tagName );
+        } catch ( OrganizationDisabledException $e ) {
+            $output = 'Organization is disabled.';
+            Connection::setConnectionStatus( false );
         } catch ( \Exception $e ) {
             $output = 'Unexpected error: ' . $e->getMessage();
         }
