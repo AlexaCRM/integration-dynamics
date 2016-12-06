@@ -44,6 +44,13 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.24 =
+
+* Allow customizing the error message if WordPress is not connected to the CRM.
+* Fixed: Pagination links in views.
+* Fixed: WordPress 4.4 is now marked as compatible with the plugin.
+* Fixed: Fatal crash when connecting to CRM.
+
 = 1.1.23 =
 
 * Added Shortcode Wizard to quickly generate shortcodes (View and Field supported)
