@@ -29,6 +29,9 @@ class Messages extends Tab {
 
     private function getDefaultSettings() {
         $messages = [
+            'general' => [
+                'not_connected' => __( 'WordPress is not connected to Dynamics CRM', 'integration-dynamics' ),
+            ],
             'form' => [
                 'validation_error' => __( 'Form validation failed', 'integration-dynamics' ),
                 'crm_error'        => __( 'An error has occurred submitting the form', 'integration-dynamics' ),
@@ -46,6 +49,12 @@ class Messages extends Tab {
 
     private function getMessagesSchema() {
         $schema = [
+            'general' => [
+                'displayName' => __( 'General messages', 'integration-dynamics' ),
+                'fields' => [
+                    'not_connected' => __( 'Not connected error', 'integration-dynamics' ),
+                ],
+            ],
             'form' => [
                 'displayName' => __( 'Form errors', 'integration-dynamics' ),
                 'fields' => [

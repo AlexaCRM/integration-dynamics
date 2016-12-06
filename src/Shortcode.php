@@ -47,7 +47,7 @@ abstract class Shortcode {
      * @return string
      */
     public static function notConnected() {
-        return self::returnError( __( "Wordpress CRM Plugin is not connected to Dynamics CRM", 'integration-dynamics' ) );
+        return self::returnError( Messages::getMessage( 'general', 'not_connected' ) );
     }
 
     /**
