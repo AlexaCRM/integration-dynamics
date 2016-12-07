@@ -108,4 +108,30 @@ abstract class Shortcode {
         return $default;
     }
 
+    /**
+     * Reverses partially effects of wpautop().
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    public static function reverse_wpautop( $content ) {
+        //remove any new lines already in there
+        $content = str_replace( "\n", "", $content );
+
+        //remove all <p>
+        $content = str_replace( "<p>", "", $content );
+
+        //replace <br /> with \n
+        $content = str_replace( [ "<br />", "<br>", "<br/>" ], "\n", $content );
+
+        //replace </p> with \n\n
+        $content = str_replace( "</p>", "\n\n", $content );
+
+        //replace quotes
+        $content = str_replace( [ '&#8220;', '&#8221;' ], '"', $content );
+
+        return $content;
+    }
+
 }

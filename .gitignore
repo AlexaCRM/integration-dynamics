@@ -3,6 +3,7 @@
 /storage/cache/
 /storage/metadata/
 /storage/images/
+/storage/twig/
 
 /storage/*.log
 
