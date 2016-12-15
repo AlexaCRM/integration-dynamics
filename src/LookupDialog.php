@@ -334,11 +334,9 @@ class LookupDialog {
                     $cellValue = $formattedCellValue;
 
                     if ( ( $record->{$cellName} ) instanceof EntityReference
-                         && ( $post = DataBinding::getDefaultPost( $record->{$cellName}->LOGICALNAME ) )
+                         && ( $url = ACRM()->binding->buildUrl( $record->{$cellName} ) )
                     ) {
-                        $permalink = get_permalink( $post );
-                        $linkToPost = $permalink . ( strpos( $permalink, "?" )? '&' : '?' ) . "id={$record->{$cellName}->ID}";
-                        $cellValue = "<a href=\"{$linkToPost}\">{$formattedCellValue}</a>";
+                        $cellValue = '<a href="' . esc_attr( $url ) . '">' . $formattedCellValue . '</a>';
                     }
 
                     $result .= $cellValue;

@@ -81,6 +81,13 @@ final class Plugin {
     public $template = null;
 
     /**
+     * Access to data-binding.
+     *
+     * @var Binding
+     */
+    public $binding = null;
+
+    /**
      * Plugin general and connection options (msdyncrm_options)
      *
      * @var array
@@ -137,6 +144,8 @@ final class Plugin {
             new CustomImage();
             new AnnotationImage( $this->imageStorage );
 
+            $this->binding = new Binding();
+
             do_action( 'wordpresscrm_extended_includes' );
 
             include_once( WORDPRESSCRM_DIR . '/includes/template-shortcuts.php' );
@@ -146,8 +155,6 @@ final class Plugin {
             $this->log->info( 'Initializing admin UI.' );
             new Admin();
         }
-
-        DataBinding::instance();
 
         if ( !is_admin() ) {
             add_action( 'after_setup_theme', function() {

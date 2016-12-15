@@ -6,7 +6,6 @@ namespace AlexaCRM\WordpressCRM\Shortcode;
 use AlexaCRM\WordpressCRM\Shortcode;
 use Exception;
 use AlexaCRM\WordpressCRM\Image\AnnotationImage;
-use AlexaCRM\WordpressCRM\DataBinding;
 
 if ( !defined( 'ABSPATH' ) ) {
     exit;
@@ -27,15 +26,6 @@ class Field extends Shortcode {
     private $errors = [ ];
 
     /**
-     * @param $name
-     *
-     * @return mixed
-     */
-    public function __get( $name ) {
-        return DataBinding::instance()->{$name};
-    }
-
-    /**
      * Shortcode handler
      *
      * @param array $attributes
@@ -47,8 +37,9 @@ class Field extends Shortcode {
     public function shortcode( $attributes, $content = null, $tagName ) {
 
         try {
+            $record = ACRM()->binding->getEntity();
 
-            if ( $this->entity == null ) {
+            if ( $record == null ) {
                 return '';
             }
 
@@ -76,18 +67,20 @@ class Field extends Shortcode {
             $timezoneOffset = null;
 
             if ( $a['field'] == 'notes' ) {
-
                 return $this->printNotes( $a['add_form'] == true );
-            } else if ( in_array( $a['field'], array( 'attachedimage', 'attachmentimage' ) ) ) {
+            }
 
-                return self::wrap( AnnotationImage::getFieldAttachmentImage( $this->entity ), $nowrap );
-            } else if ( $a['field'] == "entityimage" ) {
+            if ( in_array( $a['field'], array( 'attachedimage', 'attachmentimage' ) ) ) {
+                return self::wrap( AnnotationImage::getFieldAttachmentImage( $record ), $nowrap );
+            }
+
+            if ( $a['field'] == "entityimage" ) {
 
                 $fetch = "<fetch mapping='logical'>
-                                <entity name='" . $this->entity->logicalname . "'>
+                                <entity name='" . $record->logicalname . "'>
                                         <attribute name='entityimage' />
                                         <filter type='and'>
-                                                <condition attribute='" . $this->entity->getPrimaryIdField() . "' operator='eq' value='" . $this->entity->id . "' />
+                                                <condition attribute='" . $record->getPrimaryIdField() . "' operator='eq' value='" . $record->id . "' />
                                         </filter>
                                 </entity>
                           </fetch>";
@@ -100,81 +93,76 @@ class Field extends Shortcode {
 
                     return self::wrap( $image, $nowrap );
                 }
+
+                return '';
+            }
+
+            if ( strpos( $a['field'], '.' ) ) {
+                $arr   = explode( '.', $a['field'] );
+                $field = $arr[0];
+                $child = strtolower( $arr[1] );
             } else {
-                if ( strpos( $a['field'], '.' ) ) {
-                    $arr   = explode( '.', $a['field'] );
-                    $field = $arr[0];
-                    $child = strtolower( $arr[1] );
+                $field = $a['field'];
+                $child = null;
+            }
+
+            if ( isset( $field ) && isset( $record->{$field} ) && $record->{$field} != null ) {
+
+                if ( $child ) {
+                    $entity = $record->{$field};
+                    $field = $child;
                 } else {
-                    $field = $a['field'];
-                    $child = null;
+                    $entity = $record;
                 }
 
-                if ( isset( $field ) && isset( $this->entity->{$field} ) && $this->entity->{$field} != null ) {
+                try {
 
-                    if ( $child && ( $child == "id" || $child == "logicalname" || $child == "displayname" ) ) {
+                    if ( $format != null && $entity->attributes[ $field ]->type == "DateTime" ) {
+                        return self::wrap( date( $format, $entity->{$field} ), $nowrap );
+                    } else if ( $format != null && $entity->attributes[ $field ]->type == "Double" ) {
+                        $fl_format = str_split( $format );
 
-                        $entity = $this->entity->{$field};
-
-                        $field = $child;
-                    } else if ( $child ) {
-
-                        $entity = ASDK()->entity( $this->entity->{$field}->logicalname, $this->entity->{$field}->id );
-
-                        $field = $child;
-                    } else {
-                        $entity = $this->entity;
-                    }
-
-                    try {
-
-                        if ( $format != null && $entity->attributes[ $field ]->type == "DateTime" ) {
-                            return self::wrap( date( $format, $entity->{$field} ), $nowrap );
-                        } else if ( $format != null && $entity->attributes[ $field ]->type == "Double" ) {
-                            $fl_format = str_split( $format );
-
-                            if ( !isset( $fl_format[2] ) ) {
-                                $fl_format[2] = ",";
-                            }
-
-                            if ( !isset( $fl_format[1] ) ) {
-                                $fl_format[1] = ".";
-                            }
-
-                            if ( !isset( $fl_format[0] ) ) {
-                                $fl_format[0] = 0;
-                            }
-
-                            return self::wrap( number_format( (float) $entity->{$field}, $fl_format[0], $fl_format[1], $fl_format[2] ), $nowrap );
-                        } else if ( $format != null && $entity->attributes[ $field ]->type == "Money" ) {
-
-                            return self::wrap( money_format( $format, $entity->{$field} ), $nowrap );
-                        } else {
-
-                            $value = $entity->getFormattedValue( $field, $timezoneOffset );
-
-                            if ( isset( $entity->attributes[ $field ] ) ) {
-                                switch ( $entity->attributes[ $field ]->format ) {
-                                    case "Email":
-                                        $value = "<a href='mailto:" . $value . "'>" . $value . "</a>";
-                                        break;
-                                    case "Url":
-                                        $value = "<a href='" . $value . "'>" . $value . "</a>";
-                                        break;
-                                    case "Phone":
-                                        $value = "<a href='tel:" . $value . "'>" . $value . "</a>";
-                                        break;
-                                }
-                            }
-
-                            return self::wrap( $value, $nowrap );
+                        if ( !isset( $fl_format[2] ) ) {
+                            $fl_format[2] = ",";
                         }
-                    } catch ( Exception $ex ) {
-                        return $ex->getMessage();
+
+                        if ( !isset( $fl_format[1] ) ) {
+                            $fl_format[1] = ".";
+                        }
+
+                        if ( !isset( $fl_format[0] ) ) {
+                            $fl_format[0] = 0;
+                        }
+
+                        return self::wrap( number_format( (float) $entity->{$field}, $fl_format[0], $fl_format[1], $fl_format[2] ), $nowrap );
+                    } else if ( $format != null && $entity->attributes[ $field ]->type == "Money" ) {
+
+                        return self::wrap( money_format( $format, $entity->{$field} ), $nowrap );
+                    } else {
+
+                        $value = $entity->getFormattedValue( $field, $timezoneOffset );
+
+                        if ( isset( $entity->attributes[ $field ] ) ) {
+                            switch ( $entity->attributes[ $field ]->format ) {
+                                case "Email":
+                                    $value = "<a href='mailto:" . $value . "'>" . $value . "</a>";
+                                    break;
+                                case "Url":
+                                    $value = "<a href='" . $value . "'>" . $value . "</a>";
+                                    break;
+                                case "Phone":
+                                    $value = "<a href='tel:" . $value . "'>" . $value . "</a>";
+                                    break;
+                            }
+                        }
+
+                        return self::wrap( $value, $nowrap );
                     }
-                } else {
-                    return apply_filters( "wordpresscrm_field_missing", "", $a['field'] );
+                } catch ( Exception $ex ) {
+                    return $ex->getMessage();
                 }
+            } else {
+                return apply_filters( "wordpresscrm_field_missing", "", $a['field'] );
             }
         } catch ( Exception $ex ) {
             return self::returnExceptionError( $ex );
