@@ -160,13 +160,6 @@ class View {
                     if ( $boundUrl !== '' ) {
                         $element['formatted_value'] = '<a href="' . esc_attr( $boundUrl ) . '">' . $relatedEntityLabel . '</a>';
                     }
-
-                    /*if ( ( $entity->{$name} instanceof Entity\EntityReference && !is_null( $relatedPost ) )
-                          || ( $name == $primaryName && !is_null( $relatedPost ) ) ) {
-                        $relatedPostUrl = ACRM()->binding->buildUrl( $entity->{$name} );
-
-                        $element['formatted_value'] = '<a href="' . esc_attr( $relatedPostUrl ) . '">' . $relatedEntityLabel . '</a>';
-                    }*/
                 }
 
                 $row[ $name ] = $element;
