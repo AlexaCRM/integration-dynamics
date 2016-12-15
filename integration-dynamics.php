@@ -182,7 +182,13 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
     $entityField = new ShortcodeWizard\Field\Hidden( 'entity' );
     if ( array_key_exists( 'post', $_GET ) ) {
         $entityField->setStaticValueGenerator( function() {
-            return trim( maybe_unserialize( get_post_meta( $_GET['post'], '_wordpresscrm_databinding_entity', true ) ) );
+            $postId = (int)$_GET['post'];
+            $bindingConfig = ACRM()->binding->getPostBinding( $postId );
+            if ( $bindingConfig === null ) {
+                return '';
+            }
+
+            return $bindingConfig['entity'];
         } );
     }
     $field->registerField( $entityField );

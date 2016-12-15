@@ -62,13 +62,15 @@ class DataBinding {
 
             $entities = Tab::get_all_entities();
 
-            $post_entity         = maybe_unserialize( get_post_meta( $post->ID, '_wordpresscrm_databinding_entity', true ) );
-            $post_parametername  = maybe_unserialize( get_post_meta( $post->ID, '_wordpresscrm_databinding_parametername', true ) );
-            $post_isdefaultview  = maybe_unserialize( get_post_meta( $post->ID, '_wordpresscrm_databinding_isdefaultview', true ) );
-            $post_querystring    = maybe_unserialize( get_post_meta( $post->ID, '_wordpresscrm_databinding_querystring', true ) );
-            $post_empty_behavior = maybe_unserialize( get_post_meta( $post->ID, '_wordpresscrm_databinding_empty_behavior', true ) );
+            $bindingConfig = ACRM()->binding->getPostBinding( $post->ID );
 
-            if ( $post_isdefaultview == 'true' ) {
+            $post_entity         = $bindingConfig['entity'];
+            $post_parametername  = $bindingConfig['key'];
+            $post_isdefaultview  = $bindingConfig['default'];
+            $post_querystring    = $bindingConfig['query'];
+            $post_empty_behavior = $bindingConfig['empty'];
+
+            if ( $post_isdefaultview || $post_isdefaultview === 'true' ) {
                 $post_isdefaultview = 'checked="checked"';
             }
 
@@ -78,98 +80,49 @@ class DataBinding {
 
     /**
      * Saves our custom meta data for the post being saved
+     *
+     * @param int $postId
+     *
+     * @return mixed
      */
-    public function save_postdata( $post_id ) {
-        // Security check
-        if ( !isset( $_POST['wordpresscrm_databinding_nonce'] ) ) {
-            return $post_id;
-        }
+    public function save_postdata( $postId ) {
+        $request = ACRM()->request->request;
+        $postId = intval( $postId );
 
-        if ( !wp_verify_nonce( $_POST['wordpresscrm_databinding_nonce'], 'wordpresscrm_databinding' ) ) {
-            return $post_id;
+        // Security check
+        if ( !wp_verify_nonce( $request->get( 'wordpresscrm_databinding_nonce', '' ), 'wordpresscrm_databinding' ) ) {
+            return $postId;
         }
 
         // Meta data isn't transmitted during autosaves so don't do anything
         if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-            return $post_id;
+            return $postId;
         }
 
-        if ( !isset( $_POST['wordpresscrm_databinding'] ) ) {
-            return $post_id;
+        $entityName = $request->get( 'wordpresscrm_databinding_entity' );
+
+        if ( $entityName === null ) {
+            ACRM()->binding->updateBinding( $postId, null );
+
+            return $postId;
         }
 
-        $entityName = null;
+        $config = [
+            'entity' => $entityName,
+            'key' => $request->get( 'wordpresscrm_databinding_parametername', '' ),
+            'query' => $request->get( 'wordpresscrm_databinding_querystring', '' ),
+            'default' => ( $request->get( 'wordpresscrm_databinding_isdefaultview' ) === 'true' ),
+            'empty' => $request->get( 'wordpresscrm_databinding_empty_behavior', '' ),
+            'post' => $postId,
+        ];
 
-        if ( isset( $_POST['wordpresscrm_databinding']['entity'] ) && $_POST['wordpresscrm_databinding']['entity'] ) {
-            /* TODO: Serialization for multiple values, for multiple data-binding */
-            //update_post_meta($post_id, '_wordpresscrm_databinding_entity', serialize($_POST['wordpresscrm_databinding']['entity']));
+        ACRM()->binding->updateBinding( $postId, $config );
 
-            $entityName = $_POST['wordpresscrm_databinding']['entity'];
-
-            update_post_meta( $post_id, '_wordpresscrm_databinding_entity', $_POST['wordpresscrm_databinding']['entity'] );
-        } else {
-            delete_post_meta( $post_id, '_wordpresscrm_databinding_entity' );
+        if ( $config['default'] ) {
+            ACRM()->binding->updateDefaultBinding( $config['entity'], $postId );
         }
 
-        if ( isset( $_POST['wordpresscrm_databinding']['parametername'] ) && $_POST['wordpresscrm_databinding']['parametername'] ) {
-            /* TODO: Serialization for multiple values, for multiple data-binding */
-            //update_post_meta($post_id, '_wordpresscrm_databinding_parametername', serialize($_POST['wordpresscrm_databinding']['parametername']));
-
-            update_post_meta( $post_id, '_wordpresscrm_databinding_parametername', $_POST['wordpresscrm_databinding']['parametername'] );
-        } else {
-            delete_post_meta( $post_id, '_wordpresscrm_databinding_parametername' );
-        }
-
-        if ( isset( $_POST['wordpresscrm_databinding']['isdefaultview'] ) && $_POST['wordpresscrm_databinding']['isdefaultview'] == 'true' ) {
-            $this->clearOtherDefaultViews( $entityName );
-
-            update_post_meta( $post_id, '_wordpresscrm_databinding_isdefaultview', 'true' );
-        } else {
-            delete_post_meta( $post_id, '_wordpresscrm_databinding_isdefaultview' );
-        }
-
-        if ( isset( $_POST['wordpresscrm_databinding']['querystring'] ) && strlen( $_POST['wordpresscrm_databinding']['querystring'] ) > 0 ) {
-            update_post_meta( $post_id, '_wordpresscrm_databinding_querystring', $_POST['wordpresscrm_databinding']['querystring'] );
-        } else {
-            update_post_meta( $post_id, '_wordpresscrm_databinding_querystring', 'id' );
-        }
-
-        if ( isset( $_POST['wordpresscrm_databinding']['empty_behavior'] ) && strlen( $_POST['wordpresscrm_databinding']['empty_behavior'] ) > 0 ) {
-            update_post_meta( $post_id, '_wordpresscrm_databinding_empty_behavior', $_POST['wordpresscrm_databinding']['empty_behavior'] );
-        } else {
-            update_post_meta( $post_id, '_wordpresscrm_databinding_empty_behavior', '' );
-        }
-
-        return $post_id;
-    }
-
-    public function clearOtherDefaultViews( $entity = null ) {
-        if ( $entity == null ) {
-            return;
-        }
-
-        $args  = array(
-            'post_type'  => array( 'page', 'post' ),
-            'meta_query' => array(
-                array(
-                    'key'   => '_wordpresscrm_databinding_entity',
-                    'value' => $entity
-                ),
-                array(
-                    'key'   => '_wordpresscrm_databinding_isdefaultview',
-                    'value' => 'true'
-                )
-
-            )
-        );
-        $posts = get_posts( $args );
-
-        foreach ( $posts as $post ) {
-            delete_post_meta( $post->ID, '_wordpresscrm_databinding_isdefaultview' );
-        }
-
-        $transientName = \AlexaCRM\WordpressCRM\DataBinding::getDefaultPostTransientName( $entity );
-        delete_transient( $transientName );
+        return $postId;
     }
 
 }

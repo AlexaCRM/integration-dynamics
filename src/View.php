@@ -145,29 +145,28 @@ class View {
                     $element["properties"] = $entity->attributes[ $name ];
                     $element["formatted_value"] = self::getFormattedValue( $entity, $name, $tzOffset );
 
-                    $relatedEntityId = $entity->ID;
-                    $relatedEntityName = $entity->logicalName;
-                    $relatedEntityLabel = self::getFormattedValue( $entity, $name, $tzOffset );
+                    $boundUrl = '';
+                    $relatedEntityLabel = $element['formatted_value'];
 
                     if ( $entity->{$name} instanceof Entity\EntityReference ) {
-                        $relatedEntityId = $entity->{$name}->ID;
-                        $relatedEntityName = $entity->{$name}->logicalName;
+                        $boundUrl = ACRM()->binding->buildUrl( $entity->{$name} );
                         $relatedEntityLabel = $entity->getFormattedValue( $name, $tzOffset );
                     }
 
-                    $relatedPost = DataBinding::getDefaultPost( $relatedEntityName );
+                    if ( $name === $primaryName ) {
+                        $boundUrl = ACRM()->binding->buildUrl( $entity );
+                    }
 
-                    if ( ( $entity->{$name} instanceof Entity\EntityReference && !is_null( $relatedPost ) )
+                    if ( $boundUrl !== '' ) {
+                        $element['formatted_value'] = '<a href="' . esc_attr( $boundUrl ) . '">' . $relatedEntityLabel . '</a>';
+                    }
+
+                    /*if ( ( $entity->{$name} instanceof Entity\EntityReference && !is_null( $relatedPost ) )
                           || ( $name == $primaryName && !is_null( $relatedPost ) ) ) {
-                        $relatedPostPermalink = get_permalink( $relatedPost );
-                        $querystringParameter = maybe_unserialize( get_post_meta( $relatedPost->ID, '_wordpresscrm_databinding_querystring', true ) );
-                        $relatedPostUrlDivider = ( strpos( $relatedPostPermalink, '?' ) !== false )? '&' : '?';
-
-                        $relatedPostUrl = $relatedPostPermalink . $relatedPostUrlDivider
-                                          . $querystringParameter . '=' . $relatedEntityId;
+                        $relatedPostUrl = ACRM()->binding->buildUrl( $entity->{$name} );
 
                         $element['formatted_value'] = '<a href="' . esc_attr( $relatedPostUrl ) . '">' . $relatedEntityLabel . '</a>';
-                    }
+                    }*/
                 }
 
                 $row[ $name ] = $element;

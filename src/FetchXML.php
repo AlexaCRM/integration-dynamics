@@ -47,7 +47,7 @@ class FetchXML {
      * @return string string fetchxml with replaced placeholder with value from currentrecord's entity field, if there is no data-bound record assigned to page or field doesn't contain value return the input fetcxml
      */
     public static function replaceConditionPlaceholderByCurrentrecordFieldValue( $fetchXML, $placeholder, $value ) {
-        $record = DataBinding::instance()->entity;
+        $record = ACRM()->binding->getEntity();
 
         return ( $record != null && $record->ID && isset( $record->$value ) ) ? str_replace( $placeholder, htmlspecialchars( $record->$value ), $fetchXML ) : $fetchXML;
     }
@@ -147,7 +147,7 @@ class FetchXML {
             $replaceValue = null;
             if ( $type === 'currentrecord' ) {
                 /* Replace values with current data bound page (if data-binding or current entity exists) */
-                $record = DataBinding::instance()->entity;
+                $record = ACRM()->binding->getEntity();
 
                 if ( $record instanceof Entity && $record->ID ) {
                     $replaceValue = $record->ID;

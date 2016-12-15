@@ -23,6 +23,7 @@ class WordpressCRM_Update {
     public function __construct() {
         add_action( "wordpresscrm_before_load", array( $this, "updateDeprecatedOptions" ), 1 );
         add_action( 'wordpresscrm_before_load', array( $this, 'updateDataBoundPages' ), 9 );
+        add_action( 'wordpresscrm_before_load', [ $this, 'updateDataBinding' ], 18 );
     }
 
     /**
@@ -140,6 +141,59 @@ class WordpressCRM_Update {
                 }
             }
         }
+    }
+
+    /**
+     * Updates data-binding config to a new format.
+     *
+     * Instead of keeping data-binding settings on a per-post basis,
+     * we introduce a centralized configuration storage for data-binding (wpcrm_binding).
+     *
+     * Default posts for specific entities are pre-computed (wpcrm_binding_default).
+     *
+     * @since 1.1.25
+     */
+    public function updateDataBinding() {
+        $dataBinding = [];
+        $defaultView = [];
+
+        $args = [
+            'post_type' => [ 'post', 'page' ],
+            'meta_key' => '_wordpresscrm_databinding_entity',
+            'posts_per_page' => -1,
+        ];
+
+        $posts = get_posts( $args );
+
+        if ( !count( $posts ) ) {
+            return;
+        }
+
+        foreach ( $posts as $post ) {
+            $postBinding = [
+                'entity' => maybe_unserialize( get_post_meta( $post->ID, '_wordpresscrm_databinding_entity', true ) ),
+                'key' => maybe_unserialize( get_post_meta( $post->ID, '_wordpresscrm_databinding_parametername', true ) ),
+                'query' => maybe_unserialize( get_post_meta( $post->ID, '_wordpresscrm_databinding_querystring', true ) ),
+                'default' => (bool)maybe_unserialize( get_post_meta( $post->ID, '_wordpresscrm_databinding_isdefaultview', true ) ),
+                'empty' => maybe_unserialize( get_post_meta( $post->ID, '_wordpresscrm_databinding_empty_behavior', true ) ),
+                'post' => $post->ID,
+            ];
+
+            $dataBinding[ $post->ID ] = $postBinding;
+
+            if ( $postBinding['default'] ) {
+                $defaultView[ $postBinding['entity'] ] = $post->ID;
+            }
+
+            delete_post_meta( $post->ID, '_wordpresscrm_databinding_entity' );
+            delete_post_meta( $post->ID, '_wordpresscrm_databinding_parametername' );
+            delete_post_meta( $post->ID, '_wordpresscrm_databinding_querystring' );
+            delete_post_meta( $post->ID, '_wordpresscrm_databinding_isdefaultview' );
+            delete_post_meta( $post->ID, '_wordpresscrm_databinding_empty_behavior' );
+        }
+
+        update_option( 'wpcrm_binding', $dataBinding, true );
+        update_option( 'wpcrm_binding_default', $defaultView, true );
     }
 
 }
