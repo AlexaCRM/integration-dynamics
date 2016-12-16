@@ -293,10 +293,7 @@ class Binding {
         global $post;
         $content = $post->post_content;
 
-        $fields = [];
-
-        preg_match_all( '~\{\{\s*currentrecord\.([a-z0-9_\.]+)~', $content, $inlineFields );
-        $fields = array_merge( $fields, $inlineFields[1] );
+        $fields = apply_filters( 'wordpresscrm_data_binding_columns', [], $content );
 
         $shortcodeRegex = get_shortcode_regex( [ Plugin::PREFIX . 'field' ] );
 
