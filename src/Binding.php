@@ -285,11 +285,11 @@ class Binding {
     }
 
     /**
-     * @param string $entityName Root entity name
+     * Retrieves a list of entity columns based on [msdyncrm_field] usage.
      *
      * @return array
      */
-    private function getCurrentColumns( $entityName ) {
+    private function getCurrentColumns() {
         global $post;
         $content = $post->post_content;
 
