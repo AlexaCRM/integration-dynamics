@@ -8,27 +8,35 @@ if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
+/**
+ * Implements data-binding metabox.
+ */
 class DataBinding {
 
+    /**
+     * DataBinding constructor.
+     */
     public function __construct() {
         add_action( 'add_meta_boxes', [ $this, 'registerMetaboxes' ] );
-        add_action( 'save_post', [ $this, 'save_postdata' ] );
+        add_action( 'save_post', [ $this, 'savePostData' ] );
 
         add_action( 'wp_ajax_retrieve_entity_keys', [ $this, 'retrieve_entity_keys' ] );
         add_action( 'wp_ajax_nopriv_retrieve_entity_keys', [ $this, 'retrieve_entity_keys' ] );
     }
 
+    /**
+     * Handles the AJAX request to retrieve entity alternate keys.
+     */
     public function retrieve_entity_keys() {
-        if ( !isset( $_POST['entityLogicalName'] ) ) {
+        $request = ACRM()->request->request;
+
+        if ( !$request->has( 'entityLogicalName' ) ) {
             wp_send_json_error();
         }
 
-        $entityLogicalName = $_POST['entityLogicalName'];
+        $entityLogicalName = $request->get( 'entityLogicalName' );
         $entity            = ASDK()->entity( $entityLogicalName );
 
-        /**
-         * @var $entityKeys \AlexaCRM\CRMToolkit\Entity\EntityKey[]
-         */
         $entityKeys = $entity->metadata()->keys;
         wp_send_json_success( $entityKeys );
     }
@@ -37,18 +45,18 @@ class DataBinding {
      * Add our custom meta box to all support post types
      */
     public function registerMetaboxes() {
-        $enabled_post_types = get_option( 'wordpresscrm_custom_post_types', array() );
-        $supported_pages    = apply_filters( 'wp_access_supported_pages', array_merge( array(
+        $enabledPostTypes = get_option( 'wordpresscrm_custom_post_types', [] );
+        $supportedPostTypes  = apply_filters( 'wp_access_supported_pages', array_merge( [
             'page',
             'post'
-        ), $enabled_post_types ) );
+        ], $enabledPostTypes ) );
 
-        foreach ( $supported_pages as $page_type ) {
+        foreach ( $supportedPostTypes as $postType ) {
             add_meta_box(
                 'wordpresscrm_databinding_meta',
                 __( 'Dynamics CRM Data Binding', 'integration-dynamics' ),
                 [ $this, 'render' ],
-                $page_type, 'side', 'high' );
+                $postType, 'side', 'high' );
         }
     }
 
@@ -85,7 +93,7 @@ class DataBinding {
      *
      * @return mixed
      */
-    public function save_postdata( $postId ) {
+    public function savePostData( $postId ) {
         $request = ACRM()->request->request;
         $postId = intval( $postId );
 
