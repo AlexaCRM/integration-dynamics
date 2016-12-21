@@ -330,11 +330,16 @@ class View extends Shortcode {
      * @param $match
      * @param $rows
      *
-     * @return mixed
+     * @return string
      */
     private static function replaceRow( $result, $match, $rows ) {
-        $key = str_replace( "\$row.", "", $match );
-        $value = (string)$rows[ $key ]["value"];
+        $key = str_replace( '$row.', '', $match );
+
+        $value = '';
+
+        if ( array_key_exists( $key, $rows ) ) {
+            $value = (string)$rows[ $key ]['value'];
+        }
 
         if ( !empty( $rows[ $key ]['formatted_value'] ) ) {
             $value = $rows[ $key ]['formatted_value'];
@@ -368,6 +373,7 @@ class View extends Shortcode {
                     $atr = str_replace( $match, $entity->getFormattedValue( str_replace( "\$row.", "", $match ) ), $atr );
                 }
             }
+
             $attributes .= " " . $key . '="' . $atr . '"';
         }
 
