@@ -195,27 +195,18 @@ class FormInstance extends AbstractForm {
 
         $postData = null;
 
-        $formData = $request->request->all();
-        if ( $ajax ) {
-            parse_str( $request->request->get( 'form' ), $formData );
-        }
+        $formData = $request->request;
 
-        if ( !array_key_exists( 'form_name', $formData ) && !array_key_exists( '_wpnonce', $formData ) ) {
+        $nonceActionName = 'wpcrm-form-' . $formData->get( 'form_name', '' );
+        if ( !wp_verify_nonce( $formData->get( '_wpnonce', '' ), $nonceActionName ) ) {
             throw new Exception( __( 'Form submission couldn\'t pass security check. Please try again', 'integration-dynamics' ) );
         }
 
-        $nonceActionName = 'wpcrm-form-' . $formData['form_name'];
-        if ( count( $formData ) && !wp_verify_nonce( $formData['_wpnonce'], $nonceActionName ) ) {
-            throw new Exception( __( 'Form submission couldn\'t pass security check. Please try again', 'integration-dynamics' ) );
-        }
-
-        if ( isset( $formData["entity"] ) &&
-             isset( $formData["entity_form_entity"] ) &&
-             isset( $formData["entity_form_name"] ) &&
-             ( $formData["entity_form_name"] == $this->formName ) &&
-             ( $formData["entity_form_entity"] == $this->entity->logicalname )
+        if ( $formData->has( 'entity' ) &&
+             ( $formData->get( 'entity_form_name', '' ) == $this->formName ) &&
+             ( $formData->get( 'entity_form_entity', '' ) == $this->entity->logicalname )
         ) {
-            $postData = $formData;
+            $postData = $formData->all();
         }
 
         return $postData;
