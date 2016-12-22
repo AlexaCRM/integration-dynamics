@@ -506,29 +506,9 @@ class FormInstance extends AbstractForm {
                             $queryParams = $this->parseQueryString();
 
                             if ( isset( $queryParams[ $explode[1] ] ) && $queryParams[ $explode[1] ] ) {
-
                                 $queryValue = $queryParams[ $explode[1] ];
 
-                                if ( $k == null ) {
-                                    $this->controls[ $last ]["controls"][ $attributeName ]          = new Control( $attributeName );
-                                    $this->controls[ $last ]["controls"][ $attributeName ]->visible = false;
-                                    $this->controls[ $last ]["controls"][ $attributeName ]->value   = $queryValue;
-                                    $this->entity->{$attributeName}                                 = $queryValue;
-                                } else {
-                                    /* Simple value string */
-                                    if ( $this->entity->attributes[ $attributeName ]->isLookup ) {
-                                        foreach ( $this->entity->attributes[ $attributeName ]->lookupTypes as $entityType ) {
-                                            try {
-                                                $lookup = ASDK()->entity( $entityType, $queryValue );
-                                            } catch ( Exception $ex ) {
-                                                continue;
-                                            }
-                                            $this->entity->{$attributeName} = $lookup;
-                                        }
-                                    } else {
-                                        $this->entity->{$attributeName} = $queryValue;
-                                    }
-                                }
+                                $this->createControl( ( $k == null ), $last, $attributeName, $queryValue );
                             } else {
                                 unset( $this->default[ $attributeName ] );
                             }
@@ -560,35 +540,46 @@ class FormInstance extends AbstractForm {
                         $setupDefault = apply_filters( 'wordpresscrm_form_setup_without_comma', true, $this, $attributeValue, $k, $attributeName, $last );
 
                         if ( $setupDefault ) {
-                            if ( $k == null ) {
-
-                                $this->controls[ $last ]["controls"][ $attributeName ]          = new Control( $attributeName );
-                                $this->controls[ $last ]["controls"][ $attributeName ]->visible = false;
-                                $this->controls[ $last ]["controls"][ $attributeName ]->value   = $attributeValue;
-                                $this->entity->{$attributeName}                                 = $attributeValue;
-                            } else {
-                                /* Simple value string */
-                                if ( $this->entity->attributes[ $attributeName ]->isLookup ) {
-                                    foreach ( $this->entity->attributes[ $attributeName ]->lookupTypes as $entityType ) {
-                                        try {
-
-                                            $lookup = ASDK()->entity( $entityType, $attributeValue );
-                                        } catch ( Exception $ex ) {
-                                            continue;
-                                        }
-
-                                        $this->entity->{$attributeName} = $lookup;
-                                    }
-                                } else {
-                                    $this->entity->{$attributeName} = $attributeValue;
-                                }
-                            }
+                            $this->createControl( ( $k == null ), $last, $attributeName, $attributeValue );
                         }
                     }
                 } catch ( Exception $ex ) {
                     array_push( $this->errors, $ex->getMessage() );
 
                     self::printFormErrors( $this->errors );
+                }
+            }
+        }
+    }
+
+    /**
+     * Creates a control with specified value.
+     *
+     * @param bool $createControl
+     * @param $control
+     * @param $attributeName
+     * @param $value
+     */
+    private function createControl( $createControl = false, $control, $attributeName, $value ) {
+        if ( $createControl ) {
+            $newControl = new Control( $attributeName );
+            $newControl->visible = false;
+            $newControl->value = $value;
+
+            $this->controls[ $control ]["controls"][ $attributeName ] = $newControl;
+            $this->entity->{$attributeName} = $value;
+        } else {
+            /* Simple value string */
+            $this->entity->{$attributeName} = $value;
+
+            if ( $this->entity->attributes[ $attributeName ]->isLookup ) {
+                foreach ( $this->entity->attributes[ $attributeName ]->lookupTypes as $entityType ) {
+                    try {
+                        $lookup = ASDK()->entity( $entityType, $value );
+                    } catch ( Exception $ex ) {
+                        continue;
+                    }
+                    $this->entity->{$attributeName} = $lookup;
                 }
             }
         }
