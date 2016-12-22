@@ -241,23 +241,13 @@ class View extends Shortcode {
     private static function recursiveOut( $results, $entities, $rows = null ) {
         foreach ( $results as $key => $result ) {
             if ( $result->count() ) {
-                if ( in_array( $key, array( "foreachentity", "foreach" ) ) ) {
-                    if ( is_array( $entities ) ) {
-                        foreach ( $entities as $entity ) {
-                            self::recursiveOut( $result, $entity, $rows );
-                        }
+                if ( in_array( $key, [ 'foreachentity', 'foreach' ] ) && is_array( $entities ) ) {
+                    foreach ( $entities as $entity ) {
+                        self::recursiveOut( $result, $entity, $rows );
                     }
-                } else if ( $key == "foreachrow" && $rows ) {
-                    if ( is_array( $rows ) ) {
-                        foreach ( $rows as $row ) {
-                            self::recursiveOut( $result, $entities, $row );
-                        }
-                    }
-                } else if ( $key == "foreachcell" && $rows ) {
-                    if ( is_array( $rows ) ) {
-                        foreach ( $rows as $row ) {
-                            self::recursiveOut( $result, $entities, $row );
-                        }
+                } elseif ( in_array( $key, [ 'foreachrow', 'foreachcell' ] ) && is_array( $rows ) ) {
+                    foreach ( $rows as $row ) {
+                        self::recursiveOut( $result, $entities, $row );
                     }
                 } else {
                     echo "<" . $key . self::addAttributes( $result, $entities, $rows ) . ">";
@@ -286,11 +276,9 @@ class View extends Shortcode {
                     echo "</" . $key . ">";
                 }
             } else {
-                if ( $key == "foreachcell" && $rows ) {
-                    if ( is_array( $rows ) ) {
-                        foreach ( $rows as $row ) {
-                            self::recursiveOut( $result, $entities, $row );
-                        }
+                if ( $key == "foreachcell" && is_array( $rows ) ) {
+                    foreach ( $rows as $row ) {
+                        self::recursiveOut( $result, $entities, $row );
                     }
                 } else if ( preg_match_all( '/\\$cell/', $result->saveXml(), $matches ) ) {
                     echo "<" . $key . self::addAttributes( $result, $entities, $rows ) . ">";
