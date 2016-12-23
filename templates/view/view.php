@@ -62,10 +62,7 @@ if ( $rows ) { ?>
                 </td>
             </tr>
             </tfoot>
-
-        <?php
-        }
-        ?>
+        <?php } ?>
     </table>
 <?php } else {
     echo apply_filters( "wordpresscrm_no_results_view", __( "<p>No results</p>", 'integration-dynamics' ), $attributes["entity"], $attributes["name"] );
