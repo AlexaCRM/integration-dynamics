@@ -125,7 +125,7 @@ class View extends Shortcode {
         /**
          * @var SimpleXMLElement $inlineTemplate
          */
-        $inlineTemplate = ( $content ) ? apply_filters( 'wordpresscrm_view_inline', null, $this, $content ) : null;
+        $inlineTemplate = apply_filters( 'wordpresscrm_view_inline', null, $this, $content );
         if ( $content && $inlineTemplate === null ) {
             return static::returnError( __( 'Inline view templates are not supported in the free version. Get <a href="http://alexacrm.com/dynamics-crm-integration-premium/">the premium extension</a> today!', 'integration-dynamics' ) );
         }
