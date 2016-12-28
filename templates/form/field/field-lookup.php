@@ -38,9 +38,11 @@ if ( $disabled || $readonly ) { ?>
                                 <select class="crm-lookup-lookuptype" <?php if ( count( $lookupTypes ) <= 1 ) {
                                     echo "disabled";
                                 } ?>>
-                                    <?php foreach ( $lookupTypes as $key => $value ) : ?>
-                                        <option value="<?php echo $key; ?>"><?php echo $value; ?></option>
-                                    <?php endforeach; ?>
+                                    <?php foreach ( $lookupTypes as $key => $value ) {
+                                        $entityMetadata = \AlexaCRM\CRMToolkit\Entity\MetadataCollection::instance()->getEntityDefinition( $value );
+                                        ?>
+                                        <option value="<?php echo $key; ?>"><?php echo $entityMetadata->entityDisplayName; ?></option>
+                                    <?php } ?>
                                 </select>
                             </td>
                         </tr>
