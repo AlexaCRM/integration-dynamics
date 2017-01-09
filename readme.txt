@@ -44,6 +44,14 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.25 =
+
+* Plugin compatible with WordPress 4.7
+* Enhanced page-CRM record binding
+* Code clean-up and optimization
+* Entity display names in the Lookup Dialog
+* Fixed: custom view/form template paths
+
 = 1.1.24 =
 
 * Allow customizing the error message if WordPress is not connected to the CRM.
