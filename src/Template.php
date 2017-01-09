@@ -115,6 +115,11 @@ class Template {
         // filter empty arguments
         $pathSlices = array_filter( $pathSlices );
 
+        // templates must be lower-case, dashes instead of spaces, if any
+        $pathSlices = array_map( function( $slice ) {
+            return strtolower( str_replace( ' ', '-', $slice ) );
+        }, $pathSlices );
+
         while ( count( $pathSlices ) ) {
             $possiblePath = implode( '-', $pathSlices ) . '.php';
 
