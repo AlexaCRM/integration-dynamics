@@ -76,8 +76,13 @@ class View extends Shortcode {
         /* Replace <attribute/> tags with <all-attributes/> tag in fetchxml query*/
         $fetchXML = ( $attributes["allfields"] == "true" ) ? FetchXML::constructAllAttributesFetch( $fetchXML ) : $fetchXML;
 
+        $oldXML   = $fetchXML;
         /* Replacing the condition statements in fetchXML with new coditions based on currentuser, querystring and currentrecord fields */
         $fetchXML = FetchXML::replaceLookupConditionsByLookupsArray( $fetchXML, $lookups );
+        if ( $oldXML == $fetchXML ) {
+            /* Added support for deprecated lookups structure, where lookup condition was selected by uitype */
+            $fetchXML = FetchXML::constructFetchForLookups( $fetchXML, $lookups );
+        }
 
         /* Replacing the condition statements in fetchXML with new coditions based on currentuser, querystring and currentrecord fields */
         $fetchXML = FetchXML::findAndReplaceParameters( $fetchXML );

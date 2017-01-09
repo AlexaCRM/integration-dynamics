@@ -227,4 +227,43 @@ class FetchXML {
         return $fetchXML;
     }
 
+    /**
+     * Replacing the condition statements in fetchXML with new coditions based on currentuser, querystring and currentrecord fields from $lookups array
+     *
+     * @deprecated since version 1.0.37
+     *
+     * @param string $fetchXML fetch to retrieve the records for view
+     * @param array $lookups array of lookup values that contain ["uitype"] => type_of_replacement.field type of replacement can be currentuser, querystring, currentrecord
+     *
+     * @return string fetchXML with replaced conditions
+     */
+    public static function constructFetchForLookups( $fetchXML, $lookups = Array() ) {
+        foreach ( $lookups as $key => $param ) {
+            $param = explode( ".", $param );
+            $type  = trim( $param[0] );
+            $value = trim( $param[1] );
+            /* Replace values with current data bound page (if data-binding or current entity exists) */
+            if ( $type == "currentrecord" && $value ) {
+                $record = ACRM()->binding->getEntity();
+                if ( $record != null && $record->ID && strtolower( $key ) == $record->logicalname ) {
+                    $fetchXML = self::replaceCondition( $fetchXML, 'uitype', $key, $record->ID );
+                } else {
+                    $fetchXML = self::replaceCondition( $fetchXML, 'uitype', $key, AbstractClient::EmptyGUID );
+                    add_filter( "wordpresscrm_view_entities", "__return_false" );
+                }
+            }
+            /* Replace the lookup condition with querystring values for lookups */
+            if ( $type == "querystring" && $value ) {
+                if ( isset( $_GET[ $value ] ) && $_GET[ $value ] ) {
+                    $fetchXML = self::replaceCondition( $fetchXML, 'uitype', $key, $_GET[ $value ] );
+                } else {
+                    $fetchXML = self::replaceCondition( $fetchXML, 'uitype', $key, AbstractClient::EmptyGUID );
+                    add_filter( "wordpresscrm_view_entities", "__return_false" );
+                }
+            }
+            $fetchXML = apply_filters( 'wordpresscrm_construct_fetch', $fetchXML, $key, $value, $type );
+        }
+        return $fetchXML;
+    }
+
 }
