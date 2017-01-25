@@ -86,7 +86,9 @@ abstract class Tab {
                         'Label'       => $entityDisplayName,
                     );
                 }
-                asort( $entities );
+                uasort( $entities, function( $entity1, $entity2 ) {
+                    return strcmp( $entity1['Label'], $entity2['Label'] );
+                } );
             } catch ( Exception $ex ) {
                 // nop
             }

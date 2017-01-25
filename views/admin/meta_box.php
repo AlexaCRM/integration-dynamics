@@ -15,7 +15,7 @@ if ( !defined( 'ABSPATH' ) ) {
 
             <?php $selected = ( $post_entity && $entity["LogicalName"] == $post_entity ) ? "selected" : ""; ?>
             <option
-                value="<?php echo $entity["LogicalName"]; ?>" <?php echo $selected ?>><?php echo $entity["Label"]; ?></option>
+                value="<?php echo $entity["LogicalName"]; ?>" <?php echo $selected ?>><?php echo $entity["Label"]; ?> (<?php echo $entity['LogicalName']; ?>)</option>
 
         <?php endforeach; ?>
     </select>
