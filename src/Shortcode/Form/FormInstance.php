@@ -846,7 +846,11 @@ class FormInstance extends AbstractForm {
 
                     $controls[ $name ]->type = 'lookup-picklist';
 
-                    $fetchView = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+                    $lookupCacheKey = 'wpcrm_view_' . sha1( 'lookup_' . $name . '_' . $this->lookupViews[ $name ][0] );
+                    $lookupViewFetch = ACRM()->cache->get( $lookupCacheKey );
+
+                    if ( $lookupViewFetch == null ) {
+                        $fetchView = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
                                                 <entity name="savedquery">
                                                   <attribute name="name" />
                                                   <attribute name="fetchxml" />
@@ -856,9 +860,12 @@ class FormInstance extends AbstractForm {
                                                 </entity>
                                           </fetch>';
 
-                    $lookupView = ASDK()->retrieveSingle( $fetchView );
+                        $lookupView = ASDK()->retrieveSingle( $fetchView );
+                        $lookupViewFetch = $lookupView->fetchxml;
+                        ACRM()->cache->set( $lookupCacheKey, $lookupViewFetch, 2 * 60 * 60 * 24 );
+                    }
 
-                    $options = ASDK()->retrieveMultiple( $lookupView->fetchxml );
+                    $options = ASDK()->retrieveMultiple( $lookupViewFetch );
 
                     foreach ( $options->Entities as $optionEntity ) {
                         $controls[ $name ]->options[ $optionEntity->ID ] = $optionEntity->displayname;
