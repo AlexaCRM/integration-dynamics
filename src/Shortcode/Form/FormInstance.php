@@ -865,7 +865,12 @@ class FormInstance extends AbstractForm {
                         ACRM()->cache->set( $lookupCacheKey, $lookupViewFetch, 2 * 60 * 60 * 24 );
                     }
 
-                    $options = ASDK()->retrieveMultiple( $lookupViewFetch );
+                    $dataCacheKey = 'wpcrm_data_' . sha1( $lookupViewFetch );
+                    $options = ACRM()->cache->get( $dataCacheKey );
+                    if ( $options == null ) {
+                        $options = ASDK()->retrieveMultiple( $lookupViewFetch );
+                        ACRM()->cache->set( $dataCacheKey, $options, 2 * 60 * 60 * 24 );
+                    }
 
                     foreach ( $options->Entities as $optionEntity ) {
                         $controls[ $name ]->options[ $optionEntity->ID ] = $optionEntity->displayname;
