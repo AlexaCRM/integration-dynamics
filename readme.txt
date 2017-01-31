@@ -2,7 +2,7 @@
 Contributors: alexacrm, georgedude, wizardist
 Tags: contact form, CRM, dynamics crm, form, integration, leads, membership, portal, shortcode
 Requires at least: 4.4
-Tested up to: 4.7.1
+Tested up to: 4.7.2
 Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -43,6 +43,11 @@ Development of this plugin takes place at the [GitHub repository](https://github
 1. Use the Admin->Dynamics CRM screen to configure the plugin
 
 == Changelog ==
+
+= 1.1.27 =
+
+* Sort entities alphabetically in data-binding UI
+* Performance improvements in forms with lookupviews
 
 = 1.1.26 =
 
