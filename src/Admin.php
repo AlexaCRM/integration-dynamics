@@ -55,8 +55,11 @@ class Admin {
         add_action( 'admin_notices', [ $this, 'admin_notices' ] );
         add_action( 'admin_notices', [ $this, 'admin_errors' ] );
 
-        new DataBinding();
+        if ( !ACRM()->connected() ) {
+            return;
+        }
 
+        new DataBinding();
         new ShortcodeWizard();
     }
 
