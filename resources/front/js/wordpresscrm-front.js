@@ -31,11 +31,11 @@
     $( function() {
         $( '.crm-datepicker' ).datetimepicker( {
             timepicker: false,
-            format: 'm/d/Y'
+            format: window.wpcrm.dateformat
         } );
 
         $( '.crm-datetimepicker' ).datetimepicker( {
-            format: 'm/d/Y H:s'
+            format: window.wpcrm.datetimeformat
         } );
 
         // customize email validation regex

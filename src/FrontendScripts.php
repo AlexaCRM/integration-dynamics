@@ -84,6 +84,8 @@ class FrontendScripts {
         // localize scripts
         $wpcrmL10n = [
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
+            'dateformat' => get_option( 'date_format' ),
+            'datetimeformat' => get_option( 'date_format' ) . ' ' . get_option( 'time_format' ),
         ];
         wp_localize_script( 'wordpresscrm-front', 'wpcrm', $wpcrmL10n );
 

@@ -634,17 +634,27 @@ class FormInstance extends AbstractForm {
 
                     $this->entity->{$key} = $value;
                 } else if ( $this->entity->attributes[ $key ]->type == "DateTime" ) {
-
+                    $parsedValue = $value;
                     if ( $value ) {
 
                         $tzOffset = null;
 
-                        $value = strtotime( $value ) + $tzOffset;
+                        $dateFormat = get_option( 'date_time' );
+                        $dateTimeFormat = $dateFormat . ' ' . get_option( 'time_format' );
+                        $parsedValue = \DateTime::createFromFormat( $dateFormat, $value );
+                        if ( !$parsedValue) {
+                            $parsedValue = \DateTime::createFromFormat( $dateTimeFormat, $value );
+                        }
+                        if ( !$parsedValue ) {
+                            $parsedValue = strtotime( $value ) + $tzOffset;
+                        } else {
+                            $parsedValue = $parsedValue->getTimestamp();
+                        }
                     } else {
-                        $value = null;
+                        $parsedValue = null;
                     }
 
-                    $this->entity->{$key} = $value;
+                    $this->entity->{$key} = $parsedValue;
                 } elseif ( $this->entity->attributes[ $key ]->optionSet instanceof Entity\OptionSet && $value !== '' ) {
                     $this->entity->{$key} = (int)$value;
                 } else {
