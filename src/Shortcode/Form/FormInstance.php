@@ -639,7 +639,7 @@ class FormInstance extends AbstractForm {
 
                         $tzOffset = null;
 
-                        $dateFormat = get_option( 'date_time' );
+                        $dateFormat = get_option( 'date_format' );
                         $dateTimeFormat = $dateFormat . ' ' . get_option( 'time_format' );
                         $parsedValue = \DateTime::createFromFormat( $dateFormat, $value );
                         if ( !$parsedValue) {
