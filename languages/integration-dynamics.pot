@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Dynamics CRM Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics CRM Integration 1.1.27\n"
+"Project-Id-Version: Dynamics CRM Integration 1.1.28\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/integration-dynamics\n"
-"POT-Creation-Date: 2017-01-31 08:29:13+00:00\n"
+"POT-Creation-Date: 2017-02-13 18:54:44+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -370,11 +370,11 @@ msgstr ""
 msgid "Use images for boolean field values in views"
 msgstr ""
 
-#: src/Admin.php:83
+#: src/Admin.php:86
 msgid "%s &lsaquo; Dynamics CRM"
 msgstr ""
 
-#: src/Admin.php:109
+#: src/Admin.php:112
 msgid ""
 "Dynamics CRM Plugin successfully activated, <b>please configure it</b> <a "
 "href=\"admin.php?page=wordpresscrm\">on this page</a>."
@@ -393,12 +393,12 @@ msgid "Settings"
 msgstr ""
 
 #: src/Shortcode/Form/AbstractForm.php:262 src/Shortcode/Form/Control.php:78
-#: src/Shortcode/Form/FormInstance.php:920
-#: src/Shortcode/Form/FormInstance.php:931
+#: src/Shortcode/Form/FormInstance.php:930
+#: src/Shortcode/Form/FormInstance.php:941
 msgid "%s is required"
 msgstr ""
 
-#: src/Shortcode/Form/Control.php:95 src/Shortcode/Form/FormInstance.php:709
+#: src/Shortcode/Form/Control.php:95 src/Shortcode/Form/FormInstance.php:719
 msgid "%s must be a valid email address"
 msgstr ""
 
@@ -428,27 +428,27 @@ msgstr ""
 msgid "Unsupported lookup type for [%1$s], or entity {%2$s} not found"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:697
+#: src/Shortcode/Form/FormInstance.php:707
 msgid "Must be less than %d characters"
 msgid_plural "Must be less than %d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Shortcode/Form/FormInstance.php:704
+#: src/Shortcode/Form/FormInstance.php:714
 msgid "Incorrect text value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:722
+#: src/Shortcode/Form/FormInstance.php:732
 msgid "Invalid number value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:727
+#: src/Shortcode/Form/FormInstance.php:737
 msgid ""
 "Invalid number value. Enter a decimal number without currency symbol or "
 "thousands separator."
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:732
+#: src/Shortcode/Form/FormInstance.php:742
 msgid ""
 "Invalid money value. Enter a decimal number without currency symbol or "
 "thousands separator."

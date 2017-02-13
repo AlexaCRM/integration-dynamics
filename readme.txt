@@ -44,6 +44,11 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.28 =
+
+* Show date-time fields in forms according to WordPress date format settings
+* Fixed: Post editing UI crashes when plugin is not connected
+
 = 1.1.27 =
 
 * Sort entities alphabetically in data-binding UI
