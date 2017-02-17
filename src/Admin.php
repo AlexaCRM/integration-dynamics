@@ -55,6 +55,15 @@ class Admin {
         add_action( 'admin_notices', [ $this, 'admin_notices' ] );
         add_action( 'admin_notices', [ $this, 'admin_errors' ] );
 
+        /**
+         * ACRM() cannot access $pluginInstance on plugin activation,
+         * we need to suppress the fatal error here.
+         */
+        global $pluginInstance;
+        if ( is_null( $pluginInstance ) ) {
+            return;
+        }
+
         if ( !ACRM()->connected() ) {
             return;
         }
