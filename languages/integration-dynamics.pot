@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Dynamics CRM Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics CRM Integration 1.1.28\n"
+"Project-Id-Version: Dynamics CRM Integration 1.1.28.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/integration-dynamics\n"
-"POT-Creation-Date: 2017-02-13 18:54:44+00:00\n"
+"POT-Creation-Date: 2017-02-20 14:10:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -370,11 +370,11 @@ msgstr ""
 msgid "Use images for boolean field values in views"
 msgstr ""
 
-#: src/Admin.php:86
+#: src/Admin.php:95
 msgid "%s &lsaquo; Dynamics CRM"
 msgstr ""
 
-#: src/Admin.php:112
+#: src/Admin.php:121
 msgid ""
 "Dynamics CRM Plugin successfully activated, <b>please configure it</b> <a "
 "href=\"admin.php?page=wordpresscrm\">on this page</a>."
