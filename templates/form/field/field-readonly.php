@@ -8,6 +8,16 @@ if ( $control->visible ) {
 
     wordpresscrm_field_start( $control );
     wordpresscrm_field_label( $control );
-    ?><div class="col-sm-8"><p class="form-control-static"><?php echo ( !empty( $control->recordName ) ) ? $control->recordName : $control->value; ?></p></div><?php
+
+    $value = $control->value;
+    if ( $control->type === 'datetime' && !empty( $value ) ) {
+        $format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+        if ( $control->format === 'dateonly' ) {
+            $format = get_option( 'date_format' );
+        }
+
+        $value = date( $format, $value );
+    }
+    ?><div class="col-sm-8"><p class="form-control-static"><?php echo ( !empty( $control->recordName ) ) ? $control->recordName : $value; ?></p></div><?php
     wordpresscrm_field_end();
 }
