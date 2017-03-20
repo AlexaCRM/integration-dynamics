@@ -157,7 +157,7 @@ $request = Request::createFromGlobals();
 $pluginInstance->init(  $logger, $request );
 
 add_action( 'admin_init', function() use ( $pluginInstance ) {
-    $pluginInstance->version = get_plugin_data( __FILE__ )['Version'];
+    $pluginInstance->version = get_plugin_data( WORDPRESSCRM_DIR . '/integration-dynamics.php' )['Version'];
 } );
 
 /**
