@@ -95,6 +95,11 @@ final class Plugin {
     public $options = null;
 
     /**
+     * @var Plugin
+     */
+    private static $instance;
+
+    /**
      * Cloning is forbidden.
      */
     public function __clone() {
@@ -109,9 +114,29 @@ final class Plugin {
     }
 
     /**
+     * Plugin constructor.
+     */
+    private function __construct() {
+    }
+
+    /**
+     * Access method for the plugin.
+     *
+     * @return Plugin
+     */
+    public static function instance() {
+        if ( is_null( static::$instance ) ) {
+            static::$instance = new static();
+        }
+
+        return static::$instance;
+    }
+
+    /**
      * Initialize plugin
      *
      * @param Log $log
+     * @param Request $request  Request data, i.e. from Request::createFromGlobals()
      */
     public function init( Log $log, Request $request ) {
         $this->log = $log;

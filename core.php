@@ -149,7 +149,10 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
     $shortcodeWizard->registerShortcode( $field );
 } );
 
-$pluginInstance = new Plugin();
+/**
+ * Start initializing the plugin.
+ */
+$pluginInstance = Plugin::instance();
 $request = Request::createFromGlobals();
 $pluginInstance->init(  $logger, $request );
 
@@ -163,9 +166,7 @@ add_action( 'admin_init', function() use ( $pluginInstance ) {
  * @return Plugin
  */
 function ACRM() {
-    global $pluginInstance;
-
-    return $pluginInstance;
+    return Plugin::instance();
 }
 
 /**
