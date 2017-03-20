@@ -239,7 +239,7 @@ class Log implements LoggerInterface {
         }
 
         $levelLabel = strtoupper( self::$levels[$level] );
-        $timestamp = \DateTime::createFromFormat( 'U.u', microtime( true ) );
+        $timestamp = \DateTime::createFromFormat( 'U.u', number_format( microtime( true ), 6, '.', '' ) );
 
         $record = "[{$levelLabel}]\t({$timestamp->format( 'Y-m-d H:i:s.u' )}) {$message}\n";
         if ( count( $context ) ) {
