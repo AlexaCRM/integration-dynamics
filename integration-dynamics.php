@@ -46,7 +46,10 @@ spl_autoload_register( function ( $className ) {
 require_once __DIR__ . '/vendor/autoload.php'; // Composer autoloader
 
 $logger = new \Monolog\Logger( 'wpcrm' );
-$logLevel = WP_DEBUG? \Monolog\Logger::DEBUG : \Monolog\Logger::WARNING;
+$logLevel = WP_DEBUG? \Monolog\Logger::INFO : \Monolog\Logger::WARNING;
+if ( defined( 'WORDPRESSCRM_LOG_LEVEL' ) ) {
+    $logLevel = WORDPRESSCRM_LOG_LEVEL;
+}
 $logStream = new \Monolog\Handler\RotatingFileHandler( WORDPRESSCRM_STORAGE . '/integration-dynamics.log', 3, $logLevel );
 $logger->pushHandler( $logStream );
 
