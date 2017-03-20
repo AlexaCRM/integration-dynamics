@@ -61,7 +61,7 @@ class About extends Tab {
         <?php } ?>
 
         <h3><?php _e( 'Error reporting', 'integration-dynamics' ); ?></h3>
-        <p><?php printf( __( 'If you experience problems while using Dynamics CRM Integration plugin and eventually report them, please <a href="%s">download the log file</a> and provide it if asked.', 'integration-dynamics' ), admin_url( 'admin-ajax.php?action=wpcrm_log' ) ); ?></p>
+        <p><?php printf( __( 'If you experience problems while using Dynamics CRM Integration plugin and eventually report them, attach log files which are stored in <code>%s</code>', 'integration-dynamics' ), WORDPRESSCRM_STORAGE ); ?></p>
         <?php
     }
 }

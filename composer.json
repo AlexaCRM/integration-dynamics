@@ -4,7 +4,8 @@
   "type": "wordpress-plugin",
   "require": {
     "alexacrm/php-crm-toolkit": "dev-master",
-    "symfony/http-foundation": "3.1.*"
+    "symfony/http-foundation": "3.1.*",
+    "monolog/monolog": "^1.0"
   },
   "license": "GPL-2.0",
   "authors": [

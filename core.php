@@ -10,15 +10,6 @@ load_plugin_textdomain( 'integration-dynamics', false, dirname( plugin_basename(
 // run migrations
 require_once __DIR__ . '/update.php';
 
-// start initializing the plugin
-
-add_action( 'wp_ajax_wpcrm_log', function() use ( $logger ) {
-    header( 'Content-Type: text/plain' );
-    $logger->info( 'Displaying log.' );
-    echo file_get_contents( $logger->logTarget );
-    exit();
-} );
-
 add_action( 'init', function() {
     if ( !session_id() ) {
         session_start();

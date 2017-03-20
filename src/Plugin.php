@@ -8,6 +8,7 @@ use AlexaCRM\CRMToolkit\Settings;
 use AlexaCRM\WordpressCRM\Image\AnnotationImage;
 use AlexaCRM\WordpressCRM\Image\CustomImage;
 use Exception;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -135,12 +136,12 @@ final class Plugin {
     /**
      * Initialize plugin
      *
-     * @param Log $log
+     * @param LoggerInterface $log
      * @param Request $request  Request data, i.e. from Request::createFromGlobals()
      */
-    public function init( Log $log, Request $request ) {
+    public function init( LoggerInterface $log, Request $request ) {
         $this->log = $log;
-        $this->log->info( 'Initializing Dynamics CRM Integration.' );
+        $this->log->debug( 'Initializing Dynamics CRM Integration.' );
 
         $this->request = $request;
 
@@ -177,13 +178,13 @@ final class Plugin {
         }
 
         if ( is_admin() ) {
-            $this->log->info( 'Initializing admin UI.' );
+            $this->log->debug( 'Initializing admin UI.' );
             new Admin();
         }
 
         if ( !is_admin() ) {
             add_action( 'after_setup_theme', function() {
-                $this->log->info( 'Initializing shortcodes.' );
+                $this->log->debug( 'Initializing shortcodes.' );
 
                 new ShortcodeManager();
             } );
@@ -204,7 +205,7 @@ final class Plugin {
             return;
         }
 
-        $this->log->info( 'Initializing cache.' );
+        $this->log->debug( 'Initializing cache.' );
 
         $this->options['cache'] = [ 'server' => 'localhost', 'port' => 11211 ];
         if ( defined( 'WORDPRESSCRM_CACHESERVER' ) && defined( 'WORDPRESSCRM_CACHEPORT' ) ) {
@@ -225,24 +226,15 @@ final class Plugin {
     private function initCrmConnection() {
         $options = $this->options;
 
-        $this->log->info( 'Initializing PHP CRM Toolkit.' );
+        $this->log->debug( 'Initializing PHP CRM Toolkit.' );
 
         $clientSettings = new Settings( $options );
-
-        /*
-         * Log configuration with sensitive data redacted.
-         */
-        $logSettings = clone $clientSettings;
-        $logSettings->password = $logSettings->oauthClientId = $logSettings->oauthClientSecret = '__redacted__';
-        $this->log->debug( 'PHP CRM Toolkit configuration.', array( 'settings' => $logSettings ) );
-        unset( $logSettings );
-
         $this->sdk = new Client( $clientSettings, $this->cache, $this->log );
 
         $this->log->debug( 'Finished initializing PHP CRM Toolkit.' );
 
         // initialize Metadata storage
-        $this->log->info( 'Initializing PHP CRM Toolkit Metadata storage.' );
+        $this->log->debug( 'Initializing PHP CRM Toolkit Metadata storage.' );
         MetadataCollection::instance( $this->sdk )->setStorage( $this->metadataStorage );
     }
 
@@ -272,12 +264,6 @@ final class Plugin {
      * Include required core files used in admin and on the frontend.
      */
     private function includes() {
-        /* Hooks */
-        add_action( 'widgets_init', function () {
-            $this->log->info( 'Initializing widgets' );
-            do_action( 'wordpresscrm_widgets_init' );
-        }, 10 );
-
         /**
          * Add 'Settings' link to the list of plugins
          */
@@ -288,7 +274,7 @@ final class Plugin {
             }
 
             // New links to merge into existing links
-            $new_links = [ ];
+            $new_links = [];
 
             // Settings page link
             if ( current_user_can( 'manage_options' ) ) {
