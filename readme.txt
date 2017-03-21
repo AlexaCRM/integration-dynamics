@@ -2,7 +2,7 @@
 Contributors: alexacrm, georgedude, wizardist
 Tags: contact form, CRM, dynamics crm, dynamics 365, form, integration, leads, membership, portal, shortcode
 Requires at least: 4.4
-Tested up to: 4.7.2
+Tested up to: 4.7.3
 Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -43,6 +43,12 @@ Development of this plugin takes place at the [GitHub repository](https://github
 1. Use the Admin->Dynamics CRM screen to configure the plugin
 
 == Changelog ==
+
+= 1.1.29 =
+
+* Fixed: format readonly date-time fields in forms appropriately
+* Fixed: plugin would break WP-CLI
+* Internal: Monolog used as logging facility
 
 = 1.1.28 =
 
