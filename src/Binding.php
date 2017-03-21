@@ -211,7 +211,7 @@ class Binding {
         try {
             $entityRequestValue = $query->get( $entityQuery );
 
-            $columnSet = $this->getCurrentColumns( $entityName );
+            $columnSet = $this->getCurrentColumns();
 
             // get record fields and related entity references! (not records yet)
             $entityColumns = array_unique( array_map( function( $field ) {
@@ -276,9 +276,9 @@ class Binding {
 
             return $record;
         } catch ( NotAuthorizedException $e ) {
-            Connection::setConnectionStatus( false );
+            ACRM()->log->critical( 'CRM Toolkit returned a NotAuthorizedException while retrieving the bound record.', [ 'exception' => $e, 'arguments' => [ $entityName, $entityKey, $entityQuery ] ] );
         } catch ( \Exception $ex ) {
-            return null;
+            ACRM()->log->error( 'An exception occured while retrieving the bound record.', [ 'exception' => $ex, 'arguments' => [ $entityName, $entityKey, $entityQuery ] ] );
         }
 
         return null;

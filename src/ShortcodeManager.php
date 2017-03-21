@@ -76,11 +76,11 @@ class ShortcodeManager {
 
         ACRM()->log->info( "Rendering shortcode [{$tagName}]." );
 
-        $output = '';
         try {
             $output = $this->shortcodeProcessors[ $shortcodeName ]->shortcode( $attributes, $content, $tagName );
         } catch ( OrganizationDisabledException $e ) {
             $output = 'Organization is disabled.';
+            ACRM()->log->alert( 'The current organization has been disabled.', [ 'exception' => $e ] );
             Connection::setConnectionStatus( false );
         } catch ( \Exception $e ) {
             $output = 'Unexpected error: ' . $e->getMessage();

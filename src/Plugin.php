@@ -159,7 +159,7 @@ final class Plugin {
             try {
                 $this->initCrmConnection();
             } catch ( Exception $ex ) {
-                $this->log->warning( 'Caught exception while initializing connection to CRM.', [ 'exception' => $ex ] );
+                $this->log->critical( 'Caught exception while initializing connection to CRM.', [ 'exception' => $ex ] );
                 $this->options['connected'] = $options['connected'] = false;
                 update_option( static::PREFIX . 'options', $options );
             }
