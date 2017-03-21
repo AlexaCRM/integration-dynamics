@@ -68,7 +68,7 @@ abstract class Tab {
         if ( !is_array( $notices ) ) {
             $notices = array();
         }
-        array_push( $notices, htmlentities( $string ) );
+        array_push( $notices, $string );
         update_option( Plugin::PREFIX . 'deferred_admin_errors', $notices );
     }
 

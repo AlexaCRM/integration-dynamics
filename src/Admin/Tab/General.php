@@ -115,12 +115,15 @@ class General extends Tab {
                     $noticeText = sprintf( __( 'Connection to Dynamics CRM <%s> has been successfully established.', 'integration-dynamics' ), $options['organizationName'] );
                     self::set_notice( $noticeText );
                 } else {
+                    ACRM()->log->error( 'CRM connection attempt failed.', [ 'credentials' => [ $options['serverUrl'], $options['username'] ] ] );
                     $this->set_error( __( 'Unable to connect to Dynamics CRM using provided address, username and/or password.', 'integration-dynamics' ) );
                 }
             } catch ( Exception $e ) {
-                $this->set_error( $e->getMessage() );
+                ACRM()->log->error( 'CRM connection attempt failed with exception.', [ 'credentials' => [ $options['serverUrl'], $options['username'] ], 'exception' => $e ] );
+                $this->set_error( sprintf( __( '<strong>Unable to connect to Dynamics CRM:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct.', 'integration-dynamics' ), $e->getMessage() ) );
             } catch ( Error $err ) {
-                $this->set_error( sprintf( __( 'Unable to connect to Dynamics CRM: %s', 'integration-dynamics' ), $err->getMessage() ) );
+                ACRM()->log->error( 'CRM connection attempt failed with exception.', [ 'credentials' => [ $options['serverUrl'], $options['username'] ], 'exception' => $err ] );
+                $this->set_error( sprintf( __( '<strong>Unable to connect to Dynamics CRM:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct.', 'integration-dynamics' ), $err->getMessage() ) );
             }
         }
     }
