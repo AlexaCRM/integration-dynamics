@@ -63,7 +63,7 @@ final class Plugin {
     /**
      * Logging facility.
      *
-     * @var Log
+     * @var LoggerInterface
      */
     public $log = null;
 
