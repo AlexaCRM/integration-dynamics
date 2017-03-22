@@ -229,7 +229,7 @@ final class Plugin {
         $this->log->debug( 'Initializing PHP CRM Toolkit.' );
 
         $clientSettings = new Settings( $options );
-        $this->sdk = new Client( $clientSettings, $this->cache, $this->log );
+        $this->sdk = new Client( $clientSettings, $this->cache, $this->log->withName( 'crmtoolkit' ) );
 
         $this->log->debug( 'Finished initializing PHP CRM Toolkit.' );
 
