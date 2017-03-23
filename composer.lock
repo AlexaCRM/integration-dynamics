@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AlexaCRM/php-crm-toolkit.git",
-                "reference": "0ee60bae0b76a8890f627da7f429032d78474950"
+                "reference": "afc155d9b254bfd15ccd8e82af1460078e2c207d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/0ee60bae0b76a8890f627da7f429032d78474950",
-                "reference": "0ee60bae0b76a8890f627da7f429032d78474950",
+                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/afc155d9b254bfd15ccd8e82af1460078e2c207d",
+                "reference": "afc155d9b254bfd15ccd8e82af1460078e2c207d",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "php",
                 "sdk"
             ],
-            "time": "2017-03-23 14:33:47"
+            "time": "2017-03-23 16:15:59"
         },
         {
             "name": "monolog/monolog",

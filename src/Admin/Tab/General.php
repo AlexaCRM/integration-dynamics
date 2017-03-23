@@ -99,7 +99,15 @@ class General extends Tab {
 
             try {
                 $clientSettings = new Settings( $options );
-                $client         = new Client( $clientSettings, ACRM()->cache );
+
+                ACRM()->log->notice( 'Connecting to a new instance', [ 'settings' => [
+                    'authMode' => $clientSettings->authMode,
+                    'crmUrl' => $clientSettings->serverUrl,
+                    'username' => $clientSettings->username,
+                    'ignoreSslErrors' => $clientSettings->ignoreSslErrors,
+                ] ] );
+
+                $client         = new Client( $clientSettings, ACRM()->cache, ACRM()->log->withName( 'crmtoolkit' ) );
 
                 // next settings are retrieved during Client instantiation
                 $options['organizationName']       = $clientSettings->organizationName;
