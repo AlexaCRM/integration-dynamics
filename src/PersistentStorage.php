@@ -130,4 +130,13 @@ class PersistentStorage implements StorageInterface {
     private function getStoragePath() {
         return WORDPRESSCRM_STORAGE . '/' . $this->storageName;
     }
+
+    /**
+     * Deletes the key from the storage.
+     *
+     * @param string $key Cache item key
+     *
+     * @return void
+     */
+    public function delete( $key ) {}
 }
