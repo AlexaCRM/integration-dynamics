@@ -41,19 +41,19 @@ class FrontendScripts {
             'wordpresscrm-layout'   => array(
                 'src'     => ACRM()->getPluginURL() . '/resources/front/css/wordpresscrm.css',
                 'deps'    => '',
-                'version' => ACRM()->version,
+                'version' => WORDPRESSCRM_VERSION,
                 'media'   => 'all'
             ),
             'wordpresscrm-jquery'   => array(
                 'src'     => ACRM()->getPluginURL() . '/resources/front/css/wordpresscrm-jqueryui-css.css',
                 'deps'    => '',
-                'version' => ACRM()->version,
+                'version' => WORDPRESSCRM_VERSION,
                 'media'   => 'all'
             ),
             'jquery-datetimepicker' => array(
                 'src'     => ACRM()->getPluginURL() . '/resources/front/css/jquery.datetimepicker.css',
                 'deps'    => '',
-                'version' => ACRM()->version,
+                'version' => WORDPRESSCRM_VERSION,
                 'media'   => 'all'
             ),
         ) );

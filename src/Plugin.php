@@ -30,6 +30,7 @@ final class Plugin {
 
     /**
      * @var string
+     * @deprecated 1.1.32 In favor of WORDPRESSCRM_VERSION
      */
     public $version = '';
 
@@ -94,14 +95,14 @@ final class Plugin {
      * Cloning is forbidden.
      */
     public function __clone() {
-        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'integration-dynamics' ), $this->version );
+        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'integration-dynamics' ), WORDPRESSCRM_VERSION );
     }
 
     /**
      * Unserializing instances of this class is forbidden.
      */
     public function __wakeup() {
-        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'integration-dynamics' ), $this->version );
+        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'integration-dynamics' ), WORDPRESSCRM_VERSION );
     }
 
     /**

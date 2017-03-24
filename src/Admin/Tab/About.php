@@ -49,7 +49,7 @@ class About extends Tab {
         <h2><?php _e( "About", 'integration-dynamics' ) ?></h2>
         <p>
             Dynamics CRM Integration<br>
-            <?php printf( __( 'Version: %s', 'integration-dynamics' ), ACRM()->version ); ?><br>
+            <?php printf( __( 'Version: %s', 'integration-dynamics' ), WORDPRESSCRM_VERSION ); ?><br>
             <?php printf( __( 'Copyright &copy; %1$d %2$s', 'integration-dynamics' ), date( 'Y' ), 'AlexaCRM' ); ?><br>
             <?php printf( __( '<a href="%s" target="_blank">Plugin website</a>', 'integration-dynamics' ), 'https://wordpress.org/plugins/integration-dynamics/' ) ?><br>
             <?php printf( __( '<a href="%s" target="_blank">Documentation</a>', 'integration-dynamics' ), 'http://docs.alexacrm.com/wpcrm/' ); ?><br>
