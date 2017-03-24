@@ -335,20 +335,22 @@ class General extends Tab {
                     <hr>
 
                     <h3 class="title"><?php _e( 'Metadata Settings', 'integration-dynamics' ); ?></h3>
-                    <p><?php _e( 'If you have changed your Dynamics CRM entities metadata recently, please regenerate local metadata cache to keep it up to date.', 'integration-dynamics' ) ?></p>
+                    <p><?php _e( 'If you have changed your Dynamics CRM entities metadata recently (i.e. fields, forms, views, etc.) please regenerate local metadata cache to keep it up to date.', 'integration-dynamics' ) ?></p>
                     <form method="post" action="">
                         <input type="hidden" name="clear_cache" value="1"/>
                         <p class="submit">
                             <?php submit_button( __( 'Regenerate Metadata Cache', 'integration-dynamics' ), 'primary', 'submit', false, [ 'style' => 'vertical-align:middle;' ] ); ?>
+                            <span style="padding-left:1em;vertical-align:middle;">
                             <?php
                             $metadataRegeneratedTime = array_key_exists( 'last_metadata_purge', $this->options ) ? $this->options['last_metadata_purge'] : null;
                             if ( $metadataRegeneratedTime ) {
                                 $humanReadableTime = date_i18n( __( 'F j, Y \a\t g:i A', 'integration-dynamics' ), $metadataRegeneratedTime )
                                 ?>
-                                <span style="padding-left:1em;vertical-align:middle;">
 								<?php printf( __( 'Metadata cache was last regenerated on %s.', 'integration-dynamics' ), $humanReadableTime ); ?>
+                            <?php } else {
+                                ?><?php _e( 'Metadata has never been regenerated.') ?><?php
+                            } ?>
 							</span>
-                            <?php } ?>
                         </p>
                     </form>
 
