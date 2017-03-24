@@ -16,6 +16,7 @@ if ( !defined( 'ABSPATH' ) ) {
 
 define( 'WORDPRESSCRM_DIR', __DIR__ );
 define( 'WORDPRESSCRM_STORAGE', WORDPRESSCRM_DIR . '/storage' );
+define( 'WORDPRESSCRM_VERSION', '1.1.30' );
 
 // register autoloaders
 spl_autoload_register( function ( $className ) {
