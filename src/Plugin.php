@@ -288,8 +288,8 @@ final class Plugin {
         $this->getCache()->cleanup();
 
         // Purge each storage
-        foreach ( $this->storage as $storage ) {
-            $storage->cleanup();
+        foreach ( array_keys( $this->storage ) as $storageName ) {
+            $this->getStorage( $storageName )->cleanup();
         }
     }
 
