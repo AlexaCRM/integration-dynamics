@@ -149,12 +149,12 @@ class View {
                     $relatedEntityLabel = $element['formatted_value'];
 
                     if ( $entity->{$name} instanceof Entity\EntityReference ) {
-                        $boundUrl = ACRM()->binding->buildUrl( $entity->{$name} );
+                        $boundUrl = ACRM()->getBinding()->buildUrl( $entity->{$name} );
                         $relatedEntityLabel = $entity->getFormattedValue( $name, $tzOffset );
                     }
 
                     if ( $name === $primaryName ) {
-                        $boundUrl = ACRM()->binding->buildUrl( $entity );
+                        $boundUrl = ACRM()->getBinding()->buildUrl( $entity );
                     }
 
                     if ( $boundUrl !== '' ) {

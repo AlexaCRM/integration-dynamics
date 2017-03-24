@@ -304,7 +304,7 @@ abstract class AbstractForm extends Shortcode {
     }
 
     public static function printFormErrors( $errors ) {
-        return ACRM()->template->printTemplate( 'form/messages/errors.php', array( 'errors' => $errors ) );
+        return ACRM()->getTemplate()->printTemplate( 'form/messages/errors.php', array( 'errors' => $errors ) );
     }
 
 }

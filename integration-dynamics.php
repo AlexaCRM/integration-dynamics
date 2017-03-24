@@ -10,12 +10,6 @@
  * Domain Path: /languages
  */
 
-use AlexaCRM\CRMToolkit\Entity\MetadataCollection;
-use AlexaCRM\WordpressCRM\Admin\Metabox\ShortcodeWizard;
-use AlexaCRM\WordpressCRM\Log;
-use AlexaCRM\WordpressCRM\Plugin;
-use Symfony\Component\HttpFoundation\Request;
-
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }

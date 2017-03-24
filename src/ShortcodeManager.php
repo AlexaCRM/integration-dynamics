@@ -49,7 +49,7 @@ class ShortcodeManager {
          * @param array $shortcodes List of supported shortcodes
          */
         $this->shortcodes = apply_filters( 'wordpresscrm_shortcodes', $this->shortcodes );
-        ACRM()->log->debug( sprintf( 'Registered %d shortcode handlers.', count( $this->shortcodes ) ), [ 'shortcodes' => array_keys( $this->shortcodes ) ] );
+        ACRM()->getLogger()->debug( sprintf( 'Registered %d shortcode handlers.', count( $this->shortcodes ) ), [ 'shortcodes' => array_keys( $this->shortcodes ) ] );
 
         foreach ( $this->shortcodes as $shortcodeName => $shortcodeClass ) {
             $fullShortcodeName = $this->getFullShortcodeName( $shortcodeName );
@@ -74,13 +74,13 @@ class ShortcodeManager {
             $this->shortcodeProcessors[ $shortcodeName ] = new $shortcodeClassName();
         }
 
-        ACRM()->log->info( "Rendering shortcode [{$tagName}]." );
+        ACRM()->getLogger()->info( "Rendering shortcode [{$tagName}]." );
 
         try {
             $output = $this->shortcodeProcessors[ $shortcodeName ]->shortcode( $attributes, $content, $tagName );
         } catch ( OrganizationDisabledException $e ) {
             $output = 'Organization is disabled.';
-            ACRM()->log->alert( 'The current organization has been disabled.', [ 'exception' => $e ] );
+            ACRM()->getLogger()->alert( 'The current organization has been disabled.', [ 'exception' => $e ] );
             Connection::setConnectionStatus( false );
         } catch ( \Exception $e ) {
             $output = 'Unexpected error: ' . $e->getMessage();

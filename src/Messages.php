@@ -32,7 +32,7 @@ class Messages {
             return $message;
         }
 
-        ACRM()->log->warning( 'Undefined message ' . $key . '.' . $value . 'invoked.', [ 'trace' => debug_backtrace() ] );
+        ACRM()->getLogger()->warning( 'Undefined message ' . $key . '.' . $value . 'invoked.', [ 'trace' => debug_backtrace() ] );
 
         return '';
     }

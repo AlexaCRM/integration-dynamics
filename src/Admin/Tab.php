@@ -2,7 +2,6 @@
 
 namespace AlexaCRM\WordpressCRM\Admin;
 
-use AlexaCRM\CRMToolkit\Entity\MetadataCollection;
 use AlexaCRM\WordpressCRM\Plugin;
 use Exception;
 
@@ -78,7 +77,7 @@ abstract class Tab {
 
         if ( $sdk ) {
             try {
-                $entitiesMetadata = MetadataCollection::instance()->getEntitiesList();
+                $entitiesMetadata = ACRM()->getMetadata()->getEntitiesList();
 
                 foreach ( $entitiesMetadata as $entityLogicalName => $entityDisplayName ) {
                     $entities[ $entityLogicalName ] = array(

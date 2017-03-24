@@ -26,7 +26,7 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
     $entityField->description = __( 'Name of the entity to display a view of.', 'integration-dynamics' );
     $entityField->setValueGenerator( function() {
         try {
-            $entities = MetadataCollection::instance()->getEntitiesList();
+            $entities = ACRM()->getMetadata()->getEntitiesList();
             asort( $entities );
 
             return $entities;
@@ -109,7 +109,7 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
     if ( array_key_exists( 'post', $_GET ) ) {
         $entityField->setStaticValueGenerator( function() {
             $postId = (int)$_GET['post'];
-            $bindingConfig = ACRM()->binding->getPostBinding( $postId );
+            $bindingConfig = ACRM()->getBinding()->getPostBinding( $postId );
             if ( $bindingConfig === null ) {
                 return '';
             }
@@ -163,10 +163,10 @@ function ACRM() {
 /**
  * Returns the CRM Toolkit object.
  *
- * @return \AlexaCRM\CRMToolkit\Client
+ * @return \AlexaCRM\CRMToolkit\Client|null
  */
 function ASDK() {
-    return ACRM()->sdk;
+    return ACRM()->getSdk();
 }
 
 /**

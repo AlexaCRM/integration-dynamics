@@ -37,7 +37,7 @@ class Field extends Shortcode {
     public function shortcode( $attributes, $content = null, $tagName ) {
 
         try {
-            $record = ACRM()->binding->getEntity();
+            $record = ACRM()->getBinding()->getEntity();
 
             if ( $record == null ) {
                 return '';

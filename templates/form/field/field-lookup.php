@@ -39,7 +39,7 @@ if ( $disabled || $readonly ) { ?>
                                     echo "disabled";
                                 } ?>>
                                     <?php foreach ( $lookupTypes as $key => $value ) {
-                                        $entityMetadata = \AlexaCRM\CRMToolkit\Entity\MetadataCollection::instance()->getEntityDefinition( $value );
+                                        $entityMetadata = ACRM()->getMetadata()->getEntityDefinition( $value );
                                         ?>
                                         <option value="<?php echo $key; ?>"><?php echo $entityMetadata->entityDisplayName; ?></option>
                                     <?php } ?>

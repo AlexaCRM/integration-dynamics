@@ -31,7 +31,7 @@ class Connection {
         if ( ACRM()->connected() && static::$connectionStatus === null ) {
             try {
                 $cacheKey = 'wpcrm_whoami';
-                $cache    = ACRM()->cache;
+                $cache    = ACRM()->getCache();
 
                 if ( !$cache->exists( $cacheKey ) ) {
                     ASDK()->executeAction( "WhoAmI" );

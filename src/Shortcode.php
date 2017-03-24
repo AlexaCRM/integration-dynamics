@@ -26,7 +26,7 @@ abstract class Shortcode {
             'error' => $error,
         ];
 
-        return ACRM()->template->printTemplate( "error.php", $args );
+        return ACRM()->getTemplate()->printTemplate( "error.php", $args );
     }
 
     /**
@@ -40,7 +40,7 @@ abstract class Shortcode {
             'exception' => $exception,
         ];
 
-        return ACRM()->template->printTemplate( "exception.php", $args );
+        return ACRM()->getTemplate()->printTemplate( "exception.php", $args );
     }
 
     /**

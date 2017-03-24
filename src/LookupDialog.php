@@ -189,7 +189,7 @@ class LookupDialog {
      */
     private function retrieveLookupView( $returnedTypeCode, $queryType = 64, $sortableAttributeName = 'name' ) {
         $cacheKey = 'wpcrm_lookup_' . sha1( 'querytype_' . $queryType . '_returnedtypecode_' . $returnedTypeCode );
-        $cache = ACRM()->cache;
+        $cache = ACRM()->getCache();
 
         if ( $cache->exists( $cacheKey ) ) {
             return $cache->get( $cacheKey );
@@ -334,7 +334,7 @@ class LookupDialog {
                     $cellValue = $formattedCellValue;
 
                     if ( ( $record->{$cellName} ) instanceof EntityReference
-                         && ( $url = ACRM()->binding->buildUrl( $record->{$cellName} ) )
+                         && ( $url = ACRM()->getBinding()->buildUrl( $record->{$cellName} ) )
                     ) {
                         $cellValue = '<a href="' . esc_attr( $url ) . '">' . $formattedCellValue . '</a>';
                     }

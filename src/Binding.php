@@ -22,13 +22,6 @@ class Binding {
     private $entity;
 
     /**
-     * Binding constructor.
-     */
-    public function __construct() {
-        add_action( 'wp', [ $this, 'getEntity' ] );
-    }
-
-    /**
      * Retrieve the current data-bound entity record.
      *
      * @return Entity|null
@@ -218,7 +211,7 @@ class Binding {
                 return preg_replace( '~^(.*?)[\.$].*~', '$1', $field );
             }, $columnSet ) );
 
-            $entityAttributes = Entity\MetadataCollection::instance()->getEntityDefinition( $entityName )->attributes;
+            $entityAttributes = ACRM()->getMetadata()->getEntityDefinition( $entityName )->attributes;
             $entityColumns = array_filter( $entityColumns, function( $field ) use ( $entityAttributes ) {
                 return array_key_exists( $field, $entityAttributes );
             } );
@@ -261,7 +254,7 @@ class Binding {
                     $relatedFields[ $relatedField[0] ] = [];
                 }
 
-                $entityAttributes = Entity\MetadataCollection::instance()->getEntityDefinition( $record->{$relatedField[0]}->logicalname )->attributes;
+                $entityAttributes = ACRM()->getMetadata()->getEntityDefinition( $record->{$relatedField[0]}->logicalname )->attributes;
                 if ( !array_key_exists( $relatedField[1], $entityAttributes ) ) {
                     continue;
                 }
@@ -276,9 +269,9 @@ class Binding {
 
             return $record;
         } catch ( NotAuthorizedException $e ) {
-            ACRM()->log->critical( 'CRM Toolkit returned a NotAuthorizedException while retrieving the bound record.', [ 'exception' => $e, 'arguments' => [ $entityName, $entityKey, $entityQuery ] ] );
+            ACRM()->getLogger()->critical( 'CRM Toolkit returned a NotAuthorizedException while retrieving the bound record.', [ 'exception' => $e, 'arguments' => [ $entityName, $entityKey, $entityQuery ] ] );
         } catch ( \Exception $ex ) {
-            ACRM()->log->error( 'An exception occured while retrieving the bound record.', [ 'exception' => $ex, 'arguments' => [ $entityName, $entityKey, $entityQuery ] ] );
+            ACRM()->getLogger()->error( 'An exception occured while retrieving the bound record.', [ 'exception' => $ex, 'arguments' => [ $entityName, $entityKey, $entityQuery ] ] );
         }
 
         return null;

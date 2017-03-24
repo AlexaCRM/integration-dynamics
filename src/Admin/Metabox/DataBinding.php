@@ -70,7 +70,7 @@ class DataBinding {
 
             $entities = Tab::get_all_entities();
 
-            $bindingConfig = ACRM()->binding->getPostBinding( $post->ID );
+            $bindingConfig = ACRM()->getBinding()->getPostBinding( $post->ID );
 
             $post_entity         = $bindingConfig['entity'];
             $post_parametername  = $bindingConfig['key'];
@@ -110,7 +110,7 @@ class DataBinding {
         $entityName = $request->get( 'wordpresscrm_databinding_entity' );
 
         if ( $entityName === null ) {
-            ACRM()->binding->updateBinding( $postId, null );
+            ACRM()->getBinding()->updateBinding( $postId, null );
 
             return $postId;
         }
@@ -124,10 +124,10 @@ class DataBinding {
             'post' => $postId,
         ];
 
-        ACRM()->binding->updateBinding( $postId, $config );
+        ACRM()->getBinding()->updateBinding( $postId, $config );
 
         if ( $config['default'] ) {
-            ACRM()->binding->updateDefaultBinding( $config['entity'], $postId );
+            ACRM()->getBinding()->updateDefaultBinding( $config['entity'], $postId );
         }
 
         return $postId;

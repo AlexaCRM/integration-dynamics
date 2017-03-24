@@ -768,11 +768,11 @@ class FormInstance extends AbstractForm {
 
         $path = ( $this->disableLayout ) ? 'form/inline-form' : 'form/form';
 
-        $templatePath = ACRM()->template->locateShortcodeTemplate( $path, $this->entity->logicalname, $this->formName );
+        $templatePath = ACRM()->getTemplate()->locateShortcodeTemplate( $path, $this->entity->logicalname, $this->formName );
 
         wp_enqueue_script( 'wordpresscrm-front', false, [], false, true );
 
-        return ACRM()->template->printTemplate( $templatePath, $args );
+        return ACRM()->getTemplate()->printTemplate( $templatePath, $args );
     }
 
     private function setupControls( $formXML ) {
@@ -857,7 +857,7 @@ class FormInstance extends AbstractForm {
                     $controls[ $name ]->type = 'lookup-picklist';
 
                     $lookupCacheKey = 'wpcrm_view_' . sha1( 'lookup_' . $name . '_' . $this->lookupViews[ $name ][0] );
-                    $lookupViewFetch = ACRM()->cache->get( $lookupCacheKey );
+                    $lookupViewFetch = ACRM()->getCache()->get( $lookupCacheKey );
 
                     if ( $lookupViewFetch == null ) {
                         $fetchView = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
@@ -872,14 +872,14 @@ class FormInstance extends AbstractForm {
 
                         $lookupView = ASDK()->retrieveSingle( $fetchView );
                         $lookupViewFetch = $lookupView->fetchxml;
-                        ACRM()->cache->set( $lookupCacheKey, $lookupViewFetch, 2 * 60 * 60 * 24 );
+                        ACRM()->getCache()->set( $lookupCacheKey, $lookupViewFetch, 2 * 60 * 60 * 24 );
                     }
 
                     $dataCacheKey = 'wpcrm_data_' . sha1( $lookupViewFetch );
-                    $options = ACRM()->cache->get( $dataCacheKey );
+                    $options = ACRM()->getCache()->get( $dataCacheKey );
                     if ( $options == null ) {
                         $options = ASDK()->retrieveMultiple( $lookupViewFetch );
-                        ACRM()->cache->set( $dataCacheKey, $options, 2 * 60 * 60 * 24 );
+                        ACRM()->getCache()->set( $dataCacheKey, $options, 2 * 60 * 60 * 24 );
                     }
 
                     foreach ( $options->Entities as $optionEntity ) {
@@ -1069,7 +1069,7 @@ class FormInstance extends AbstractForm {
      */
     private function getFormXML( $formName ) {
         $cacheKey = 'wpcrm_form_' . sha1( $this->entity->logicalname . '_form_' . $formName );
-        $cache = ACRM()->cache;
+        $cache = ACRM()->getCache();
 
         $formXML = $cache->get( $cacheKey );
         if ( $formXML == null ) {

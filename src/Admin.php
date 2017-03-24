@@ -2,7 +2,6 @@
 
 namespace AlexaCRM\WordpressCRM;
 
-use AlexaCRM\CRMToolkit\Entity\MetadataCollection;
 use AlexaCRM\WordpressCRM\Admin\Metabox\DataBinding;
 use AlexaCRM\WordpressCRM\Admin\Metabox\ShortcodeWizard;
 

@@ -163,7 +163,7 @@ class View extends Shortcode {
             /* Retrieve the view entity record by entity name of the result records type and view name */
 
             $cacheKey = 'wpcrm_view_' . sha1( 'entity_' . $attributes['entity'] . '_view_' . $attributes['name'] );
-            $cache = ACRM()->cache;
+            $cache = ACRM()->getCache();
             $view = $cache->get( $cacheKey );
             if ( $view == null ) {
                 $crmView = CRMView::getViewForEntity( strtolower( $attributes["entity"] ), $attributes["name"] );
@@ -226,9 +226,9 @@ class View extends Shortcode {
             return ob_get_clean();
         }
 
-        $templatePath = ACRM()->template->locateShortcodeTemplate( "view/view", $attributes["entity"], $attributes["name"] );
+        $templatePath = ACRM()->getTemplate()->locateShortcodeTemplate( "view/view", $attributes["entity"], $attributes["name"] );
 
-        return ACRM()->template->printTemplate( $templatePath, array(
+        return ACRM()->getTemplate()->printTemplate( $templatePath, array(
             "rows"       => $rows,
             "entities"   => $entities,
             "cells"      => $cells,

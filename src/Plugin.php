@@ -5,6 +5,7 @@ namespace AlexaCRM\WordpressCRM;
 use AlexaCRM\CRMToolkit\Client;
 use AlexaCRM\CRMToolkit\Entity\MetadataCollection;
 use AlexaCRM\CRMToolkit\Settings;
+use AlexaCRM\CRMToolkit\StorageInterface;
 use AlexaCRM\WordpressCRM\Image\AnnotationImage;
 use AlexaCRM\WordpressCRM\Image\CustomImage;
 use Exception;
@@ -33,39 +34,12 @@ final class Plugin {
     public $version = '';
 
     /**
-     * Client class object
-     *
-     * @var Client
-     */
-    public $sdk = null;
-
-    /**
      * Cache class object
      *
      * @var Cache
+     * @deprecated 1.1.32   Will become private. Use Plugin::getCache()
      */
     public $cache = null;
-
-    /**
-     * Persistent metadata storage
-     *
-     * @var PersistentStorage
-     */
-    public $metadataStorage = null;
-
-    /**
-     * Persistent CRM images storage
-     *
-     * @var PersistentStorage
-     */
-    public $imageStorage = null;
-
-    /**
-     * Logging facility.
-     *
-     * @var LoggerInterface
-     */
-    public $log = null;
 
     /**
      * Current request.
@@ -78,6 +52,7 @@ final class Plugin {
      * Access to templates.
      *
      * @var Template
+     * @deprecated 1.1.32   Will become private. Use Plugin::getTemplate()
      */
     public $template = null;
 
@@ -85,6 +60,7 @@ final class Plugin {
      * Access to data-binding.
      *
      * @var Binding
+     * @deprecated 1.1.32   Will become private. Use Plugin::getBinding()
      */
     public $binding = null;
 
@@ -99,6 +75,20 @@ final class Plugin {
      * @var Plugin
      */
     private static $instance;
+
+    /**
+     * Different facilities of the plugin (cache, storage, SDK, etc.)
+     *
+     * @var array
+     */
+    private $facilities;
+
+    /**
+     * Collection of storage.
+     *
+     * @var PersistentStorage[]
+     */
+    private $storage;
 
     /**
      * Cloning is forbidden.
@@ -118,6 +108,22 @@ final class Plugin {
      * Plugin constructor.
      */
     private function __construct() {
+        $facilities = [ 'sdk', 'binding', 'template', 'cache', 'logger' ];
+        foreach ( $facilities as $facility ) {
+            $this->facilities[$facility] = null;
+        }
+
+        /**
+         * Allows to modify the list of pre-defined storage.
+         * Such modification for custom storage is required in order
+         * to purge it in case it hasn't been initialized during the request yet.
+         *
+         * @param string[]  List of storage names
+         */
+        $storage = apply_filters( 'wordpresscrm_storage_list', [ 'metadata', 'images' ] );
+        foreach ( $storage as $storageName ) {
+            $this->storage[$storageName] = null;
+        }
     }
 
     /**
@@ -136,12 +142,12 @@ final class Plugin {
     /**
      * Initialize plugin
      *
-     * @param LoggerInterface $log
+     * @param LoggerInterface $logger
      * @param Request $request  Request data, i.e. from Request::createFromGlobals()
      */
-    public function init( LoggerInterface $log, Request $request ) {
-        $this->log = $log;
-        $this->log->debug( 'Initializing Dynamics CRM Integration.' );
+    public function init( LoggerInterface $logger, Request $request ) {
+        $this->facilities['logger'] = $logger;
+        $logger->debug( 'Initializing Dynamics CRM Integration.' );
 
         $this->request = $request;
 
@@ -153,22 +159,12 @@ final class Plugin {
 
         $options       = get_option( static::PREFIX . 'options' );
         $this->options = $options;
-        $this->initCache();
+        $this->cache = $this->getCache();
 
-        if ( $options && isset( $options['connected'] ) && $options['connected'] == true ) {
-            try {
-                $this->initCrmConnection();
-            } catch ( Exception $ex ) {
-                $this->log->critical( 'Caught exception while initializing connection to CRM.', [ 'exception' => $ex ] );
-                $this->options['connected'] = $options['connected'] = false;
-                update_option( static::PREFIX . 'options', $options );
-            }
-        }
-
-        if ( $this->sdk ) {
+        if ( $this->connected() ) {
             new LookupDialog();
             new CustomImage();
-            new AnnotationImage( $this->imageStorage );
+            new AnnotationImage( $this->getStorage( 'images' ) );
 
             $this->binding = new Binding();
 
@@ -178,46 +174,22 @@ final class Plugin {
         }
 
         if ( is_admin() ) {
-            $this->log->debug( 'Initializing admin UI.' );
+            $logger->debug( 'Initializing admin UI.' );
             new Admin();
         }
 
         if ( !is_admin() ) {
-            add_action( 'after_setup_theme', function() {
-                $this->log->debug( 'Initializing shortcodes.' );
+            add_action( 'after_setup_theme', function() use ( $logger ) {
+                $logger->debug( 'Initializing shortcodes.' );
 
                 new ShortcodeManager();
             } );
 
-            $this->template = new Template();
+            $this->template = $this->getTemplate();
         }
 
         // Loaded action
         do_action( 'wordpresscrm_loaded' );
-    }
-
-    /**
-     * Initializes plugin cache
-     */
-    private function initCache() {
-        if ( $this->cache instanceof Cache && $this->metadataStorage instanceof PersistentStorage
-        && $this->imageStorage instanceof PersistentStorage ) {
-            return;
-        }
-
-        $this->log->debug( 'Initializing cache.' );
-
-        $this->options['cache'] = [ 'server' => 'localhost', 'port' => 11211 ];
-        if ( defined( 'WORDPRESSCRM_CACHESERVER' ) && defined( 'WORDPRESSCRM_CACHEPORT' ) ) {
-            $this->options['cache'] = [
-                'server' => WORDPRESSCRM_CACHESERVER,
-                'port'   => WORDPRESSCRM_CACHEPORT,
-            ];
-        }
-
-        $this->cache = new Cache( $this->options['cache'] );
-        $this->metadataStorage = new PersistentStorage( 'metadata' );
-        $this->imageStorage = new PersistentStorage( 'images' );
     }
 
     /**
@@ -226,16 +198,18 @@ final class Plugin {
     private function initCrmConnection() {
         $options = $this->options;
 
-        $this->log->debug( 'Initializing PHP CRM Toolkit.' );
+        $this->getLogger()->debug( 'Initializing PHP CRM Toolkit.' );
 
         $clientSettings = new Settings( $options );
-        $this->sdk = new Client( $clientSettings, $this->cache, $this->log->withName( 'crmtoolkit' ) );
+        $this->facilities['sdk'] = new Client( $clientSettings, $this->getCache(), $this->getLogger()->withName( 'crmtoolkit' ) );
 
-        $this->log->debug( 'Finished initializing PHP CRM Toolkit.' );
+        $this->getLogger()->debug( 'Finished initializing PHP CRM Toolkit.' );
 
         // initialize Metadata storage
-        $this->log->debug( 'Initializing PHP CRM Toolkit Metadata storage.' );
-        MetadataCollection::instance( $this->sdk )->setStorage( $this->metadataStorage );
+        $this->getLogger()->debug( 'Initializing PHP CRM Toolkit Metadata storage.' );
+        MetadataCollection::instance( $this->facilities['sdk'] )->setStorage( $this->getStorage( 'metadata' ) );
+
+        return $this->facilities['sdk'];
     }
 
     /**
@@ -308,12 +282,122 @@ final class Plugin {
      * Purges cache and persistent storage
      */
     public function purgeCache() {
-        $this->initCache();
+        $this->getLogger()->notice( 'Purging all caches and storage.' );
 
-        $this->log->notice( 'Purging all caches and storage.' );
-        $this->cache->cleanup();
-        $this->metadataStorage->cleanup();
-        $this->imageStorage->cleanup();
+        // Purge cache
+        $this->getCache()->cleanup();
+
+        // Purge each storage
+        foreach ( $this->storage as $storage ) {
+            $storage->cleanup();
+        }
+    }
+
+    /**
+     * Returns a PHP CRM Toolkit Client instance.
+     *
+     * @return Client|null  Null returned if failed to initialize
+     */
+    public function getSdk() {
+        if ( $this->facilities['sdk'] instanceof Client ) {
+            return $this->facilities['sdk'];
+        }
+
+        if ( $this->options && isset( $this->options['connected'] ) && $this->options['connected'] == true ) {
+            try {
+                return $this->initCrmConnection();
+            } catch ( Exception $ex ) {
+                $this->getLogger()->critical( 'Caught exception while initializing connection to CRM.', [ 'exception' => $ex ] );
+                $this->options['connected'] = $options['connected'] = false;
+                update_option( static::PREFIX . 'options', $options );
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns a Logger implementation.
+     *
+     * @return LoggerInterface
+     */
+    public function getLogger() {
+        return $this->facilities['logger'];
+    }
+
+    /**
+     * @param string $storageName
+     *
+     * @return PersistentStorage
+     */
+    public function getStorage( $storageName ) {
+        if ( array_key_exists( $storageName, $this->storage ) && $this->storage[$storageName] instanceof StorageInterface ) {
+            return $this->storage[$storageName];
+        }
+
+        $this->getLogger()->debug( 'Initializing storage <' . $storageName . '>.' );
+        $this->storage[$storageName] = new PersistentStorage( $storageName );
+
+        return $this->storage[$storageName];
+    }
+
+    /**
+     * @return Cache
+     */
+    public function getCache() {
+        if ( $this->facilities['cache'] instanceof Cache ) {
+            return $this->facilities['cache'];
+        }
+
+        $this->getLogger()->debug( 'Initializing cache.' );
+
+        $this->options['cache'] = [ 'server' => 'localhost', 'port' => 11211 ];
+        if ( defined( 'WORDPRESSCRM_CACHESERVER' ) && defined( 'WORDPRESSCRM_CACHEPORT' ) ) {
+            $this->options['cache'] = [
+                'server' => WORDPRESSCRM_CACHESERVER,
+                'port'   => WORDPRESSCRM_CACHEPORT,
+            ];
+        }
+
+        $this->facilities['cache'] = new Cache( $this->options['cache'] );
+
+        return $this->facilities['cache'];
+    }
+
+    /**
+     * @return Template
+     */
+    public function getTemplate() {
+        if ( $this->facilities['template'] instanceof Template ) {
+            return $this->facilities['template'];
+        }
+
+        $this->facilities['template'] = new Template();
+
+        return $this->facilities['template'];
+    }
+
+    /**
+     * @return Binding
+     */
+    public function getBinding() {
+        if ( $this->facilities['binding'] instanceof Binding ) {
+            return $this->facilities['binding'];
+        }
+
+        $this->facilities['binding'] = new Binding();
+
+        return $this->facilities['binding'];
+    }
+
+    /**
+     * @return MetadataCollection
+     */
+    public function getMetadata() {
+        $metadata = MetadataCollection::instance( $this->getSdk() );
+        $metadata->setStorage( $this->getStorage( 'metadata' ) );
+
+        return $metadata;
     }
 
 }
