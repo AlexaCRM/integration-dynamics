@@ -257,7 +257,7 @@ final class Plugin {
             }
 
             // Add a few links to the existing links array
-            return array_merge( $links, $new_links );
+            return array_merge( $new_links, $links  );
         }, 10, 2 );
 
         /* Frontend includes */
