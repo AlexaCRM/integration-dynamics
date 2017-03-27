@@ -44,6 +44,10 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.31 =
+
+* Stability improvements and better error reporting
+
 = 1.1.30 =
 
 * Stability improvements and better error reporting
