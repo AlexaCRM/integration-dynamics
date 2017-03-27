@@ -19,7 +19,8 @@ cd ${WORKING_DIR}
 
 # check that the tag exists
 TARGET_TAG_EXISTS=$(git tag | grep ${TARGET_VERSION})
-if [ -z ${TARGET_TAG_EXISTS} ]; then
+TARGET_COMMIT_EXISTS=$(git rev-list --all | grep ${TARGET_VERSION})
+if [ -z ${TARGET_TAG_EXISTS} ] && [ -z ${TARGET_COMMIT_EXISTS} ]; then
     echo "Error: Specified version tag doesn't exist in the Git repo"
     exit 1
 fi
