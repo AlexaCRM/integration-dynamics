@@ -11,7 +11,7 @@ load_plugin_textdomain( 'integration-dynamics', false, dirname( plugin_basename(
 require_once __DIR__ . '/update.php';
 
 add_action( 'init', function() {
-    if ( !session_id() ) {
+    if ( !session_id() && !headers_sent() ) {
         session_start();
     }
 }, 0 );
