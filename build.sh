@@ -47,8 +47,19 @@ rm ${ASSEMBLY_DIR}/plugin.tar
 # remove files not necessary for public
 rm ${ASSEMBLY_TARGET_DIR}/build.sh ${ASSEMBLY_TARGET_DIR}/.gitignore
 
+# Remove unnecessary 3rd party files from packages
+rm -r ${ASSEMBLY_TARGET_DIR}/vendor/alexacrm/php-crm-toolkit/examples
+rm -r ${ASSEMBLY_TARGET_DIR}/vendor/alexacrm/php-crm-toolkit/tests
+rm -r ${ASSEMBLY_TARGET_DIR}/vendor/monolog/monolog/doc
+rm -r ${ASSEMBLY_TARGET_DIR}/vendor/monolog/monolog/tests
+rm -r ${ASSEMBLY_TARGET_DIR}/vendor/symfony/http-foundation/Tests
+
 echo "Creating <integration-dynamics-v${TARGET_VERSION}.zip>..."
 cd ${ASSEMBLY_DIR}
+
+# Remove the old ZIP if it exists
+rm -f integration-dynamics-v${TARGET_VERSION}.zip
+
 zip -r -q -9 integration-dynamics-v${TARGET_VERSION}.zip integration-dynamics/
 
 rm -rf ${ASSEMBLY_DIR}/v${TARGET_VERSION}
