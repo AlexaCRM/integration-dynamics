@@ -122,12 +122,15 @@ class Messages extends Tab {
         $schema = $this->getMessagesSchema(); ?>
         <div class="wrap">
             <?php Admin::renderSettingsTabs(); ?>
+
+            <p><?php _e( 'This page allows you to adjust messages that are displayed to users.', 'integration-dynamics' ); ?> <a href="http://docs.alexacrm.com/wpcrm/configuration/messages/" target="_blank"><?php _e( 'Documentation &raquo;', 'integration-dynamics' ); ?></a></p>
+
+            <hr>
             <form method="post" action="options.php">
                 <?php
                 settings_fields( $this->settingsField );
-                do_settings_sections( $this->settingsField ); ?>
-                <p><?php _e( 'You can adjust messages that are displayed to users.', 'integration-dynamics' ) ?></p>
-                <?php
+                do_settings_sections( $this->settingsField );
+
                 foreach ( $schema as $sectionName => $section ) {
                     ?><h2><?php echo $section['displayName']; ?></h2>
                     <?php if ( array_key_exists( 'description', $section ) ) {

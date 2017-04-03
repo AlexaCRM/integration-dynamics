@@ -71,6 +71,10 @@ class Attachments extends Tab {
         ?>
         <div class="wrap">
             <?php Admin::renderSettingsTabs(); ?>
+
+            <p><?php _e( 'This page allows you to configure how images are fetched from CRM and displayed.', 'integration-dynamics' ); ?> <a href="http://docs.alexacrm.com/wpcrm/configuration/images/" target="_blank"><?php _e( 'Documentation &raquo;', 'integration-dynamics' ); ?></a></p>
+            <hr>
+
             <form method="post" action="options.php">
                 <?php settings_fields( $this->settingsField ); ?>
                 <?php do_settings_sections( $this->settingsField ); ?>

@@ -107,7 +107,7 @@ class General extends Tab {
                     'ignoreSslErrors' => $clientSettings->ignoreSslErrors,
                 ] ] );
 
-                $client         = new Client( $clientSettings, ACRM()->getCache(), ACRM()->getLogger()->withName( 'crmtoolkit' ) );
+                $client = new Client( $clientSettings, ACRM()->getCache(), ACRM()->getLogger()->withName( 'crmtoolkit' ) );
 
                 // next settings are retrieved during Client instantiation
                 $options['organizationName']       = $clientSettings->organizationName;
@@ -186,7 +186,7 @@ class General extends Tab {
             <div class="metabox-holder">
                 <div class="postbox-container" style="width: 99%;">
 
-                    <p><?php _e( 'Configure the plugin to connect to your Dynamics CRM instance.', 'integration-dynamics' ) ?></p>
+                    <p><?php _e( 'Configure the plugin to connect to your Dynamics CRM instance.', 'integration-dynamics' ) ?> <a href="http://docs.alexacrm.com/wpcrm/configuration/connection/" target="_blank"><?php _e( 'Documentation &raquo;', 'integration-dynamics' ); ?></a></p>
 
                     <hr>
 
