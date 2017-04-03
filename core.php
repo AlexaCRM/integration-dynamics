@@ -1,20 +1,17 @@
 <?php
 
-use AlexaCRM\CRMToolkit\Entity\MetadataCollection;
 use AlexaCRM\WordpressCRM\Admin\Metabox\ShortcodeWizard;
+use AlexaCRM\WordpressCRM\Notifier;
 use AlexaCRM\WordpressCRM\Plugin;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag;
+use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 load_plugin_textdomain( 'integration-dynamics', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
 // run migrations
 require_once __DIR__ . '/update.php';
-
-add_action( 'init', function() {
-    if ( !session_id() && !headers_sent() ) {
-        session_start();
-    }
-}, 0 );
 
 /* Shortcode Wizard init */
 // view shortcode
@@ -145,10 +142,33 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
  */
 $pluginInstance = Plugin::instance();
 $request = Request::createFromGlobals();
+$session = new Session(
+    null,
+    new NamespacedAttributeBag( 'wpcrm', '.' ),
+    new AutoExpireFlashBag( 'wpcrmflash' )
+);
+$request->setSession( $session );
+$session->start();
 $pluginInstance->init(  $logger, $request );
 
 add_action( 'admin_init', function() use ( $pluginInstance ) {
     $pluginInstance->version = get_plugin_data( WORDPRESSCRM_DIR . '/integration-dynamics.php' )['Version'];
+} );
+
+add_action( 'admin_notices', function() {
+    $notifications = ACRM()->getNotifier()->getNotifications();
+
+    foreach ( $notifications as $notification ) {
+        $classes = [ 'notice', Notifier::getNoticeClass( $notification['type'] ) ];
+        if ( $notification['isDismissible'] ) {
+            $classes[] = 'is-dismissible';
+        }
+        ?>
+        <div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
+            <p><?php echo $notification['content']; ?></p>
+        </div>
+        <?php
+    }
 } );
 
 /**

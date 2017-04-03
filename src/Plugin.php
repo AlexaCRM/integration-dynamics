@@ -12,6 +12,10 @@ use Exception;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag;
+use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
@@ -110,7 +114,7 @@ final class Plugin {
      * Plugin constructor.
      */
     private function __construct() {
-        $facilities = [ 'sdk', 'binding', 'template', 'cache', 'logger' ];
+        $facilities = [ 'sdk', 'binding', 'template', 'cache', 'logger', 'notifier' ];
         foreach ( $facilities as $facility ) {
             $this->facilities[$facility] = null;
         }
@@ -400,6 +404,26 @@ final class Plugin {
         $metadata->setStorage( $this->getStorage( 'metadata' ) );
 
         return $metadata;
+    }
+
+    /**
+     * @return Session|SessionInterface
+     */
+    public function getSession() {
+        return $this->request->getSession();
+    }
+
+    /**
+     * @return Notifier
+     */
+    public function getNotifier() {
+        if ( $this->facilities['notifier'] instanceof Notifier ) {
+            return $this->facilities['notifier'];
+        }
+
+        $this->facilities['notifier'] = new Notifier();
+
+        return $this->facilities['notifier'];
     }
 
 }
