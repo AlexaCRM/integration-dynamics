@@ -9,6 +9,7 @@ use AlexaCRM\CRMToolkit\StorageInterface;
 use AlexaCRM\WordpressCRM\Image\AnnotationImage;
 use AlexaCRM\WordpressCRM\Image\CustomImage;
 use Exception;
+use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -143,10 +144,10 @@ final class Plugin {
     /**
      * Initialize plugin
      *
-     * @param LoggerInterface $logger
-     * @param Request $request  Request data, i.e. from Request::createFromGlobals()
+     * @param Logger $logger
+     * @param Request $request Request data, i.e. from Request::createFromGlobals()
      */
-    public function init( LoggerInterface $logger, Request $request ) {
+    public function init( Logger $logger, Request $request ) {
         $this->facilities['logger'] = $logger;
         $logger->debug( 'Initializing Dynamics CRM Integration.' );
 
@@ -320,7 +321,7 @@ final class Plugin {
     /**
      * Returns a Logger implementation.
      *
-     * @return LoggerInterface
+     * @return Logger
      */
     public function getLogger() {
         return $this->facilities['logger'];
