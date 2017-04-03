@@ -118,7 +118,7 @@ class General extends Tab {
                 if ( isset( $client ) && $whoAmI = $client->executeAction( "WhoAmI" ) ) {
                     $options['connected'] = true;
                     update_option( Plugin::PREFIX . 'options', $options );
-                    $this->options = $options;
+                    $this->options = ACRM()->options = $options;
 
                     $noticeText = sprintf( __( 'Connection to Dynamics CRM <%s> has been successfully established.', 'integration-dynamics' ), $options['organizationName'] );
                     self::set_notice( $noticeText );
