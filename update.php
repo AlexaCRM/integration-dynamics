@@ -50,10 +50,6 @@ class WordpressCRM_Update {
                 "organizationUniqueName" => $options["organizationUniqueName"],
                 "organizationId"         => $options["organizationId"],
                 "organizationVersion"    => $options["organizationVersion"],
-                'solution'               => $options["solution"],
-                'solution_name'          => $options["solution_name"],
-                'solution_version'       => $options["solution_version"],
-                'solution_publisher'     => $options["solution_publisher"],
                 "cache"                  => array( "server" => "localhost", "port" => 11211 ),
                 "connected"              => $options["connected"],
             );
