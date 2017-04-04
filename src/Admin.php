@@ -51,8 +51,6 @@ class Admin {
         add_action( 'admin_menu', [ $this, 'init' ] );
 
         add_action( 'admin_notices', [ $this, 'admin_notices_plugin_activated' ] );
-        add_action( 'admin_notices', [ $this, 'admin_notices' ] );
-        add_action( 'admin_notices', [ $this, 'admin_errors' ] );
 
         /**
          * ACRM() cannot access $pluginInstance on plugin activation,
@@ -121,62 +119,6 @@ class Admin {
                 </p>
             </div>
             <?php
-        }
-    }
-
-    /**
-     * Renders issued notifications (success messages, etc.)
-     */
-    public function admin_notices() {
-        if ( $notices = ACRM()->option( 'deferred_admin_notices' ) ) {
-            if ( is_array( $notices ) ) {
-                foreach ( $notices as $notice ) {
-                    ?>
-                    <div class="notice notice-success is-dismissible">
-                        <p>
-                            <?php _e( $notice, 'integration-dynamics' ); ?>
-                        </p>
-                    </div>
-                    <?php
-                }
-            } else {
-                ?>
-                <div class="notice notice-success is-dismissible">
-                    <p>
-                        <?php _e( $notices, 'integration-dynamics' ); ?>
-                    </p>
-                </div>
-                <?php
-            }
-            delete_option( Plugin::PREFIX . 'deferred_admin_notices' );
-        }
-    }
-
-    /**
-     * Renders issued error messages
-     */
-    public function admin_errors() {
-        if ( $notices = ACRM()->option( 'deferred_admin_errors' ) ) {
-            if ( is_array( $notices ) ) {
-                foreach ( $notices as $notice ) {
-                    ?>
-                    <div class="error notice-error is-dismissible">
-                        <p>
-                            <?php _e( $notice, 'integration-dynamics' ); ?>
-                        </p>
-                    </div>
-                    <?php
-                }
-            } else {
-                ?>
-                <div class="error notice-error is-dismissible">
-                    <p>
-                        <?php _e( $notices, 'integration-dynamics' ); ?>
-                    </p>
-                </div>
-                <?php
-            }
-            delete_option( Plugin::PREFIX . 'deferred_admin_errors' );
         }
     }
 

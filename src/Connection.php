@@ -63,6 +63,9 @@ class Connection {
         $options["connected"] = $status;
         update_option( Plugin::PREFIX . 'options', $options );
         static::$connectionStatus = $status;
+
+        // Update plugin in-memory options
+        ACRM()->options = $options;
     }
 
 }

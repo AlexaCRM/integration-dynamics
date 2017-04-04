@@ -50,26 +50,7 @@ abstract class Tab {
         add_option( $this->settingsField, static::$default_settings );
     }
 
-    public function initializeTab( $tabHookName ) {
-    }
-
-    public static function set_notice( $string ) {
-        $notices = ACRM()->option( 'deferred_admin_notices' );
-        if ( !is_array( $notices ) ) {
-            $notices = [ ];
-        }
-        array_push( $notices, htmlentities( $string ) );
-        update_option( Plugin::PREFIX . 'deferred_admin_notices', $notices );
-    }
-
-    public static function set_errors( $string ) {
-        $notices = ACRM()->option( 'deferred_admin_errors' );
-        if ( !is_array( $notices ) ) {
-            $notices = array();
-        }
-        array_push( $notices, $string );
-        update_option( Plugin::PREFIX . 'deferred_admin_errors', $notices );
-    }
+    public function initializeTab( $tabHookName ) {}
 
     public static function get_all_entities() {
         $entities = [ ];

@@ -32,7 +32,7 @@ class Notifier {
      * @param $type
      * @param bool $isDismissible
      */
-    public function add( $content, $type = Notifier::NOTICE_INFO, $isDismissible = false ) {
+    public function add( $content, $type = Notifier::NOTICE_INFO, $isDismissible = true ) {
         $session = ACRM()->getSession();
 
         $session->getFlashBag()->add( 'admin-notice', [

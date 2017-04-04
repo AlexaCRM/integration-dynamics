@@ -5,6 +5,7 @@ use AlexaCRM\CRMToolkit\Client;
 use AlexaCRM\CRMToolkit\Settings;
 use AlexaCRM\WordpressCRM\Admin;
 use AlexaCRM\WordpressCRM\Admin\Tab;
+use AlexaCRM\WordpressCRM\Notifier;
 use AlexaCRM\WordpressCRM\Plugin;
 use Error;
 use Exception;
@@ -60,7 +61,7 @@ class General extends Tab {
         if ( isset( $_POST["clear_cache"] ) && $_POST["clear_cache"] ) {
             ACRM()->purgeCache();
 
-            self::set_notice( __( 'Metadata cache has been purged and now will be rebuilt gradually.', 'integration-dynamics' ) );
+            ACRM()->getNotifier()->add( __( 'Metadata cache has been purged and now will be rebuilt gradually.', 'integration-dynamics' ) );
 
             $this->options['last_metadata_purge'] = current_time( 'timestamp' );
             update_option( $this->settingsField, $this->options );
@@ -92,7 +93,7 @@ class General extends Tab {
                  !$options["username"] ||
                  !$options["password"]
             ) {
-                self::set_errors( "Please fill in the fields that are marked as required *" );
+                ACRM()->getNotifier()->add( __( 'Please fill in the fields that are marked as required *.', 'integration-dynamics' ), Notifier::NOTICE_ERROR );
 
                 return;
             }
@@ -116,30 +117,29 @@ class General extends Tab {
                 $options['organizationId']         = $clientSettings->organizationId;
 
                 if ( isset( $client ) && $whoAmI = $client->executeAction( "WhoAmI" ) ) {
-                    $options['connected'] = true;
                     update_option( Plugin::PREFIX . 'options', $options );
                     $this->options = ACRM()->options = $options;
+                    Connection::setConnectionStatus( true );
 
                     $noticeText = sprintf( __( 'Connection to Dynamics CRM <%s> has been successfully established.', 'integration-dynamics' ), $options['organizationName'] );
-                    self::set_notice( $noticeText );
+                    ACRM()->getNotifier()->add( $noticeText, Notifier::NOTICE_SUCCESS );
                 } else {
                     ACRM()->getLogger()->error( 'CRM connection attempt failed.', [ 'credentials' => [ $options['serverUrl'], $options['username'] ] ] );
-                    $this->set_error( __( 'Unable to connect to Dynamics CRM using provided address, username and/or password.', 'integration-dynamics' ) );
+                    ACRM()->getNotifier()->add( __( 'Unable to connect to Dynamics CRM using provided address, username and/or password.', 'integration-dynamics' ), Notifier::NOTICE_ERROR );
+                    Connection::setConnectionStatus( false );
                 }
             } catch ( Exception $e ) {
                 ACRM()->getLogger()->error( 'CRM connection attempt failed with exception.', [ 'credentials' => [ $options['serverUrl'], $options['username'] ], 'exception' => $e ] );
-                $this->set_error( sprintf( __( '<strong>Unable to connect to Dynamics CRM:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct.', 'integration-dynamics' ), $e->getMessage() ) );
+                ACRM()->getNotifier()->add( sprintf( __( '<strong>Unable to connect to Dynamics CRM:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct.', 'integration-dynamics' ), $e->getMessage() ), Notifier::NOTICE_ERROR );
+                Connection::setConnectionStatus( false );
             } catch ( Error $err ) {
                 ACRM()->getLogger()->error( 'CRM connection attempt failed with exception.', [ 'credentials' => [ $options['serverUrl'], $options['username'] ], 'exception' => $err ] );
-                $this->set_error( sprintf( __( '<strong>Unable to connect to Dynamics CRM:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct.', 'integration-dynamics' ), $err->getMessage() ) );
+                ACRM()->getNotifier()->add( sprintf( __( '<strong>Unable to connect to Dynamics CRM:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct.', 'integration-dynamics' ), $err->getMessage() ), Notifier::NOTICE_ERROR );
+                Connection::setConnectionStatus( false );
             }
+
+            wordpresscrm_javascript_redirect( admin_url( 'admin.php?page=wordpresscrm' ) );
         }
-    }
-
-    function set_error( $string ) {
-        parent::set_errors( $string );
-
-        Connection::setConnectionStatus( false );
     }
 
     /*
@@ -163,12 +163,6 @@ class General extends Tab {
         }
 
         return $options;
-    }
-
-    function clearOptions() {
-        update_option( $this->settingsField, self::$default_settings );
-
-        $this->options = get_option( $this->settingsField );
     }
 
     /**
@@ -332,6 +326,7 @@ class General extends Tab {
                         </form>
                     </div>
 
+                    <?php if ( ACRM()->connected() ) { ?>
                     <hr>
 
                     <h3 class="title"><?php _e( 'Metadata Settings', 'integration-dynamics' ); ?></h3>
@@ -353,6 +348,7 @@ class General extends Tab {
 							</span>
                         </p>
                     </form>
+                    <?php } ?>
 
                     <?php do_action( 'wordpresscrm_after_settings_general' ); ?>
                 </div>
