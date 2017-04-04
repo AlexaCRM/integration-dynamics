@@ -2,9 +2,10 @@
 # This file is distributed under the same license as the Dynamics CRM Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics CRM Integration 1.1.31\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tag/integration-dynamics\n"
-"POT-Creation-Date: 2017-03-27 13:46:27+00:00\n"
+"Project-Id-Version: Dynamics CRM Integration 1.1.32\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-"
+"dynamics\n"
+"POT-Creation-Date: 2017-04-04 15:49:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -12,59 +13,59 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: core.php:22
+#: core.php:19
 msgid "View"
 msgstr ""
 
-#: core.php:23
+#: core.php:20
 msgid "Renders a Dynamics CRM View as a table."
 msgstr ""
 
-#: core.php:25
+#: core.php:22
 msgid "Entity name"
 msgstr ""
 
-#: core.php:26
+#: core.php:23
 msgid "Name of the entity to display a view of."
 msgstr ""
 
-#: core.php:39
+#: core.php:36
 msgid "Entity View name"
 msgstr ""
 
-#: core.php:40
+#: core.php:37
 msgid "Name of the view to display."
 msgstr ""
 
-#: core.php:46
+#: core.php:43
 msgid "Entity name is not specified"
 msgstr ""
 
-#: core.php:52
+#: core.php:49
 msgid "Empty entity name in the request"
 msgstr ""
 
-#: core.php:93
+#: core.php:90
 msgid "Records per page"
 msgstr ""
 
-#: core.php:94
+#: core.php:91
 msgid "0 disables pagination for the view."
 msgstr ""
 
-#: core.php:105
+#: core.php:102
 msgid "Field"
 msgstr ""
 
-#: core.php:106
+#: core.php:103
 msgid "Renders a field value for the current CRM record on a data-bound page."
 msgstr ""
 
-#: core.php:122
+#: core.php:119
 msgid "Attribute name"
 msgstr ""
 
-#: core.php:123
+#: core.php:120
 msgid "Entity attribute to render."
 msgstr ""
 
@@ -88,7 +89,7 @@ msgid "Pick a shortcode:"
 msgstr ""
 
 #: src/Admin/Metabox/ShortcodeWizard.php:114
-#: src/Admin/Metabox/ShortcodeWizard.php:145 src/Admin/Tab/Attachments.php:95
+#: src/Admin/Metabox/ShortcodeWizard.php:145 src/Admin/Tab/Attachments.php:99
 #: views/admin/meta_box.php:13
 msgid "— Select —"
 msgstr ""
@@ -178,11 +179,22 @@ msgstr ""
 msgid "Images"
 msgstr ""
 
-#: src/Admin/Tab/Attachments.php:78
+#: src/Admin/Tab/Attachments.php:75
+msgid ""
+"This page allows you to configure how images are fetched from CRM and "
+"displayed."
+msgstr ""
+
+#: src/Admin/Tab/Attachments.php:75 src/Admin/Tab/Forms.php:37
+#: src/Admin/Tab/General.php:183 src/Admin/Tab/Messages.php:126
+msgid "Documentation &raquo;"
+msgstr ""
+
+#: src/Admin/Tab/Attachments.php:82
 msgid "Annotations settings"
 msgstr ""
 
-#: src/Admin/Tab/Attachments.php:89
+#: src/Admin/Tab/Attachments.php:93
 msgid "Use a view to get images"
 msgstr ""
 
@@ -190,126 +202,134 @@ msgstr ""
 msgid "Forms"
 msgstr ""
 
-#: src/Admin/Tab/Forms.php:41
+#: src/Admin/Tab/Forms.php:37
+msgid "This page allows you to configure how your CRM forms look and feel."
+msgstr ""
+
+#: src/Admin/Tab/Forms.php:43
 msgid "reCAPTCHA settings"
 msgstr ""
 
-#: src/Admin/Tab/Forms.php:42
+#: src/Admin/Tab/Forms.php:44
 msgid ""
 "Plugin supports reCAPTCHA that you can add to the forms to protect your "
 "WordPress site from spam."
 msgstr ""
 
-#: src/Admin/Tab/Forms.php:52
+#: src/Admin/Tab/Forms.php:54
 msgid "Enable reCAPTCHA"
 msgstr ""
 
-#: src/Admin/Tab/Forms.php:56
+#: src/Admin/Tab/Forms.php:58
 msgid "Site key <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/Forms.php:64
+#: src/Admin/Tab/Forms.php:66
 msgid "Secret key <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:63
+#: src/Admin/Tab/General.php:64
 msgid "Metadata cache has been purged and now will be rebuilt gradually."
 msgstr ""
 
-#: src/Admin/Tab/General.php:71
+#: src/Admin/Tab/General.php:72
 msgid "Connection"
 msgstr ""
 
-#: src/Admin/Tab/General.php:123
+#: src/Admin/Tab/General.php:96
+msgid "Please fill in the fields that are marked as required *."
+msgstr ""
+
+#: src/Admin/Tab/General.php:124
 msgid "Connection to Dynamics CRM <%s> has been successfully established."
 msgstr ""
 
-#: src/Admin/Tab/General.php:127
+#: src/Admin/Tab/General.php:128
 msgid ""
 "Unable to connect to Dynamics CRM using provided address, username and/or "
 "password."
 msgstr ""
 
-#: src/Admin/Tab/General.php:131 src/Admin/Tab/General.php:134
+#: src/Admin/Tab/General.php:133 src/Admin/Tab/General.php:137
 msgid ""
 "<strong>Unable to connect to Dynamics CRM:</strong> %s. Check whether you "
 "selected the appropriate deployment type and that CRM URL and credentials "
 "are correct."
 msgstr ""
 
-#: src/Admin/Tab/General.php:182
+#: src/Admin/Tab/General.php:176
 msgid "Reconnect"
 msgstr ""
 
-#: src/Admin/Tab/General.php:182
+#: src/Admin/Tab/General.php:176
 msgid "Connect"
 msgstr ""
 
-#: src/Admin/Tab/General.php:189
+#: src/Admin/Tab/General.php:183
 msgid "Configure the plugin to connect to your Dynamics CRM instance."
 msgstr ""
 
-#: src/Admin/Tab/General.php:196 src/Admin/Tab/General.php:200
+#: src/Admin/Tab/General.php:190 src/Admin/Tab/General.php:194
 msgid "Deployment Type"
 msgstr ""
 
-#: src/Admin/Tab/General.php:233 src/Admin/Tab/General.php:293
+#: src/Admin/Tab/General.php:227 src/Admin/Tab/General.php:287
 msgid ""
 "Dynamics CRM Address (URL) <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:241 src/Admin/Tab/General.php:301
+#: src/Admin/Tab/General.php:235 src/Admin/Tab/General.php:295
 msgid "Ignore invalid certificate errors"
 msgstr ""
 
-#: src/Admin/Tab/General.php:247
+#: src/Admin/Tab/General.php:241
 msgid "Authentication Source"
 msgstr ""
 
-#: src/Admin/Tab/General.php:251
+#: src/Admin/Tab/General.php:245
 msgid "Internet-facing deployment (IFD)"
 msgstr ""
 
-#: src/Admin/Tab/General.php:257 src/Admin/Tab/General.php:307
+#: src/Admin/Tab/General.php:251 src/Admin/Tab/General.php:301
 msgid "User Name <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:263 src/Admin/Tab/General.php:313
+#: src/Admin/Tab/General.php:257 src/Admin/Tab/General.php:307
 msgid "CRM user login"
 msgstr ""
 
-#: src/Admin/Tab/General.php:268 src/Admin/Tab/General.php:318
+#: src/Admin/Tab/General.php:262 src/Admin/Tab/General.php:312
 msgid "Password <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:274 src/Admin/Tab/General.php:324
+#: src/Admin/Tab/General.php:268 src/Admin/Tab/General.php:318
 msgid "CRM user password"
 msgstr ""
 
-#: src/Admin/Tab/General.php:337
+#: src/Admin/Tab/General.php:332
 msgid "Metadata Settings"
 msgstr ""
 
-#: src/Admin/Tab/General.php:338
+#: src/Admin/Tab/General.php:333
 msgid ""
 "If you have changed your Dynamics CRM entities metadata recently (i.e. "
 "fields, forms, views, etc.) please regenerate local metadata cache to keep "
 "it up to date."
 msgstr ""
 
-#: src/Admin/Tab/General.php:342
+#: src/Admin/Tab/General.php:337
 msgid "Regenerate Metadata Cache"
 msgstr ""
 
-#: src/Admin/Tab/General.php:347
+#: src/Admin/Tab/General.php:342
 msgid "F j, Y \\a\\t g:i A"
 msgstr ""
 
-#: src/Admin/Tab/General.php:349
+#: src/Admin/Tab/General.php:344
 msgid "Metadata cache was last regenerated on %s."
 msgstr ""
 
-#: src/Admin/Tab/General.php:351
+#: src/Admin/Tab/General.php:346
 msgid "Metadata has never been regenerated."
 msgstr ""
 
@@ -357,8 +377,8 @@ msgstr ""
 msgid "Messages"
 msgstr ""
 
-#: src/Admin/Tab/Messages.php:129
-msgid "You can adjust messages that are displayed to users."
+#: src/Admin/Tab/Messages.php:126
+msgid "This page allows you to adjust messages that are displayed to users."
 msgstr ""
 
 #: src/Admin/Tab/Views.php:24
@@ -377,11 +397,11 @@ msgstr ""
 msgid "Use images for boolean field values in views"
 msgstr ""
 
-#: src/Admin.php:94
+#: src/Admin.php:92
 msgid "%s &lsaquo; Dynamics CRM"
 msgstr ""
 
-#: src/Admin.php:120
+#: src/Admin.php:118
 msgid ""
 "Dynamics CRM Plugin successfully activated, <b>please configure it</b> <a "
 "href=\"admin.php?page=wordpresscrm\">on this page</a>."
@@ -391,11 +411,11 @@ msgstr ""
 msgid "No records are available in this view."
 msgstr ""
 
-#: src/Plugin.php:98 src/Plugin.php:105
+#: src/Plugin.php:103 src/Plugin.php:110
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: src/Plugin.php:256
+#: src/Plugin.php:264
 msgid "Settings"
 msgstr ""
 

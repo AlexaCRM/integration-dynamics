@@ -44,6 +44,12 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.32 =
+
+* Decreased plugin size
+* Added links to documentation on the configuration pages
+* Misc internal fixes and optimizations
+
 = 1.1.31 =
 
 * Stability improvements and better error reporting
