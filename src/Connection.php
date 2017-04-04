@@ -62,7 +62,7 @@ class Connection {
         $options              = get_option( Plugin::PREFIX . 'options' );
         $options["connected"] = $status;
         update_option( Plugin::PREFIX . 'options', $options );
-        static::$connectionStatus = true;
+        static::$connectionStatus = $status;
     }
 
 }
