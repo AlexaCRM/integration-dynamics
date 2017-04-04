@@ -167,8 +167,8 @@ final class Plugin {
         $this->options = $options;
         $this->cache = $this->getCache();
 
-        // Initialize CRM metadata early
-        MetadataCollection::instance( $this->getSdk() )->setStorage( $this->getStorage( 'metadata' ) );
+        // Initialize CRM metadata and client early
+        $this->getSdk();
 
         if ( $this->connected() ) {
             new LookupDialog();
