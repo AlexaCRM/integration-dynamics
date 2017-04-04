@@ -254,6 +254,12 @@ class Binding {
                     $relatedFields[ $relatedField[0] ] = [];
                 }
 
+                // Related field value is not set - continue without it
+                if ( $record->{$relatedField[0]} === null ) {
+                    unset( $relatedFields[ $relatedField[0] ] );
+                    continue;
+                }
+
                 $entityAttributes = ACRM()->getMetadata()->getEntityDefinition( $record->{$relatedField[0]}->logicalname )->attributes;
                 if ( !array_key_exists( $relatedField[1], $entityAttributes ) ) {
                     continue;
