@@ -381,7 +381,12 @@ class FormInstance extends AbstractForm {
                                 $this->showForm = !$hideForm;
                             }
                         } catch ( Exception $ex ) {
-                            array_push( $this->errors, $ex->getMessage() );
+                            $message = $ex->getMessage();
+                            if ( $ex->getPrevious() instanceof Exception ) {
+                                $message .= ' - ' . $ex->getPrevious()->getMessage();
+                            }
+
+                            array_push( $this->errors, $message );
                         }
                     } else if ( $this->mode == "create" ) {
                         $this->controls = self::setValuesToControls( $this->controls, $this->entity );
