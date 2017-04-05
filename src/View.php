@@ -52,48 +52,50 @@ class View {
     }
 
     /**
-     * @param mixed $entity
+     * @param Entity|string $entity Entity object or logical name
      * @param string $viewName
      *
-     * @return Entity object that contain result view, or NULL if entity not found, or FALSE if error occured
+     * @return Entity|null object that contain result view, or NULL if view wasn't found
      */
-    public static function getViewForEntity( $entity, $viewName, $viewEntityName = null ) {
-
+    public static function getViewForEntity( $entity, $viewName ) {
         if ( is_string( $entity ) ) {
-
             $entity = ASDK()->entity( $entity );
         }
-        $fetch = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true" count="1">
-                            <entity name="userquery">
+
+        $entityName = $entity->logicalName;
+        $cacheKey = 'wpcrm_view_' . sha1( 'entity_' . $entityName . '_view_' . $viewName );
+
+        if ( $view = ACRM()->getCache()->get( $cacheKey ) ) {
+            return $view;
+        }
+
+        $returnedTypeCode = $entity->metadata()->objectTypeCode;
+
+        $view = null;
+        $viewEntities = [ 'savedquery', 'userquery' ];
+
+        while ( count( $viewEntities ) && !( $view instanceof Entity ) ) {
+            $viewEntityName = array_pop( $viewEntities );
+            $fetch = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true" count="1">
+                            <entity name="' . $viewEntityName . '">
                                     <attribute name="fetchxml" />
                                     <attribute name="name" />
                                     <attribute name="returnedtypecode" />
                                     <attribute name="layoutxml" />
-                                     <filter type="and">
-                                            <condition attribute="returnedtypecode" operator="eq" value="' . $entity->metadata()->objectTypeCode . '" />
-                                            <condition attribute="name" operator="eq" value="' . $viewName . '" />
-                                      </filter>
+                                    <filter type="and">
+                                        <condition attribute="returnedtypecode" operator="eq" value="' . $returnedTypeCode . '" />
+                                        <condition attribute="name" operator="eq" value="' . $viewName . '" />
+                                    </filter>
                             </entity>
                       </fetch>';
-
-        $view = ASDK()->retrieveSingle( $fetch );
-
-        if ( $view == null ) {
-            $fetch = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="true" count="1">
-                                <entity name="savedquery">
-                                        <attribute name="fetchxml" />
-                                        <attribute name="name" />
-                                        <attribute name="returnedtypecode" />
-                                        <attribute name="layoutxml" />
-                                        <filter type="and">
-                                            <condition attribute="returnedtypecode" operator="eq" value="' . $entity->metadata()->objectTypeCode . '" />
-                                            <condition attribute="name" operator="eq" value="' . $viewName . '" />
-                                        </filter>
-                                </entity>
-                          </fetch>';
-
             $view = ASDK()->retrieveSingle( $fetch );
         }
+
+        if ( $view === null ) {
+            return null;
+        }
+
+        ACRM()->getCache()->set( $cacheKey, $view, 2 * DAY_IN_SECONDS );
 
         return $view;
     }

@@ -160,26 +160,17 @@ class View extends Shortcode {
             if ( !$attributes["name"] ) {
                 return self::returnError( __( "\"name\" shortcode attribute is required, please add name=\"View Name\" to the msdyncrm_view shortcode attributes", 'integration-dynamics' ) );
             }
+
             /* Retrieve the view entity record by entity name of the result records type and view name */
-
-            $cacheKey = 'wpcrm_view_' . sha1( 'entity_' . $attributes['entity'] . '_view_' . $attributes['name'] );
-            $cache = ACRM()->getCache();
-            $view = $cache->get( $cacheKey );
-            if ( $view == null ) {
-                $crmView = CRMView::getViewForEntity( strtolower( $attributes["entity"] ), $attributes["name"] );
-
-                if ( $crmView == null ) {
-                    return self::returnError( sprintf( __( 'Unable to get the specified SavedQuery [%1$s] for the entity {%2$s}', 'integration-dynamics' ), $attributes['name'], $attributes['entity'] ) );
-                }
-
-                $view = [
-                    'fetchxml' => $crmView->fetchxml,
-                    'layoutxml' => $crmView->layoutxml,
-                ];
-
-                $cache->set( $cacheKey, $view, 2 * 60 * 60 * 24 );
+            $crmView = CRMView::getViewForEntity( strtolower( $attributes['entity'] ), $attributes['name'] );
+            if ( $crmView === null ) {
+                return self::returnError( sprintf( __( 'Unable to get the specified SavedQuery [%1$s] for the entity {%2$s}', 'integration-dynamics' ), $attributes['name'], $attributes['entity'] ) );
             }
 
+            $view = [
+                'fetchxml' => $crmView->fetchxml,
+                'layoutxml' => $crmView->layoutxml,
+            ];
             $fetchXML = $view['fetchxml'];
         }
 
