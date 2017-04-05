@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the Dynamics CRM Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics CRM Integration 1.1.32\n"
+"Project-Id-Version: Dynamics CRM Integration 1.1.32.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-"
 "dynamics\n"
-"POT-Creation-Date: 2017-04-04 15:49:54+00:00\n"
+"POT-Creation-Date: 2017-04-05 15:13:08+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,59 +13,59 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: core.php:19
+#: core.php:20
 msgid "View"
 msgstr ""
 
-#: core.php:20
+#: core.php:21
 msgid "Renders a Dynamics CRM View as a table."
 msgstr ""
 
-#: core.php:22
+#: core.php:23
 msgid "Entity name"
 msgstr ""
 
-#: core.php:23
+#: core.php:24
 msgid "Name of the entity to display a view of."
 msgstr ""
 
-#: core.php:36
+#: core.php:37
 msgid "Entity View name"
 msgstr ""
 
-#: core.php:37
+#: core.php:38
 msgid "Name of the view to display."
 msgstr ""
 
-#: core.php:43
+#: core.php:44
 msgid "Entity name is not specified"
 msgstr ""
 
-#: core.php:49
+#: core.php:50
 msgid "Empty entity name in the request"
 msgstr ""
 
-#: core.php:90
+#: core.php:91
 msgid "Records per page"
 msgstr ""
 
-#: core.php:91
+#: core.php:92
 msgid "0 disables pagination for the view."
 msgstr ""
 
-#: core.php:102
+#: core.php:103
 msgid "Field"
 msgstr ""
 
-#: core.php:103
+#: core.php:104
 msgid "Renders a field value for the current CRM record on a data-bound page."
 msgstr ""
 
-#: core.php:119
+#: core.php:120
 msgid "Attribute name"
 msgstr ""
 
-#: core.php:120
+#: core.php:121
 msgid "Entity attribute to render."
 msgstr ""
 
@@ -420,12 +420,12 @@ msgid "Settings"
 msgstr ""
 
 #: src/Shortcode/Form/AbstractForm.php:262 src/Shortcode/Form/Control.php:78
-#: src/Shortcode/Form/FormInstance.php:930
-#: src/Shortcode/Form/FormInstance.php:941
+#: src/Shortcode/Form/FormInstance.php:935
+#: src/Shortcode/Form/FormInstance.php:946
 msgid "%s is required"
 msgstr ""
 
-#: src/Shortcode/Form/Control.php:95 src/Shortcode/Form/FormInstance.php:719
+#: src/Shortcode/Form/Control.php:95 src/Shortcode/Form/FormInstance.php:724
 msgid "%s must be a valid email address"
 msgstr ""
 
@@ -451,31 +451,31 @@ msgstr ""
 msgid "Can not get form definition"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:626
+#: src/Shortcode/Form/FormInstance.php:631
 msgid "Unsupported lookup type for [%1$s], or entity {%2$s} not found"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:707
+#: src/Shortcode/Form/FormInstance.php:712
 msgid "Must be less than %d characters"
 msgid_plural "Must be less than %d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Shortcode/Form/FormInstance.php:714
+#: src/Shortcode/Form/FormInstance.php:719
 msgid "Incorrect text value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:732
+#: src/Shortcode/Form/FormInstance.php:737
 msgid "Invalid number value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:737
+#: src/Shortcode/Form/FormInstance.php:742
 msgid ""
 "Invalid number value. Enter a decimal number without currency symbol or "
 "thousands separator."
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:742
+#: src/Shortcode/Form/FormInstance.php:747
 msgid ""
 "Invalid money value. Enter a decimal number without currency symbol or "
 "thousands separator."

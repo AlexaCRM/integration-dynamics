@@ -44,6 +44,11 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Changelog ==
 
+= 1.1.32.1 =
+
+* A more detailed message displayed if form submission has failed
+* Fixed: incompatibility with some plugins (session already started)
+
 = 1.1.32 =
 
 * Decreased plugin size
