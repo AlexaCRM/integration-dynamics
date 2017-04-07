@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ab68605a69725b8c08d7dd2bfb599b32",
-    "content-hash": "2f81dac2b90886f03141602cec02aa22",
+    "hash": "8817d32978a5939dead307c01e45445e",
+    "content-hash": "1ad8cc6ba9043a5d6e8ad96019491112",
     "packages": [
         {
             "name": "alexacrm/php-crm-toolkit",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AlexaCRM/php-crm-toolkit.git",
-                "reference": "828322245b7d1be3e6e2c72ef43b9e160ded087b"
+                "reference": "f3dd1dce0519adc53d6d38ac59ea31247bae94b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/828322245b7d1be3e6e2c72ef43b9e160ded087b",
-                "reference": "828322245b7d1be3e6e2c72ef43b9e160ded087b",
+                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/f3dd1dce0519adc53d6d38ac59ea31247bae94b8",
+                "reference": "f3dd1dce0519adc53d6d38ac59ea31247bae94b8",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "php",
                 "sdk"
             ],
-            "time": "2017-03-24 15:42:55"
+            "time": "2017-03-31 13:31:07"
         },
         {
             "name": "monolog/monolog",
@@ -289,6 +289,68 @@
                 "shim"
             ],
             "time": "2016-11-14 01:06:16"
+        },
+        {
+            "name": "twig/twig",
+            "version": "1.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twigphp/Twig.git",
+                "reference": "dc70f3e826d8783b07eec2997dd3e6ca0b44ad1f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/dc70f3e826d8783b07eec2997dd3e6ca0b44ad1f",
+                "reference": "dc70f3e826d8783b07eec2997dd3e6ca0b44ad1f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.7"
+            },
+            "require-dev": {
+                "psr/container": "^1.0",
+                "symfony/debug": "~2.7",
+                "symfony/phpunit-bridge": "~3.3@dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.33-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Twig_": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Armin Ronacher",
+                    "email": "armin.ronacher@active-4.com",
+                    "role": "Project Founder"
+                },
+                {
+                    "name": "Twig Team",
+                    "homepage": "http://twig.sensiolabs.org/contributors",
+                    "role": "Contributors"
+                }
+            ],
+            "description": "Twig, the flexible, fast, and secure template language for PHP",
+            "homepage": "http://twig.sensiolabs.org",
+            "keywords": [
+                "templating"
+            ],
+            "time": "2017-04-05 23:23:01"
         }
     ],
     "packages-dev": [],
