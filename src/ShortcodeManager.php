@@ -24,6 +24,7 @@ class ShortcodeManager {
         'view'  => 'AlexaCRM\\WordpressCRM\\Shortcode\\View',
         'field' => 'AlexaCRM\\WordpressCRM\\Shortcode\\Field',
         'form'  => 'AlexaCRM\\WordpressCRM\\Shortcode\\Form',
+        'twig' => 'AlexaCRM\\WordpressCRM\\Shortcode\\Twig',
     ];
 
     /**

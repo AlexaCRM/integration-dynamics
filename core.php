@@ -139,6 +139,15 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
 } );
 
 /**
+ * Don't texturize Twig shortcode contents.
+ */
+add_filter( 'no_texturize_shortcodes', function( $shortcodes ) {
+    $shortcodes[] = Plugin::PREFIX . 'twig';
+
+    return $shortcodes;
+} );
+
+/**
  * Start initializing the plugin.
  */
 $pluginInstance = Plugin::instance();
