@@ -2,6 +2,7 @@
 
 namespace AlexaCRM\WordpressCRM\Shortcode\Twig;
 
+use AlexaCRM\CRMToolkit\Client;
 use AlexaCRM\CRMToolkit\Entity;
 
 /**
@@ -39,26 +40,26 @@ class FauxEntity implements \ArrayAccess {
     }
 
     /**
-     * Dynamic properties must be true to be surfaced in Twig templates,
-     * and checking record for existence before fetching it is not cost-efficient,
-     * thus the method always returns true.
-     *
      * @param string $recordId
      *
      * @return bool
+     * @see FauxEntity::offsetExists()
      */
     public function __isset( $recordId ) {
-        return true;
+        return $this->offsetExists( $recordId );
     }
 
     /**
+     * Dynamic properties must be true to be surfaced in Twig templates,
+     * and checking record for existence before fetching it is not cost-efficient,
+     * thus the method always returns true if the $recordId is a valid GUID.
+     *
      * @param string $recordId Entity record ID.
      *
      * @return boolean
-     * @see FauxEntity::__isset()
      */
     public function offsetExists( $recordId ) {
-        return true;
+        return Client::isGuid( $recordId );
     }
 
     /**
@@ -73,6 +74,9 @@ class FauxEntity implements \ArrayAccess {
 
     /**
      * Object is read-only.
+     *
+     * @param mixed $offset
+     * @param mixed $value
      */
     public function offsetSet( $offset, $value ) {
         return;
@@ -80,6 +84,8 @@ class FauxEntity implements \ArrayAccess {
 
     /**
      * Object is read-only.
+     *
+     * @param mixed $offset
      */
     public function offsetUnset( $offset ) {
         return;
