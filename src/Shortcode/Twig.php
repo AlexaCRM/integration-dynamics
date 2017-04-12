@@ -69,6 +69,9 @@ class Twig extends Shortcode {
         // Access to any entity via {{ entities.logicalName["GUID"] }}
         $twigEnv->addGlobal( 'entities', new Twig\FauxEntitiesCollection() );
 
+        // Access to the current record (entity binding)
+        $twigEnv->addGlobal( 'currentrecord', ACRM()->getBinding()->getEntity() );
+
         static::$twigEnvironment = $twigEnv;
 
         return $twigEnv;
