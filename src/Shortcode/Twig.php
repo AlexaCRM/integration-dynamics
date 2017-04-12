@@ -34,7 +34,7 @@ class Twig extends Shortcode {
     public function shortcode( $attributes, $content = null, $tagName ) {
         $twig = $this->getTwig();
 
-        //
+        // Remove wpautop() side effects
         $content = trim( static::reverse_wpautop( $content ) );
 
         $templateKey = 'template_' . sha1( $content );
@@ -42,9 +42,15 @@ class Twig extends Shortcode {
 
         $output = $twig->render( $templateKey );
 
+        // Reapply wpautop()
         return wptexturize( wpautop( $output ) );
     }
 
+    /**
+     * Gives access to the Twig engine instance.
+     *
+     * @return \Twig_Environment
+     */
     private function getTwig() {
         if ( static::$twigEnvironment instanceof \Twig_Environment ) {
             return static::$twigEnvironment;
@@ -59,6 +65,9 @@ class Twig extends Shortcode {
         );
 
         $twigEnv = new \Twig_Environment( $chainLoader );
+
+        // Access to any entity via {{ entities.logicalName["GUID"] }}
+        $twigEnv->addGlobal( 'entities', new Twig\FauxEntitiesCollection() );
 
         static::$twigEnvironment = $twigEnv;
 
