@@ -72,6 +72,15 @@ class Twig extends Shortcode {
         // Access to the current record (entity binding)
         $twigEnv->addGlobal( 'currentrecord', ACRM()->getBinding()->getEntity() );
 
+        /**
+         * Fired when Twig environment has been set up in the shortcode.
+         *
+         * Allows to further extend the Twig environment with new features.
+         *
+         * @param \Twig_Environment $twigEnv
+         */
+        do_action( 'wordpresscrm_after_twig_ready', $twigEnv );
+
         static::$twigEnvironment = $twigEnv;
 
         return $twigEnv;
