@@ -72,6 +72,9 @@ class Twig extends Shortcode {
         // Access to the current record (entity binding)
         $twigEnv->addGlobal( 'currentrecord', ACRM()->getBinding()->getEntity() );
 
+        // `fetchxml` tag
+        $twigEnv->addTokenParser( new Twig\TokenParsers\FetchxmlTokenParser() );
+
         /**
          * Fired when Twig environment has been set up in the shortcode.
          *

@@ -1,0 +1,64 @@
+<?php
+
+namespace AlexaCRM\WordpressCRM\Shortcode\Twig\TokenParsers;
+
+use AlexaCRM\WordpressCRM\Shortcode\Twig\Nodes\FetchxmlNode;
+use Twig_Error_Syntax;
+use Twig_NodeInterface;
+use Twig_Token;
+
+/**
+ * Implements token parser for the `fetchxml` tag.
+ */
+class FetchxmlTokenParser extends \Twig_TokenParser {
+
+    /**
+     * Parses a token and returns a node.
+     *
+     * @param Twig_Token $token
+     *
+     * @return Twig_NodeInterface
+     */
+    public function parse( Twig_Token $token ) {
+        $parser = $this->parser;
+        $stream = $parser->getStream();
+        $lineNo = $token->getLine();
+
+        $arguments = [];
+
+        while( !$stream->test( Twig_Token::BLOCK_END_TYPE ) ) {
+            if ( !$stream->test( Twig_Token::NAME_TYPE ) ) {
+                $stream->next();
+                continue;
+            }
+
+            $argName = $stream->expect( Twig_Token::NAME_TYPE )->getValue();
+            $stream->expect( Twig_Token::OPERATOR_TYPE, '=' );
+            $argValue = $stream->expect( Twig_Token::STRING_TYPE )->getValue();
+            $arguments[$argName] = $argValue;
+
+            break;
+        }
+
+        $stream->expect( Twig_Token::BLOCK_END_TYPE );
+        $fetchxml = $parser->subparse( [ $this, 'decideFetchxmlEnd' ] );
+
+        $stream->expect( Twig_Token::NAME_TYPE, 'endfetchxml' );
+        $stream->expect( Twig_Token::BLOCK_END_TYPE );
+
+        return new FetchxmlNode( $fetchxml, $arguments, $lineNo );
+    }
+
+    public function decideFetchxmlEnd( Twig_Token $token ) {
+        return $token->test( 'endfetchxml' );
+    }
+
+    /**
+     * Gets the tag name associated with this token parser.
+     *
+     * @return string The tag name
+     */
+    public function getTag() {
+        return 'fetchxml';
+    }
+}
