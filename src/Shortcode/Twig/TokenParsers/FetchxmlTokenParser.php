@@ -35,8 +35,6 @@ class FetchxmlTokenParser extends \Twig_TokenParser {
             $stream->expect( Twig_Token::OPERATOR_TYPE, '=' );
             $argValue = $stream->expect( Twig_Token::STRING_TYPE )->getValue();
             $arguments[$argName] = $argValue;
-
-            break;
         }
 
         $stream->expect( Twig_Token::BLOCK_END_TYPE );
