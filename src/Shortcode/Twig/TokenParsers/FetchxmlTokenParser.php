@@ -3,7 +3,6 @@
 namespace AlexaCRM\WordpressCRM\Shortcode\Twig\TokenParsers;
 
 use AlexaCRM\WordpressCRM\Shortcode\Twig\Nodes\FetchxmlNode;
-use Twig_Error_Syntax;
 use Twig_NodeInterface;
 use Twig_Token;
 
@@ -49,6 +48,13 @@ class FetchxmlTokenParser extends \Twig_TokenParser {
         return new FetchxmlNode( $fetchxml, $arguments, $lineNo );
     }
 
+    /**
+     * Tells whether the current node is `endfetchxml`.
+     *
+     * @param Twig_Token $token
+     *
+     * @return bool
+     */
     public function decideFetchxmlEnd( Twig_Token $token ) {
         return $token->test( 'endfetchxml' );
     }
