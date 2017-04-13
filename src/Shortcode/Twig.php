@@ -2,6 +2,7 @@
 
 namespace AlexaCRM\WordpressCRM\Shortcode;
 
+use AlexaCRM\CRMToolkit\Entity\EntityReference;
 use AlexaCRM\WordpressCRM\Shortcode;
 
 /**
@@ -74,6 +75,15 @@ class Twig extends Shortcode {
 
         // `fetchxml` tag
         $twigEnv->addTokenParser( new Twig\TokenParsers\FetchxmlTokenParser() );
+
+        // entityUrl() - URL builder
+        $entityUrlFunction = new \Twig_SimpleFunction( 'entityUrl', function( $entityName, $entityId ) {
+            $binding = ACRM()->getBinding();
+            $reference = new EntityReference( $entityName, $entityId );
+
+            return $binding->buildUrl( $reference );
+        } );
+        $twigEnv->addFunction( $entityUrlFunction );
 
         /**
          * Fired when Twig environment has been set up in the shortcode.
