@@ -4,12 +4,28 @@ namespace AlexaCRM\WordpressCRM\Shortcode\Twig\Nodes;
 
 use Twig_Compiler;
 
+/**
+ * Represents the `view` node.
+ */
 class ViewNode extends \Twig_Node {
 
+    /**
+     * ViewNode constructor.
+     *
+     * @param array $nodes
+     * @param array $attributes
+     * @param int $lineno
+     * @param null $tag
+     */
     public function __construct( array $nodes = [], array $attributes = [], $lineno = 0, $tag = null ) {
         parent::__construct( $nodes, $attributes, $lineno, $tag );
     }
 
+    /**
+     * Compiles the node.
+     *
+     * @param Twig_Compiler $compiler
+     */
     public function compile( Twig_Compiler $compiler ) {
         /**
          * @var \Twig_Node_Expression_Constant $entityName

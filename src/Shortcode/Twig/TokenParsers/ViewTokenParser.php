@@ -7,13 +7,17 @@ use Twig_Error_Syntax;
 use Twig_NodeInterface;
 use Twig_Token;
 
+/**
+ * Parses the `view` token.
+ */
 class ViewTokenParser extends \Twig_TokenParser {
 
     /**
      * Parses a token and returns a node.
      *
-     * @return Twig_NodeInterface
+     * @param Twig_Token $token
      *
+     * @return Twig_NodeInterface
      * @throws Twig_Error_Syntax
      */
     public function parse( Twig_Token $token ) {
