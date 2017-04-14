@@ -76,6 +76,9 @@ class Twig extends Shortcode {
         // `fetchxml` tag
         $twigEnv->addTokenParser( new Twig\TokenParsers\FetchxmlTokenParser() );
 
+        // `view` tag
+        $twigEnv->addTokenParser( new Twig\TokenParsers\ViewTokenParser() );
+
         // entityUrl() - URL builder
         $entityUrlFunction = new \Twig_SimpleFunction( 'entityUrl', function( $entityName, $entityId ) {
             $binding = ACRM()->getBinding();
