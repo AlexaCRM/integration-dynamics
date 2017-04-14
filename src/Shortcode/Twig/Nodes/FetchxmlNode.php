@@ -36,7 +36,7 @@ class FetchxmlNode extends Twig_Node {
 
         $compiler->write( "if(ACRM()->connected() && \$fetchxml !== '') {\n" );
         $compiler->indent();
-        if ( $this->getAttribute( 'cache' ) ) {
+        if ( $this->hasAttribute( 'cache' ) ) {
             $compiler->write( "\$cache = ACRM()->getCache();\n" );
             $compiler->write( "\$cacheKey = 'wpcrm_twigdata_' . sha1(\$fetchxml);\n" );
             $compiler->write( "\$records = \$cache->get(\$cacheKey);\n" );
@@ -45,7 +45,7 @@ class FetchxmlNode extends Twig_Node {
         }
         $compiler->write( "\$records = ASDK()->retrieveMultiple(\$fetchxml)->Entities;\n");
 
-        if ( $this->getAttribute( 'cache' ) ) {
+        if ( $this->hasAttribute( 'cache' ) ) {
             $interval = new \DateInterval( $this->getAttribute( 'cache' ) );
             $seconds = $interval->y * YEAR_IN_SECONDS + $interval->m * MONTH_IN_SECONDS + $interval->d * DAY_IN_SECONDS + $interval->h * HOUR_IN_SECONDS + $interval->i * MINUTE_IN_SECONDS + $interval->s;
             $compiler->write( "\$cache->set(\$cacheKey, \$records, {$seconds});\n" );
