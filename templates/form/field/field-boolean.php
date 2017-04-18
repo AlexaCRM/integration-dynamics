@@ -36,8 +36,8 @@ if ( !defined( 'ABSPATH' ) ) {
     <select class='selectmenu crm-select form-control' name='<?php echo $inputname; ?>'
             id='<?php echo $inputname; ?>' <?php echo( ( $disabled ) ? "disabled='disabled'" : "" ); ?> <?php echo( ( $readonly ) ? "readonly='readonly'" : "" ); ?>>
         <option value=''></option>
-        <?php foreach ( $options as $key => $val ) : ?>
-            <option value='<?php echo $key; ?>' <?php if ( $value == (bool) $option ) {
+        <?php foreach ( $options as $option => $val ) : ?>
+            <option value='<?php echo $option; ?>' <?php if ( $value == (bool) $option ) {
                 echo "selected='selected'";
             } ?>><?php echo $val; ?></option>
         <?php endforeach; ?>
