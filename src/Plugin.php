@@ -10,12 +10,7 @@ use AlexaCRM\WordpressCRM\Image\AnnotationImage;
 use AlexaCRM\WordpressCRM\Image\CustomImage;
 use Exception;
 use Monolog\Logger;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag;
-use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
@@ -40,35 +35,11 @@ final class Plugin {
     public $version = '';
 
     /**
-     * Cache class object
-     *
-     * @var Cache
-     * @deprecated 1.1.32   Will become private. Use Plugin::getCache()
-     */
-    public $cache = null;
-
-    /**
      * Current request.
      *
      * @var Request
      */
     public $request = null;
-
-    /**
-     * Access to templates.
-     *
-     * @var Template
-     * @deprecated 1.1.32   Will become private. Use Plugin::getTemplate()
-     */
-    public $template = null;
-
-    /**
-     * Access to data-binding.
-     *
-     * @var Binding
-     * @deprecated 1.1.32   Will become private. Use Plugin::getBinding()
-     */
-    public $binding = null;
 
     /**
      * Plugin general and connection options (msdyncrm_options)
@@ -165,7 +136,6 @@ final class Plugin {
 
         $options       = get_option( static::PREFIX . 'options' );
         $this->options = $options;
-        $this->cache = $this->getCache();
 
         // Initialize CRM metadata and client early
         $this->getSdk();
@@ -174,8 +144,6 @@ final class Plugin {
             new LookupDialog();
             new CustomImage();
             new AnnotationImage( $this->getStorage( 'images' ) );
-
-            $this->binding = new Binding();
 
             do_action( 'wordpresscrm_extended_includes' );
 
@@ -193,8 +161,6 @@ final class Plugin {
 
                 new ShortcodeManager();
             } );
-
-            $this->template = $this->getTemplate();
         }
 
         // Loaded action
@@ -377,11 +343,9 @@ final class Plugin {
      * @return Template
      */
     public function getTemplate() {
-        if ( $this->facilities['template'] instanceof Template ) {
-            return $this->facilities['template'];
+        if ( !( $this->facilities['template'] instanceof Template ) ) {
+            $this->facilities['template'] = new Template();
         }
-
-        $this->facilities['template'] = new Template();
 
         return $this->facilities['template'];
     }
@@ -390,11 +354,9 @@ final class Plugin {
      * @return Binding
      */
     public function getBinding() {
-        if ( $this->facilities['binding'] instanceof Binding ) {
-            return $this->facilities['binding'];
+        if ( !( $this->facilities['binding'] instanceof Binding ) ) {
+            $this->facilities['binding'] = new Binding();
         }
-
-        $this->facilities['binding'] = new Binding();
 
         return $this->facilities['binding'];
     }
@@ -410,21 +372,12 @@ final class Plugin {
     }
 
     /**
-     * @return Session|SessionInterface
-     */
-    public function getSession() {
-        return $this->request->getSession();
-    }
-
-    /**
      * @return Notifier
      */
     public function getNotifier() {
-        if ( $this->facilities['notifier'] instanceof Notifier ) {
-            return $this->facilities['notifier'];
+        if ( !( $this->facilities['notifier'] instanceof Notifier ) ) {
+            $this->facilities['notifier'] = new Notifier();
         }
-
-        $this->facilities['notifier'] = new Notifier();
 
         return $this->facilities['notifier'];
     }

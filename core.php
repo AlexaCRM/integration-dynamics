@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag;
 use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\PhpBridgeSessionStorage;
 
 load_plugin_textdomain( 'integration-dynamics', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
@@ -143,13 +144,6 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
  */
 $pluginInstance = Plugin::instance();
 $request = Request::createFromGlobals();
-$session = new Session(
-    new PhpBridgeSessionStorage(),
-    new NamespacedAttributeBag( 'wpcrm', '.' ),
-    new AutoExpireFlashBag( 'wpcrmflash' )
-);
-$request->setSession( $session );
-$session->start();
 $pluginInstance->init(  $logger, $request );
 
 add_action( 'admin_init', function() use ( $pluginInstance ) {

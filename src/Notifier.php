@@ -33,13 +33,16 @@ class Notifier {
      * @param bool $isDismissible
      */
     public function add( $content, $type = Notifier::NOTICE_INFO, $isDismissible = true ) {
-        $session = ACRM()->getSession();
+        $cache  = ACRM()->getCache();
+        $cacheKey = 'notifications_' . get_current_user_id();
 
-        $session->getFlashBag()->add( 'admin-notice', [
+        $notices = $cache->get( $cacheKey, [] );
+        $notices[] = [
             'content' => $content,
             'type' => $type,
             'isDismissible' => $isDismissible,
-        ] );
+        ];
+        $cache->set( $cacheKey, $notices, 5 * MINUTE_IN_SECONDS );
     }
 
     /**
@@ -48,7 +51,12 @@ class Notifier {
      * @return array
      */
     public function getNotifications() {
-        return ACRM()->getSession()->getFlashBag()->get( 'admin-notice', [] );
+        $cache  = ACRM()->getCache();
+        $cacheKey = 'notifications_' . get_current_user_id();
+        $notices = $cache->get( $cacheKey, [] );
+        $cache->delete( $cacheKey );
+
+        return $notices;
     }
 
     /**
