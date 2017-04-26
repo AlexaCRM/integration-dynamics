@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AlexaCRM/php-crm-toolkit.git",
-                "reference": "828322245b7d1be3e6e2c72ef43b9e160ded087b"
+                "reference": "51d3ba12848a3388f2e2861f03adfda1f9848f2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/828322245b7d1be3e6e2c72ef43b9e160ded087b",
-                "reference": "828322245b7d1be3e6e2c72ef43b9e160ded087b",
+                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/51d3ba12848a3388f2e2861f03adfda1f9848f2c",
+                "reference": "51d3ba12848a3388f2e2861f03adfda1f9848f2c",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "php",
                 "sdk"
             ],
-            "time": "2017-03-24 15:42:55"
+            "time": "2017-04-26 09:02:46"
         },
         {
             "name": "monolog/monolog",
@@ -59,12 +59,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "3266b6e257992887035c8952918607f5b858aaf8"
+                "reference": "4cdd014b809867f4c040523011d2c3607d55e6b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/3266b6e257992887035c8952918607f5b858aaf8",
-                "reference": "3266b6e257992887035c8952918607f5b858aaf8",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/4cdd014b809867f4c040523011d2c3607d55e6b4",
+                "reference": "4cdd014b809867f4c040523011d2c3607d55e6b4",
                 "shasum": ""
             },
             "require": {
@@ -129,7 +129,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-03-20 10:21:06"
+            "time": "2017-04-10 07:58:43"
         },
         {
             "name": "psr/log",
