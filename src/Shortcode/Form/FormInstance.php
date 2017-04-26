@@ -433,6 +433,9 @@ class FormInstance extends AbstractForm {
          * @var UploadedFile $uploadedFile
          */
         $uploadedFile = $files->get( 'entity' )['notescontrol'];
+        if ( !( $uploadedFile instanceof UploadedFile ) ) {
+            return;
+        }
 
         $fileName = $uploadedFile->getClientOriginalName();
         $filePath  = $uploadedFile->getRealPath();
