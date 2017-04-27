@@ -40,6 +40,25 @@ spl_autoload_register( function ( $className ) {
 
 require_once __DIR__ . '/vendor/autoload.php'; // Composer autoloader
 
+/**
+ * Stop further initialization if the storage is not writable.
+ */
+if ( !is_writable( WORDPRESSCRM_STORAGE ) ) {
+    add_action( 'admin_notices', function() {
+        $screen = get_current_screen();
+        if ( $screen->base === 'plugins' ) {
+            ?>
+            <div class="notice notice-error">
+                <p>
+                    <?php printf( __( 'Dynamics CRM Integration detected that <code>%s</code> is not writable by the web server. Please fix it to complete the installation.', 'integration-dynamics' ), WORDPRESSCRM_STORAGE ); ?>
+                </p>
+            </div>
+            <?php
+        }
+    } );
+    return;
+}
+
 $logger = new \Monolog\Logger( 'wpcrm' );
 $logLevel = WP_DEBUG? \Monolog\Logger::INFO : \Monolog\Logger::NOTICE;
 if ( defined( 'WORDPRESSCRM_LOG_LEVEL' ) ) {
