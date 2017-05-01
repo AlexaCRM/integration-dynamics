@@ -1,4 +1,4 @@
-=== Dynamics CRM Integration ===
+=== Dynamics 365 Integration ===
 Contributors: alexacrm, georgedude, wizardist
 Tags: contact form, CRM, dynamics crm, dynamics 365, form, integration, leads, membership, portal, shortcode
 Requires at least: 4.4
@@ -7,20 +7,20 @@ Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The easiest way to connect Dynamics CRM with WordPress.
+The easiest way to connect Dynamics 365 or Dynamics CRM with WordPress.
 
 == Description ==
 
-This plugin directly connects WordPress and Microsoft Dynamics CRM creating powerful portal solutions for your business.
+This plugin directly connects WordPress and Microsoft Dynamics 365 or Dynamics CRM, creating powerful portal solutions for your business.
 
 Features:
 
-* Support for CRM Online and CRM On-Premises 2011, 2013, 2015, 2016.
-* Design forms in the CRM and insert them on your site with a form shortcode.
-* Write data from the forms directly to Dynamics CRM.
+* Support for Dynamics 365 Online, Dynamics 365 On-Premises, and Dynamics CRM 2011, 2013, 2015, and 2016.
+* Design forms in the Dynamics 365 / CRM and insert them on your site with a form shortcode.
+* Write data from the forms directly to Dynamics 365 / CRM.
 * Collect leads, contact requests, support queries and much more without any coding.
-* Display records using Dynamics CRM views with a shortcode. Give your customers direct access to product catalogs, event lists, knowledge base articles.
-* Bind WordPress posts and pages to Dynamics CRM records. Build a customized record view in WordPress like product information sheets
+* Display records using Dynamics 365 / CRM views with a shortcode. Give your customers direct access to product catalogs, event lists, knowledge base articles.
+* Bind WordPress posts and pages to Dynamics 365 / CRM records. Build a customized record view in WordPress like product information sheets
 * Support for entity images and attached images with dynamic resizing and caching.
 * Extensible through WordPress [actions and filters](https://codex.wordpress.org/Plugin_API).
 
@@ -30,7 +30,7 @@ This plugin requires at least PHP 5.4. Versions 5.6 or 7.x are expected to have 
 
 = WARNING =
 
-For this plugin to work, access to a working instance of Dynamics CRM Online or Dynamics CRM On-Premises with IFD (Internet Facing Deployment) is required. Without an instance of Dynamics CRM the plugin is absolutely useless. Please, do not raise issues related to that fact. If you are curious to try, you can always sign up for a [free trial of Dynamics CRM](https://www.microsoft.com/en-us/dynamics/crm-free-trial-overview.aspx).
+For this plugin to work, access to a working instance of Dynamics 365 Online, or Dynamics 365 / CRM On-Premises with IFD (Internet Facing Deployment) is required. Without an instance of Dynamics 365 / CRM the plugin is absolutely useless. Please, do not raise issues related to that fact. If you are curious to try, you can always sign up for a [free trial of Dynamics 365](https://www.microsoft.com/en-us/dynamics/crm-free-trial-overview.aspx).
 
 = Reporting issues =
 
@@ -38,9 +38,13 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/integration-dynamics` directory, or install the plugin through the WordPress plugins screen directly.
-1. Activate the plugin through the 'Plugins' screen in WordPress
-1. Use the Admin->Dynamics CRM screen to configure the plugin
+Installing Dynamics 365 Integration is just like any other WordPress plugin: 
+
+* Inside of your WordPress dashboard navigate to your WordPress **Plugins** page
+* In the search field enter **Dynamics CRM** or **Dynamics 365**, then click **Search Plugins**, or press Enter.
+* Select **Dynamics 365 Integration** and click **Install Now**.
+* Once installed, click **Activate**.
+* Navigate to **Admin > Dynamics CRM** page to enter your Dynamics 365 / CRM connection details.
 
 == Changelog ==
 
