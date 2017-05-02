@@ -1,11 +1,11 @@
-# Copyright (C) 2017 Dynamics CRM Integration
-# This file is distributed under the same license as the Dynamics CRM Integration package.
+# Copyright (C) 2017 Dynamics 365 Integration
+# This file is distributed under the same license as the Dynamics 365 Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics CRM Integration 1.1.32.2\n"
+"Project-Id-Version: Dynamics 365 Integration 1.1.32.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-"
 "dynamics\n"
-"POT-Creation-Date: 2017-04-26 09:13:53+00:00\n"
+"POT-Creation-Date: 2017-05-02 09:47:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -69,7 +69,13 @@ msgstr ""
 msgid "Entity attribute to render."
 msgstr ""
 
-#: integration-dynamics.php:64
+#: integration-dynamics.php:53
+msgid ""
+"Dynamics CRM Integration detected that <code>%s</code> is not writable by "
+"the web server. Please fix it to complete the installation."
+msgstr ""
+
+#: integration-dynamics.php:83
 msgid ""
 "Dynamics CRM Integration detected that your environment has PHP %1$s. The "
 "plugin requires at least PHP %2$s to work. Please upgrade your PHP "
@@ -420,12 +426,12 @@ msgid "Settings"
 msgstr ""
 
 #: src/Shortcode/Form/AbstractForm.php:262 src/Shortcode/Form/Control.php:78
-#: src/Shortcode/Form/FormInstance.php:935
-#: src/Shortcode/Form/FormInstance.php:946
+#: src/Shortcode/Form/FormInstance.php:938
+#: src/Shortcode/Form/FormInstance.php:949
 msgid "%s is required"
 msgstr ""
 
-#: src/Shortcode/Form/Control.php:95 src/Shortcode/Form/FormInstance.php:724
+#: src/Shortcode/Form/Control.php:95 src/Shortcode/Form/FormInstance.php:727
 msgid "%s must be a valid email address"
 msgstr ""
 
@@ -451,31 +457,31 @@ msgstr ""
 msgid "Can not get form definition"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:631
+#: src/Shortcode/Form/FormInstance.php:634
 msgid "Unsupported lookup type for [%1$s], or entity {%2$s} not found"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:712
+#: src/Shortcode/Form/FormInstance.php:715
 msgid "Must be less than %d characters"
 msgid_plural "Must be less than %d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Shortcode/Form/FormInstance.php:719
+#: src/Shortcode/Form/FormInstance.php:722
 msgid "Incorrect text value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:737
+#: src/Shortcode/Form/FormInstance.php:740
 msgid "Invalid number value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:742
+#: src/Shortcode/Form/FormInstance.php:745
 msgid ""
 "Invalid number value. Enter a decimal number without currency symbol or "
 "thousands separator."
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:747
+#: src/Shortcode/Form/FormInstance.php:750
 msgid ""
 "Invalid money value. Enter a decimal number without currency symbol or "
 "thousands separator."
@@ -631,7 +637,7 @@ msgid "Not connected"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "Dynamics CRM Integration"
+msgid "Dynamics 365 Integration"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
@@ -639,7 +645,8 @@ msgid "https://wordpress.org/plugins/integration-dynamics/"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "The easiest way to connect Dynamics CRM with WordPress."
+msgid ""
+"The easiest way to connect Dynamics 365 and Dynamics CRM with WordPress."
 msgstr ""
 
 #. Author of the plugin/theme

@@ -38,7 +38,7 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 == Installation ==
 
-Installing Dynamics 365 Integration is just like any other WordPress plugin: 
+Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 * Inside of your WordPress dashboard navigate to your WordPress **Plugins** page
 * In the search field enter **Dynamics CRM** or **Dynamics 365**, then click **Search Plugins**, or press Enter.
@@ -47,6 +47,11 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 * Navigate to **Admin > Dynamics CRM** page to enter your Dynamics 365 / CRM connection details.
 
 == Changelog ==
+
+= 1.1.32.3 =
+
+* Fixed: fatal crash if the /storage directory is not writable
+* Fixed: form submissions with empty attachment field
 
 = 1.1.32.2 =
 
