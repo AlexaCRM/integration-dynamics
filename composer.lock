@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AlexaCRM/php-crm-toolkit.git",
-                "reference": "f3dd1dce0519adc53d6d38ac59ea31247bae94b8"
+                "reference": "cb918d134fd2017499fc33e4d84149964a80914a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/f3dd1dce0519adc53d6d38ac59ea31247bae94b8",
-                "reference": "f3dd1dce0519adc53d6d38ac59ea31247bae94b8",
+                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/cb918d134fd2017499fc33e4d84149964a80914a",
+                "reference": "cb918d134fd2017499fc33e4d84149964a80914a",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
                 "php",
                 "sdk"
             ],
-            "time": "2017-03-31 13:31:07"
+            "time": "2017-05-10 08:40:21"
         },
         {
             "name": "monolog/monolog",
@@ -59,12 +59,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "3266b6e257992887035c8952918607f5b858aaf8"
+                "reference": "35c07a81de6200e5aa0629eacecd11fd925d19dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/3266b6e257992887035c8952918607f5b858aaf8",
-                "reference": "3266b6e257992887035c8952918607f5b858aaf8",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/35c07a81de6200e5aa0629eacecd11fd925d19dc",
+                "reference": "35c07a81de6200e5aa0629eacecd11fd925d19dc",
                 "shasum": ""
             },
             "require": {
@@ -129,7 +129,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-03-20 10:21:06"
+            "time": "2017-05-03 13:17:21"
         },
         {
             "name": "psr/log",
@@ -296,12 +296,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "dc70f3e826d8783b07eec2997dd3e6ca0b44ad1f"
+                "reference": "324ab87d2fd371a52077732f7d08c2bbd65d5b05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/dc70f3e826d8783b07eec2997dd3e6ca0b44ad1f",
-                "reference": "dc70f3e826d8783b07eec2997dd3e6ca0b44ad1f",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/324ab87d2fd371a52077732f7d08c2bbd65d5b05",
+                "reference": "324ab87d2fd371a52077732f7d08c2bbd65d5b05",
                 "shasum": ""
             },
             "require": {
@@ -350,7 +350,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-04-05 23:23:01"
+            "time": "2017-05-05 13:59:56"
         }
     ],
     "packages-dev": [],
