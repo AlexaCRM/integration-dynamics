@@ -148,6 +148,13 @@ add_filter( 'no_texturize_shortcodes', function( $shortcodes ) {
 } );
 
 /**
+ * Process form submissions.
+ */
+add_action( 'init', function() {
+    \AlexaCRM\WordpressCRM\Form\Controller::dispatchFormHandler();
+} );
+
+/**
  * Start initializing the plugin.
  */
 $pluginInstance = Plugin::instance();

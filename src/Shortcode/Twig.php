@@ -4,6 +4,7 @@ namespace AlexaCRM\WordpressCRM\Shortcode;
 
 use AlexaCRM\CRMToolkit\Entity\EntityReference;
 use AlexaCRM\WordpressCRM\Shortcode;
+use Twig_Extension_Debug;
 
 /**
  * Implements the Twig templates with entity/user binding,
@@ -44,7 +45,7 @@ class Twig extends Shortcode {
         $output = $twig->render( $templateKey );
 
         // Reapply wpautop()
-        return wptexturize( wpautop( $output ) );
+        return $output;
     }
 
     /**
@@ -65,7 +66,8 @@ class Twig extends Shortcode {
             new \Twig_Loader_Filesystem( WORDPRESSCRM_DIR . '/templates/twig' )
         );
 
-        $twigEnv = new \Twig_Environment( $chainLoader );
+        $twigEnv = new \Twig_Environment( $chainLoader, [ 'debug' => true ] );
+        $twigEnv->addExtension(new Twig_Extension_Debug());
 
         // Access to any entity via {{ entities.logicalName["GUID"] }}
         $twigEnv->addGlobal( 'entities', new Twig\FauxEntitiesCollection() );
@@ -78,6 +80,9 @@ class Twig extends Shortcode {
 
         // `view` tag
         $twigEnv->addTokenParser( new Twig\TokenParsers\ViewTokenParser() );
+
+        // `form` tag
+        $twigEnv->addTokenParser( new Twig\TokenParsers\FormTokenParser() );
 
         // entityUrl() - URL builder
         $entityUrlFunction = new \Twig_SimpleFunction( 'entityUrl', function( $entityName, $entityId ) {
