@@ -34,6 +34,8 @@ class FetchxmlNode extends Twig_Node {
 
         $compiler->write( "if(ACRM()->connected() && \$fetchxml !== '') {\n" );
         $compiler->indent();
+        $compiler->write( "\$exception = null;\n");
+
         if ( $this->hasAttribute( 'cache' ) ) {
             $compiler->write( "\$cache = ACRM()->getCache();\n" );
             $compiler->write( "\$cacheKey = 'wpcrm_twigdata_' . sha1(\$fetchxml);\n" );
@@ -41,7 +43,16 @@ class FetchxmlNode extends Twig_Node {
             $compiler->write( "if(\$records === null){\n" );
             $compiler->indent();
         }
-        $compiler->write( "\$records = ASDK()->retrieveMultiple(\$fetchxml);\n");
+
+        $compiler->write( "try {\n" )
+            ->indent()
+                ->write( "\$records = ASDK()->retrieveMultiple(\$fetchxml);\n")
+            ->outdent()
+            ->write( "} catch ( \\Exception \$e ) {\n" )
+            ->indent()
+                ->write( "\$exception = \$e;\n" )
+            ->outdent()
+            ->write( "}\n" );
 
         if ( $this->hasAttribute( 'cache' ) ) {
             $interval = new \DateInterval( $this->getAttribute( 'cache' ) );
@@ -51,10 +62,10 @@ class FetchxmlNode extends Twig_Node {
             $compiler->write( "}\n" );
         }
         $compiler->write( "\$context['{$this->getAttribute( 'collection' )}'] = " );
-        $compiler->write( "[ 'xml'=>\$fetchxml, 'results'=>['entities'=>\$records->Entities," );
-        // TODO: provide the real TotalRecordCount
-        $compiler->write( "'total_record_count'=>\$records->TotalRecordCount, 'more_records'=>\$records->MoreRecords," );
-        $compiler->write( "'paging_cookie'=>\$records->PagingCookie] ];\n" );
+        $compiler->write( "[ 'xml'=>\$fetchxml, 'results'=>['entities'=>(\$records? \$records->Entities : null)," );
+        $compiler->write( "'total_record_count'=>(\$records? \$records->TotalRecordCount : null), 'more_records'=>(\$records? \$records->MoreRecords: null)," );
+        $compiler->write( "'paging_cookie'=>(\$records? \$records->PagingCookie: null)]," );
+        $compiler->write( "'error'=>(\$exception?\$exception->getMessage():null)];\n" );
         $compiler->outdent();
         $compiler->write( "}\n");
     }
