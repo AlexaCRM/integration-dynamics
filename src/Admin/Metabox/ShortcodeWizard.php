@@ -94,7 +94,7 @@ class ShortcodeWizard {
         foreach ( $supportedPostTypes as $postType ) {
             add_meta_box(
                 'wpcrmShortcodeWizardContainer',
-                __( 'Dynamics CRM Shortcode Wizard', 'integration-dynamics' ),
+                __( 'Dynamics 365 Shortcode Wizard', 'integration-dynamics' ),
                 [ $this, 'render' ],
                 $postType, 'normal', 'high'
             );

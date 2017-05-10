@@ -30,7 +30,7 @@ class Messages extends Tab {
     private function getDefaultSettings() {
         $messages = [
             'general' => [
-                'not_connected' => __( 'WordPress is not connected to Dynamics CRM', 'integration-dynamics' ),
+                'not_connected' => __( 'WordPress is not connected to Dynamics 365', 'integration-dynamics' ),
             ],
             'form' => [
                 'validation_error' => __( 'Form validation failed', 'integration-dynamics' ),

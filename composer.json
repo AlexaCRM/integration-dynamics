@@ -1,6 +1,6 @@
 {
   "name": "alexacrm/integration-dynamics",
-  "description": "The easiest way to connect Dynamics CRM with WordPress.",
+  "description": "The easiest way to connect Dynamics 365 and Dynamics CRM with WordPress.",
   "type": "wordpress-plugin",
   "require": {
     "alexacrm/php-crm-toolkit": "dev-master",

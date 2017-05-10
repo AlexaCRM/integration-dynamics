@@ -80,10 +80,10 @@ class Admin {
              */
             static::$tabsCollection[ $tabName ] = $tabObject = new $tabClassName();
 
-            $pageTitle = sprintf( __( '%s &lsaquo; Dynamics CRM', 'integration-dynamics' ), $tabObject->getDisplayName() );
+            $pageTitle = sprintf( __( '%s &lsaquo; Dynamics 365', 'integration-dynamics' ), $tabObject->getDisplayName() );
 
             if ( $tabName === 'general' ) {
-                add_menu_page( 'Dynamics CRM Integration Settings', 'Dynamics CRM', 'manage_options',
+                add_menu_page( 'Dynamics 365 Integration Settings', 'Dynamics 365', 'manage_options',
                     'wordpresscrm', [ $tabObject, 'render' ], static::$adminLogo );
                 $tabHookName = add_submenu_page( 'wordpresscrm', $pageTitle, $tabObject->getDisplayName(), 'manage_options',
                     'wordpresscrm', [ $tabObject, 'render' ] );
@@ -106,7 +106,7 @@ class Admin {
             ?>
             <div class="notice notice-success is-dismissible">
                 <p>
-                    <?php _e( 'Dynamics CRM Plugin successfully activated, <b>please configure it</b> <a href="admin.php?page=wordpresscrm">on this page</a>.', 'integration-dynamics' ); ?>
+                    <?php _e( 'Dynamics 365 Plugin successfully activated, <b>please configure it</b> <a href="admin.php?page=wordpresscrm">on this page</a>.', 'integration-dynamics' ); ?>
                 </p>
             </div>
             <?php

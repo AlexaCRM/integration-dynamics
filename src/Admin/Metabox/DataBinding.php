@@ -54,7 +54,7 @@ class DataBinding {
         foreach ( $supportedPostTypes as $postType ) {
             add_meta_box(
                 'wordpresscrm_databinding_meta',
-                __( 'Dynamics CRM Data Binding', 'integration-dynamics' ),
+                __( 'Dynamics 365 Data Binding', 'integration-dynamics' ),
                 [ $this, 'render' ],
                 $postType, 'side', 'high' );
         }

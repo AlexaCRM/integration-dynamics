@@ -124,7 +124,7 @@ final class Plugin {
      */
     public function init( Logger $logger, Request $request ) {
         $this->facilities['logger'] = $logger;
-        $logger->debug( 'Initializing Dynamics CRM Integration.' );
+        $logger->debug( 'Initializing Dynamics 365 Integration.' );
 
         $this->request = $request;
 

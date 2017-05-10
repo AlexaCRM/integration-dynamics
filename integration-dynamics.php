@@ -50,7 +50,7 @@ if ( !is_writable( WORDPRESSCRM_STORAGE ) ) {
             ?>
             <div class="notice notice-error">
                 <p>
-                    <?php printf( __( 'Dynamics CRM Integration detected that <code>%s</code> is not writable by the web server. Please fix it to complete the installation.', 'integration-dynamics' ), WORDPRESSCRM_STORAGE ); ?>
+                    <?php printf( __( 'Dynamics 365 Integration detected that <code>%s</code> is not writable by the web server. Please fix it to complete the installation.', 'integration-dynamics' ), WORDPRESSCRM_STORAGE ); ?>
                 </p>
             </div>
             <?php
@@ -80,7 +80,7 @@ if ( version_compare( phpversion(), '5.4', '<' ) ) {
             ?>
             <div class="notice notice-error">
                 <p>
-                    <?php printf( __( 'Dynamics CRM Integration detected that your environment has PHP %1$s. The plugin requires at least PHP %2$s to work. Please upgrade your PHP installation to fully enable the plugin.', 'integration-dynamics' ), phpversion(), '5.4' ); ?>
+                    <?php printf( __( 'Dynamics 365 Integration detected that your environment has PHP %1$s. The plugin requires at least PHP %2$s to work. Please upgrade your PHP installation to fully enable the plugin.', 'integration-dynamics' ), phpversion(), '5.4' ); ?>
                 </p>
             </div>
             <?php

@@ -121,20 +121,20 @@ class General extends Tab {
                     $this->options = ACRM()->options = $options;
                     Connection::setConnectionStatus( true );
 
-                    $noticeText = sprintf( __( 'Connection to Dynamics CRM <%s> has been successfully established.', 'integration-dynamics' ), $options['organizationName'] );
+                    $noticeText = sprintf( __( 'Connection to Dynamics 365 <%s> has been successfully established.', 'integration-dynamics' ), $options['organizationName'] );
                     ACRM()->getNotifier()->add( $noticeText, Notifier::NOTICE_SUCCESS );
                 } else {
                     ACRM()->getLogger()->error( 'CRM connection attempt failed.', [ 'credentials' => [ $options['serverUrl'], $options['username'] ] ] );
-                    ACRM()->getNotifier()->add( __( 'Unable to connect to Dynamics CRM using provided address, username and/or password.', 'integration-dynamics' ), Notifier::NOTICE_ERROR );
+                    ACRM()->getNotifier()->add( __( 'Unable to connect to Dynamics 365 using provided address, username and/or password.', 'integration-dynamics' ), Notifier::NOTICE_ERROR );
                     Connection::setConnectionStatus( false );
                 }
             } catch ( Exception $e ) {
                 ACRM()->getLogger()->error( 'CRM connection attempt failed with exception.', [ 'credentials' => [ $options['serverUrl'], $options['username'] ], 'exception' => $e ] );
-                ACRM()->getNotifier()->add( sprintf( __( '<strong>Unable to connect to Dynamics CRM:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct.', 'integration-dynamics' ), $e->getMessage() ), Notifier::NOTICE_ERROR );
+                ACRM()->getNotifier()->add( sprintf( __( '<strong>Unable to connect to Dynamics 365:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct.', 'integration-dynamics' ), $e->getMessage() ), Notifier::NOTICE_ERROR );
                 Connection::setConnectionStatus( false );
             } catch ( Error $err ) {
                 ACRM()->getLogger()->error( 'CRM connection attempt failed with exception.', [ 'credentials' => [ $options['serverUrl'], $options['username'] ], 'exception' => $err ] );
-                ACRM()->getNotifier()->add( sprintf( __( '<strong>Unable to connect to Dynamics CRM:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct.', 'integration-dynamics' ), $err->getMessage() ), Notifier::NOTICE_ERROR );
+                ACRM()->getNotifier()->add( sprintf( __( '<strong>Unable to connect to Dynamics 365:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct.', 'integration-dynamics' ), $err->getMessage() ), Notifier::NOTICE_ERROR );
                 Connection::setConnectionStatus( false );
             }
 
@@ -180,7 +180,7 @@ class General extends Tab {
             <div class="metabox-holder">
                 <div class="postbox-container" style="width: 99%;">
 
-                    <p><?php _e( 'Configure the plugin to connect to your Dynamics CRM instance.', 'integration-dynamics' ) ?> <a href="http://docs.alexacrm.com/wpcrm/configuration/connection/" target="_blank"><?php _e( 'Documentation &raquo;', 'integration-dynamics' ); ?></a></p>
+                    <p><?php _e( 'Configure the plugin to connect to your Dynamics 365 instance.', 'integration-dynamics' ) ?> <a href="http://docs.alexacrm.com/wpcrm/configuration/connection/" target="_blank"><?php _e( 'Documentation &raquo;', 'integration-dynamics' ); ?></a></p>
 
                     <hr>
 
@@ -224,7 +224,7 @@ class General extends Tab {
                                 <tbody>
                                 <tr>
                                     <th scope="row"><label
-                                            for="wpcrmFAddress"><?php _e( 'Dynamics CRM Address (URL) <span class="description">(required)</span>', 'integration-dynamics' ); ?></label>
+                                            for="wpcrmFAddress"><?php _e( 'Dynamics 365 Address (URL) <span class="description">(required)</span>', 'integration-dynamics' ); ?></label>
                                     </th>
                                     <td>
                                         <input id="wpcrmFAddress" type="text" class="regular-text code wpcrm-setting"
@@ -284,7 +284,7 @@ class General extends Tab {
                                 <tbody>
                                 <tr>
                                     <th scope="row"><label
-                                            for="wpcrmOFAddress"><?php _e( 'Dynamics CRM Address (URL) <span class="description">(required)</span>', 'integration-dynamics' ); ?></label>
+                                            for="wpcrmOFAddress"><?php _e( 'Dynamics 365 Address (URL) <span class="description">(required)</span>', 'integration-dynamics' ); ?></label>
                                     </th>
                                     <td>
                                         <input id="wpcrmOFAddress" type="text" class="regular-text code wpcrm-setting"
@@ -330,7 +330,7 @@ class General extends Tab {
                     <hr>
 
                     <h3 class="title"><?php _e( 'Metadata Settings', 'integration-dynamics' ); ?></h3>
-                    <p><?php _e( 'If you have changed your Dynamics CRM entities metadata recently (i.e. fields, forms, views, etc.) please regenerate local metadata cache to keep it up to date.', 'integration-dynamics' ) ?></p>
+                    <p><?php _e( 'If you have changed your Dynamics 365 entities metadata recently (i.e. fields, forms, views, etc.) please regenerate local metadata cache to keep it up to date.', 'integration-dynamics' ) ?></p>
                     <form method="post" action="">
                         <input type="hidden" name="clear_cache" value="1"/>
                         <p class="submit">

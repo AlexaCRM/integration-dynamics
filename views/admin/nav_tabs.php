@@ -32,9 +32,9 @@ $isConnected = ( isset( $options['connected'] ) && $options['connected'] );
     }
 </style>
 <h2>
-    <span class="nav-title">Dynamics CRM Integration</span>
+    <span class="nav-title">Dynamics 365 Integration</span>
     <span class="wordpresscrm-status <?php echo $isConnected ? 'connected' : 'disconnected'; ?>"
-          title="<?php $isConnected ? _e( 'WordPress is connected to your Dynamics CRM organization and is ready for use.', 'integration-dynamics' ) : _e( 'WordPress is not connected to Dynamics CRM.', 'integration-dynamics' ); ?>"
+          title="<?php $isConnected ? _e( 'WordPress is connected to your Dynamics 365 organization and is ready for use.', 'integration-dynamics' ) : _e( 'WordPress is not connected to Dynamics CRM.', 'integration-dynamics' ); ?>"
     ><?php $isConnected ? printf( __( 'Connected to &lt;%s&gt;', 'integration-dynamics' ), $options['organizationName'] ) : _e( 'Not connected', 'integration-dynamics' ); ?></span>
 </h2>
 <h2 class="nav-tab-wrapper">

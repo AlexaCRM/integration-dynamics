@@ -19,7 +19,7 @@ require_once __DIR__ . '/update.php';
 // view shortcode
 add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWizard ) {
     $view = new ShortcodeWizard\Shortcode( 'view', __( 'View', 'integration-dynamics' ) );
-    $view->description = __( 'Renders a Dynamics CRM View as a table.', 'integration-dynamics' );
+    $view->description = __( 'Renders a Dynamics 365 view as a table.', 'integration-dynamics' );
 
     $entityField = new ShortcodeWizard\Field\Dropdown( 'entity', __( 'Entity name', 'integration-dynamics' ) );
     $entityField->description = __( 'Name of the entity to display a view of.', 'integration-dynamics' );

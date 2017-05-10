@@ -48,7 +48,7 @@ class About extends Tab {
         ?>
         <h2><?php _e( "About", 'integration-dynamics' ) ?></h2>
         <p>
-            Dynamics CRM Integration<br>
+            Dynamics 365 Integration<br>
             <?php printf( __( 'Version: %s', 'integration-dynamics' ), WORDPRESSCRM_VERSION ); ?><br>
             <?php printf( __( 'Copyright &copy; %1$d %2$s', 'integration-dynamics' ), date( 'Y' ), 'AlexaCRM' ); ?><br>
             <?php printf( __( '<a href="%s" target="_blank">Plugin website</a>', 'integration-dynamics' ), 'https://wordpress.org/plugins/integration-dynamics/' ) ?><br>
@@ -61,7 +61,7 @@ class About extends Tab {
         <?php } ?>
 
         <h3><?php _e( 'Error reporting', 'integration-dynamics' ); ?></h3>
-        <p><?php printf( __( 'If you experience problems while using Dynamics CRM Integration plugin and eventually report them, attach log files which are stored in <code>%s</code>', 'integration-dynamics' ), WORDPRESSCRM_STORAGE ); ?></p>
+        <p><?php printf( __( 'If you experience problems while using Dynamics 365 Integration plugin and eventually report them, attach log files which are stored in <code>%s</code>', 'integration-dynamics' ), WORDPRESSCRM_STORAGE ); ?></p>
         <?php
     }
 }
