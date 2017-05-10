@@ -1,4 +1,5 @@
 {% spaceless %}
+{% if form %}
 <form method="post" id="form-{{ form.id }}">
 {% for tab in form.tabs %}
   <div class="row">
@@ -198,4 +199,7 @@
         w.wpcrmFormValidationRules['{{ form.id }}'] = validationRules;
     }(window) );
 </script>
+{% else %}
+<div class="alert alert-danger">Form not found.</div>
+{% endif %}
 {% endspaceless %}
