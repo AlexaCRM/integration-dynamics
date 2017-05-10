@@ -32,8 +32,6 @@ class FetchxmlNode extends Twig_Node {
         $compiler->subcompile( $this->getNode( 'fetchxml' ) );
         $compiler->write( "\$fetchxml = trim(ob_get_clean());\n" );
 
-
-
         $compiler->write( "if(ACRM()->connected() && \$fetchxml !== '') {\n" );
         $compiler->indent();
         if ( $this->hasAttribute( 'cache' ) ) {
@@ -43,7 +41,7 @@ class FetchxmlNode extends Twig_Node {
             $compiler->write( "if(\$records === null){\n" );
             $compiler->indent();
         }
-        $compiler->write( "\$records = ASDK()->retrieveMultiple(\$fetchxml)->Entities;\n");
+        $compiler->write( "\$records = ASDK()->retrieveMultiple(\$fetchxml);\n");
 
         if ( $this->hasAttribute( 'cache' ) ) {
             $interval = new \DateInterval( $this->getAttribute( 'cache' ) );
@@ -52,7 +50,11 @@ class FetchxmlNode extends Twig_Node {
             $compiler->outdent();
             $compiler->write( "}\n" );
         }
-        $compiler->write( "\$context['{$this->getAttribute( 'collection' )}'] = \$records;\n" );
+        $compiler->write( "\$context['{$this->getAttribute( 'collection' )}'] = " );
+        $compiler->write( "[ 'xml'=>\$fetchxml, 'results'=>['entities'=>\$records->Entities," );
+        // TODO: provide the real TotalRecordCount
+        $compiler->write( "'total_record_count'=>\$records->TotalRecordCount, 'more_records'=>\$records->MoreRecords," );
+        $compiler->write( "'paging_cookie'=>\$records->PagingCookie] ];\n" );
         $compiler->outdent();
         $compiler->write( "}\n");
     }
