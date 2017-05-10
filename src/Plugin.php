@@ -10,10 +10,7 @@ use AlexaCRM\WordpressCRM\Image\AnnotationImage;
 use AlexaCRM\WordpressCRM\Image\CustomImage;
 use Exception;
 use Monolog\Logger;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Attribute\NamespacedAttributeBag;
-use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -190,8 +187,9 @@ final class Plugin {
         if ( !is_admin() ) {
             add_action( 'after_setup_theme', function() use ( $logger ) {
                 $logger->debug( 'Initializing shortcodes.' );
-
                 new ShortcodeManager();
+
+                $logger->debug( 'Dispatching the form handler.' );
             } );
 
             $this->template = $this->getTemplate();

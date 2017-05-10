@@ -81,6 +81,8 @@ class FrontendScripts {
         wp_register_script( 'jquery-validation', $scriptPath . 'jquery.validate.min.js', [ 'jquery' ] );
         wp_register_script( 'wordpresscrm-lookup-dialog', $scriptPath . 'lookup-dialog.js', [ 'jquery' ] );
 
+        wp_register_script( 'wordpresscrm-form', $scriptPath . 'wpcrm.form.js', [ 'jquery-datetimepicker' ], WORDPRESSCRM_VERSION, true );
+
         // localize scripts
         $wpcrmL10n = [
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -88,6 +90,7 @@ class FrontendScripts {
             'datetimeformat' => get_option( 'date_format' ) . ' ' . get_option( 'time_format' ),
         ];
         wp_localize_script( 'wordpresscrm-front', 'wpcrm', $wpcrmL10n );
+        wp_localize_script( 'wordpresscrm-form', 'wpcrm', $wpcrmL10n );
 
         // CSS Styles
         $enqueuedStyles = $this->getStyles();
