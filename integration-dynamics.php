@@ -89,4 +89,48 @@ if ( version_compare( phpversion(), '5.4', '<' ) ) {
     return;
 }
 
+/**
+ * Check whether cURL is installed.
+ */
+if ( !function_exists( 'curl_version' ) ) {
+    $logger->critical( 'cURL is not installed. Cannot proceed further.' );
+
+    add_action( 'admin_notices', function() {
+        $screen = get_current_screen();
+        if ( $screen->base === 'plugins' ) {
+            ?>
+            <div class="notice notice-error">
+                <p>
+                    <?php _e( 'cURL, a PHP extension, is not installed. <strong>Dynamics 365 Integration</strong> requires cURL to work properly.', 'integration-dynamics' ); ?>
+                </p>
+            </div>
+            <?php
+        }
+    } );
+
+    return;
+}
+
+/**
+ * Check whether php-soap is installed.
+ */
+if ( !class_exists( '\\SoapFault' ) ) {
+    $logger->critical( 'php-soap is not installed. Cannot proceed further.' );
+
+    add_action( 'admin_notices', function() {
+        $screen = get_current_screen();
+        if ( $screen->base === 'plugins' ) {
+            ?>
+            <div class="notice notice-error">
+                <p>
+                    <?php _e( 'SOAP, a PHP extension, is not installed. <strong>Dynamics 365 Integration</strong> requires SOAP to work properly.', 'integration-dynamics' ); ?>
+                </p>
+            </div>
+            <?php
+        }
+    } );
+
+    return;
+}
+
 require_once __DIR__ . '/core.php';
