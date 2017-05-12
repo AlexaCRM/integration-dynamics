@@ -48,6 +48,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.1.32.4 =
+
+* Fixed: prevent fatal crashes if environment doesn't meet dependency requirements
+
 = 1.1.32.3 =
 
 * Fixed: fatal crash if the /storage directory is not writable
