@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the Dynamics 365 Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics 365 Integration 1.1.32.4\n"
+"Project-Id-Version: Dynamics 365 Integration 1.2.0-alpha.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-"
 "dynamics\n"
-"POT-Creation-Date: 2017-05-12 11:44:41+00:00\n"
+"POT-Creation-Date: 2017-05-16 14:21:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -425,7 +425,41 @@ msgid ""
 "href=\"admin.php?page=wordpresscrm\">on this page</a>."
 msgstr ""
 
-#: src/LookupDialog.php:69 src/LookupDialog.php:156
+#: src/Form/Controller.php:43 src/Form/Controller.php:55
+msgid "The form has expired. Please try again."
+msgstr ""
+
+#: src/Form/Model.php:370
+msgid "The field is required."
+msgstr ""
+
+#: src/Form/Model.php:402
+msgid "The field could not be validated."
+msgstr ""
+
+#: src/Form/Model.php:408
+msgid "Must be less than %d characters."
+msgid_plural "Must be less than %d characters."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Form/Model.php:416
+msgid "Incorrect text value."
+msgstr ""
+
+#: src/Form/Model.php:423
+msgid "Not a valid email address."
+msgstr ""
+
+#: src/Form/Model.php:433
+msgid "Invalid number value."
+msgstr ""
+
+#: src/Form/Model.php:441
+msgid "Invalid decimal value."
+msgstr ""
+
+#: src/LookupDialog.php:69 src/LookupDialog.php:160
 msgid "No records are available in this view."
 msgstr ""
 
