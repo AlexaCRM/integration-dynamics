@@ -1,0 +1,67 @@
+<div class="crm-lookup-wrapper">
+  <div class="crm-lookup-popup-overlay" id="wpcrmLookupDialog">
+    <div class="crm-lookup-popup-overlay-bg"></div>
+    <div class="crm-lookup-popup">
+      <div class="crm-lookup-popup-header">
+        <a title="Cancel" class="crm-popup-cancel" href="#" tabindex="2">
+          <img style="height:16px;width:16px;"
+               src="/wp-content/plugins/integration-dynamics/resources/front/images/CloseDialog.png" alt="x"/>
+        </a>
+        <div class="crm-header-title"><label>Look up record</label></div>
+      </div>
+      <div class="crm-lookup-search-area">
+        <table>
+          <tr>
+            <td class="label-td"><label for="wpcrmLookupType">Look for</label></td>
+            <td>
+              <select id="wpcrmLookupType" class="crm-lookup-lookuptype"></select>
+            </td>
+          </tr>
+          <tr>
+            <td class="label-td"><label for="wpcrmLookupSearchField">Search</label></td>
+            <td>
+              <input type="text" id="wpcrmLookupSearchField" class="crm-lookup-searchfield" placeholder="Search for records">
+              <span class="crm-lookup-searchfield-button"></span>
+              <span class="crm-lookup-searchfield-delete-search"></span>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="crm-lookup-popup-body">
+        <div class="crm-lookup-body-grid"></div>
+        <div class="crm-lookup-popup-body-loader">
+          <table>
+            <tr>
+              <td align="center" style="vertical-align: middle">
+                <img src="/wp-content/plugins/integration-dynamics/resources/front/images/progress.gif"
+                     alt=""
+                     id="DialogLoadingDivImg">
+                <br>Loading
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="crm-lookup-popup-body-foot">
+          <table>
+            <tr>
+              <td></td>
+              <td>
+                <button disabled class="crm-lookup-popup-first-page"></button>
+                <button disabled class="crm-lookup-popup-prev-page"></button>
+                Page <span class="crm-lookup-popup-page-counter">1</span>
+                <button disabled class="crm-lookup-popup-next-page"></button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="crm-lookup-popup-foot">
+        <div class="crm-lookup-popup-foot-left"></div>
+        <div class="crm-lookup-popup-foot-right">
+          <button class="crm-popup-add-button">Add</button>
+          <button class="crm-popup-cancel-button">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

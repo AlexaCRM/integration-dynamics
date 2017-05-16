@@ -119,6 +119,7 @@ class Model {
                 'datetimeformat' => get_option( 'date_format' ) . ' ' . get_option( 'time_format' ),
             ],
             'metadata' => $metadata,
+            'entities' => ACRM()->getMetadata()->getEntitiesList(),
         ];
 
         $formDOM = new \DOMDocument();
@@ -245,12 +246,18 @@ class Model {
                 continue;
             }
 
-            if ( $fieldMetadata->optionSet instanceof Entity\OptionSet && $fieldValue !== '' ) {
+            if ( $fieldValue === ''
+                 || ( $fieldMetadata->isLookup && json_decode( $fieldValue ) === [ null, null ] ) ) {
+                $this->record->{$fieldName} = null;
+                continue;
+            }
+
+            if ( $fieldMetadata->optionSet instanceof Entity\OptionSet ) {
                 $this->record->{$fieldName} = (int)$fieldValue;
                 continue;
             }
 
-            if ( $fieldMetadata->isLookup && $fieldValue !== '' ) {
+            if ( $fieldMetadata->isLookup ) {
                 $reference = json_decode( $fieldValue );
                 if ( is_array( $reference ) && count( $reference ) === 2 ) {
                     if ( !$reference[0] || !$reference[1] ) {
@@ -266,11 +273,6 @@ class Model {
             }
 
             if ( $fieldMetadata->type === 'DateTime' ) {
-                if ( $fieldValue === '' ) {
-                    $this->record->{$fieldName} = null;
-                    continue;
-                }
-
                 $dateFormat = get_option( 'date_format' );
                 $dateTimeFormat = $dateFormat . ' ' . get_option( 'time_format' );
                 $parsedValue = \DateTime::createFromFormat( $dateFormat, $fieldValue );

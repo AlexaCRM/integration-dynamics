@@ -119,14 +119,18 @@
                     <div class="form-control-feedback">{{ errorMessage }}</div>
                   {% endfor %}
                 {% elseif control.classId == '{270BD3DB-D9AF-4782-9025-509E298DEC0A}' %}{# lookup field #}
-                  <div class="input-group">
-                    <input type="text" id="{{ control.id }}" class="form-control" readonly="readonly" value="{{ attribute( form.record, control.name ) }}">
+                  {% set lookupTypes = {} %}
+                  {% for lookupType in control.metadata.lookupTypes %}
+                    {% set lookupTypes = lookupTypes|merge( { (lookupType): form.entities[lookupType] } ) %}
+                  {% endfor %}
+                  <div class="input-group wpcrm-lookup" data-types="{{ lookupTypes|json_encode }}">
+                    <input type="text" id="{{ control.id }}" data-field="{{ control.name }}" class="form-control wpcrm-lookup-display" readonly="readonly" value="{{ attribute( form.record, control.name ) }}">
                     {% if not control.disabled %}
                       <span class="input-group-btn">
                       {% if attribute( form.record, control.name ) %}
-                        <button class="btn btn-secondary" type="button"><i class="fa fa-times" aria-hidden="true"></i></button>
+                        <button class="btn btn-secondary" type="button" data-action="disassociate"><i class="fa fa-times" aria-hidden="true"></i></button>
                       {% else %}
-                        <button class="btn btn-secondary" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        <button class="btn btn-secondary" type="button" data-action="associate"><i class="fa fa-search" aria-hidden="true"></i></button>
                       {% endif %}
                       </span>
                     {% endif %}
@@ -191,6 +195,7 @@
 </div>
 <input type="hidden" name="__submission_id" value="{{ form.id }}">
 </form>
+{% embed "form/lookup.twig" %}{% endembed %}
 <script>
     ( function (w) {
         var validationRules = {};
