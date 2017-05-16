@@ -1,3 +1,4 @@
+{% spaceless %}
 {% if _records %}
 <table class="{{ tableClass ?? [ 'table' ]|join( ' ' ) }}">
     <thead class="{{ tableHeaderClass ?? []|join( ' ' ) }}">
@@ -26,3 +27,4 @@
         <p>No records found.</p>
     {% endblock %}
 {% endif %}
+{% endspaceless %}
