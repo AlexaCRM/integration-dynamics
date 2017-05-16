@@ -69,11 +69,8 @@ class Twig extends Shortcode {
         $twigEnv = new \Twig_Environment( $chainLoader, [ 'debug' => true ] );
         $twigEnv->addExtension(new Twig_Extension_Debug());
 
-        // Access to any entity via {{ entities.logicalName["GUID"] }}
-        $twigEnv->addGlobal( 'entities', new Twig\FauxEntitiesCollection() );
-
-        // Access to the current record (entity binding)
-        $twigEnv->addGlobal( 'currentrecord', ACRM()->getBinding()->getEntity() );
+        // Add global variables to the context
+        $this->addGlobals( $twigEnv );
 
         // `fetchxml` tag
         $twigEnv->addTokenParser( new Twig\TokenParsers\FetchxmlTokenParser() );
@@ -105,5 +102,43 @@ class Twig extends Shortcode {
         static::$twigEnvironment = $twigEnv;
 
         return $twigEnv;
+    }
+
+    /**
+     * Adds global variables to the given environment object.
+     *
+     * @param \Twig_Environment $twigEnv
+     */
+    private function addGlobals( \Twig_Environment $twigEnv ) {
+        // Access to any entity via {{ entities.logicalName["GUID"] }}
+        $twigEnv->addGlobal( 'entities', new Twig\FauxEntitiesCollection() );
+
+        // Access to the current record (entity binding)
+        $twigEnv->addGlobal( 'currentrecord', ACRM()->getBinding()->getEntity() );
+
+        // `now` global variable
+        $twigEnv->addGlobal( 'now', time() );
+
+        $request = ACRM()->request;
+        $params = array_merge( $request->cookies->all(), $request->request->all(), $request->query->all() );
+
+        // `params` global variable
+        $twigEnv->addGlobal( 'params', $params );
+        $twigRequest = [
+            'params' => $params,
+            'path' => $request->getPathInfo(),
+            'path_and_query' => $request->getRequestUri(),
+            'query' => $request->getQueryString()? '?' . $request->getQueryString() : '',
+        ];
+
+        // `request` global variable
+        $twigEnv->addGlobal( 'request', $twigRequest );
+
+        /**
+         * Triggered after default global variables are set up.
+         *
+         * @param \Twig_Environment $twigEnv
+         */
+        do_action( 'wordpresscrm_after_twig_globals', $twigEnv );
     }
 }
