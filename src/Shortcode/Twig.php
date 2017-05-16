@@ -66,8 +66,12 @@ class Twig extends Shortcode {
             new \Twig_Loader_Filesystem( WORDPRESSCRM_DIR . '/templates/twig' )
         );
 
-        $twigEnv = new \Twig_Environment( $chainLoader, [ 'debug' => true ] );
-        $twigEnv->addExtension(new Twig_Extension_Debug());
+        $isDebugEnabled = defined( 'WP_DEBUG' ) && WP_DEBUG;
+
+        $twigEnv = new \Twig_Environment( $chainLoader, [ 'debug' => $isDebugEnabled ] );
+        if ( $isDebugEnabled ) {
+            $twigEnv->addExtension( new Twig_Extension_Debug() );
+        }
 
         // Add global variables to the context
         $this->addGlobals( $twigEnv );
