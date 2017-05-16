@@ -54,6 +54,11 @@ rm -r ${ASSEMBLY_TARGET_DIR}/vendor/monolog/monolog/doc
 rm -r ${ASSEMBLY_TARGET_DIR}/vendor/monolog/monolog/tests
 rm -r ${ASSEMBLY_TARGET_DIR}/vendor/symfony/http-foundation/Tests
 
+# Remove unnecessary Twig files
+rm -r ${ASSEMBLY_TARGET_DIR}/vendor/twig/twig/doc
+rm -r ${ASSEMBLY_TARGET_DIR}/vendor/twig/twig/ext
+rm -r ${ASSEMBLY_TARGET_DIR}/vendor/twig/twig/test
+
 echo "Creating <integration-dynamics-v${TARGET_VERSION}.zip>..."
 cd ${ASSEMBLY_DIR}
 

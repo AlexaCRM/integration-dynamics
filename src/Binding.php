@@ -27,6 +27,10 @@ class Binding {
      * @return Entity|null
      */
     public function getEntity() {
+        if ( !ACRM()->connected() ) {
+            return null;
+        }
+
         if ( $this->entity === false ) {
             return null;
         }

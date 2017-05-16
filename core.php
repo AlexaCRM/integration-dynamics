@@ -135,6 +135,22 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
 } );
 
 /**
+ * Don't texturize Twig shortcode contents.
+ */
+add_filter( 'no_texturize_shortcodes', function( $shortcodes ) {
+    $shortcodes[] = Plugin::PREFIX . 'twig';
+
+    return $shortcodes;
+} );
+
+/**
+ * Process form submissions.
+ */
+add_action( 'init', function() {
+    \AlexaCRM\WordpressCRM\Form\Controller::dispatchFormHandler();
+} );
+
+/**
  * Start initializing the plugin.
  */
 $pluginInstance = Plugin::instance();
