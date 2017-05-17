@@ -78,6 +78,20 @@ class ViewNode extends \Twig_Node {
             ->write( "\$fetchxml = \\AlexaCRM\\WordpressCRM\\FetchXML::replaceLookupConditionsByLookupsArray(" )
             ->write( "\$fetchxml, \$viewLookups);\n");
 
+        // Add count/page attributes to the FetchXML
+        if ( $this->hasAttribute( 'count' ) ) {
+            $compiler->write( "\$viewCount = (int)" );
+            $this->getAttribute( 'count' )->compile( $compiler );
+            $compiler->write( ";\n" );
+            $compiler->write( "\$fetchxml = str_replace( '<fetch ', '<fetch count=\"' . \$viewCount . '\" ', \$fetchxml );\n" );
+            $compiler->write( "if ( \$viewCount > 1 ) {\n" )
+                ->indent()
+                ->write( "\$viewPageNumber = ACRM()->request->query->getInt( 'viewPage', 1 );\n" )
+                ->write( "\$fetchxml = str_replace( '<fetch ', '<fetch page=\"' . \$viewPageNumber . '\" ', \$fetchxml );\n" )
+                ->outdent()
+                ->write( "}\n" );
+        }
+
         // Retrieve records
         if ( $this->hasAttribute( 'cache' ) ) {
             $compiler->write( "\$cache = ACRM()->getCache();\n" );
