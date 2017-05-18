@@ -4,6 +4,7 @@ namespace AlexaCRM\WordpressCRM\Shortcode;
 
 use AlexaCRM\CRMToolkit\Entity\EntityReference;
 use AlexaCRM\WordpressCRM\Shortcode;
+use Symfony\Component\HttpFoundation\Request;
 use Twig_Extension_Debug;
 
 /**
@@ -76,6 +77,9 @@ class Twig extends Shortcode {
         // Add global variables to the context
         $this->addGlobals( $twigEnv );
 
+        // Add filters to the environment
+        $this->addFilters( $twigEnv );
+
         // `fetchxml` tag
         $twigEnv->addTokenParser( new Twig\TokenParsers\FetchxmlTokenParser() );
 
@@ -133,6 +137,7 @@ class Twig extends Shortcode {
             'path' => $request->getPathInfo(),
             'path_and_query' => $request->getRequestUri(),
             'query' => $request->getQueryString()? '?' . $request->getQueryString() : '',
+            'url' => $request->getUri(),
         ];
 
         // `request` global variable
@@ -145,4 +150,20 @@ class Twig extends Shortcode {
          */
         do_action( 'wordpresscrm_after_twig_globals', $twigEnv );
     }
+
+    /**
+     * Adds default filters to the given environment object.
+     *
+     * @param \Twig_Environment $twigEnv
+     */
+    private function addFilters( \Twig_Environment $twigEnv ) {
+        $addQuery = new \Twig_SimpleFilter( 'add_query', function( $url, $argName, $argValue ) {
+            $req = Request::create( $url, 'GET', [ $argName => $argValue ] );
+
+            return $req->getUri();
+        } );
+
+        $twigEnv->addFilter( $addQuery );
+    }
+
 }
