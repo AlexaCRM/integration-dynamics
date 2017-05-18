@@ -201,15 +201,12 @@ class Binding {
     private function getBoundRecord( $entityName, $entityKey, $entityQuery ) {
         $query = ACRM()->request->query;
 
-        if ( !$query->get( $entityQuery ) ) {
+        if ( trim( $query->get( $entityQuery, '' ) ) === '' ) {
             return null;
         }
 
         try {
             $entityRequestValue = $query->get( $entityQuery );
-            if ( trim( $entityRequestValue ) === '' ) {
-                return null;
-            }
 
             $columnSet = $this->getCurrentColumns();
 
