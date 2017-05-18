@@ -203,6 +203,9 @@ class Binding {
 
         try {
             $entityRequestValue = $query->get( $entityQuery );
+            if ( trim( $entityRequestValue ) === '' ) {
+                return null;
+            }
 
             $columnSet = $this->getCurrentColumns();
 
