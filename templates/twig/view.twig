@@ -27,11 +27,11 @@
       <td colspan="{{ entityview.columns|length }}">
         <nav>
           <ul class="pagination">
-            <li class="page-item{% if entityview.previous_page is null %} disabled{% endif %}"><a class="page-link" href="{% if entityview.previous_page %}?viewPage={{ entityview.previous_page}}{% else %}#{% endif %}">Previous</a></li>
+            <li class="page-item{% if entityview.previous_page is null %} disabled{% endif %}"><a class="page-link" href="{% if entityview.previous_page %}{{ request.url|add_query('viewPage', entityview.previous_page)}}{% else %}#{% endif %}">Previous</a></li>
             {% for pageNumber in entityview.pages %}
-            <li class="page-item{% if pageNumber == entityview.page %} active{% endif %}"><a class="page-link" href="?viewPage={{ pageNumber }}">{{ pageNumber }}</a></li>
+            <li class="page-item{% if pageNumber == entityview.page %} active{% endif %}"><a class="page-link" href="{{ request.url|add_query('viewPage', pageNumber) }}">{{ pageNumber }}</a></li>
             {% endfor %}
-            <li class="page-item{% if entityview.next_page is null %} disabled{% endif %}"><a class="page-link" href="{% if entityview.next_page %}?viewPage={{ entityview.next_page}}{% else %}#{% endif %}">Next</a></li>
+            <li class="page-item{% if entityview.next_page is null %} disabled{% endif %}"><a class="page-link" href="{% if entityview.next_page %}{{ request.url|add_query('viewPage', entityview.next_page)}}{% else %}#{% endif %}">Next</a></li>
           </ul>
         </nav>
       </td>
