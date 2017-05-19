@@ -67,6 +67,13 @@ class Twig extends Shortcode {
             new \Twig_Loader_Filesystem( WORDPRESSCRM_DIR . '/templates/twig' )
         );
 
+        /**
+         * Allows extending the list of available Twig template loaders.
+         *
+         * @param \Twig_Loader_Chain $chainLoader
+         */
+        do_action( 'wordpresscrm_after_twig_loaders', $chainLoader );
+
         $isDebugEnabled = defined( 'WP_DEBUG' ) && WP_DEBUG;
 
         $twigEnv = new \Twig_Environment( $chainLoader, [ 'debug' => $isDebugEnabled ] );
