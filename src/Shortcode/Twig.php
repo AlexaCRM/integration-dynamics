@@ -170,7 +170,12 @@ class Twig extends Shortcode {
             return $req->getUri();
         } );
 
+        $wpautop = new \Twig_SimpleFilter( 'wpautop', function( $value ) {
+            return wpautop( $value );
+        } );
+
         $twigEnv->addFilter( $addQuery );
+        $twigEnv->addFilter( $wpautop );
     }
 
 }
