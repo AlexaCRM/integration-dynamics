@@ -38,7 +38,7 @@ tar -xf ${ASSEMBLY_DIR}/plugin.tar -C ${ASSEMBLY_TARGET_DIR}
 
 # install Composer dependencies
 cd ${ASSEMBLY_TARGET_DIR}
-composer install --prefer-dist
+composer install --no-dev --optimize-autoloader --prefer-dist
 
 cd ${WORKING_DIR}
 
