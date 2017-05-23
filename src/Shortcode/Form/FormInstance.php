@@ -498,32 +498,34 @@ class FormInstance extends AbstractForm {
             if ( isset( $this->entity->{$attributeName} ) ) {
                 try {
                     /* Check $_GET parameter for defaults */
-                    if ( strpos( $attributeValue, '.' ) !== false ) {
-                        if ( strpos( $attributeValue, 'querystring' ) ) {
-                            $explode = explode( ".", $attributeValue );
+                    if ( strpos( $attributeValue, 'querystring' ) === 0 && strpos( $attributeValue, '.' ) !== false ) {
+                        $explode = explode( ".", $attributeValue );
 
-                            $queryParams = $this->parseQueryString();
+                        $queryParams = $this->parseQueryString();
 
-                            if ( isset( $queryParams[ $explode[1] ] ) && $queryParams[ $explode[1] ] ) {
-                                $queryValue = $queryParams[ $explode[1] ];
+                        if ( isset( $queryParams[ $explode[1] ] ) && $queryParams[ $explode[1] ] ) {
+                            $queryValue = $queryParams[ $explode[1] ];
 
-                                $this->createControl( ( $k == null ), $last, $attributeName, $queryValue );
-                            } else {
-                                unset( $this->default[ $attributeName ] );
-                            }
+                            $this->createControl( ( $k == null ), $last, $attributeName, $queryValue );
+                        } else {
+                            unset( $this->default[ $attributeName ] );
                         }
-
+                    } elseif ( strpos( $attributeValue, '.' ) !== false ) {
                         /**
                          * Allows to add support for custom variables in the "default" shortcode argument with syntax
                          * {var.field} (dot-notation)
                          *
+                         * @param bool $setupDefault Whether to setup default (handler must return false!)
                          * @param FormInstance $form Form instance
                          * @param string $attributeValue Variable name (e.g. for {var.field} $value == "var.field")
                          * @param string|null $k Associated form control name if one exists, null otherwise
                          * @param string $attributeName Field name to associate value with
                          * @param string $last
                          */
-                        do_action( 'wordpresscrm_form_setup_with_comma', $this, $attributeValue, $k, $attributeName, $last );
+                        $setupDefault = apply_filters( 'wordpresscrm_form_setup_with_comma', true, $this, $attributeValue, $k, $attributeName, $last );
+                        if ( $setupDefault ) {
+                            $this->createControl( ( $k == null ), $last, $attributeName, $attributeValue );
+                        }
                     } else {
                         /**
                          * Allows to add support for custom variables in the "default" shortcode argument with syntax
