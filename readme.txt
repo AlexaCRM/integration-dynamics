@@ -48,6 +48,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.1.32.5 =
+
+* Fixed: default values containing dots would not be rendered
+
 = 1.1.32.4 =
 
 * Fixed: prevent fatal crashes if environment doesn't meet dependency requirements
