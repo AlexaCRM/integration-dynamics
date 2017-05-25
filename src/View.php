@@ -155,6 +155,10 @@ class View {
                         $relatedEntityLabel = $entity->getFormattedValue( $name, $tzOffset );
                     }
 
+                    if ( trim( $relatedEntityLabel ) === '' && $entity->metadata()->primaryNameAttribute === $name ) {
+                        $relatedEntityLabel = '(No name)';
+                    }
+
                     if ( $name === $primaryName ) {
                         $boundUrl = ACRM()->getBinding()->buildUrl( $entity );
                     }
