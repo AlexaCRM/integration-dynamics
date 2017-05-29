@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the Dynamics 365 Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics 365 Integration 1.2.0-alpha.3\n"
+"Project-Id-Version: Dynamics 365 Integration 1.2.0-alpha.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-"
 "dynamics\n"
-"POT-Creation-Date: 2017-05-19 09:38:47+00:00\n"
+"POT-Creation-Date: 2017-05-29 12:27:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -466,12 +466,12 @@ msgid "Settings"
 msgstr ""
 
 #: src/Shortcode/Form/AbstractForm.php:262 src/Shortcode/Form/Control.php:78
-#: src/Shortcode/Form/FormInstance.php:938
-#: src/Shortcode/Form/FormInstance.php:949
+#: src/Shortcode/Form/FormInstance.php:940
+#: src/Shortcode/Form/FormInstance.php:951
 msgid "%s is required"
 msgstr ""
 
-#: src/Shortcode/Form/Control.php:95 src/Shortcode/Form/FormInstance.php:727
+#: src/Shortcode/Form/Control.php:95 src/Shortcode/Form/FormInstance.php:729
 msgid "%s must be a valid email address"
 msgstr ""
 
@@ -497,31 +497,31 @@ msgstr ""
 msgid "Can not get form definition"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:634
+#: src/Shortcode/Form/FormInstance.php:636
 msgid "Unsupported lookup type for [%1$s], or entity {%2$s} not found"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:715
+#: src/Shortcode/Form/FormInstance.php:717
 msgid "Must be less than %d characters"
 msgid_plural "Must be less than %d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Shortcode/Form/FormInstance.php:722
+#: src/Shortcode/Form/FormInstance.php:724
 msgid "Incorrect text value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:740
+#: src/Shortcode/Form/FormInstance.php:742
 msgid "Invalid number value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:745
+#: src/Shortcode/Form/FormInstance.php:747
 msgid ""
 "Invalid number value. Enter a decimal number without currency symbol or "
 "thousands separator."
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:750
+#: src/Shortcode/Form/FormInstance.php:752
 msgid ""
 "Invalid money value. Enter a decimal number without currency symbol or "
 "thousands separator."
