@@ -46,7 +46,9 @@ class ViewTokenParser extends \Twig_TokenParser {
         $stream->expect( Twig_Token::BLOCK_END_TYPE );
         $template = $parser->subparse( [ $this, 'decideViewEnd' ] );
 
-        if ( get_class( $template ) === 'Twig_Node' && $template->getNodeTag() === null ) {
+        if ( ( get_class( $template ) === 'Twig_Node' || get_class( $template ) === 'Twig_Node_Text' )
+             && !$template->count()
+             && ( !$template->hasAttribute( 'data' ) || trim( $template->getAttribute( 'data' ) ) === '' ) ) {
             $stream->injectTokens( [
                 new Twig_Token( Twig_Token::BLOCK_START_TYPE, '', $lineNo ),
                 new Twig_Token( Twig_Token::NAME_TYPE, 'embed', $lineNo ),
