@@ -94,6 +94,11 @@ class ViewBuilder {
             return [ 'name' => $column['logical_name'] ];
         }, $columns );
 
+        $entitiesHash = [];
+        foreach ( $retrieveResult->Entities as $record ) {
+            $entitiesHash[$record->id] = $record;
+        }
+
         $listView = [
             'columns' => $columns,
             'entity_logical_name' => $this->entityName,
@@ -106,7 +111,7 @@ class ViewBuilder {
             'page_size' => $perPage,
             'previous_page' => ( $isPaged && $currentPage > 1 )? $currentPage - 1 : null,
             'primary_key_logical_name' => ACRM()->getMetadata()->getEntityDefinition( $this->entityName )->primaryIdAttribute,
-            'records' => $retrieveResult->Entities,
+            'records' => $entitiesHash,
             'rows' => View::getViewRows( $retrieveResult, $viewCells, $fetchXML ),
             'total_pages' => $totalPages,
             'total_records' => $retrieveResult->TotalRecordCount,
