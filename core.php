@@ -34,6 +34,11 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
     $viewField->description = __( 'Name of the view to display.', 'integration-dynamics' );
     $viewField->bindingFields = [ 'entity' ];
     $viewField->setValueGenerator( function( $values ) {
+        $client = ACRM()->getSdk();
+        if ( !$client ) {
+            throw new \Exception( __( 'Not connected to CRM', 'integration-dynamics' ) );
+        }
+
         $views = [];
 
         if ( !array_key_exists( 'entity', $values ) ) {
@@ -46,7 +51,7 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
             throw new \InvalidArgumentException( __( 'Empty entity name in the request', 'integration-dynamics' ) );
         }
 
-        $entity = ASDK()->entity( $entityName );
+        $entity = $client->entity( $entityName );
 
         $fetch = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
 						<entity name="userquery">
@@ -58,7 +63,7 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
 						</entity>
 					  </fetch>';
 
-        $userQueries = ASDK()->retrieveMultiple( $fetch );
+        $userQueries = $client->retrieveMultiple( $fetch );
 
         $fetch = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
 						<entity name="savedquery">
@@ -70,7 +75,7 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
 						</entity>
 					  </fetch>';
 
-        $savedQueries = ASDK()->retrieveMultiple( $fetch );
+        $savedQueries = $client->retrieveMultiple( $fetch );
 
         $viewEntities = array_merge( $userQueries->Entities, $savedQueries->Entities );
 
@@ -117,9 +122,14 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
     $attributeField->description = __( 'Entity attribute to render.', 'integration-dynamics' );
     $attributeField->bindingFields = [ 'entity' ];
     $attributeField->setValueGenerator( function( $values ) {
+        $client = ACRM()->getSdk();
+        if ( !$client ) {
+            return [];
+        }
+
         $attributes = [];
 
-        $entity = ASDK()->entity( $values['entity'] );
+        $entity = $client->entity( $values['entity'] );
 
         foreach ( $entity->attributes as $attribute ) {
             $attributes[$attribute->logicalName] = $attribute->logicalName . ' (' . $attribute->label . ')';
