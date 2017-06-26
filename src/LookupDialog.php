@@ -27,7 +27,7 @@ class LookupDialog {
      *
      * @const int
      */
-    const PER_PAGE = 3;
+    const PER_PAGE = 10;
 
     /**
      * Lookup constructor.
