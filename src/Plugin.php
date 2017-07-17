@@ -29,12 +29,6 @@ final class Plugin {
     const PREFIX = 'msdyncrm_';
 
     /**
-     * @var string
-     * @deprecated 1.1.32 In favor of WORDPRESSCRM_VERSION
-     */
-    public $version = '';
-
-    /**
      * Current request.
      *
      * @var Request

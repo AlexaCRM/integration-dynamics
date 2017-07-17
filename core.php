@@ -167,10 +167,6 @@ $pluginInstance = Plugin::instance();
 $request = Request::createFromGlobals();
 $pluginInstance->init(  $logger, $request );
 
-add_action( 'admin_init', function() use ( $pluginInstance ) {
-    $pluginInstance->version = get_plugin_data( WORDPRESSCRM_DIR . '/integration-dynamics.php' )['Version'];
-} );
-
 add_action( 'admin_notices', function() {
     $notifications = ACRM()->getNotifier()->getNotifications();
 
