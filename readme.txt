@@ -48,6 +48,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.1.32.6 =
+
+* Fixed: issue when connecting to Dynamics 365 Online cannot be established from some geographical locations
+
 = 1.1.32.5 =
 
 * Fixed: default values containing dots would not be rendered
