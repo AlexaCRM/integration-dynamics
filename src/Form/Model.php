@@ -72,9 +72,9 @@ class Model {
     public static function buildModel( $entityName, $formName, $attributes = [] ) {
         $model = new static();
 
-        $model->entityName = $entityName;
+        $model->entityName = strtolower( $entityName );
         $model->formName = $formName;
-        $model->record = ASDK()->entity( $entityName );
+        $model->record = ASDK()->entity( $model->entityName );
 
         if ( !array_key_exists( 'optional', $attributes ) || !is_array( $attributes['optional'] ) ) {
             $attributes['optional'] = [];
