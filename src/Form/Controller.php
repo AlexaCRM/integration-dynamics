@@ -76,6 +76,8 @@ class Controller {
                 ASDK()->create( $record );
             } elseif ( $mode === 'edit' ) {
                 ASDK()->update( $record );
+            } elseif ( $mode === 'upsert' ) {
+                ASDK()->upsert( $record );
             }
 
             wordpresscrm_javascript_redirect( ACRM()->request->getRequestUri() );
