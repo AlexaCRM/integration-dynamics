@@ -144,6 +144,14 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
     $shortcodeWizard->registerShortcode( $field );
 } );
 
+add_action( 'wp_ajax_log_verbosity', function() {
+    $request = ACRM()->request->request;
+
+    update_option( 'wpcrm_log_level', $request->get( 'logVerbosity', WORDPRESSCRM_EFFECTIVE_LOG_LEVEL ) );
+
+    wp_send_json_success();
+} );
+
 /**
  * Don't texturize Twig shortcode contents.
  */

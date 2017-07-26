@@ -61,9 +61,11 @@ if ( !is_writable( WORDPRESSCRM_STORAGE ) ) {
 
 $logger = new \Monolog\Logger( 'wpcrm' );
 $logLevel = WP_DEBUG? \Monolog\Logger::INFO : \Monolog\Logger::NOTICE;
+$logLevel = get_option( 'wpcrm_log_level', $logLevel );
 if ( defined( 'WORDPRESSCRM_LOG_LEVEL' ) ) {
     $logLevel = WORDPRESSCRM_LOG_LEVEL;
 }
+define( 'WORDPRESSCRM_EFFECTIVE_LOG_LEVEL', $logLevel );
 $logStream = new \Monolog\Handler\RotatingFileHandler( WORDPRESSCRM_STORAGE . '/integration-dynamics.log', 3, $logLevel );
 $logger->pushHandler( $logStream );
 
