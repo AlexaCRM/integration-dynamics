@@ -138,7 +138,7 @@
                   {% for errorMessage in validationErrors[control.name] %}
                     <div class="form-control-feedback">{{ errorMessage }}</div>
                   {% endfor %}
-                  <input type="hidden" name="{{ control.name }}" value="{{ [ attribute( form.record, control.name ).logicalName, attribute( form.record, control.name ).id ]|json_encode }}">
+                  <input type="hidden" name="{{ control.name }}" value="{{ [ attribute( form.record, control.name ).logicalName, attribute( form.record, control.name ).id, attribute( form.record, control.name ) ~ '' ]|json_encode }}">
                 {% elseif control.classId == '{E0DECE4B-6FC8-4A8F-A065-082708572369}' %}{# textarea field #}
                   {% if control.name matches '/address\\d_composite/' %}{# decompose composite address field #}
                     {% set controlPrefix = control.name|slice(0, 8) %}

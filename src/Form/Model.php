@@ -259,13 +259,14 @@ class Model {
 
             if ( $fieldMetadata->isLookup ) {
                 $reference = json_decode( $fieldValue );
-                if ( is_array( $reference ) && count( $reference ) === 2 ) {
+                if ( is_array( $reference ) && count( $reference ) === 3 ) {
                     if ( !$reference[0] || !$reference[1] ) {
                         continue;
                     }
 
                     $entityReference = ASDK()->entity( $reference[0] );
                     $entityReference->ID = $reference[1];
+                    $entityReference->{$entityReference->metadata()->primaryNameAttribute} = $reference[2];
                     $this->record->{$fieldName} = $entityReference;
                 }
 
