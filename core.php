@@ -144,12 +144,47 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
     $shortcodeWizard->registerShortcode( $field );
 } );
 
-add_action( 'wp_ajax_log_verbosity', function() {
+add_action( 'wp_ajax_wpcrm_log_verbosity', function() {
     $request = ACRM()->request->request;
 
     update_option( 'wpcrm_log_level', $request->get( 'logVerbosity', WORDPRESSCRM_EFFECTIVE_LOG_LEVEL ) );
 
     wp_send_json_success();
+} );
+
+add_action( 'wp_ajax_wpcrm_log', function() {
+    if ( class_exists( '\ZipArchive' ) && ( $zipPath = tempnam( sys_get_temp_dir(), 'wpcrm' ) ) ) {
+        $zip = new ZipArchive();
+        $zip->open( $zipPath, ZipArchive::OVERWRITE );
+        $zip->addGlob( WORDPRESSCRM_STORAGE . '/*.log', 0, [ 'remove_all_path' => true ] );
+        $zip->close();
+
+        header( 'Content-Description: File Transfer' );
+        header( 'Content-Type: application/octet-stream' );
+
+        $date = date( 'YmdHi' );
+        header( "Content-Disposition: attachment; filename='integration-dynamics_logs_{$date}.zip'" );
+
+        readfile( $zipPath );
+
+        unlink( $zipPath );
+
+        wp_die();
+    }
+
+    $logFiles = glob( WORDPRESSCRM_STORAGE . '/*.log' );
+    rsort( $logFiles );
+    $logPath = array_shift( $logFiles );
+
+    header( 'Content-Description: File Transfer' );
+    header( 'Content-Type: application/octet-stream' );
+
+    $filename = basename( $logPath );
+    header( "Content-Disposition: attachment; filename='{$filename}'" );
+
+    readfile( $logPath );
+
+    wp_die();
 } );
 
 /**

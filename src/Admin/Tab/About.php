@@ -62,7 +62,13 @@ class About extends Tab {
         <?php } ?>
 
         <h3><?php _e( 'Error reporting', 'integration-dynamics' ); ?></h3>
-        <p><?php printf( __( 'If you experience problems while using Dynamics 365 Integration plugin and eventually report them, attach log files which are stored in <code>%s</code>', 'integration-dynamics' ), WORDPRESSCRM_STORAGE ); ?></p>
+        <p><?php
+            $message = __( 'If you experience problems while using Dynamics 365 Integration plugin and eventually report them, attach log files which are stored in <code>%s</code>. <a href="%s">Download log files</a>', 'integration-dynamics' );
+            if ( !class_exists( 'ZipArchive' ) ) {
+                $message = __( 'If you experience problems while using Dynamics 365 Integration plugin and eventually report them, attach log files which are stored in <code>%s</code>. <a href="%s">Download the latest log file</a>', 'integration-dynamics' );
+            }
+
+            printf( $message, WORDPRESSCRM_STORAGE, admin_url( 'admin-ajax.php?action=wpcrm_log') ); ?></p>
         <p>
             <label><?php _e( 'Change log verbosity:', 'integration-dynamics' ); ?>
                 <select name="verbosity" id="wpcrmVerbositySelector" style="vertical-align: baseline;">
@@ -93,7 +99,7 @@ class About extends Tab {
 
                 $verbositySelector.change( function( e ) {
                     $verbositySpinner.show();
-                    $.post( ajaxurl, { action: 'log_verbosity', logVerbosity: $verbositySelector.val() } ).done( function() {
+                    $.post( ajaxurl, { action: 'wpcrm_log_verbosity', logVerbosity: $verbositySelector.val() } ).done( function() {
 
                     } ).fail( function() {
                         $verbositySelector.val( verbosityPrevious );
