@@ -51,6 +51,7 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 = 1.2.0 =
 
 * New: Universal Twig engine that allows views, forms, fetchxml queries and more in one shortcode
+* Download log files in the About section
 
 = 1.1.32.5 =
 
