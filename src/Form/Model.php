@@ -76,12 +76,19 @@ class Model {
         $model->formName = $formName;
         $model->record = ASDK()->entity( $model->entityName );
 
+        // list of fields to be marked as optional (overrides metadata)
         if ( !array_key_exists( 'optional', $attributes ) || !is_array( $attributes['optional'] ) ) {
             $attributes['optional'] = [];
         }
 
+        // list of fields to be marked as required (overrides metadata)
         if ( !array_key_exists( 'required', $attributes ) || !is_array( $attributes['required'] ) ) {
             $attributes['required'] = [];
+        }
+
+        // map of default field values
+        if ( !array_key_exists( 'default', $attributes ) || !is_array( $attributes['default'] ) ) {
+            $attributes['default'] = [];
         }
 
         if ( !array_key_exists( 'record', $attributes ) ) {
@@ -218,6 +225,15 @@ class Model {
 
             $formDefinition['tabs'][$tabId] = $tabDefinition;
         }
+
+        /**
+         * Provide default values for the form.
+         *
+         * Hidden default values are field-value pairs that don't have a corresponding control.
+         */
+        $hiddenDefaults = array_diff_key( $this->attributes['default'], array_flip( $this->formControls ) );
+        $formDefinition['defaults'] = $this->attributes['default'];
+        $formDefinition['hiddenDefaults'] = $hiddenDefaults;
 
         $formDefinition['record'] = $this->record;
         if ( $this->attributes['record'] instanceof Entity ) {
