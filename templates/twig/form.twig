@@ -34,7 +34,7 @@
                   {% if control.name == 'fullname' %}{# decompose fullname into firstname and lastname #}
                     <div class="row">
                       <div class="col-6 {% if 'firstname' in validationErrors|keys %}has-danger{% endif %}">
-                        <input type="text" name="firstname" placeholder="First Name" class="form-control form-control-danger" value="{{ attribute(form.record, 'firstname') }}" {% if control.disabled %}readonly="readonly"{% endif %}>
+                        <input type="text" name="firstname" placeholder="First Name" class="form-control form-control-danger" value="{{ attribute(form.record, 'firstname') ?? form.defaults['firstname'] }}" {% if control.disabled %}readonly="readonly"{% endif %}>
                         {% if 'firstname' in validationErrors|keys %}
                           {% for errorMessage in validationErrors['firstname'] %}
                             <div class="form-control-feedback">{{ errorMessage }}</div>
@@ -42,7 +42,7 @@
                         {% endif %}
                       </div>
                       <div class="col-6 {% if 'lastname' in validationErrors|keys %}has-danger{% endif %}">
-                        <input type="text" name="lastname" placeholder="Last Name" class="form-control" value="{{ attribute(form.record, 'lastname') }}" {% if control.disabled %}readonly="readonly"{% endif %}>
+                        <input type="text" name="lastname" placeholder="Last Name" class="form-control" value="{{ attribute(form.record, 'lastname') ?? form.defaults['lastname'] }}" {% if control.disabled %}readonly="readonly"{% endif %}>
                         {% if 'lastname' in validationErrors|keys %}
                           {% for errorMessage in validationErrors['lastname'] %}
                             <div class="form-control-feedback">{{ errorMessage }}</div>
@@ -51,25 +51,25 @@
                       </div>
                     </div>
                   {% else %}{# text field #}
-                    <input type="text" id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if control.disabled %}readonly="readonly"{% endif %} value="{{ attribute( form.record, control.name ) ?? '' }}">
+                    <input type="text" id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if control.disabled %}readonly="readonly"{% endif %} value="{{ attribute( form.record, control.name ) ?? form.defaults[control.name] }}">
                     {% for errorMessage in validationErrors[control.name] %}
                       <div class="form-control-feedback">{{ errorMessage }}</div>
                     {% endfor %}
                   {% endif %}
                 {% elseif control.classId == '{ADA2203E-B4CD-49BE-9DDF-234642B43B52}' %}{# email field #}
-                  <input type="email" id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if control.disabled %}readonly="readonly"{% endif %} value="{{ attribute( form.record, control.name ) ?? '' }}">
+                  <input type="email" id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if control.disabled %}readonly="readonly"{% endif %} value="{{ attribute( form.record, control.name ) ?? form.defaults[control.name] }}">
                   {% for errorMessage in validationErrors[control.name] %}
                     <div class="form-control-feedback">{{ errorMessage }}</div>
                   {% endfor %}
                 {% elseif control.classId == '{71716B6C-711E-476C-8AB8-5D11542BFB47}' %}{# url field #}
-                  <input type="url" id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if control.disabled %}readonly="readonly"{% endif %} value="{{ attribute( form.record, control.name ) ?? '' }}">
+                  <input type="url" id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if control.disabled %}readonly="readonly"{% endif %} value="{{ attribute( form.record, control.name ) ?? form.defaults[control.name] }}">
                   {% for errorMessage in validationErrors[control.name] %}
                     <div class="form-control-feedback">{{ errorMessage }}</div>
                   {% endfor %}
                 {% elseif control.classId == '{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}' %}{# datetime field #}
                   {% set dateOnly = (control.metadata.format == 'DateOnly') %}
                   {% set dateFormat = dateOnly? form.options.dateformat : form.options.datetimeformat %}
-                  <input type="datetime" id="{{ control.id }}" name="{{ control.name }}" class="form-control {{ dateOnly? 'crm-datepicker' : 'crm-datetimepicker' }}" {% if control.disabled %}disabled="disabled"{% endif %} value="{{ attribute( form.record, control.name )? attribute( form.record, control.name )|date(dateFormat) : '' }}">
+                  <input type="datetime" id="{{ control.id }}" name="{{ control.name }}" class="form-control {{ dateOnly? 'crm-datepicker' : 'crm-datetimepicker' }}" {% if control.disabled %}disabled="disabled"{% endif %} value="{{ attribute( form.record, control.name )? attribute( form.record, control.name )|date(dateFormat) : form.defaults[control.name] }}">
                   {% for errorMessage in validationErrors[control.name] %}
                     <div class="form-control-feedback">{{ errorMessage }}</div>
                   {% endfor %}
@@ -168,7 +168,7 @@
                       </div>
                     </div>
                   {% else %}{# textarea field #}
-                    <textarea class="form-control" id="{{ control.id }}" name="{{ control.name }}" rows="{{ cell.rowspan ?? 3 }}" {% if control.disabled %}readonly="readonly"{% endif %}>{{ attribute( form.record, control.name ) }}</textarea>
+                    <textarea class="form-control" id="{{ control.id }}" name="{{ control.name }}" rows="{{ cell.rowspan ?? 3 }}" {% if control.disabled %}readonly="readonly"{% endif %}>{{ attribute( form.record, control.name ) ?? form.defaults[control.name] }}</textarea>
                     {% for errorMessage in validationErrors[control.name] %}
                       <div class="form-control-feedback">{{ errorMessage }}</div>
                     {% endfor %}
@@ -193,6 +193,9 @@
     <button type="submit" class="btn btn-primary">Submit</button>
   </div>
 </div>
+{% for fieldName, fieldValue in form.hiddenDefaults %}
+<input type="hidden" name="{{ fieldName }}" value="{{ fieldValue }}">
+{% endfor %}
 <input type="hidden" name="__submission_id" value="{{ form.id }}">
 </form>
 {% embed "form/lookup.twig" %}{% endembed %}
