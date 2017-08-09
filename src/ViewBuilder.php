@@ -139,7 +139,12 @@ class ViewBuilder {
             }
         }
 
-        $retrieveResult = ACRM()->getSdk()->retrieveMultiple( $fetchXML );
+        $client = ACRM()->getSdk();
+        if ( !$client ) {
+            return null;
+        }
+
+        $retrieveResult = $client->retrieveMultiple( $fetchXML );
 
         if ( $this->isCacheEnabled ) {
             try {
