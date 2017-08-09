@@ -46,7 +46,7 @@ class PhpFastCache {
     /**
      * @ignore
      */
-    public static $storage = "auto"; // PDO | mpdo | Auto | Files | memcache | apc | wincache | xcache
+    public static $storage = "auto"; // PDO | mpdo | Auto | Files | memcache | apc | wincache
 
     /**
      * @ignore
@@ -114,7 +114,6 @@ class PhpFastCache {
         "memcache",
         "memcached",
         "apc",
-        "xcache",
         "wincache"
     );
 
@@ -192,7 +191,6 @@ class PhpFastCache {
             self::$sys['method']  = "pdo";
             self::$sys['drivers'] = array(
                 "apc"       => false,
-                "xcache"    => false,
                 "memcache"  => false,
                 "memcached" => false,
                 "wincache"  => false,
@@ -206,13 +204,6 @@ class PhpFastCache {
                 self::$sys['drivers']['apc'] = true;
                 self::$sys['storage']        = "memory";
                 self::$sys['method']         = "apc";
-            }
-
-            // Check xcache
-            if ( extension_loaded( 'xcache' ) && function_exists( "xcache_get" ) ) {
-                self::$sys['drivers']['xcache'] = true;
-                self::$sys['storage']           = "memory";
-                self::$sys['method']            = "xcache";
             }
 
             if ( extension_loaded( 'wincache' ) && function_exists( "wincache_ucache_set" ) ) {
@@ -380,11 +371,6 @@ allow from 127.0.0.1";
                 self::$sys['storage']        = "memory";
                 self::$sys['method']         = "apc";
                 // self::startDebug(self::$sys,"GOT APC",__LINE__,__FUNCTION__);
-            } elseif ( extension_loaded( 'xcache' ) ) {
-                self::$sys['drivers']['xcache'] = true;
-                self::$sys['storage']           = "memory";
-                self::$sys['method']            = "xcache";
-                // self::startDebug(self::$sys,"GOT XCACHE",__LINE__,__FUNCTION__);
             } else {
                 // fix PATH for existing
                 $reconfig = false;
@@ -438,7 +424,7 @@ allow from 127.0.0.1";
 
             if ( in_array( self::$storage, array( "files", "pdo", "mpdo" ) ) ) {
                 self::$sys['storage'] = "disk";
-            } elseif ( in_array( self::$storage, array( "apc", "memcache", "memcached", "wincache", "xcache" ) ) ) {
+            } elseif ( in_array( self::$storage, array( "apc", "memcache", "memcached", "wincache" ) ) ) {
                 self::$sys['storage'] = "memory";
             } else {
                 self::$sys['storage'] = "";
@@ -545,9 +531,6 @@ allow from 127.0.0.1";
             case "apc":
                 return self::apc_cleanup( $option );
                 break;
-            case "xcache":
-                return self::xcache_cleanup( $option );
-                break;
             default:
                 return self::pdo_cleanup( $option );
                 break;
@@ -578,9 +561,6 @@ allow from 127.0.0.1";
                 break;
             case "apc":
                 return self::apc_cleanup();
-                break;
-            case "xcache":
-                return self::xcache_cleanup();
                 break;
             default:
                 return self::pdo_cleanup();
@@ -623,9 +603,6 @@ allow from 127.0.0.1";
             case "apc":
                 return self::apc_delete( $name );
                 break;
-            case "xcache":
-                return self::xcache_delete( $name );
-                break;
             default:
                 return self::pdo_delete( $name );
                 break;
@@ -659,9 +636,6 @@ allow from 127.0.0.1";
                 break;
             case "apc":
                 return self::apc_exist( $name );
-                break;
-            case "xcache":
-                return self::xcache_exist( $name );
                 break;
             default:
                 return self::pdo_exist( $name );
@@ -755,9 +729,6 @@ allow from 127.0.0.1";
             case "apc":
                 return self::apc_set( $name, $value, $time_in_second, $skip_if_existing );
                 break;
-            case "xcache":
-                return self::xcache_set( $name, $value, $time_in_second, $skip_if_existing );
-                break;
             default:
                 return self::pdo_set( $name, $value, $time_in_second, $skip_if_existing );
                 break;
@@ -798,9 +769,6 @@ allow from 127.0.0.1";
                 break;
             case "apc":
                 return self::apc_decrement( $name, $step );
-                break;
-            case "xcache":
-                return self::xcache_decrement( $name, $step );
                 break;
             default:
                 return self::pdo_decrement( $name, $step );
@@ -844,9 +812,6 @@ allow from 127.0.0.1";
                 break;
             case "apc":
                 return self::apc_get( $name );
-                break;
-            case "xcache":
-                return self::xcache_get( $name );
                 break;
             default:
                 return self::pdo_get( $name );
@@ -899,9 +864,6 @@ allow from 127.0.0.1";
             case "apc":
                 return self::apc_stats();
                 break;
-            case "xcache":
-                return self::xcache_stats();
-                break;
             default:
                 return self::pdo_stats();
                 break;
@@ -944,9 +906,6 @@ allow from 127.0.0.1";
                 break;
             case "apc":
                 return self::apc_increment( $name, $step );
-                break;
-            case "xcache":
-                return self::xcache_increment( $name, $step );
                 break;
             default:
                 return self::pdo_increment( $name, $step );
@@ -1271,121 +1230,6 @@ allow from 127.0.0.1";
         }
 
         return $name;
-    }
-
-    /*
-     * Begin XCache Static
-     * http://xcache.lighttpd.net/wiki/XcacheApi
-     */
-
-    /**
-     * @ignore
-     */
-    private static function xcache_exist( $name ) {
-        $name = self::getMemoryName( $name );
-        if ( xcache_isset( $name ) ) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @ignore
-     */
-    private static function xcache_set( $name, $value, $time_in_second = 600, $skip_if_existing = false ) {
-        $name = self::getMemoryName( $name );
-        if ( $skip_if_existing == true ) {
-            if ( !self::xcache_exist( $name ) ) {
-                return xcache_set( $name, $value, $time_in_second );
-            }
-        } else {
-            return xcache_set( $name, $value, $time_in_second );
-        }
-
-        return false;
-    }
-
-    /**
-     * @ignore
-     */
-    private static function xcache_get( $name ) {
-
-        $name = self::getMemoryName( $name );
-
-        $data = xcache_get( $name );
-
-        if ( $data === false || $data == "" ) {
-            return null;
-        }
-
-        return $data;
-    }
-
-    /**
-     * @ignore
-     */
-    private static function xcache_stats() {
-        try {
-            return xcache_list( XC_TYPE_VAR, 100 );
-        } catch ( Exception $e ) {
-            return array();
-        }
-    }
-
-    /**
-     * @ignore
-     */
-    private static function xcache_cleanup( $option = array() ) {
-        // Revision 621
-
-        $cnt = xcache_count( XC_TYPE_VAR );
-        for ( $i = 0; $i < $cnt; $i ++ ) {
-            xcache_clear_cache( XC_TYPE_VAR, $i );
-        }
-
-        return true;
-    }
-
-    /**
-     * @ignore
-     */
-    private static function xcache_delete( $name ) {
-        $name = self::getMemoryName( $name );
-
-        return xcache_unset( $name );
-    }
-
-    /**
-     * @ignore
-     */
-    private static function xcache_increment( $name, $step = 1 ) {
-        $orgi = $name;
-        $name = self::getMemoryName( $name );
-        $ret  = xcache_inc( $name, $step );
-        if ( $ret === false ) {
-            self::xcache_set( $orgi, $step, 3600 );
-
-            return $step;
-        } else {
-            return $ret;
-        }
-    }
-
-    /**
-     * @ignore
-     */
-    private static function xcache_decrement( $name, $step = 1 ) {
-        $orgi = $name;
-        $name = self::getMemoryName( $name );
-        $ret  = xcache_dec( $name, $step );
-        if ( $ret === false ) {
-            self::xcache_set( $orgi, $step, 3600 );
-
-            return $step;
-        } else {
-            return $ret;
-        }
     }
 
     /*

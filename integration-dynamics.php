@@ -3,7 +3,7 @@
  * Plugin Name: Dynamics 365 Integration
  * Plugin URI: https://wordpress.org/plugins/integration-dynamics/
  * Description: The easiest way to connect Dynamics 365 and Dynamics CRM with WordPress.
- * Version: 1.1.32.6
+ * Version: 1.2.0-alpha.6
  * Author: AlexaCRM
  * Author URI: http://alexacrm.com
  * Text Domain: integration-dynamics
@@ -16,7 +16,7 @@ if ( !defined( 'ABSPATH' ) ) {
 
 define( 'WORDPRESSCRM_DIR', __DIR__ );
 define( 'WORDPRESSCRM_STORAGE', WORDPRESSCRM_DIR . '/storage' );
-define( 'WORDPRESSCRM_VERSION', '1.1.32.6' );
+define( 'WORDPRESSCRM_VERSION', '1.2.0-alpha.5' );
 
 // register autoloaders
 spl_autoload_register( function ( $className ) {
@@ -61,9 +61,11 @@ if ( !is_writable( WORDPRESSCRM_STORAGE ) ) {
 
 $logger = new \Monolog\Logger( 'wpcrm' );
 $logLevel = WP_DEBUG? \Monolog\Logger::INFO : \Monolog\Logger::NOTICE;
+$logLevel = get_option( 'wpcrm_log_level', $logLevel );
 if ( defined( 'WORDPRESSCRM_LOG_LEVEL' ) ) {
     $logLevel = WORDPRESSCRM_LOG_LEVEL;
 }
+define( 'WORDPRESSCRM_EFFECTIVE_LOG_LEVEL', $logLevel );
 $logStream = new \Monolog\Handler\RotatingFileHandler( WORDPRESSCRM_STORAGE . '/integration-dynamics.log', 3, $logLevel );
 $logger->pushHandler( $logStream );
 
@@ -102,28 +104,6 @@ if ( !function_exists( 'curl_version' ) ) {
             <div class="notice notice-error">
                 <p>
                     <?php _e( 'cURL, a PHP extension, is not installed. <strong>Dynamics 365 Integration</strong> requires cURL to work properly.', 'integration-dynamics' ); ?>
-                </p>
-            </div>
-            <?php
-        }
-    } );
-
-    return;
-}
-
-/**
- * Check whether php-soap is installed.
- */
-if ( !class_exists( '\\SoapFault' ) ) {
-    $logger->critical( 'php-soap is not installed. Cannot proceed further.' );
-
-    add_action( 'admin_notices', function() {
-        $screen = get_current_screen();
-        if ( $screen->base === 'plugins' ) {
-            ?>
-            <div class="notice notice-error">
-                <p>
-                    <?php _e( 'SOAP, a PHP extension, is not installed. <strong>Dynamics 365 Integration</strong> requires SOAP to work properly.', 'integration-dynamics' ); ?>
                 </p>
             </div>
             <?php

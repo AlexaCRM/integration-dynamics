@@ -4,6 +4,7 @@ namespace AlexaCRM\WordpressCRM\Admin\Tab;
 
 use AlexaCRM\WordpressCRM\Admin;
 use AlexaCRM\WordpressCRM\Admin\Tab;
+use Monolog\Logger;
 
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
@@ -61,7 +62,54 @@ class About extends Tab {
         <?php } ?>
 
         <h3><?php _e( 'Error reporting', 'integration-dynamics' ); ?></h3>
-        <p><?php printf( __( 'If you experience problems while using Dynamics 365 Integration plugin and eventually report them, attach log files which are stored in <code>%s</code>', 'integration-dynamics' ), WORDPRESSCRM_STORAGE ); ?></p>
+        <p><?php
+            $message = __( 'If you experience problems while using Dynamics 365 Integration plugin and eventually report them, attach log files which are stored in <code>%s</code>. <a href="%s">Download log files</a>', 'integration-dynamics' );
+            if ( !class_exists( 'ZipArchive' ) ) {
+                $message = __( 'If you experience problems while using Dynamics 365 Integration plugin and eventually report them, attach log files which are stored in <code>%s</code>. <a href="%s">Download the latest log file</a>', 'integration-dynamics' );
+            }
+
+            printf( $message, WORDPRESSCRM_STORAGE, admin_url( 'admin-ajax.php?action=wpcrm_log') ); ?></p>
+        <p>
+            <label><?php _e( 'Change log verbosity:', 'integration-dynamics' ); ?>
+                <select name="verbosity" id="wpcrmVerbositySelector" style="vertical-align: baseline;">
+                <?php
+                $logLevels = [
+                    Logger::DEBUG => 'Debug',
+                    Logger::INFO => 'Info',
+                    Logger::NOTICE => 'Notice',
+                    Logger::WARNING => 'Warning',
+                    Logger::ERROR => 'Error',
+                    Logger::CRITICAL => 'Critical',
+                    Logger::ALERT => 'Alert',
+                    Logger::EMERGENCY => 'Emergency',
+                ];
+                foreach ( $logLevels as $logLevel => $label ) {
+                    ?><option <?php selected( WORDPRESSCRM_EFFECTIVE_LOG_LEVEL, $logLevel ); ?> value="<?php echo esc_attr( $logLevel ); ?>"><?php echo $label; ?></option><?php
+                }
+                ?>
+                </select>
+                <img src="/wp-content/plugins/integration-dynamics/resources/front/images/progress.gif" width="18" height="18" alt="<?php esc_attr_e( 'Saving...', 'integration-dynamics' ); ?>" style="display: none; vertical-align: baseline;" id="wpcrmVerbositySelectorSpinner">
+            </label>
+        </p>
+        <script>
+            ( function( $ ) {
+                var $verbositySelector = $( '#wpcrmVerbositySelector' ),
+                    $verbositySpinner = $( '#wpcrmVerbositySelectorSpinner' ),
+                    verbosityPrevious = $verbositySelector.val();
+
+                $verbositySelector.change( function( e ) {
+                    $verbositySpinner.show();
+                    $.post( ajaxurl, { action: 'wpcrm_log_verbosity', logVerbosity: $verbositySelector.val() } ).done( function() {
+
+                    } ).fail( function() {
+                        $verbositySelector.val( verbosityPrevious );
+                        alert( '<?php echo esc_js( __( 'Couldn\'t save the new log verbosity setting.', 'integration-dynamics' ) ); ?>' );
+                    } ).always( function() {
+                        $verbositySpinner.hide();
+                    } );
+                } );
+            }( jQuery ) );
+        </script>
         <?php
     }
 }

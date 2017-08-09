@@ -4,6 +4,7 @@ namespace AlexaCRM\WordpressCRM;
 
 use AlexaCRM\CRMToolkit\Client;
 use AlexaCRM\CRMToolkit\Entity\MetadataCollection;
+use AlexaCRM\CRMToolkit\OrganizationDisabledException;
 use AlexaCRM\CRMToolkit\Settings;
 use AlexaCRM\CRMToolkit\StorageInterface;
 use AlexaCRM\WordpressCRM\Image\AnnotationImage;
@@ -27,12 +28,6 @@ final class Plugin {
      * Shortcode and option name prefix.
      */
     const PREFIX = 'msdyncrm_';
-
-    /**
-     * @var string
-     * @deprecated 1.1.32 In favor of WORDPRESSCRM_VERSION
-     */
-    public $version = '';
 
     /**
      * Current request.
@@ -281,10 +276,12 @@ final class Plugin {
         if ( $this->options && isset( $this->options['connected'] ) && $this->options['connected'] == true ) {
             try {
                 return $this->initCrmConnection();
-            } catch ( Exception $ex ) {
-                $this->getLogger()->critical( 'Caught exception while initializing connection to CRM.', [ 'exception' => $ex ] );
+            } catch ( OrganizationDisabledException $ex ) {
+                $this->getLogger()->alert( 'CRM has been disabled and connection cannot be established.', [ 'exception' => $ex ] );
                 $this->options['connected'] = $options['connected'] = false;
                 update_option( static::PREFIX . 'options', $options );
+            } catch ( Exception $ex ) {
+                $this->getLogger()->critical( 'Caught exception while initializing connection to CRM.', [ 'exception' => $ex ] );
             }
         }
 

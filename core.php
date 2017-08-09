@@ -34,6 +34,11 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
     $viewField->description = __( 'Name of the view to display.', 'integration-dynamics' );
     $viewField->bindingFields = [ 'entity' ];
     $viewField->setValueGenerator( function( $values ) {
+        $client = ACRM()->getSdk();
+        if ( !$client ) {
+            throw new \Exception( __( 'Not connected to CRM', 'integration-dynamics' ) );
+        }
+
         $views = [];
 
         if ( !array_key_exists( 'entity', $values ) ) {
@@ -46,7 +51,7 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
             throw new \InvalidArgumentException( __( 'Empty entity name in the request', 'integration-dynamics' ) );
         }
 
-        $entity = ASDK()->entity( $entityName );
+        $entity = $client->entity( $entityName );
 
         $fetch = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
 						<entity name="userquery">
@@ -58,7 +63,7 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
 						</entity>
 					  </fetch>';
 
-        $userQueries = ASDK()->retrieveMultiple( $fetch );
+        $userQueries = $client->retrieveMultiple( $fetch );
 
         $fetch = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
 						<entity name="savedquery">
@@ -70,7 +75,7 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
 						</entity>
 					  </fetch>';
 
-        $savedQueries = ASDK()->retrieveMultiple( $fetch );
+        $savedQueries = $client->retrieveMultiple( $fetch );
 
         $viewEntities = array_merge( $userQueries->Entities, $savedQueries->Entities );
 
@@ -117,9 +122,14 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
     $attributeField->description = __( 'Entity attribute to render.', 'integration-dynamics' );
     $attributeField->bindingFields = [ 'entity' ];
     $attributeField->setValueGenerator( function( $values ) {
+        $client = ACRM()->getSdk();
+        if ( !$client ) {
+            return [];
+        }
+
         $attributes = [];
 
-        $entity = ASDK()->entity( $values['entity'] );
+        $entity = $client->entity( $values['entity'] );
 
         foreach ( $entity->attributes as $attribute ) {
             $attributes[$attribute->logicalName] = $attribute->logicalName . ' (' . $attribute->label . ')';
@@ -134,16 +144,71 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
     $shortcodeWizard->registerShortcode( $field );
 } );
 
+add_action( 'wp_ajax_wpcrm_log_verbosity', function() {
+    $request = ACRM()->request->request;
+
+    update_option( 'wpcrm_log_level', $request->get( 'logVerbosity', WORDPRESSCRM_EFFECTIVE_LOG_LEVEL ) );
+
+    wp_send_json_success();
+} );
+
+add_action( 'wp_ajax_wpcrm_log', function() {
+    if ( class_exists( '\ZipArchive' ) && ( $zipPath = tempnam( sys_get_temp_dir(), 'wpcrm' ) ) ) {
+        $zip = new ZipArchive();
+        $zip->open( $zipPath, ZipArchive::OVERWRITE );
+        $zip->addGlob( WORDPRESSCRM_STORAGE . '/*.log', 0, [ 'remove_all_path' => true ] );
+        $zip->close();
+
+        header( 'Content-Description: File Transfer' );
+        header( 'Content-Type: application/octet-stream' );
+
+        $date = date( 'YmdHi' );
+        header( "Content-Disposition: attachment; filename='integration-dynamics_logs_{$date}.zip'" );
+
+        readfile( $zipPath );
+
+        unlink( $zipPath );
+
+        wp_die();
+    }
+
+    $logFiles = glob( WORDPRESSCRM_STORAGE . '/*.log' );
+    rsort( $logFiles );
+    $logPath = array_shift( $logFiles );
+
+    header( 'Content-Description: File Transfer' );
+    header( 'Content-Type: application/octet-stream' );
+
+    $filename = basename( $logPath );
+    header( "Content-Disposition: attachment; filename='{$filename}'" );
+
+    readfile( $logPath );
+
+    wp_die();
+} );
+
+/**
+ * Don't texturize Twig shortcode contents.
+ */
+add_filter( 'no_texturize_shortcodes', function( $shortcodes ) {
+    $shortcodes[] = Plugin::PREFIX . 'twig';
+
+    return $shortcodes;
+} );
+
+/**
+ * Process form submissions.
+ */
+add_action( 'init', function() {
+    \AlexaCRM\WordpressCRM\Form\Controller::dispatchFormHandler();
+} );
+
 /**
  * Start initializing the plugin.
  */
 $pluginInstance = Plugin::instance();
 $request = Request::createFromGlobals();
 $pluginInstance->init(  $logger, $request );
-
-add_action( 'admin_init', function() use ( $pluginInstance ) {
-    $pluginInstance->version = get_plugin_data( WORDPRESSCRM_DIR . '/integration-dynamics.php' )['Version'];
-} );
 
 add_action( 'admin_notices', function() {
     $notifications = ACRM()->getNotifier()->getNotifications();

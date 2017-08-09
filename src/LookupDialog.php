@@ -70,7 +70,11 @@ class LookupDialog {
                             . '</td></tr></table>';
 
         if ( !$records || $records->Count < 1 ) {
-            wp_die( $noRecordsMessage );
+            wp_send_json( [
+                'data' => $noRecordsMessage,
+                'pagingcookie' => null,
+                'morerecords' => '0',
+            ] );
         }
 
         $pagingCookie = null;

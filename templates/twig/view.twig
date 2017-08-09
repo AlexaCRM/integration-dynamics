@@ -1,0 +1,47 @@
+{% spaceless %}
+{% if entityview.first_page is not null %}
+<table class="{{ tableClass ?? [ 'table' ]|join( ' ' ) }}">
+    <thead class="{{ tableHeaderClass ?? []|join( ' ' ) }}">
+    {% block headRow %}
+        <tr>
+        {% for columnName, column in entityview.columns %}
+            {% block headCell %}<th>{{ column.name }}</th>{% endblock %}
+        {% endfor %}
+        </tr>
+    {% endblock %}
+    </thead>
+    <tbody>
+    {% for record in entityview.rows %}
+        {% block bodyRow %}
+            <tr>
+                {% for columnName in entityview.columns|keys %}
+                    {% block bodyCell %}<td>{{ record[columnName].formatted_value|raw }}</td>{% endblock %}
+                {% endfor %}
+            </tr>
+        {% endblock %}
+    {% endfor %}
+    </tbody>
+    {% if entityview.pages|length > 1 %}
+    <tfoot>
+    <tr>
+      <td colspan="{{ entityview.columns|length }}">
+        <nav>
+          <ul class="pagination">
+            <li class="page-item{% if entityview.previous_page is null %} disabled{% endif %}"><a class="page-link" href="{% if entityview.previous_page %}{{ request.url|add_query('viewPage', entityview.previous_page)}}{% else %}#{% endif %}">Previous</a></li>
+            {% for pageNumber in entityview.pages %}
+            <li class="page-item{% if pageNumber == entityview.page %} active{% endif %}"><a class="page-link" href="{{ request.url|add_query('viewPage', pageNumber) }}">{{ pageNumber }}</a></li>
+            {% endfor %}
+            <li class="page-item{% if entityview.next_page is null %} disabled{% endif %}"><a class="page-link" href="{% if entityview.next_page %}{{ request.url|add_query('viewPage', entityview.next_page)}}{% else %}#{% endif %}">Next</a></li>
+          </ul>
+        </nav>
+      </td>
+    </tr>
+    </tfoot>
+    {% endif %}
+</table>
+{% else %}
+    {% block noRecords %}
+        <p>No records found.</p>
+    {% endblock %}
+{% endif %}
+{% endspaceless %}

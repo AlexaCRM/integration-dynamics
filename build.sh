@@ -38,7 +38,7 @@ tar -xf ${ASSEMBLY_DIR}/plugin.tar -C ${ASSEMBLY_TARGET_DIR}
 
 # install Composer dependencies
 cd ${ASSEMBLY_TARGET_DIR}
-composer install --prefer-dist
+composer install --no-dev --optimize-autoloader --prefer-dist
 
 cd ${WORKING_DIR}
 
@@ -53,6 +53,11 @@ rm -r ${ASSEMBLY_TARGET_DIR}/vendor/alexacrm/php-crm-toolkit/tests
 rm -r ${ASSEMBLY_TARGET_DIR}/vendor/monolog/monolog/doc
 rm -r ${ASSEMBLY_TARGET_DIR}/vendor/monolog/monolog/tests
 rm -r ${ASSEMBLY_TARGET_DIR}/vendor/symfony/http-foundation/Tests
+
+# Remove unnecessary Twig files
+rm -r ${ASSEMBLY_TARGET_DIR}/vendor/twig/twig/doc
+rm -r ${ASSEMBLY_TARGET_DIR}/vendor/twig/twig/ext
+rm -r ${ASSEMBLY_TARGET_DIR}/vendor/twig/twig/test
 
 echo "Creating <integration-dynamics-v${TARGET_VERSION}.zip>..."
 cd ${ASSEMBLY_DIR}

@@ -27,6 +27,10 @@ class Binding {
      * @return Entity|null
      */
     public function getEntity() {
+        if ( !ACRM()->connected() ) {
+            return null;
+        }
+
         if ( $this->entity === false ) {
             return null;
         }
@@ -197,15 +201,12 @@ class Binding {
     private function getBoundRecord( $entityName, $entityKey, $entityQuery ) {
         $query = ACRM()->request->query;
 
-        if ( !$query->get( $entityQuery ) ) {
+        if ( trim( $query->get( $entityQuery, '' ) ) === '' ) {
             return null;
         }
 
         try {
             $entityRequestValue = $query->get( $entityQuery );
-            if ( trim( $entityRequestValue ) === '' ) {
-                return null;
-            }
 
             $columnSet = $this->getCurrentColumns();
 
