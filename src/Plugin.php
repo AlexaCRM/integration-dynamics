@@ -261,6 +261,11 @@ final class Plugin {
         foreach ( array_keys( $this->storage ) as $storageName ) {
             $this->getStorage( $storageName )->cleanup();
         }
+
+        /**
+         * Fired after plugin cache/storage has been purged.
+         */
+        do_action( 'wordpresscrm_after_cache_purge' );
     }
 
     /**
