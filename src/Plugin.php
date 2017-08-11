@@ -278,16 +278,17 @@ final class Plugin {
             return $this->facilities['sdk'];
         }
 
-        if ( $this->options && isset( $this->options['connected'] ) && $this->options['connected'] == true ) {
-            try {
-                return $this->initCrmConnection();
-            } catch ( OrganizationDisabledException $ex ) {
-                $this->getLogger()->alert( 'CRM has been disabled and connection cannot be established.', [ 'exception' => $ex ] );
-                $this->options['connected'] = $options['connected'] = false;
-                update_option( static::PREFIX . 'options', $options );
-            } catch ( Exception $ex ) {
-                $this->getLogger()->critical( 'Caught exception while initializing connection to CRM.', [ 'exception' => $ex ] );
-            }
+        if ( !$this->connected() ) {
+            return null;
+        }
+
+        try {
+            return $this->initCrmConnection();
+        } catch ( OrganizationDisabledException $ex ) {
+            $this->getLogger()->alert( 'CRM has been disabled and connection cannot be established.', [ 'exception' => $ex ] );
+            Connection::setConnectionStatus( false );
+        } catch ( Exception $ex ) {
+            $this->getLogger()->critical( 'Unexpected error while initializing connection to CRM.', [ 'exception' => $ex ] );
         }
 
         return null;
