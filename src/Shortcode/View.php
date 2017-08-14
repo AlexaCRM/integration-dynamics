@@ -90,6 +90,7 @@ class View extends Shortcode {
         // add pagination
         if ( is_array( $attributes ) && array_key_exists( 'count', $attributes ) && (int)$attributes['count'] > 0 ) {
             $perPage = (int)$attributes['count'];
+            $fetchXML = preg_replace( '~<fetch(.*?)count="\d+"(.*?)>~i', '<fetch$1$2>', $fetchXML ); // drop the default count
             $fetchXML = str_replace( '<fetch ', '<fetch count="' . $perPage . '" ', $fetchXML );
 
             $pageNumber = ACRM()->request->query->getInt( 'viewPage', 1 );
