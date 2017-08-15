@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the Dynamics 365 Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics 365 Integration 1.1.32.6\n"
+"Project-Id-Version: Dynamics 365 Integration 1.1.32.7\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-"
 "dynamics\n"
-"POT-Creation-Date: 2017-07-21 13:08:22+00:00\n"
+"POT-Creation-Date: 2017-08-15 09:04:32+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -429,11 +429,11 @@ msgstr ""
 msgid "No records are available in this view."
 msgstr ""
 
-#: src/Plugin.php:74 src/Plugin.php:81
+#: src/Plugin.php:75 src/Plugin.php:82
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: src/Plugin.php:230
+#: src/Plugin.php:231
 msgid "Settings"
 msgstr ""
 
