@@ -32,6 +32,10 @@ This plugin requires at least PHP 5.4. Versions 5.6 or 7.x are expected to have 
 
 For this plugin to work, access to a working instance of Dynamics 365 Online, or Dynamics 365 / CRM On-Premises with IFD (Internet Facing Deployment) is required. Without an instance of Dynamics 365 / CRM the plugin is absolutely useless. Please, do not raise issues related to that fact. If you are curious to try, you can always sign up for a [free trial of Dynamics 365](https://www.microsoft.com/en-us/dynamics/crm-free-trial-overview.aspx).
 
+= Documentation =
+
+Plugin documentation is available at [docs.alexacrm.com/wpcrm/](http://docs.alexacrm.com/wpcrm/).
+
 = Reporting issues =
 
 Development of this plugin takes place at the [GitHub repository](https://github.com/AlexaCRM/integration-dynamics). Please address all questions and issues there.
