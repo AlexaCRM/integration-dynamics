@@ -57,6 +57,14 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 * New: Universal Twig engine that allows views, forms, fetchxml queries and more in one shortcode
 * Download log files in the About section
 
+= 1.1.32.8 =
+
+* Fixed: fatal errors when generation GUIDs in some situations
+
+= 1.1.32.7 =
+
+* Fixed: plugin could disconnect from CRM when initializing
+
 = 1.1.32.6 =
 
 * Fixed: issue when connecting to Dynamics 365 Online cannot be established from some geographical locations
