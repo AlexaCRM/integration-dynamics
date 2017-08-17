@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.1.32.8 =
+
+* Fixed: fatal errors when generation GUIDs in some situations
+
 = 1.1.32.7 =
 
 * Fixed: plugin could disconnect from CRM when initializing
