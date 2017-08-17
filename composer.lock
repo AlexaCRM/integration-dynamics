@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AlexaCRM/php-crm-toolkit.git",
-                "reference": "97a7c32aac43fb29f44375ce081c6d9624a9624b"
+                "reference": "5eac907fcc79ac18cdd833fa22aaf8f6ef9d8cb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/97a7c32aac43fb29f44375ce081c6d9624a9624b",
-                "reference": "97a7c32aac43fb29f44375ce081c6d9624a9624b",
+                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/5eac907fcc79ac18cdd833fa22aaf8f6ef9d8cb7",
+                "reference": "5eac907fcc79ac18cdd833fa22aaf8f6ef9d8cb7",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "php",
                 "sdk"
             ],
-            "time": "2017-08-02 15:06:02"
+            "time": "2017-08-16 14:56:35"
         },
         {
             "name": "monolog/monolog",
@@ -295,12 +295,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "73ab3a1215a9e13392ae120236824a6ea5ef507a"
+                "reference": "96f1a5b486071c944d66437a30a38bf8729a32ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/73ab3a1215a9e13392ae120236824a6ea5ef507a",
-                "reference": "73ab3a1215a9e13392ae120236824a6ea5ef507a",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/96f1a5b486071c944d66437a30a38bf8729a32ca",
+                "reference": "96f1a5b486071c944d66437a30a38bf8729a32ca",
                 "shasum": ""
             },
             "require": {
@@ -314,7 +314,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.34-dev"
+                    "dev-master": "1.35-dev"
                 }
             },
             "autoload": {
@@ -352,7 +352,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-08-02 18:11:46"
+            "time": "2017-08-16 07:28:55"
         }
     ],
     "packages-dev": [],
