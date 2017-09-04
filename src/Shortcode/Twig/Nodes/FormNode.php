@@ -41,14 +41,12 @@ class FormNode extends \Twig_Node {
 
         $compiler->write( "\$formModel = \\AlexaCRM\\WordpressCRM\\Form\\Model::buildModel( \$entityName, \$formName, \$extraAttributes );\n" );
         $compiler->write( "\$formView = \$formModel->buildView();\n" );
-        $compiler->write( "\$context['form'] = \$formView;\n" );
-        $compiler->write( "\$context['validationErrors'] = apply_filters('wordpresscrm_form_validation', null);\n" );
-        $compiler->write( "\$bouncedFields = apply_filters('wordpresscrm_form_bounced_fields', []);\n" );
-        $compiler->write( "\$formModel->hydrateRecord(\$bouncedFields);\n");
+        $compiler->write( "\$formSubmission = \$formModel->dispatch();\n");
+        $compiler->write( "\$context['form'] = array_merge( \$formView, \$formSubmission );\n" );
+        $compiler->write( "\$formModel->hydrateRecord(\$formSubmission['fields']);\n");
         $compiler->subcompile( $this->getNode( 'template' ) );
         $compiler->write( "if(count(\$formView)){\n");
         $compiler->write( "wp_enqueue_script('wordpresscrm-form');\n" );
-        $compiler->write( "\$formModel->registerHandler();\n" );
         $compiler->write( "}\n" );
     }
 

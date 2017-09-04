@@ -34,13 +34,6 @@ class Model {
     private $instanceId;
 
     /**
-     * The point in time when the form was created.
-     *
-     * @var int
-     */
-    private $birthday;
-
-    /**
      * @var Entity
      */
     private $record;
@@ -57,7 +50,6 @@ class Model {
      */
     public function __construct() {
         $this->instanceId = Client::getUuid();
-        $this->birthday = time();
     }
 
     /**
@@ -101,13 +93,6 @@ class Model {
     }
 
     /**
-     * Registers the form in the session to process submission later.
-     */
-    public function registerHandler() {
-        Controller::registerFormHandler( $this );
-    }
-
-    /**
      * Builds the view of the form.
      */
     public function buildView() {
@@ -127,6 +112,7 @@ class Model {
             ],
             'metadata' => $metadata,
             'entities' => ACRM()->getMetadata()->getEntitiesList(),
+            'parameters' => $this->attributes,
         ];
 
         $formDOM = new \DOMDocument();
@@ -324,15 +310,6 @@ class Model {
     }
 
     /**
-     * Tells whether the form has expired.
-     *
-     * @return bool
-     */
-    public function hasExpired() {
-        return ( ( time() - $this->birthday ) > 30 * MINUTE_IN_SECONDS );
-    }
-
-    /**
      * Validates the given array of data.
      *
      * @param array $fields
@@ -405,6 +382,40 @@ class Model {
         }
 
         return $result;
+    }
+
+    /**
+     * Dispatches the submitted form and saves data to the CRM.
+     *
+     * @return array
+     */
+    public function dispatch() {
+        $request = ACRM()->request->request;
+
+        if ( ACRM()->request->getMethod() !== 'POST' ) {
+            return [ 'submission' => false, 'fields' => $request->all() ];
+        }
+
+        $dispatchedForm = clone $this;
+
+        // Process the form
+        $validationResult = $dispatchedForm->validate( $request->all() );
+
+        if ( $validationResult['status'] ) {
+            $record = $dispatchedForm->hydrateRecord( $validationResult['payload'] );
+            $mode = $dispatchedForm->attributes['mode'];
+            if ( $mode === 'create' ) {
+                ASDK()->create( $record );
+            } elseif ( $mode === 'edit' ) {
+                ASDK()->update( $record );
+            } elseif ( $mode === 'upsert' ) {
+                ASDK()->upsert( $record );
+            }
+
+            return [ 'submission' => true, 'status' => true, 'fields' => $request->all() ];
+        }
+
+        return [ 'submission'=> true, 'status' => false, 'fields' => $request->all(), 'errors' => $validationResult['payload'] ];
     }
 
     /**
