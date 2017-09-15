@@ -197,15 +197,15 @@ class FormInstance extends AbstractForm {
 
         $formData = $request->request;
 
-        $nonceActionName = 'wpcrm-form-' . $formData->get( 'form_name', '' );
-        if ( !wp_verify_nonce( $formData->get( '_wpnonce', '' ), $nonceActionName ) ) {
-            throw new Exception( __( 'Form submission couldn\'t pass security check. Please try again', 'integration-dynamics' ) );
-        }
-
         if ( $formData->has( 'entity' ) &&
              ( $formData->get( 'entity_form_name', '' ) == $this->formName ) &&
              ( $formData->get( 'entity_form_entity', '' ) == $this->entity->logicalname )
         ) {
+            $nonceActionName = 'wpcrm-form-' . $formData->get( 'form_name', '' );
+            if ( !wp_verify_nonce( $formData->get( '_wpnonce', '' ), $nonceActionName ) ) {
+                throw new Exception( __( 'Form submission couldn\'t pass security check. Please try again', 'integration-dynamics' ) );
+            }
+
             $postData = $formData->all();
         }
 
