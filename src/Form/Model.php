@@ -83,6 +83,11 @@ class Model {
             $attributes['default'] = [];
         }
 
+        // redirects for different actions
+        if ( !array_key_exists( 'redirect', $attributes ) || !is_array( $attributes['redirect'] ) ) {
+            $attributes['redirect'] = [];
+        }
+
         if ( !array_key_exists( 'record', $attributes ) ) {
             $attributes['record'] = null;
         }
@@ -399,11 +404,12 @@ class Model {
         $dispatchedForm = clone $this;
 
         // Process the form
-        $validationResult = $dispatchedForm->validate( $request->all() );
+        $fields = $request->all();
+        $validationResult = $dispatchedForm->validate( $fields );
 
         if ( $validationResult['status'] ) {
             $record = $dispatchedForm->hydrateRecord( $validationResult['payload'] );
-            $mode = $dispatchedForm->attributes['mode'];
+            $mode = $redirectAction = $dispatchedForm->attributes['mode'];
             if ( $mode === 'create' ) {
                 ASDK()->create( $record );
             } elseif ( $mode === 'edit' ) {
@@ -412,10 +418,44 @@ class Model {
                 ASDK()->upsert( $record );
             }
 
-            return [ 'submission' => true, 'status' => true, 'fields' => $request->all() ];
+            $redirectUrl = static::getActionRedirect( $redirectAction, $dispatchedForm );
+            if ( is_string( $redirectUrl ) && $redirectUrl !== '' ) {
+                wordpresscrm_javascript_redirect( $redirectUrl );
+            }
+
+            return [ 'submission' => true, 'status' => true, 'fields' => $fields ];
         }
 
-        return [ 'submission'=> true, 'status' => false, 'fields' => $request->all(), 'errors' => $validationResult['payload'] ];
+        return [ 'submission'=> true, 'status' => false, 'fields' => $fields, 'errors' => $validationResult['payload'] ];
+    }
+
+    /**
+     * Returns a suitable redirect URL for the given action.
+     *
+     * @param string $action create/edit/upsert
+     * @param Model $model
+     *
+     * @return string Empty string returned if no redirect is required.
+     */
+    private static function getActionRedirect( $action, Model $model ) {
+        $redirectUrl = null;
+
+        if ( is_string( $model->attributes['redirect'] ) ) {
+            $model->attributes['redirect'] = [ 'always' => $model->attributes['redirect'] ];
+        }
+
+        if ( array_key_exists( $action, $model->attributes['redirect'] ) ) {
+            $redirectUrl = $model->attributes['redirect'][$action];
+        }
+
+        if ( array_key_exists( 'always', $model->attributes['redirect'] ) ) {
+            $redirectUrl = $model->attributes['redirect']['always'];
+        }
+
+        $recordId = ( $model->record !== null )? $model->record->ID : null;
+        $effectiveRedirectUrl = trim( sprintf( $redirectUrl, $recordId ) );
+
+        return apply_filters( 'wpcrm/twig/form/redirect', $effectiveRedirectUrl, $action, $model );
     }
 
     /**
