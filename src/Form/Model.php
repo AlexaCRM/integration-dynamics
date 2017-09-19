@@ -412,6 +412,7 @@ class Model {
             $mode = $redirectAction = $dispatchedForm->attributes['mode'];
             if ( $mode === 'create' ) {
                 ASDK()->create( $record );
+                $fields = [];
             } elseif ( $mode === 'edit' ) {
                 ASDK()->update( $record );
             } elseif ( $mode === 'upsert' ) {
@@ -553,6 +554,13 @@ class Model {
         }
 
         return $formXML;
+    }
+
+    /**
+     * Prevent augmenting parent's objects.
+     */
+    public function __clone() {
+        $this->record = clone $this->record;
     }
 
 }
