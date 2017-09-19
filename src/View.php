@@ -58,6 +58,10 @@ class View {
      * @return Entity|null object that contain result view, or NULL if view wasn't found
      */
     public static function getViewForEntity( $entity, $viewName ) {
+        if ( !ACRM()->connected() ) {
+            return null;
+        }
+
         if ( is_string( $entity ) ) {
             $entity = ASDK()->entity( $entity );
         }

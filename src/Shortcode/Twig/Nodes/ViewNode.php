@@ -27,6 +27,8 @@ class ViewNode extends \Twig_Node {
      * @param Twig_Compiler $compiler
      */
     public function compile( Twig_Compiler $compiler ) {
+        $compiler->write( "if ( ACRM()->connected() ) {\n")->indent();
+
         $compiler->write( "\$viewAttributes = [" );
         end( $this->attributes );
         $lastAttributeName = key( $this->attributes );
@@ -43,6 +45,8 @@ class ViewNode extends \Twig_Node {
         $compiler->write( "\$viewBuilder = new \\AlexaCRM\\WordpressCRM\\ViewBuilder(\$viewAttributes);\n" );
         $compiler->write( "\$context['entityview'] = \$viewBuilder->build();\n" );
         $compiler->subcompile( $this->getNode( 'template' ) );
+
+        $compiler->outdent()->write( "}\n" );
     }
 
 }

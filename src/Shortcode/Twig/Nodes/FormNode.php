@@ -15,6 +15,8 @@ class FormNode extends \Twig_Node {
      * @param Twig_Compiler $compiler
      */
     public function compile( Twig_Compiler $compiler ) {
+        $compiler->write( "if ( ACRM()->connected() ) {\n")->indent();
+
         $compiler->write( "\$entityName = " );
         $this->getAttribute( 'entity' )->compile( $compiler );
         $compiler->write( ";\n" );
@@ -48,6 +50,8 @@ class FormNode extends \Twig_Node {
         $compiler->write( "if(count(\$formView)){\n");
         $compiler->write( "wp_enqueue_script('wordpresscrm-form');\n" );
         $compiler->write( "}\n" );
+
+        $compiler->outdent()->write( "}\n" );
     }
 
 }
