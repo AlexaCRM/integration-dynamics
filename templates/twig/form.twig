@@ -10,23 +10,23 @@
 {% endif %}
 <form method="post" id="form-{{ form.id }}">
 {% for tab in form.tabs %}
-  <div class="row">
+  <div class="row wpcrm-form">
   {% if tab.showLabel %}<div class="col-sm-12"><h5>{{ tab.label }}</h5></div>{% endif %}
   {% for column in tab.columns %}
-    <div class="col-sm-{{ ( column.width / 100 * 12)|round }}">
+    <div class="col-sm-{{ ( column.width / 100 * 12)|round }} wpcrm-form-column">
     {% for section in column.sections %}
-    <div class="row">
-    {% if section.showLabel %}<div class="col-sm-12"><strong>{{ section.label }}</strong></div>{% endif %}
+    <div class="row wpcrm-form-section">
+    {% if section.showLabel %}<div class="col-sm-12 wpcrm-form-section-label"><strong>{{ section.label }}</strong></div>{% endif %}
       <div class="col-sm-12">
       {% for row in section.rows %}
         {% set cellWidth = 12/(row|length) %}
         <div class="row">
         {% for cell in row %}
           {% if cell.isSpacer %}
-            <div class="col-12 pb-3 mb-3"></div>
+            <div class="col-12 pb-3 mb-3 wpcrm-form-spacer"></div>
           {% else %}
           {% set control = cell.control %}
-            <div class="col-sm-{{ cellWidth }}">
+            <div class="col-sm-{{ cellWidth }} wpcrm-form-cell">
               <div class="form-group row">
                 {% set labelWidth = (cell.showLabel? (section.cellLabelPosition == 'top'? 12 : 4) : 0) %}
                 {% set controlWidth = (12 - labelWidth) %}
