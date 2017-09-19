@@ -152,6 +152,9 @@ class Twig extends Shortcode {
         // `request` global variable
         $twigEnv->addGlobal( 'request', $twigRequest );
 
+        // CRM connection status
+        $twigEnv->addGlobal( 'crm', [ 'connected' => ACRM()->connected() ] );
+
         /**
          * Triggered after default global variables are set up.
          *
