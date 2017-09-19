@@ -196,6 +196,26 @@ add_filter( 'no_texturize_shortcodes', function( $shortcodes ) {
     return $shortcodes;
 } );
 
+add_filter( 'pre_handle_404', function( $preempt, \WP_Query $query ) {
+    if ( is_admin() || !( $query->is_singular() && ACRM()->connected() ) ) {
+        return $preempt;
+    }
+
+    $post = $query->post;
+    $binding = ACRM()->getBinding();
+    $bindingConfig = $binding->getPostBinding( $post->ID );
+    if ( $bindingConfig === null ) {
+        return $preempt;
+    }
+
+    $shouldTrigger404 = ( $bindingConfig['empty'] === '404' );
+    if ( $binding->getEntity( $post->ID ) === null && apply_filters( 'wordpresscrm_data_binding_404', $shouldTrigger404 ) ) {
+        $query->set_404();
+    }
+
+    return $preempt;
+}, 10, 2 );
+
 /**
  * Start initializing the plugin.
  */

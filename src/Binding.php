@@ -24,9 +24,11 @@ class Binding {
     /**
      * Retrieve the current data-bound entity record.
      *
+     * @param int $postId
+     *
      * @return Entity|null
      */
-    public function getEntity() {
+    public function getEntity( $postId = null ) {
         if ( !ACRM()->connected() ) {
             return null;
         }
@@ -39,7 +41,8 @@ class Binding {
             return $this->entity;
         }
 
-        $bindingConfig = $this->getPostBinding( get_the_ID() );
+        $boundPostId = $postId? $postId : get_the_ID();
+        $bindingConfig = $this->getPostBinding( $boundPostId );
         if ( $bindingConfig === null ) {
             $this->entity = false;
 
@@ -58,17 +61,6 @@ class Binding {
          * @param string $entityQuery
          */
         $this->entity = apply_filters( 'wordpresscrm_data_binding_entity', $this->entity, get_post(), $bindingConfig['entity'], $bindingConfig['key'], $bindingConfig['query'] );
-
-        $shouldTrigger404 = ( $bindingConfig['empty'] === '404' );
-        if ( $this->entity === null && apply_filters( 'wordpresscrm_data_binding_404', $shouldTrigger404 ) ) {
-            global $wp_query;
-
-            $this->entity = false;
-            $wp_query->set_404();
-            status_header( 404 );
-
-            return null;
-        }
 
         return $this->entity;
     }
@@ -294,6 +286,11 @@ class Binding {
      */
     private function getCurrentColumns() {
         global $post;
+
+        if ( !$post ) {
+            return apply_filters( 'wordpresscrm_data_binding_columns', [], null, null );
+        }
+
         $content = $post->post_content;
 
         /**
