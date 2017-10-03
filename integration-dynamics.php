@@ -18,26 +18,6 @@ define( 'WORDPRESSCRM_DIR', __DIR__ );
 define( 'WORDPRESSCRM_STORAGE', WORDPRESSCRM_DIR . '/storage' );
 define( 'WORDPRESSCRM_VERSION', '1.2' );
 
-// register autoloaders
-spl_autoload_register( function ( $className ) {
-    $namespacePrefix = 'AlexaCRM\\WordpressCRM\\';
-
-    $baseDirectory = __DIR__ . '/src/';
-
-    $namespacePrefixLength = strlen( $namespacePrefix );
-    if ( strncmp( $namespacePrefix, $className, $namespacePrefixLength ) !== 0 ) {
-        return;
-    }
-
-    $relativeClassName = substr( $className, $namespacePrefixLength );
-
-    $classFilename = $baseDirectory . str_replace( '\\', '/', $relativeClassName ) . '.php';
-
-    if ( file_exists( $classFilename ) ) {
-        require $classFilename;
-    }
-} );
-
 require_once __DIR__ . '/vendor/autoload.php'; // Composer autoloader
 
 /**
