@@ -569,21 +569,25 @@ class FormInstance extends AbstractForm {
 
             $this->controls[ $control ]["controls"][ $attributeName ] = $newControl;
             $this->entity->{$attributeName} = $value;
-        } else {
-            /* Simple value string */
-            $this->entity->{$attributeName} = $value;
 
-            if ( $this->entity->attributes[ $attributeName ]->isLookup ) {
-                foreach ( $this->entity->attributes[ $attributeName ]->lookupTypes as $entityType ) {
-                    try {
-                        $lookup = ASDK()->entity( $entityType, $value );
-                    } catch ( Exception $ex ) {
-                        continue;
-                    }
-                    $this->entity->{$attributeName} = $lookup;
+            return;
+        }
+
+        if ( $this->entity->attributes[ $attributeName ]->isLookup ) {
+            foreach ( $this->entity->attributes[ $attributeName ]->lookupTypes as $entityType ) {
+                try {
+                    $lookup = ASDK()->entity( $entityType, $value );
+                } catch ( Exception $ex ) {
+                    continue;
                 }
+                $this->entity->{$attributeName} = $lookup;
+
+                return;
             }
         }
+
+        /* Simple value string */
+        $this->entity->{$attributeName} = $value;
     }
 
     private function processForm( $postData, $columns ) {
