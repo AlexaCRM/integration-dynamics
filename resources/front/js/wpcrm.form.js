@@ -29,7 +29,7 @@
             $target.find( '.wpcrm-lookup-display' ).val( displayName );
 
             // Set the new record ID to the field input.
-            $target.find( '~ input[type=hidden]' ).val( JSON.stringify( [ entityName, recordId ] ) );
+            $target.find( '~ input[type=hidden]' ).val( JSON.stringify( [ entityName, recordId, displayName ] ) );
         } );
 
         // Change the searched entity.
