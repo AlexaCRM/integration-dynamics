@@ -2,7 +2,7 @@
 Contributors: alexacrm, georgedude, wizardist
 Tags: contact form, CRM, dynamics crm, dynamics 365, form, integration, leads, membership, portal, shortcode
 Requires at least: 4.4
-Tested up to: 4.8.1
+Tested up to: 4.8.2
 Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
