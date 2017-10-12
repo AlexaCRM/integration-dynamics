@@ -167,6 +167,9 @@ final class Plugin {
      */
     private function initCrmConnection() {
         $options = $this->options;
+        $options = array_merge( $options, [
+            'caPath' => ABSPATH . WPINC . '/certificates/ca-bundle.crt',
+        ] );
 
         $this->getLogger()->debug( 'Initializing PHP CRM Toolkit.' );
 
