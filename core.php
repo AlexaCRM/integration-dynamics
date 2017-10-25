@@ -153,7 +153,7 @@ add_action( 'wp_ajax_wpcrm_log', function() {
     if ( class_exists( '\ZipArchive' ) && ( $zipPath = tempnam( sys_get_temp_dir(), 'wpcrm' ) ) ) {
         $zip = new ZipArchive();
         $zip->open( $zipPath, ZipArchive::OVERWRITE );
-        $zip->addGlob( WORDPRESSCRM_STORAGE . '/*.log', 0, [ 'remove_all_path' => true ] );
+        $zip->addGlob( WORDPRESSCRM_STORAGE . '/*.log', 0, [ 'add_path' => DIRECTORY_SEPARATOR, 'remove_all_path' => true ] );
         $zip->close();
 
         header( 'Content-Description: File Transfer' );
