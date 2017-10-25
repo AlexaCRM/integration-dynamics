@@ -1,30 +1,12 @@
 <?php
 
-/**
- * WordpressCRM Update
- *
- * Updates the deprecated options, and posts meta.
- *
- * @category    Core
- * @package    WordpressCRM/Uninstaller
- * @version     1.0.35
- */
-use AlexaCRM\WordpressCRM\Plugin;
+namespace AlexaCRM\WordpressCRM;
 
 /**
  * Main update class, used to update the options, pages metadata and other database things that was changed
  * in the new plugin version
  */
-class WordpressCRM_Update {
-
-    /**
-     * Add actions to call the update function on the plugin load
-     */
-    public function __construct() {
-        add_action( "wordpresscrm_before_load", array( $this, "updateDeprecatedOptions" ), 1 );
-        add_action( 'wordpresscrm_before_load', array( $this, 'updateDataBoundPages' ), 9 );
-        add_action( 'wordpresscrm_before_load', [ $this, 'updateDataBinding' ], 18 );
-    }
+class Update {
 
     /**
      * Updates the deprecated options with "alexacrm_" and "wordpresscrm_" prefix to the new "msdyncrm_" prefix.
@@ -193,6 +175,3 @@ class WordpressCRM_Update {
     }
 
 }
-
-/* Create the instance of the WordpressCRM_Update class to initiate update */
-new WordpressCRM_Update();

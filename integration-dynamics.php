@@ -93,4 +93,12 @@ if ( !function_exists( 'curl_version' ) ) {
     return;
 }
 
+// Run migrations
+register_activation_hook( __FILE__, function() {
+    $update = new \AlexaCRM\WordpressCRM\Update();
+    $update->updateDeprecatedOptions();
+    $update->updateDataBoundPages();
+    $update->updateDataBinding();
+} );
+
 require_once __DIR__ . '/core.php';

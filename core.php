@@ -7,9 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 load_plugin_textdomain( 'integration-dynamics', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
-// run migrations
-require_once __DIR__ . '/update.php';
-
 /* Shortcode Wizard init */
 // view shortcode
 add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWizard ) {
