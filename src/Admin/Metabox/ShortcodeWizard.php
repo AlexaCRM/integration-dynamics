@@ -183,6 +183,11 @@ Ditch it.
      * Enqueues front-end scripting for the wizard.
      */
     public function enqueueScripts() {
+        $screen = get_current_screen();
+        if ( !$screen || $screen->base !== 'post' ) {
+            return;
+        }
+
         $scriptPath = ACRM()->getPluginURL() . '/resources/front/js/shortcode-wizard.js';
 
         wp_enqueue_script( 'wordpresscrm-shortcode-wizard', $scriptPath, [ 'jquery', 'underscore', 'backbone' ], false, true );
