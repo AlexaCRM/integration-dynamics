@@ -163,8 +163,8 @@ class AnnotationImage extends Image {
     /**
      * Renders the response and halts execution
      *
-     * @param array $imageCode Image in an AnnotationImage::retrieveImage()-like format
-     * @param array $data
+     * @param string $imageCode Image code (etag)
+     * @param array $data Image in an AnnotationImage::retrieveImage()-like format
      * @param bool $isJsonExpected
      */
     protected function sendResponse( $imageCode, array $data, $isJsonExpected = false ) {
