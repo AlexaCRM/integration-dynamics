@@ -45,8 +45,8 @@ class Twig extends Shortcode {
 
         $output = $twig->render( $templateKey );
 
-        // Reapply wpautop()
-        return $output;
+        // Process nested shortcodes
+        return do_shortcode( $output );
     }
 
     /**
