@@ -16,7 +16,7 @@ if ( !defined( 'ABSPATH' ) ) {
 
 define( 'WORDPRESSCRM_DIR', __DIR__ );
 define( 'WORDPRESSCRM_STORAGE', WORDPRESSCRM_DIR . '/storage' );
-define( 'WORDPRESSCRM_VERSION', '1.2.0.1' );
+define( 'WORDPRESSCRM_VERSION', '1.2.1' );
 
 require_once __DIR__ . '/vendor/autoload.php'; // Composer autoloader
 

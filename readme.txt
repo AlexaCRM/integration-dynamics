@@ -52,6 +52,15 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.1 =
+
+* Add support for nested shortcodes in Twig templates
+* DB migration is only run during plugin activation/upgrade
+* Disable Twig form controls if they are not allowed for create/edit in metadata
+* WordPress CA is supplied to cURL to avoid potential problems with broken system CA
+* Fixed lookup submission in Twig forms
+* Fixed paths in the log export ZIP
+
 = 1.2.0.1 =
 
 * Fixed default lookup values for the form shortcode

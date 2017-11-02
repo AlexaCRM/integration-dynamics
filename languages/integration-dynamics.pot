@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Dynamics 365 Integration 1.2.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-"
 "dynamics\n"
-"POT-Creation-Date: 2017-10-04 13:33:51+00:00\n"
+"POT-Creation-Date: 2017-11-02 14:22:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,63 +13,63 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: core.php:16
+#: core.php:13
 msgid "View"
 msgstr ""
 
-#: core.php:17
+#: core.php:14
 msgid "Renders a Dynamics 365 view as a table."
 msgstr ""
 
-#: core.php:19
+#: core.php:16
 msgid "Entity name"
 msgstr ""
 
-#: core.php:20
+#: core.php:17
 msgid "Name of the entity to display a view of."
 msgstr ""
 
-#: core.php:33
+#: core.php:30
 msgid "Entity View name"
 msgstr ""
 
-#: core.php:34
+#: core.php:31
 msgid "Name of the view to display."
 msgstr ""
 
-#: core.php:39
+#: core.php:36
 msgid "Not connected to CRM"
 msgstr ""
 
-#: core.php:45
+#: core.php:42
 msgid "Entity name is not specified"
 msgstr ""
 
-#: core.php:51
+#: core.php:48
 msgid "Empty entity name in the request"
 msgstr ""
 
-#: core.php:92
+#: core.php:89
 msgid "Records per page"
 msgstr ""
 
-#: core.php:93
+#: core.php:90
 msgid "0 disables pagination for the view."
 msgstr ""
 
-#: core.php:104
+#: core.php:101
 msgid "Field"
 msgstr ""
 
-#: core.php:105
+#: core.php:102
 msgid "Renders a field value for the current CRM record on a data-bound page."
 msgstr ""
 
-#: core.php:121
+#: core.php:118
 msgid "Attribute name"
 msgstr ""
 
-#: core.php:122
+#: core.php:119
 msgid "Entity attribute to render."
 msgstr ""
 
@@ -122,36 +122,36 @@ msgstr ""
 msgid "Unknown error occurred."
 msgstr ""
 
-#: src/Admin/Metabox/ShortcodeWizard.php:227
+#: src/Admin/Metabox/ShortcodeWizard.php:232
 msgid "Generating the shortcode..."
 msgstr ""
 
-#: src/Admin/Metabox/ShortcodeWizard.php:240
-#: src/Admin/Metabox/ShortcodeWizard.php:273
+#: src/Admin/Metabox/ShortcodeWizard.php:245
+#: src/Admin/Metabox/ShortcodeWizard.php:278
 msgid "Invalid request - shortcode name is absent"
 msgstr ""
 
-#: src/Admin/Metabox/ShortcodeWizard.php:244
+#: src/Admin/Metabox/ShortcodeWizard.php:249
 msgid "Invalid request - shortcode arguments are absent"
 msgstr ""
 
-#: src/Admin/Metabox/ShortcodeWizard.php:251
+#: src/Admin/Metabox/ShortcodeWizard.php:256
 msgid "Invalid request - shortcode arguments must be an array"
 msgstr ""
 
-#: src/Admin/Metabox/ShortcodeWizard.php:255
+#: src/Admin/Metabox/ShortcodeWizard.php:260
 msgid "Shortcode is not supported"
 msgstr ""
 
-#: src/Admin/Metabox/ShortcodeWizard.php:277
+#: src/Admin/Metabox/ShortcodeWizard.php:282
 msgid "Invalid request - field name is absent"
 msgstr ""
 
-#: src/Admin/Metabox/ShortcodeWizard.php:285
+#: src/Admin/Metabox/ShortcodeWizard.php:290
 msgid "Invalid request - values for the field must be an array"
 msgstr ""
 
-#: src/Admin/Metabox/ShortcodeWizard.php:293
+#: src/Admin/Metabox/ShortcodeWizard.php:298
 msgid "Invalid request. %s"
 msgstr ""
 
@@ -481,7 +481,7 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: src/Plugin.php:225
+#: src/Plugin.php:228
 msgid "Settings"
 msgstr ""
 
