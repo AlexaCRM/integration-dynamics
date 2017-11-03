@@ -130,6 +130,16 @@ class Twig extends Shortcode {
         // Access to any entity via {{ entities.logicalName["GUID"] }}
         $twigEnv->addGlobal( 'entities', new Twig\FauxEntitiesCollection() );
 
+        /**
+         * Access to CRM metadata.
+         *
+         * {{ metadata["contact"].attributes["gendercode"].entityLogicalName }}
+         *
+         * @see \AlexaCRM\CRMToolkit\Entity\Metadata
+         * @see \AlexaCRM\CRMToolkit\Entity\Attribute
+         */
+        $twigEnv->addGlobal( 'metadata', new Twig\MetadataCollection() );
+
         // Access to the current record (entity binding)
         $twigEnv->addGlobal( 'currentrecord', ACRM()->getBinding()->getEntity() );
 
