@@ -36,7 +36,11 @@ class FauxEntity implements \ArrayAccess {
      * @return \AlexaCRM\CRMToolkit\Entity
      */
     public function __get( $recordId ) {
-        return ASDK()->entity( $this->entityName, $recordId );
+        if ( !ACRM()->connected() ) {
+            return null;
+        }
+
+        return ACRM()->getSdk()->entity( $this->entityName, $recordId );
     }
 
     /**

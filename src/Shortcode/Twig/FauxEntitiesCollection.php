@@ -30,6 +30,8 @@ class FauxEntitiesCollection {
      * @return bool
      */
     public function __isset( $entityName ) {
-        return ( ACRM()->connected() && array_key_exists( $entityName, MetadataCollection::instance()->getEntitiesList() ) );
+        $metadata = ACRM()->getMetadata();
+
+        return ( ACRM()->connected() && array_key_exists( $entityName, $metadata->getEntitiesList() ) );
     }
 }
