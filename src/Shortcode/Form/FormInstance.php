@@ -574,9 +574,17 @@ class FormInstance extends AbstractForm {
         }
 
         if ( $this->entity->attributes[ $attributeName ]->isLookup ) {
+            $sdk = ACRM()->getSdk();
+            if ( !$sdk ) {
+                return;
+            }
+
             foreach ( $this->entity->attributes[ $attributeName ]->lookupTypes as $entityType ) {
                 try {
-                    $lookup = ASDK()->entity( $entityType, $value );
+                    $columnSet = [
+                        ACRM()->getMetadata()->getEntityDefinition( $entityType )->primaryNameAttribute,
+                    ];
+                    $lookup = $sdk->entity( $entityType, $value, $columnSet );
                 } catch ( Exception $ex ) {
                     continue;
                 }
@@ -1056,6 +1064,11 @@ class FormInstance extends AbstractForm {
      * @return Entity
      */
     private function getFormEntity( $formName ) {
+        $sdk = ACRM()->getSdk();
+        if ( !$sdk ) {
+            return null;
+        }
+
         $fetch = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
                     <entity name="systemform">
                             <attribute name="objecttypecode"/>
@@ -1071,7 +1084,7 @@ class FormInstance extends AbstractForm {
                         </entity>
                   </fetch>';
 
-        return ASDK()->retrieveSingle( $fetch );
+        return $sdk->retrieveSingle( $fetch );
     }
 
     /**

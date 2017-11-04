@@ -28,6 +28,11 @@ class View {
      * @return Entity object that contain result view, or NULL if entity not found, or FALSE if error occured
      */
     public static function getView( $viewEntityName, $viewName ) {
+        $sdk = ACRM()->getSdk();
+        if ( !ACRM()->connected() || !$sdk ) {
+            return null;
+        }
+
         /* Check view entity types */
         if ( !in_array( $viewEntityName, array( "savedquery", "userquery" ) ) ) {
             trigger_error( "View entity logical name for view must be or savedquery or userquery" );
@@ -48,7 +53,7 @@ class View {
 
         /* Execute request and return response from Dynamics CRM web service */
 
-        return ASDK()->retrieveSingle( $fetch );
+        return $sdk->retrieveSingle( $fetch );
     }
 
     /**
@@ -58,12 +63,13 @@ class View {
      * @return Entity|null object that contain result view, or NULL if view wasn't found
      */
     public static function getViewForEntity( $entity, $viewName ) {
-        if ( !ACRM()->connected() ) {
+        $sdk = ACRM()->getSdk();
+        if ( !ACRM()->connected() || !$sdk ) {
             return null;
         }
 
         if ( is_string( $entity ) ) {
-            $entity = ASDK()->entity( $entity );
+            $entity = $sdk->entity( $entity );
         }
 
         $entityName = $entity->logicalName;
@@ -92,7 +98,7 @@ class View {
                                     </filter>
                             </entity>
                       </fetch>';
-            $view = ASDK()->retrieveSingle( $fetch );
+            $view = $sdk->retrieveSingle( $fetch );
         }
 
         if ( $view === null ) {

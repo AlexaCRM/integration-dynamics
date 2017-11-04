@@ -48,7 +48,7 @@ class CustomImage extends Image {
                     $fields["documentbody"],
                 );
 
-                $attachment = ASDK()->retrieve( ASDK()->entity( $entityLogicalName, $id ), $columnSet );
+                $attachment = ASDK()->entity( $entityLogicalName, $id, $columnSet );
 
                 if ( $attachment && in_array( $attachment->$fields["mimetype"], self::$mime_types ) ) {
 

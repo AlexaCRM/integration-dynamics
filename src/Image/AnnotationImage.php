@@ -71,7 +71,7 @@ class AnnotationImage extends Image {
 
             $this->sendResponse( $imageCode, $image, $isJsonExpected );
         } catch ( Exception $e ) {
-            $this->sendError( $e->getMessage(), 404, $isJsonExpected );
+            $this->sendError( $e->getMessage(), ( $e->getCode()? $e->getCode() : 404 ), $isJsonExpected );
         }
     }
 
@@ -84,15 +84,21 @@ class AnnotationImage extends Image {
      * @param bool $isJsonExpected
      *
      * @return array
+     * @throws Exception
      */
     protected function retrieveImage( $id, $isJsonExpected = false ) {
+        $sdk = ACRM()->getSdk();
+        if ( !ACRM()->connected() || !$sdk ) {
+            throw new Exception( 'Not connected to CRM.', 503 );
+        }
+
         $imageCode = sha1( $id );
         if ( $this->storage->exists( $imageCode ) ) {
             return $this->storage->get( $imageCode );
         }
 
         $columnSet = [ 'mimetype', 'documentbody', 'annotationid' ];
-        $annotation = ASDK()->entity( 'annotation', $id, $columnSet );
+        $annotation = $sdk->entity( 'annotation', $id, $columnSet );
 
         if ( !$annotation->exists ) {
             $this->sendError( 'Image not found.', 404, $isJsonExpected );

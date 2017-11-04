@@ -191,11 +191,17 @@ class Binding {
      * @return Entity|null
      */
     private function getBoundRecord( $entityName, $entityKey, $entityQuery ) {
-        $query = ACRM()->request->query;
+        $sdk = ACRM()->getSdk();
+        if ( !ACRM()->connected() || !$sdk ) {
+            return null;
+        }
 
+        $query = ACRM()->request->query;
         if ( trim( $query->get( $entityQuery, '' ) ) === '' ) {
             return null;
         }
+
+        $metadata = ACRM()->getMetadata();
 
         try {
             $entityRequestValue = $query->get( $entityQuery );
@@ -207,13 +213,13 @@ class Binding {
                 return preg_replace( '~^(.*?)[\.$].*~', '$1', $field );
             }, $columnSet ) );
 
-            $entityAttributes = ACRM()->getMetadata()->getEntityDefinition( $entityName )->attributes;
+            $entityAttributes = $metadata->getEntityDefinition( $entityName )->attributes;
             $entityColumns = array_filter( $entityColumns, function( $field ) use ( $entityAttributes ) {
                 return array_key_exists( $field, $entityAttributes );
             } );
 
             if ( $entityKey !== 'id' ) {
-                $entityMetadata = ASDK()->entity( $entityName )->metadata();
+                $entityMetadata = $sdk->entity( $entityName )->metadata();
 
                 if ( !array_key_exists( $entityKey, $entityMetadata->keys ) ) {
                     return null;
@@ -233,7 +239,7 @@ class Binding {
                 $entityRequestValue->add( $entityKeyAttribute, $query->get( $entityQuery ) );
             }
 
-            $record = ASDK()->entity( $entityName, $entityRequestValue, $entityColumns );
+            $record = $sdk->entity( $entityName, $entityRequestValue, $entityColumns );
 
             if ( !$record || !$record->exists ) {
                 return null;
@@ -256,7 +262,7 @@ class Binding {
                     continue;
                 }
 
-                $entityAttributes = ACRM()->getMetadata()->getEntityDefinition( $record->{$relatedField[0]}->logicalname )->attributes;
+                $entityAttributes = $metadata->getEntityDefinition( $record->{$relatedField[0]}->logicalname )->attributes;
                 if ( !array_key_exists( $relatedField[1], $entityAttributes ) ) {
                     continue;
                 }
@@ -266,7 +272,7 @@ class Binding {
 
             // retrieve related records
             foreach ( $relatedFields as $relatedFieldName => $recordFields ) {
-                $record->{$relatedFieldName} = ASDK()->entity( $record->{$relatedFieldName}->logicalname, $record->{$relatedFieldName}->id, $recordFields );
+                $record->{$relatedFieldName} = $sdk->entity( $record->{$relatedFieldName}->logicalname, $record->{$relatedFieldName}->id, $recordFields );
             }
 
             return $record;

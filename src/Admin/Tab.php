@@ -53,25 +53,26 @@ abstract class Tab {
     public function initializeTab( $tabHookName ) {}
 
     public static function get_all_entities() {
-        $entities = [ ];
-        $sdk      = ASDK();
+        $entities = [];
 
-        if ( $sdk ) {
-            try {
-                $entitiesMetadata = ACRM()->getMetadata()->getEntitiesList();
+        if ( !ACRM()->connected() ) {
+            return $entities;
+        }
 
-                foreach ( $entitiesMetadata as $entityLogicalName => $entityDisplayName ) {
-                    $entities[ $entityLogicalName ] = array(
-                        'LogicalName' => $entityLogicalName,
-                        'Label'       => $entityDisplayName,
-                    );
-                }
-                uasort( $entities, function( $entity1, $entity2 ) {
-                    return strcmp( $entity1['Label'], $entity2['Label'] );
-                } );
-            } catch ( Exception $ex ) {
-                // nop
+        try {
+            $entitiesMetadata = ACRM()->getMetadata()->getEntitiesList();
+
+            foreach ( $entitiesMetadata as $entityLogicalName => $entityDisplayName ) {
+                $entities[ $entityLogicalName ] = array(
+                    'LogicalName' => $entityLogicalName,
+                    'Label'       => $entityDisplayName,
+                );
             }
+            uasort( $entities, function( $entity1, $entity2 ) {
+                return strcmp( $entity1['Label'], $entity2['Label'] );
+            } );
+        } catch ( Exception $ex ) {
+            // nop
         }
 
         return $entities;

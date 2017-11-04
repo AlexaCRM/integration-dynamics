@@ -28,6 +28,11 @@ class DataBinding {
      * Handles the AJAX request to retrieve entity alternate keys.
      */
     public function retrieve_entity_keys() {
+        $sdk = ACRM()->getSdk();
+        if ( !ACRM()->connected() || !$sdk ) {
+            wp_send_json_error();
+        }
+
         $request = ACRM()->request->request;
 
         if ( !$request->has( 'entityLogicalName' ) ) {
@@ -35,7 +40,7 @@ class DataBinding {
         }
 
         $entityLogicalName = $request->get( 'entityLogicalName' );
-        $entity            = ASDK()->entity( $entityLogicalName );
+        $entity            = $sdk->entity( $entityLogicalName );
 
         $entityKeys = $entity->metadata()->keys;
         wp_send_json_success( $entityKeys );

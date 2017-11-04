@@ -45,6 +45,11 @@ class LookupDialog {
     public function retrieve() {
         $query = ACRM()->request->query;
 
+        $sdk = ACRM()->getSdk();
+        if ( !ACRM()->connected() || !$sdk ) {
+            $this->sendErrorResponse( __( 'Not connected to CRM.', 'integration-dynamics' ) );
+        }
+
         $lookupType = $query->get( 'lookupType' );
 
         $pagingCookie = urldecode( $query->get( 'pagingCookie', '' ) );
@@ -57,24 +62,21 @@ class LookupDialog {
             $pagingNumber = null;
         }
 
-        $entity = ASDK()->entity( $lookupType );
+        $entity = $sdk->entity( $lookupType );
 
         $returnedTypeCode = $entity->metadata()->objectTypeCode;
         $primaryNameAttr = $entity->metadata()->primaryNameAttribute;
-        $lookup = $this->retrieveLookupView( $returnedTypeCode, 64, $primaryNameAttr );
 
-        $records = ASDK()->retrieveMultiple( $lookup['fetchxml'], false, $pagingCookie, self::PER_PAGE, $pagingNumber );
+        try {
+            $lookup = $this->retrieveLookupView( $returnedTypeCode, 64, $primaryNameAttr );
+        } catch ( Exception $e ) {
+            $this->sendErrorResponse( $e->getMessage() );
+        }
 
-        $noRecordsMessage = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">'
-                            . __( 'No records are available in this view.', 'integration-dynamics' )
-                            . '</td></tr></table>';
+        $records = $sdk->retrieveMultiple( $lookup['fetchxml'], false, $pagingCookie, self::PER_PAGE, $pagingNumber );
 
         if ( !$records || $records->Count < 1 ) {
-            wp_send_json( [
-                'data' => $noRecordsMessage,
-                'pagingcookie' => null,
-                'morerecords' => '0',
-            ] );
+            $this->sendErrorResponse( __( 'No records are available in this view.', 'integration-dynamics' ) );
         }
 
         $pagingCookie = null;
@@ -108,10 +110,15 @@ class LookupDialog {
      * Creates a response for the lookup request with search.
      */
     public function search() {
+        $sdk = ACRM()->getSdk();
+        if ( !ACRM()->connected() || !$sdk ) {
+            $this->sendErrorResponse( __( 'Not connected to CRM.', 'integration-dynamics' ) );
+        }
+
         $query = ACRM()->request->query;
 
         $lookupType = $query->get( 'lookupType' );
-        $entity = ASDK()->entity( $lookupType );
+        $entity = $sdk->entity( $lookupType );
 
         $returnedTypeCode = $entity->metadata()->objectTypeCode;
         $primaryNameAttr = $entity->metadata()->primaryNameAttribute;
@@ -119,7 +126,11 @@ class LookupDialog {
         $searchString = urldecode( $query->get( 'searchstring' ) );
 
         if ( $searchString != "" ) {
-            $searchView = $this->retrieveLookupView( $returnedTypeCode, 4, $primaryNameAttr );
+            try {
+                $searchView = $this->retrieveLookupView( $returnedTypeCode, 4, $primaryNameAttr );
+            } catch ( Exception $e ) {
+                wp_die( $e->getMessage() );
+            }
 
             $fetchXML   = new SimpleXMLElement( $searchView['fetchxml'] );
             $conditions = $fetchXML->xpath( './/condition[@value]' );
@@ -149,18 +160,21 @@ class LookupDialog {
                 }
             }
 
-            $records = ASDK()->retrieveMultiple( $searchXML );
+            $records = $sdk->retrieveMultiple( $searchXML );
         } else {
-            $records = ASDK()->retrieveMultipleEntities( $lookupType );
+            $records = $sdk->retrieveMultipleEntities( $lookupType );
         }
 
-        $lookup = $this->retrieveLookupView( $returnedTypeCode, 64, $primaryNameAttr );
-
-        $noRecordsMessage = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">'
-                            . __( 'No records are available in this view.', 'integration-dynamics' )
-                            . '</td></tr></table>';
+        try {
+            $lookup = $this->retrieveLookupView( $returnedTypeCode, 64, $primaryNameAttr );
+        } catch ( Exception $e ) {
+            wp_die( $e->getMessage() );
+        }
 
         if ( !$records || $records->Count < 1 ) {
+            $noRecordsMessage = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">'
+                                . __( 'No records are available in this view.', 'integration-dynamics' )
+                                . '</td></tr></table>';
             wp_die( $noRecordsMessage );
         }
 
@@ -192,6 +206,11 @@ class LookupDialog {
      * @throws Exception
      */
     private function retrieveLookupView( $returnedTypeCode, $queryType = 64, $sortableAttributeName = 'name' ) {
+        $sdk = ACRM()->getSdk();
+        if ( !ACRM()->connected() || !$sdk ) {
+            throw new Exception( 'Not connected to CRM.' );
+        }
+
         $cacheKey = 'wpcrm_lookup_' . sha1( 'querytype_' . $queryType . '_returnedtypecode_' . $returnedTypeCode );
         $cache = ACRM()->getCache();
 
@@ -210,7 +229,7 @@ class LookupDialog {
                                 </entity>
                               </fetch>';
 
-        $lookupView = ASDK()->retrieveSingle( $fetchView );
+        $lookupView = $sdk->retrieveSingle( $fetchView );
 
         if ( $lookupView == null ) {
             throw new Exception( 'Unable to retrieve specified SavedQuery' );
@@ -250,6 +269,11 @@ class LookupDialog {
      * @return string
      */
     private function renderTableHeader( $cells, $fetchDom, $records ) {
+        $sdk = ACRM()->getSdk();
+        if ( !ACRM()->connected() || !$sdk ) {
+            return '';
+        }
+
         $result = '<thead><tr><th></th>';
 
         foreach ( $cells as $cell ) {
@@ -271,7 +295,9 @@ class LookupDialog {
                 if ( $linkedEntityName != null ) {
                     $linkedRecord = $records[0]->{$linkedEntityName};
                     if ( $linkedRecord instanceof EntityReference ) {
-                        $linkedRecord = ASDK()->entity( $linkedRecord->logicalName, $linkedRecord->id );
+                        $recordID = $linkedRecord->ID;
+                        $linkedRecord = $sdk->entity( $linkedRecord->logicalName );
+                        $linkedRecord->ID = $recordID;
                     }
 
                     if ( $linkedRecord instanceof Entity ) {
@@ -300,6 +326,11 @@ class LookupDialog {
     private function renderTableResults( $cells, $fetchDom, $records ) {
         $result = '';
 
+        $sdk = ACRM()->getSdk();
+        if ( !ACRM()->connected() || !$sdk ) {
+            return $result;
+        }
+
         foreach ( $records as $record ) {
             $result .= '<tr class="body-row" data-entityid="' . esc_attr( $record->ID ) . '"  data-name="' . esc_attr( $record->displayname ) . '"><td><div class="lookup-checkbox"></div></td>';
             foreach ( $cells as $cell ) {
@@ -326,7 +357,9 @@ class LookupDialog {
                     }
 
                     if ( !( $linkedRecord instanceof Entity ) && $linkedRecord instanceof EntityReference ) {
-                        $linkedRecord = ASDK()->entity( $linkedRecord->logicalName, $linkedRecord->id );
+                        $recordID = $linkedRecord->id;
+                        $linkedRecord = $sdk->entity( $linkedRecord->logicalName );
+                        $linkedRecord->ID = $recordID;
                     }
 
                     if ( $linkedRecord instanceof Entity ) {
@@ -353,5 +386,16 @@ class LookupDialog {
         }
 
         return $result;
+    }
+
+    private function sendErrorResponse( $message ) {
+        $errorMessage = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">'
+                        . $message
+                        . '</td></tr></table>';
+        wp_send_json( [
+            'data' => $errorMessage,
+            'pagingcookie' => null,
+            'morerecords' => '0',
+        ] );
     }
 }

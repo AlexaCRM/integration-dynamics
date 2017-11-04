@@ -25,6 +25,8 @@ class Connection {
     /**
      * Checks whether connection to CRM is established and in working condition
      *
+     * @deprecated 1.2.2
+     *
      * @return bool
      */
     public static function checkConnection() {
