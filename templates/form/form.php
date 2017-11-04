@@ -31,7 +31,7 @@ if ( $form->showform ) {
     ?></div><?php
     ?><div class="row"><?php
         if ( $mode != "readonly" ) {
-            if ( $form->captcha->enable_captcha ) {
+            if ( $captcha && $form->captcha->enable_captcha ) {
                 wordpresscrm_field_start();
                 ?><div class="g-recaptcha" data-sitekey="<?php echo $form->captcha->sitekey ?>"></div><?php
                 wordpresscrm_field_end();

@@ -263,7 +263,7 @@ class FormInstance extends AbstractForm {
             $this->attachment = self::parseAttachmentAttribute( $attributes["attachment"] );
 
             /* Use captcha */
-            $captcha = self::parseCaptchaAttribute( $attributes["captcha"] );
+            $captcha = ( self::parseCaptchaAttribute( $attributes["captcha"] ) && !is_user_logged_in() );
 
             $this->formName = strtolower( $attributes["name"] );
             $this->formType = $attributes["type"];
@@ -352,8 +352,10 @@ class FormInstance extends AbstractForm {
                         array_push( $this->errors, ( $attributes["validation_error"] ) ? $attributes["validation_error"] : Messages::getMessage( "form", "validation_error" ) );
                     }
 
-                    if ( $this->captcha->enable_captcha && ( !$this->captcha->checkResponse() || !$this->captcha->checkCaptcha() ) ) {
-                        array_push( $this->errors, Messages::getMessage( "form", "invalid_captcha" ) );
+                    if ( $captcha && $this->captcha->enable_captcha && !is_user_logged_in() ) {
+                        if ( !$this->captcha->checkResponse() || !$this->captcha->checkCaptcha() ) {
+                            array_push( $this->errors, Messages::getMessage( "form", "invalid_captcha" ) );
+                        }
                     }
 
                     $this->errors = apply_filters( "wordpresscrm_form_errors", $this->errors );
