@@ -76,7 +76,10 @@ class Twig extends Shortcode {
 
         $isDebugEnabled = defined( 'WP_DEBUG' ) && WP_DEBUG;
 
-        $twigEnv = new \Twig_Environment( $chainLoader, [ 'debug' => $isDebugEnabled ] );
+        $twigEnv = new \Twig_Environment( $chainLoader, [
+            'debug' => $isDebugEnabled,
+            'cache' => WORDPRESSCRM_STORAGE . '/twig',
+        ] );
         $twigEnv->setBaseTemplateClass( '\AlexaCRM\WordpressCRM\Shortcode\Twig\Template' );
 
         if ( $isDebugEnabled ) {
