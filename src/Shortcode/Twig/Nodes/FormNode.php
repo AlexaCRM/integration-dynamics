@@ -20,9 +20,13 @@ class FormNode extends \Twig_Node {
         $compiler->write( "\$entityName = " );
         $this->getAttribute( 'entity' )->compile( $compiler );
         $compiler->write( ";\n" );
-        $compiler->write( "\$formName = " );
-        $this->getAttribute( 'name' )->compile( $compiler );
-        $compiler->write( ";\n" );
+        if ( $this->hasAttribute( 'name' ) ) {
+            $compiler->write( "\$formName = " );
+            $this->getAttribute( 'name' )->compile( $compiler );
+            $compiler->write( ";\n" );
+        } else {
+            $compiler->write( "\$formName = null;\n" );
+        }
 
         $extraAttributes = array_diff_key( $this->attributes, [ 'entity' => null, 'name' => null ] );
 

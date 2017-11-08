@@ -38,14 +38,14 @@ class FormTokenParser extends \Twig_TokenParser {
             $arguments[$argName] = $argValue;
         }
 
-        if ( count( array_intersect( [ 'entity', 'name' ], array_keys( $arguments ) ) ) !== 2 ) {
-            throw new Twig_Error_Syntax( 'Form must have `entity` and `name` arguments set', $lineNo );
+        if ( !array_key_exists( 'entity', $arguments ) ) {
+            throw new Twig_Error_Syntax( 'Form must have `entity` argument set', $lineNo );
         }
 
         $stream->expect( Twig_Token::BLOCK_END_TYPE );
         $template = $parser->subparse( [ $this, 'decideFormEnd' ] );
 
-        if ( get_class( $template ) === 'Twig_Node' && $template->getNodeTag() === null ) {
+        if ( $this->isEmptyTemplate( $template ) ) {
             $stream->injectTokens( [
                 new Twig_Token( Twig_Token::BLOCK_START_TYPE, '', $lineNo ),
                 new Twig_Token( Twig_Token::NAME_TYPE, 'embed', $lineNo ),
@@ -83,5 +83,23 @@ class FormTokenParser extends \Twig_TokenParser {
      */
     public function decideFormEnd( Twig_Token $token ) {
         return $token->test( 'endform' );
+    }
+
+    /**
+     * Checks whether given template is empty
+     * (no nodes or only spaces/new lines/etc.)
+     *
+     * @param \Twig_Node $template
+     *
+     * @return bool
+     */
+    private function isEmptyTemplate( \Twig_Node $template ) {
+        if ( $template->hasAttribute( 'data' ) ) {
+            $data = $template->getAttribute( 'data' );
+
+            return ( trim( $data ) === '' );
+        }
+
+        return !$template->count();
     }
 }

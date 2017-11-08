@@ -101,9 +101,18 @@ class Model {
      * Builds the view of the form.
      */
     public function buildView() {
+        $formDefinition = [];
+
+        $formDefinition['record'] = $this->record;
+        if ( $this->attributes['record'] instanceof Entity ) {
+            $formDefinition['record'] = $this->record = $this->attributes['record'];
+        } elseif ( is_string( $this->attributes['record'] ) && Client::isGuid( $this->attributes['record'] ) ) {
+            $formDefinition['record'] = $this->record = ASDK()->entity( $this->entityName, $this->attributes['record'] );
+        }
+
         $formXML = $this->retrieveFormXml();
         if ( $formXML === null  ) {
-            return [];
+            return $formDefinition;
         }
 
         $metadata = ACRM()->getMetadata()->getEntityDefinition( $this->entityName );
@@ -123,8 +132,6 @@ class Model {
         $formDOM = new \DOMDocument();
         $formDOM->loadXML( $formXML );
         $formXPath = new \DOMXPath( $formDOM );
-
-        $columnSet = [];
 
         $tabs = $formXPath->query( '/form/tabs/tab' );
         foreach ( $tabs as $tab ) {
@@ -192,8 +199,6 @@ class Model {
                                     $controlDefinition['required'] = true;
                                 }
 
-                                $columnSet[] = $controlDefinition['name'];
-
                                 $parameters = $formXPath->query( './parameters/*', $control );
                                 foreach ( $parameters as $parameter ) {
                                     $controlDefinition['parameters'][$parameter->nodeName] = $parameter->nodeValue;
@@ -225,13 +230,6 @@ class Model {
         $hiddenDefaults = array_diff_key( $this->attributes['default'], array_flip( $this->formControls ) );
         $formDefinition['defaults'] = $this->attributes['default'];
         $formDefinition['hiddenDefaults'] = $hiddenDefaults;
-
-        $formDefinition['record'] = $this->record;
-        if ( $this->attributes['record'] instanceof Entity ) {
-            $formDefinition['record'] = $this->record = $this->attributes['record'];
-        } elseif ( is_string( $this->attributes['record'] ) && Client::isGuid( $this->attributes['record'] ) ) {
-            $formDefinition['record'] = $this->record = ASDK()->entity( $this->entityName, $this->attributes['record'], $columnSet );
-        }
 
         return $formDefinition;
     }
@@ -390,6 +388,52 @@ class Model {
     }
 
     /**
+     * Validates the given array of data only according to metadata.
+     *
+     * @param array $fields
+     *
+     * @return array
+     */
+    public function validateHeadless( $fields ) {
+        $metadata = ACRM()->getMetadata()->getEntityDefinition( $this->entityName );
+
+        $errors = [];
+        foreach ( $fields as $fieldName => $fieldValue ) {
+            $fieldMetadata = $metadata->attributes[$fieldName];
+
+            $isRequired = in_array( $fieldMetadata->requiredLevel, [ 'ApplicationRequired', 'SystemRequired' ] ); // metadata based
+            if ( $isRequired && in_array( $fieldName, $this->attributes['optional'] ) ) { // optional override
+                $isRequired = false;
+            }
+            if ( !$isRequired && in_array( $fieldName, $this->attributes['required'] ) ) { // required override
+                $isRequired = true;
+            }
+
+            if ( $isRequired && trim( $fields[$fieldName] ) === '' ) {
+                $errors[$fieldName][] = __( 'The field is required.', 'integration-dynamics' );
+                continue;
+            }
+
+            $validationResult = $this->validateFieldValue( $fieldMetadata, $fieldValue );
+            if ( !$validationResult['status'] ) {
+                $errors[$fieldName][] = $validationResult['payload'];
+            }
+        }
+
+        $result = [
+            'status' => false,
+            'payload' => $errors,
+        ];
+
+        if ( !count( $errors ) ) {
+            $result['status'] = true;
+            $result['payload'] = array_intersect_key( $fields, $metadata->attributes ); // FIXME
+        }
+
+        return $result;
+    }
+
+    /**
      * Dispatches the submitted form and saves data to the CRM.
      *
      * @return array
@@ -405,7 +449,13 @@ class Model {
 
         // Process the form
         $fields = $request->all();
-        $validationResult = $dispatchedForm->validate( $fields );
+
+        $validateMethod = [ $dispatchedForm, 'validate' ];
+        if ( !$this->formName ) {
+            $validateMethod = [ $dispatchedForm, 'validateHeadless' ];
+        }
+
+        $validationResult = call_user_func_array( $validateMethod, [ $fields ] );
 
         if ( $validationResult['status'] ) {
             $record = $dispatchedForm->hydrateRecord( $validationResult['payload'] );
@@ -525,6 +575,10 @@ class Model {
      * @return string|null
      */
     private function retrieveFormXml() {
+        if ( !$this->formName ) {
+            return null;
+        }
+
         $cacheKey = 'wpcrm_form_' . sha1( $this->entityName . '_form_' . $this->formName );
         $cache = ACRM()->getCache();
 
