@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the Dynamics 365 Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics 365 Integration 1.2.0.1\n"
+"Project-Id-Version: Dynamics 365 Integration 1.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-"
 "dynamics\n"
-"POT-Creation-Date: 2017-11-02 14:22:25+00:00\n"
+"POT-Creation-Date: 2017-11-08 13:14:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -92,7 +92,7 @@ msgid ""
 "strong> requires cURL to work properly."
 msgstr ""
 
-#: src/Admin/Metabox/DataBinding.php:57
+#: src/Admin/Metabox/DataBinding.php:62
 msgid "Dynamics 365 Data Binding"
 msgstr ""
 
@@ -443,37 +443,41 @@ msgid ""
 "href=\"admin.php?page=wordpresscrm\">on this page</a>."
 msgstr ""
 
-#: src/Form/Model.php:369
+#: src/Form/Model.php:367 src/Form/Model.php:413
 msgid "The field is required."
 msgstr ""
 
-#: src/Form/Model.php:471
+#: src/Form/Model.php:521
 msgid "The field could not be validated."
 msgstr ""
 
-#: src/Form/Model.php:477
+#: src/Form/Model.php:527
 msgid "Must be less than %d characters."
 msgid_plural "Must be less than %d characters."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Form/Model.php:485
+#: src/Form/Model.php:535
 msgid "Incorrect text value."
 msgstr ""
 
-#: src/Form/Model.php:492
+#: src/Form/Model.php:542
 msgid "Not a valid email address."
 msgstr ""
 
-#: src/Form/Model.php:502
+#: src/Form/Model.php:552
 msgid "Invalid number value."
 msgstr ""
 
-#: src/Form/Model.php:510
+#: src/Form/Model.php:560
 msgid "Invalid decimal value."
 msgstr ""
 
-#: src/LookupDialog.php:69 src/LookupDialog.php:160
+#: src/LookupDialog.php:50 src/LookupDialog.php:115
+msgid "Not connected to CRM."
+msgstr ""
+
+#: src/LookupDialog.php:79 src/LookupDialog.php:176
 msgid "No records are available in this view."
 msgstr ""
 
@@ -486,12 +490,12 @@ msgid "Settings"
 msgstr ""
 
 #: src/Shortcode/Form/AbstractForm.php:262 src/Shortcode/Form/Control.php:78
-#: src/Shortcode/Form/FormInstance.php:944
-#: src/Shortcode/Form/FormInstance.php:955
+#: src/Shortcode/Form/FormInstance.php:954
+#: src/Shortcode/Form/FormInstance.php:965
 msgid "%s is required"
 msgstr ""
 
-#: src/Shortcode/Form/Control.php:95 src/Shortcode/Form/FormInstance.php:733
+#: src/Shortcode/Form/Control.php:95 src/Shortcode/Form/FormInstance.php:743
 msgid "%s must be a valid email address"
 msgstr ""
 
@@ -517,31 +521,31 @@ msgstr ""
 msgid "Can not get form definition"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:640
+#: src/Shortcode/Form/FormInstance.php:650
 msgid "Unsupported lookup type for [%1$s], or entity {%2$s} not found"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:721
+#: src/Shortcode/Form/FormInstance.php:731
 msgid "Must be less than %d characters"
 msgid_plural "Must be less than %d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Shortcode/Form/FormInstance.php:728
+#: src/Shortcode/Form/FormInstance.php:738
 msgid "Incorrect text value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:746
+#: src/Shortcode/Form/FormInstance.php:756
 msgid "Invalid number value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:751
+#: src/Shortcode/Form/FormInstance.php:761
 msgid ""
 "Invalid number value. Enter a decimal number without currency symbol or "
 "thousands separator."
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:756
+#: src/Shortcode/Form/FormInstance.php:766
 msgid ""
 "Invalid money value. Enter a decimal number without currency symbol or "
 "thousands separator."
