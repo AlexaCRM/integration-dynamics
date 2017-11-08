@@ -399,6 +399,10 @@ class Model {
 
         $errors = [];
         foreach ( $fields as $fieldName => $fieldValue ) {
+            if ( !array_key_exists( $fieldName, $metadata->attributes ) ) {
+                continue;
+            }
+
             $fieldMetadata = $metadata->attributes[$fieldName];
 
             $isRequired = in_array( $fieldMetadata->requiredLevel, [ 'ApplicationRequired', 'SystemRequired' ] ); // metadata based
