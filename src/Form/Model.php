@@ -466,8 +466,19 @@ class Model {
             } elseif ( $mode === 'edit' ) {
                 ASDK()->update( $record );
             } elseif ( $mode === 'upsert' ) {
-                ASDK()->upsert( $record );
+                $response = ASDK()->upsert( $record );
+
+                // Toolkit should update the ID itself, but it doesn't. Fix it.
+                $record->ID = str_replace( $record->logicalName, '', $response->Target );
             }
+
+            /**
+             * Allows post-submit actions on Twig forms.
+             *
+             * @param \AlexaCRM\WordpressCRM\Form\Model $dispatchedForm
+             * @param \AlexaCRM\CRMToolkit\Entity $record
+             */
+            do_action( 'wordpresscrm_twig_form_submit_success', $dispatchedForm, $record );
 
             $redirectUrl = static::getActionRedirect( $redirectAction, $dispatchedForm );
             if ( is_string( $redirectUrl ) && $redirectUrl !== '' ) {
