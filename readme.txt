@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.3.1 =
+
+* Fixed: CRM errors would not be displayed after a failed form submission
+
 = 1.2.3 =
 
 * Allow post-submit Twig form actions for extensibility
