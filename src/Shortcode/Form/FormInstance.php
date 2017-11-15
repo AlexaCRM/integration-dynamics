@@ -815,8 +815,12 @@ class FormInstance extends AbstractForm {
 
             $section = $columnXML->xpath( ".//section" );
 
-            $cellLabelAlignment = (string) $section[0]["celllabelalignment"];
-            $cellLabelPosition = (string) $section[0]["celllabelposition"];
+            $cellLabelAlignment = '';
+            $cellLabelPosition = '';
+            if ( isset( $section[0] ) ) {
+                $cellLabelAlignment = (string) $section[0]["celllabelalignment"];
+                $cellLabelPosition = (string) $section[0]["celllabelposition"];
+            }
 
             $cells = $columnXML->xpath( ".//cell" );
             foreach ( $cells as $cell ) {
