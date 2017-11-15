@@ -1107,6 +1107,9 @@ class FormInstance extends AbstractForm {
         $formXML = $cache->get( $cacheKey );
         if ( $formXML == null ) {
             $form = $this->getFormEntity( $formName );
+            if ( !$form ) {
+                return null;
+            }
 
             $formXML = $form->formXML;
             $cache->set( $cacheKey, $formXML, 2 * 60 * 60 * 24 );
