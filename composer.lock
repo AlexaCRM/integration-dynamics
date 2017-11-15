@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/AlexaCRM/php-crm-toolkit.git",
-                "reference": "dc3748ba19ab076cef00374f382b54a121a2f491"
+                "reference": "077ae7e1733b933a9bd438e1827958679e03da0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/dc3748ba19ab076cef00374f382b54a121a2f491",
-                "reference": "dc3748ba19ab076cef00374f382b54a121a2f491",
+                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/077ae7e1733b933a9bd438e1827958679e03da0d",
+                "reference": "077ae7e1733b933a9bd438e1827958679e03da0d",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "php",
                 "sdk"
             ],
-            "time": "2017-10-12 15:45:39"
+            "time": "2017-11-15 09:14:21"
         },
         {
             "name": "monolog/monolog",
@@ -295,12 +295,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "e7944a1f67499a230463f463d7cecc3336b87ea1"
+                "reference": "5322c9b4ca5fbff5917ecbf0544b46fb2fa66086"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/e7944a1f67499a230463f463d7cecc3336b87ea1",
-                "reference": "e7944a1f67499a230463f463d7cecc3336b87ea1",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/5322c9b4ca5fbff5917ecbf0544b46fb2fa66086",
+                "reference": "5322c9b4ca5fbff5917ecbf0544b46fb2fa66086",
                 "shasum": ""
             },
             "require": {
@@ -352,7 +352,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-09-27 18:07:18"
+            "time": "2017-11-12 18:47:15"
         }
     ],
     "packages-dev": [],
