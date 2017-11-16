@@ -199,6 +199,10 @@ add_filter( 'pre_handle_404', function( $preempt, \WP_Query $query ) {
     }
 
     $post = $query->post;
+    if ( !$post ) { // non-existing post
+        return $preempt;
+    }
+
     $binding = ACRM()->getBinding();
     $bindingConfig = $binding->getPostBinding( $post->ID );
     if ( $bindingConfig === null ) {
