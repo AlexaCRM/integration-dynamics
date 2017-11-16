@@ -139,6 +139,7 @@ final class Plugin {
             new LookupDialog();
             new CustomImage();
             new AnnotationImage( $this->getStorage( 'images' ) );
+            new AnnotationPusher();
 
             do_action( 'wordpresscrm_extended_includes' );
 
