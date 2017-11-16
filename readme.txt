@@ -52,6 +52,13 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.4 =
+
+* Allow downloading CRM attachments (+ Twig function to generate an URL)
+* Fixed: downloaded log file/archive would contain quotes in Firefox
+* Fixed: catch exceptions during Twig form submissions and surface error messages
+* Fixed: null-point reference if a post doesn't exist during binding 404 check
+
 = 1.2.3.1 =
 
 * Fixed: CRM errors would not be displayed after a failed form submission

@@ -160,7 +160,7 @@ add_action( 'wp_ajax_wpcrm_log', function() {
         header( 'Content-Type: application/octet-stream' );
 
         $date = date( 'YmdHi' );
-        header( "Content-Disposition: attachment; filename='integration-dynamics_logs_{$date}.zip'" );
+        header( "Content-Disposition: attachment; filename=integration-dynamics_logs_{$date}.zip" );
 
         readfile( $zipPath );
 
@@ -177,7 +177,7 @@ add_action( 'wp_ajax_wpcrm_log', function() {
     header( 'Content-Type: application/octet-stream' );
 
     $filename = basename( $logPath );
-    header( "Content-Disposition: attachment; filename='{$filename}'" );
+    header( 'Content-Disposition: attachment; filename=' . $filename );
 
     readfile( $logPath );
 
@@ -199,6 +199,10 @@ add_filter( 'pre_handle_404', function( $preempt, \WP_Query $query ) {
     }
 
     $post = $query->post;
+    if ( !$post ) { // non-existing post
+        return $preempt;
+    }
+
     $binding = ACRM()->getBinding();
     $bindingConfig = $binding->getPostBinding( $post->ID );
     if ( $bindingConfig === null ) {
