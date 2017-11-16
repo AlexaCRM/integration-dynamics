@@ -464,32 +464,37 @@ class Model {
         if ( $validationResult['status'] ) {
             $record = $dispatchedForm->hydrateRecord( $validationResult['payload'] );
             $mode = $redirectAction = $dispatchedForm->attributes['mode'];
-            if ( $mode === 'create' ) {
-                ASDK()->create( $record );
-                $fields = [];
-            } elseif ( $mode === 'edit' ) {
-                ASDK()->update( $record );
-            } elseif ( $mode === 'upsert' ) {
-                $response = ASDK()->upsert( $record );
+            try {
+                if ( $mode === 'create' ) {
+                    ASDK()->create( $record );
+                    $fields = [];
+                } elseif ( $mode === 'edit' ) {
+                    ASDK()->update( $record );
+                } elseif ( $mode === 'upsert' ) {
+                    $response = ASDK()->upsert( $record );
 
-                // Toolkit should update the ID itself, but it doesn't. Fix it.
-                $record->ID = str_replace( $record->logicalName, '', $response->Target );
+                    // Toolkit should update the ID itself, but it doesn't. Fix it.
+                    $record->ID = str_replace( $record->logicalName, '', $response->Target );
+                }
+
+                /**
+                 * Allows post-submit actions on Twig forms.
+                 *
+                 * @param \AlexaCRM\WordpressCRM\Form\Model $dispatchedForm
+                 * @param \AlexaCRM\CRMToolkit\Entity $record
+                 */
+                do_action( 'wordpresscrm_twig_form_submit_success', $dispatchedForm, $record );
+
+                $redirectUrl = static::getActionRedirect( $redirectAction, $dispatchedForm );
+                if ( is_string( $redirectUrl ) && $redirectUrl !== '' ) {
+                    wordpresscrm_javascript_redirect( $redirectUrl );
+                }
+
+                return [ 'submission' => true, 'status' => true, 'fields' => $fields ];
+            } catch ( \Exception $e ) {
+                $error = [ 'Error' => [ $e->getMessage() ] ];
+                return [ 'submission' => true, 'status' => false, 'fields' => $fields, 'errors' => $error ];
             }
-
-            /**
-             * Allows post-submit actions on Twig forms.
-             *
-             * @param \AlexaCRM\WordpressCRM\Form\Model $dispatchedForm
-             * @param \AlexaCRM\CRMToolkit\Entity $record
-             */
-            do_action( 'wordpresscrm_twig_form_submit_success', $dispatchedForm, $record );
-
-            $redirectUrl = static::getActionRedirect( $redirectAction, $dispatchedForm );
-            if ( is_string( $redirectUrl ) && $redirectUrl !== '' ) {
-                wordpresscrm_javascript_redirect( $redirectUrl );
-            }
-
-            return [ 'submission' => true, 'status' => true, 'fields' => $fields ];
         }
 
         return [ 'submission'=> true, 'status' => false, 'fields' => $fields, 'errors' => $validationResult['payload'] ];
