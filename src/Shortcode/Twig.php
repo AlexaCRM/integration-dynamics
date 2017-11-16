@@ -114,6 +114,12 @@ class Twig extends Shortcode {
         } );
         $twigEnv->addFunction( $entityUrlFunction );
 
+        // attachmentUrl() - URL generator for force-downloaded attachments
+        $attachmentUrlFunction = new \Twig_SimpleFunction( 'attachmentUrl', function( $attachmentId ) {
+            return admin_url( 'admin-ajax.php?action=msdyncrm_attachment&id=' . $attachmentId );
+        } );
+        $twigEnv->addFunction( $attachmentUrlFunction );
+
         /**
          * Fired when Twig environment has been set up in the shortcode.
          *
