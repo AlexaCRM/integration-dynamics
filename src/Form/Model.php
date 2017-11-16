@@ -84,7 +84,10 @@ class Model {
         }
 
         // redirects for different actions
-        if ( !array_key_exists( 'redirect', $attributes ) || !is_array( $attributes['redirect'] ) ) {
+        if ( array_key_exists( 'redirect', $attributes ) && is_string( $attributes['redirect'] ) ) {
+            $attributes['redirect'] = [ 'always' => $attributes['redirect'] ];
+        }
+        if ( !is_array( $attributes['redirect'] ) ) {
             $attributes['redirect'] = [];
         }
 
@@ -510,10 +513,6 @@ class Model {
      */
     private static function getActionRedirect( $action, Model $model ) {
         $redirectUrl = null;
-
-        if ( is_string( $model->attributes['redirect'] ) ) {
-            $model->attributes['redirect'] = [ 'always' => $model->attributes['redirect'] ];
-        }
 
         if ( array_key_exists( $action, $model->attributes['redirect'] ) ) {
             $redirectUrl = $model->attributes['redirect'][$action];
