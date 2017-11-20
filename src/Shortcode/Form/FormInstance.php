@@ -3,6 +3,7 @@
 namespace AlexaCRM\WordpressCRM\Shortcode\Form;
 
 use AlexaCRM\CRMToolkit\Entity;
+use AlexaCRM\CRMToolkit\OptionSetValue;
 use AlexaCRM\WordpressCRM\Template;
 use AlexaCRM\WordpressCRM\Messages;
 use AlexaCRM\WordpressCRM\FormValidator;
@@ -512,6 +513,35 @@ class FormInstance extends AbstractForm {
                         } else {
                             unset( $this->default[ $attributeName ] );
                         }
+                    } elseif ( strpos( $attributeValue, 'currentrecord' ) === 0 ) {
+                        $reference = explode( '.', $attributeValue );
+                        $currentRecord = ACRM()->getBinding()->getEntity();
+                        if ( $reference[0] !== 'currentrecord' || !$currentRecord
+                             || ( $currentRecord instanceof Entity && !$currentRecord->exists ) ) {
+                            unset( $this->default[$attributeName] );
+                            continue;
+                        }
+
+                        $value = $currentRecord->id;
+                        if ( isset( $reference[1] ) && $reference[1] !== 'id'
+                             && array_key_exists( $reference[1], $currentRecord->attributes ) ) {
+                            $value = $currentRecord->{$reference[1]};
+                            if ( $value instanceof Entity\EntityReference ) {
+                                if ( isset( $reference[2] ) ) {
+                                    $value = $value->{$reference[2]};
+                                } else {
+                                    $value = $value->id;
+                                }
+                            } elseif ( $value instanceof OptionSetValue ) {
+                                if ( isset( $reference[2] ) ) {
+                                    $value = $value->{$reference[2]}; // should be "value" or "label"
+                                } else {
+                                    $value = $value->value;
+                                }
+                            }
+                        }
+
+                        $this->createControl( ( $k == null ), $last, $attributeName, $value );
                     } elseif ( strpos( $attributeValue, '.' ) !== false ) {
                         /**
                          * Allows to add support for custom variables in the "default" shortcode argument with syntax
@@ -571,13 +601,11 @@ class FormInstance extends AbstractForm {
 
             $this->controls[ $control ]["controls"][ $attributeName ] = $newControl;
             $this->entity->{$attributeName} = $value;
-
-            return;
         }
 
         if ( $this->entity->attributes[ $attributeName ]->isLookup ) {
             $sdk = ACRM()->getSdk();
-            if ( !$sdk ) {
+            if ( !$sdk || $value instanceof Entity\EntityReference ) {
                 return;
             }
 
