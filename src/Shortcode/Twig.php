@@ -3,6 +3,7 @@
 namespace AlexaCRM\WordpressCRM\Shortcode;
 
 use AlexaCRM\CRMToolkit\Entity\EntityReference;
+use AlexaCRM\WordpressCRM\Cache\TwigCache;
 use AlexaCRM\WordpressCRM\Shortcode;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Extension_Debug;
@@ -75,14 +76,14 @@ class Twig extends Shortcode {
         do_action( 'wordpresscrm_after_twig_loaders', $chainLoader );
 
         $isDebugEnabled = defined( 'WP_DEBUG' ) && WP_DEBUG;
-        $cachePath = WORDPRESSCRM_STORAGE . '/twig';
-        if ( defined( 'WORDPRESSCRM_TWIG_CACHE_DISABLE' ) && WORDPRESSCRM_TWIG_CACHE_DISABLE ) {
-            $cachePath = false;
+        $twigCache = false;
+        if ( !defined( 'WORDPRESSCRM_TWIG_CACHE_DISABLE' ) || !WORDPRESSCRM_TWIG_CACHE_DISABLE ) {
+            $twigCache = new TwigCache( WORDPRESSCRM_STORAGE . '/twig' );
         }
 
         $twigEnv = new \Twig_Environment( $chainLoader, [
             'debug' => $isDebugEnabled,
-            'cache' => $cachePath,
+            'cache' => $twigCache,
         ] );
         $twigEnv->setBaseTemplateClass( '\AlexaCRM\WordpressCRM\Shortcode\Twig\Template' );
 
