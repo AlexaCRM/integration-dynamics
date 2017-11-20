@@ -14,30 +14,39 @@ if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-define( 'WORDPRESSCRM_DIR', __DIR__ );
-define( 'WORDPRESSCRM_STORAGE', WORDPRESSCRM_DIR . '/storage' );
 define( 'WORDPRESSCRM_VERSION', '1.2.4' );
 
-require_once __DIR__ . '/vendor/autoload.php'; // Composer autoloader
+define( 'WORDPRESSCRM_DIR', __DIR__ );
 
-/**
- * Stop further initialization if the storage is not writable.
- */
-if ( !is_writable( WORDPRESSCRM_STORAGE ) ) {
-    add_action( 'admin_notices', function() {
-        $screen = get_current_screen();
-        if ( $screen->base === 'plugins' ) {
-            ?>
-            <div class="notice notice-error">
-                <p>
-                    <?php printf( __( 'Dynamics 365 Integration detected that <code>%s</code> is not writable by the web server. Please fix it to complete the installation.', 'integration-dynamics' ), WORDPRESSCRM_STORAGE ); ?>
-                </p>
-            </div>
-            <?php
-        }
-    } );
-    return;
+$wpUploadDir = wp_upload_dir();
+$wpcrmStorageDir = null;
+if ( $wpUploadDir['error'] === false ) {
+    $wpcrmStorageDir = $wpUploadDir['basedir'] . '/wpcrm-storage';
+
+    /**
+     * Stop further initialization if the storage is not writable.
+     */
+    if ( !wp_mkdir_p( $wpcrmStorageDir ) || !is_writable( $wpcrmStorageDir ) ) {
+        add_action( 'admin_notices', function() use ( $wpcrmStorageDir ) {
+            $screen = get_current_screen();
+            if ( $screen->base === 'plugins' ) {
+                ?>
+                <div class="notice notice-error">
+                    <p>
+                        <?php printf( __( 'Dynamics 365 Integration detected that <code>%s</code> is not writable by the web server. Please fix it to complete the installation.', 'integration-dynamics' ), $wpcrmStorageDir ); ?>
+                    </p>
+                </div>
+                <?php
+            }
+        } );
+
+        return;
+    }
 }
+
+define( 'WORDPRESSCRM_STORAGE', $wpcrmStorageDir );
+
+require_once __DIR__ . '/vendor/autoload.php'; // Composer autoloader
 
 $logger = new \Monolog\Logger( 'wpcrm' );
 $logLevel = WP_DEBUG? \Monolog\Logger::INFO : \Monolog\Logger::NOTICE;
