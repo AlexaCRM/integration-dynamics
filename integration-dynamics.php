@@ -42,6 +42,12 @@ if ( $wpUploadDir['error'] === false ) {
 
         return;
     }
+
+    // add .htaccess to prevent access to the storage directory
+    if ( !file_exists( $wpcrmStorageDir . '/.htaccess' ) ) {
+        $htaccessContent = "Order Deny,Allow\nDeny from all\nAllow from 127.0.0.1\n";
+        @file_put_contents( $wpcrmStorageDir . '/.htaccess', $htaccessContent );
+    }
 }
 
 define( 'WORDPRESSCRM_STORAGE', $wpcrmStorageDir );
