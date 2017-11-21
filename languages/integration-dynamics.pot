@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the Dynamics 365 Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics 365 Integration 1.2.4\n"
+"Project-Id-Version: Dynamics 365 Integration 1.2.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-"
 "dynamics\n"
-"POT-Creation-Date: 2017-11-16 14:34:30+00:00\n"
+"POT-Creation-Date: 2017-11-21 08:54:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -73,20 +73,20 @@ msgstr ""
 msgid "Entity attribute to render."
 msgstr ""
 
-#: integration-dynamics.php:33
+#: integration-dynamics.php:36
 msgid ""
 "Dynamics 365 Integration detected that <code>%s</code> is not writable by "
 "the web server. Please fix it to complete the installation."
 msgstr ""
 
-#: integration-dynamics.php:65
+#: integration-dynamics.php:80
 msgid ""
 "Dynamics 365 Integration detected that your environment has PHP %1$s. The "
 "plugin requires at least PHP %2$s to work. Please upgrade your PHP "
 "installation to fully enable the plugin."
 msgstr ""
 
-#: integration-dynamics.php:86
+#: integration-dynamics.php:101
 msgid ""
 "cURL, a PHP extension, is not installed. <strong>Dynamics 365 Integration</"
 "strong> requires cURL to work properly."
@@ -490,12 +490,12 @@ msgid "Settings"
 msgstr ""
 
 #: src/Shortcode/Form/AbstractForm.php:262 src/Shortcode/Form/Control.php:78
-#: src/Shortcode/Form/FormInstance.php:958
-#: src/Shortcode/Form/FormInstance.php:969
+#: src/Shortcode/Form/FormInstance.php:986
+#: src/Shortcode/Form/FormInstance.php:997
 msgid "%s is required"
 msgstr ""
 
-#: src/Shortcode/Form/Control.php:95 src/Shortcode/Form/FormInstance.php:743
+#: src/Shortcode/Form/Control.php:95 src/Shortcode/Form/FormInstance.php:771
 msgid "%s must be a valid email address"
 msgstr ""
 
@@ -509,43 +509,43 @@ msgid_plural "%1$s must be less than %2$d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Shortcode/Form/FormInstance.php:165
+#: src/Shortcode/Form/FormInstance.php:166
 msgid "<strong>Success!</strong>"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:206
+#: src/Shortcode/Form/FormInstance.php:207
 msgid "Form submission couldn't pass security check. Please try again"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:315
+#: src/Shortcode/Form/FormInstance.php:316
 msgid "Can not get form definition"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:650
+#: src/Shortcode/Form/FormInstance.php:678
 msgid "Unsupported lookup type for [%1$s], or entity {%2$s} not found"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:731
+#: src/Shortcode/Form/FormInstance.php:759
 msgid "Must be less than %d characters"
 msgid_plural "Must be less than %d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Shortcode/Form/FormInstance.php:738
+#: src/Shortcode/Form/FormInstance.php:766
 msgid "Incorrect text value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:756
+#: src/Shortcode/Form/FormInstance.php:784
 msgid "Invalid number value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:761
+#: src/Shortcode/Form/FormInstance.php:789
 msgid ""
 "Invalid number value. Enter a decimal number without currency symbol or "
 "thousands separator."
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:766
+#: src/Shortcode/Form/FormInstance.php:794
 msgid ""
 "Invalid money value. Enter a decimal number without currency symbol or "
 "thousands separator."

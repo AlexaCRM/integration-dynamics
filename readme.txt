@@ -52,6 +52,12 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.5 =
+
+* Allow to set currentrecord as default form values
+* Storage directory moved to the WordPress uploads directory
+* Fixed: Twig would not work on WPEngine due to caching issues
+
 = 1.2.4 =
 
 * Allow downloading CRM attachments (+ Twig function to generate an URL)
