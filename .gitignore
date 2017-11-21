@@ -1,10 +1,4 @@
 # Created by .ignore support plugin (hsz.mobi)
 /nbproject/
-/storage/cache/
-/storage/metadata/
-/storage/images/
-/storage/twig/
-
-/storage/*.log
 
 /vendor/
