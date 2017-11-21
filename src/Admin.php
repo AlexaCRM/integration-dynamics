@@ -84,7 +84,7 @@ class Admin {
 
             if ( $tabName === 'general' ) {
                 add_menu_page( 'Dynamics 365 Integration Settings', 'Dynamics 365', 'manage_options',
-                    'wordpresscrm', [ $tabObject, 'render' ], static::$adminLogo );
+                    'wordpresscrm', [ $tabObject, 'render' ], static::$adminLogo, 100 );
                 $tabHookName = add_submenu_page( 'wordpresscrm', $pageTitle, $tabObject->getDisplayName(), 'manage_options',
                     'wordpresscrm', [ $tabObject, 'render' ] );
             } else {
