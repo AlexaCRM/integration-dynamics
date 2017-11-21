@@ -4,7 +4,6 @@ namespace AlexaCRM\WordpressCRM;
 
 use AlexaCRM\CRMToolkit\Entity;
 use DOMDocument;
-use AlexaCRM\WordpressCRM\Shortcode\Field;
 
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly

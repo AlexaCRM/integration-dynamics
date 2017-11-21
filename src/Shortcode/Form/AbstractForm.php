@@ -3,7 +3,6 @@
 namespace AlexaCRM\WordpressCRM\Shortcode\Form;
 
 use AlexaCRM\WordpressCRM\Shortcode;
-use AlexaCRM\WordpressCRM\Template;
 use Exception;
 
 if ( !defined( 'ABSPATH' ) ) {

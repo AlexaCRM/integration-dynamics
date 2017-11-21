@@ -4,7 +4,6 @@ namespace AlexaCRM\WordpressCRM\Shortcode\Form;
 
 use AlexaCRM\CRMToolkit\Entity;
 use AlexaCRM\CRMToolkit\OptionSetValue;
-use AlexaCRM\WordpressCRM\Template;
 use AlexaCRM\WordpressCRM\Messages;
 use AlexaCRM\WordpressCRM\FormValidator;
 use Exception;
