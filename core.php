@@ -277,7 +277,17 @@ function wordpresscrm_javascript_redirect( $location = null ) {
     ?>
     <script type="text/javascript">
         <!--
-        window.location = <?php echo ( $location ) ? json_encode( $location ) : 'window.location.href'; ?>;
+        ( function() {
+            var newLocation = '.';
+            newLocation = <?php echo ( $location ) ? json_encode( $location ) : 'window.location.href'; ?>;
+
+            if ( newLocation === '.' ) {
+                window.location = window.location.href;
+                return;
+            }
+
+            window.location = newLocation;
+        }() );
         //-->
     </script>
     <?php
