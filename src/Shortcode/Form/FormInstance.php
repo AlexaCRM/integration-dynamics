@@ -4,7 +4,6 @@ namespace AlexaCRM\WordpressCRM\Shortcode\Form;
 
 use AlexaCRM\CRMToolkit\Entity;
 use AlexaCRM\CRMToolkit\OptionSetValue;
-use AlexaCRM\WordpressCRM\Template;
 use AlexaCRM\WordpressCRM\Messages;
 use AlexaCRM\WordpressCRM\FormValidator;
 use Exception;
@@ -373,7 +372,7 @@ class FormInstance extends AbstractForm {
                                 array_push( $this->errors, ( $attributes["submit_error"] ) ? $attributes["submit_error"] : Messages::getMessage( "form", "crm_error" ) );
                             } else {
                                 $objectId = ( $this->mode == "edit" ) ? $this->entity->id : $result;
-                                $this->processAttachments( $objectId );
+                                $this->processAttachments();
 
                                 if ( $redirectUrl ) {
                                     wordpresscrm_javascript_redirect( $redirectUrl );
@@ -423,9 +422,9 @@ class FormInstance extends AbstractForm {
     /**
      * Uploads received form attachments to the CRM.
      *
-     * @param $entity
+     * @return void
      */
-    private function processAttachments( $entity ) {
+    private function processAttachments() {
         $files = ACRM()->request->files;
 
         if ( !array_key_exists( 'notescontrol', $files->get( 'entity', [] ) ) ) {
@@ -440,21 +439,29 @@ class FormInstance extends AbstractForm {
             return;
         }
 
+        $sdk = ACRM()->getSdk();
+
         $fileName = $uploadedFile->getClientOriginalName();
         $filePath  = $uploadedFile->getRealPath();
         $fileType = $uploadedFile->getMimeType();
-
         $base64 = base64_encode( file_get_contents( $filePath ) );
 
-        $newAnnotation = ASDK()->entity( 'annotation' );
+        /**
+         * If the form is for the annotation entity, then attach the uploaded file
+         * directly to it instead of creating a new annotation.
+         */
+        if ( $this->entity->logicalName === 'annotation' ) {
+            $this->entity->documentbody = $base64;
+            $this->entity->mimetype = $fileType;
+            $this->entity->filename = $fileName;
+            $this->entity->isdocument = true;
 
-        if ( $entity instanceof Entity ) {
-            $newAnnotation->objectid = $entity;
-        } else {
-            $entityObject            = ASDK()->entity( $this->entity->logicalname );
-            $entityObject->id        = $entity;
-            $newAnnotation->objectid = $entityObject;
+            $sdk->update( $this->entity );
+            return;
         }
+
+        $newAnnotation               = $sdk->entity( 'annotation' );
+        $newAnnotation->objectid     = $this->entity;
         $newAnnotation->subject      = 'Attachment file ' . $fileName;
         $newAnnotation->documentbody = $base64;
         $newAnnotation->mimetype     = $fileType;

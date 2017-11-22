@@ -7,7 +7,6 @@ use AlexaCRM\WordpressCRM\View as CRMView;
 use AlexaCRM\WordpressCRM\Shortcode;
 use SimpleXMLElement;
 use AlexaCRM\WordpressCRM\FetchXML;
-use AlexaCRM\WordpressCRM\Template;
 
 if ( !defined( 'ABSPATH' ) ) {
     exit;

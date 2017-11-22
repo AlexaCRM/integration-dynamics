@@ -52,6 +52,11 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.6 =
+
+* Append form attachment to the current form record if it's an annotation
+* Fixed: redirect_url in forms should refresh the page if the value is "."
+
 = 1.2.5 =
 
 * Allow to set currentrecord as default form values

@@ -2,8 +2,6 @@
 
 namespace AlexaCRM\WordpressCRM\Shortcode\Twig;
 
-use AlexaCRM\CRMToolkit\Entity\MetadataCollection;
-
 /**
  * Implements pseudo entity collection for Twig templates.
  *

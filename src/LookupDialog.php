@@ -1,16 +1,15 @@
 <?php
 
-// Exit if accessed directly
 namespace AlexaCRM\WordpressCRM;
 
 use AlexaCRM\CRMToolkit\AbstractClient;
 use AlexaCRM\CRMToolkit\Entity;
 use AlexaCRM\CRMToolkit\Entity\EntityReference;
-use AlexaCRM\WordpressCRM\Shortcode\Field;
 use DOMDocument;
 use Exception;
 use SimpleXMLElement;
 
+// Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
