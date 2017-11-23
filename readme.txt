@@ -52,6 +52,12 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.6.1 =
+
+* Fixed: destroy entity binding config if no entity selected
+* Fixed: don't retrieve the bound record if no action required upon 404
+* Fixed: get_post() may return null if entity binding is requested during WordPress start-up (404 check)
+
 = 1.2.6 =
 
 * Append form attachment to the current form record if it's an annotation
