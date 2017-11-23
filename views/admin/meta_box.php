@@ -10,7 +10,7 @@ if ( !defined( 'ABSPATH' ) ) {
 <div id="wordpresscrm_databinding_container">
     <p><strong><?php _e( 'Entity', 'integration-dynamics' ); ?></strong></p>
     <select id="wordpresscrmDatabindingEntity" name="wordpresscrm_databinding_entity">
-        <option value="0"><?php _e( '— Select —', 'integration-dynamics' ); ?></option>
+        <option value=""><?php _e( '— Select —', 'integration-dynamics' ); ?></option>
         <?php foreach ( $entities as $entity ) : ?>
 
             <?php $selected = ( $post_entity && $entity["LogicalName"] == $post_entity ) ? "selected" : ""; ?>

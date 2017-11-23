@@ -60,7 +60,7 @@ class Binding {
          * @param string $entityKey
          * @param string $entityQuery
          */
-        $this->entity = apply_filters( 'wordpresscrm_data_binding_entity', $this->entity, get_post(), $bindingConfig['entity'], $bindingConfig['key'], $bindingConfig['query'] );
+        $this->entity = apply_filters( 'wordpresscrm_data_binding_entity', $this->entity, get_post( $boundPostId ), $bindingConfig['entity'], $bindingConfig['key'], $bindingConfig['query'] );
 
         return $this->entity;
     }

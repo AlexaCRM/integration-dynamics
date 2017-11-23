@@ -210,7 +210,7 @@ add_filter( 'pre_handle_404', function( $preempt, \WP_Query $query ) {
     }
 
     $shouldTrigger404 = ( $bindingConfig['empty'] === '404' );
-    if ( $binding->getEntity( $post->ID ) === null && apply_filters( 'wordpresscrm_data_binding_404', $shouldTrigger404 ) ) {
+    if ( apply_filters( 'wordpresscrm_data_binding_404', $shouldTrigger404 ) && $binding->getEntity( $post->ID ) === null ) {
         $query->set_404();
     }
 
