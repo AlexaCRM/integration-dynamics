@@ -112,9 +112,9 @@ class DataBinding {
             return $postId;
         }
 
-        $entityName = $request->get( 'wordpresscrm_databinding_entity' );
+        $entityName = $request->get( 'wordpresscrm_databinding_entity', '' );
 
-        if ( $entityName === null ) {
+        if ( $entityName === '' ) {
             ACRM()->getBinding()->updateBinding( $postId, null );
 
             return $postId;
