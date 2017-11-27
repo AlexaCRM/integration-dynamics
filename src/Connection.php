@@ -69,7 +69,13 @@ class Connection {
         // Update plugin in-memory options
         ACRM()->options = $options;
 
-        ACRM()->getLogger()->notice( 'Connection to CRM has been ' . ( $status? 'established.' : 'ceased.' ) );
+        if ( $status ) {
+            ACRM()->getLogger()->info( 'Connection to CRM has been established.' );
+
+            return;
+        }
+
+        ACRM()->getLogger()->alert( 'Connection to CRM has been ceased.' );
     }
 
 }
