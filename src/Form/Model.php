@@ -87,7 +87,7 @@ class Model {
         if ( array_key_exists( 'redirect', $attributes ) && is_string( $attributes['redirect'] ) ) {
             $attributes['redirect'] = [ 'always' => $attributes['redirect'] ];
         }
-        if ( !is_array( $attributes['redirect'] ) ) {
+        if ( !array_key_exists( 'redirect', $attributes ) || !is_array( $attributes['redirect'] ) ) {
             $attributes['redirect'] = [];
         }
 
