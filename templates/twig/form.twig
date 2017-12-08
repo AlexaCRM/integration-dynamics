@@ -119,7 +119,7 @@
                   {% if controlValue is null %}
                     {% set controlValue = attribute( form.record, control.name ) %}
                   {% endif %}
-                  <select id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}disabled="disabled"{% endif %}>
+                  <select id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}disabled="disabled"{% endif %} autocomplete="off">
                   {% if control.metadata.type == 'Picklist' %}<option value=""></option>{% endif %}
                   {% for optionValue, optionLabel in control.metadata.optionSet.options %}
                     <option value="{{ optionValue }}" {{ (controlValue == optionValue)? 'selected="selected"' : '' }}>{{ optionLabel }}</option>
@@ -163,6 +163,18 @@
                     <div class="form-control-feedback">{{ errorMessage }}</div>
                   {% endfor %}
                   <input type="hidden" name="{{ control.name }}" value="{{ [ attribute( form.record, control.name ).logicalName, attribute( form.record, control.name ).id, attribute( form.record, control.name ) ~ '' ]|json_encode }}">
+                {% elseif control.classId == '{628064E7-E104-4B65-9EBF-3ED02F9AEBB6}' %}{# lookup view field #}
+                  {% set controlValue = attribute( form.record, control.name ).id %}
+                  <select id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}disabled="disabled"{% endif %} autocomplete="off">
+                    <option value=""></option>
+                    {% for optionRecord in control.options %}
+                      {% set optionValue = [ optionRecord.logicalName, optionRecord.id, optionRecord.displayName ] %}
+                      <option value="{{ optionValue|json_encode }}" {{ (controlValue == optionRecord.id)? 'selected="selected"' : '' }}>{{ optionRecord }}</option>
+                    {% endfor %}
+                  </select>
+                  {% for errorMessage in form.errors[control.name] %}
+                    <div class="form-control-feedback">{{ errorMessage }}</div>
+                  {% endfor %}
                 {% elseif control.classId == '{E0DECE4B-6FC8-4A8F-A065-082708572369}' %}{# textarea field #}
                   {% if control.name matches '/address\\d_composite/' %}{# decompose composite address field #}
                     {% set controlPrefix = control.name|slice(0, 8) %}
