@@ -138,5 +138,13 @@ class PersistentStorage implements StorageInterface {
      *
      * @return void
      */
-    public function delete( $key ) {}
+    public function delete( $key ) {
+        $key = trim( $key );
+        $path = $this->getKeyPath( $key );
+        if ( $key === '' || !is_writable( $path ) ) {
+            return;
+        }
+
+        @unlink( $path );
+    }
 }

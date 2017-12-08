@@ -5,11 +5,17 @@ namespace AlexaCRM\WordpressCRM\Form;
 use AlexaCRM\CRMToolkit\Client;
 use AlexaCRM\CRMToolkit\Entity;
 use AlexaCRM\WordpressCRM\FormValidator;
+use AlexaCRM\WordpressCRM\View;
 
 /**
  * Represents a Dynamics CRM Form.
  */
 class Model {
+
+    /**
+     * Class ID for the custom lookup view control.
+     */
+    const CONTROL_LOOKUP_VIEW = '{628064E7-E104-4B65-9EBF-3ED02F9AEBB6}';
 
     /**
      * Entity that the form belongs to.
@@ -83,11 +89,16 @@ class Model {
             $attributes['default'] = [];
         }
 
+        // lookup views
+        if ( !array_key_exists( 'lookupviews', $attributes ) || !is_array( $attributes['lookupviews'] ) ) {
+            $attributes['lookupviews'] = [];
+        }
+
         // redirects for different actions
         if ( array_key_exists( 'redirect', $attributes ) && is_string( $attributes['redirect'] ) ) {
             $attributes['redirect'] = [ 'always' => $attributes['redirect'] ];
         }
-        if ( !is_array( $attributes['redirect'] ) ) {
+        if ( !array_key_exists( 'redirect', $attributes ) || !is_array( $attributes['redirect'] ) ) {
             $attributes['redirect'] = [];
         }
 
@@ -130,6 +141,7 @@ class Model {
             'metadata' => $metadata,
             'entities' => ACRM()->getMetadata()->getEntitiesList(),
             'parameters' => $this->attributes,
+            'record' => $formDefinition['record'],
         ];
 
         $formDOM = new \DOMDocument();
@@ -207,6 +219,11 @@ class Model {
                                     $controlDefinition['parameters'][$parameter->nodeName] = $parameter->nodeValue;
                                 }
 
+                                if ( array_key_exists( $controlDefinition['name'], $this->attributes['lookupviews'] ) ) {
+                                    $controlDefinition['classId'] = static::CONTROL_LOOKUP_VIEW;
+                                    $controlDefinition['options'] = $this->retrieveLookupView( $this->attributes['lookupviews'][$controlDefinition['name']] );
+                                }
+
                                 $cellDefinition['control'] = $controlDefinition;
                             }
 
@@ -255,7 +272,7 @@ class Model {
             }
 
             if ( $fieldValue === ''
-                 || ( $fieldMetadata->isLookup && json_decode( $fieldValue ) === [ null, null ] ) ) {
+                 || ( $fieldMetadata->isLookup && json_decode( $fieldValue ) === [ null, null, '' ] ) ) {
                 $this->record->{$fieldName} = null;
                 continue;
             }
@@ -627,6 +644,33 @@ class Model {
         }
 
         return $formXML;
+    }
+
+    /**
+     * Retrieve records according to the given view.
+     *
+     * @param array $viewDefinition [ entityName, viewName ]
+     *
+     * @return Entity[]
+     */
+    private function retrieveLookupView( $viewDefinition ) {
+        if ( !is_array( $viewDefinition ) || count( $viewDefinition ) !== 2 ) {
+            return [];
+        }
+
+        $view = View::getViewForEntity( $viewDefinition[0], $viewDefinition[1] );
+        if ( $view === null ) {
+            return [];
+        }
+
+        $dataCacheKey = 'wpcrm_data_' . sha1( $view->fetchxml );
+        $options = ACRM()->getCache()->get( $dataCacheKey );
+        if ( $options == null ) {
+            $options = ASDK()->retrieveMultiple( $view->fetchxml );
+            ACRM()->getCache()->set( $dataCacheKey, $options, 2 * 60 * 60 * 24 );
+        }
+
+        return $options->Entities;
     }
 
     /**

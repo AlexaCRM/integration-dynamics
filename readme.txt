@@ -52,6 +52,13 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.7 =
+
+* Implement Twig form lookup control as a dropdown
+* Fixed: Twig form record would not be applied
+* Fixed: custom persistent storage clean-up
+* Fixed: check Twig form parameters better
+
 = 1.2.6.1 =
 
 * Fixed: destroy entity binding config if no entity selected

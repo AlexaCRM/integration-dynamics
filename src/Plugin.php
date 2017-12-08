@@ -262,7 +262,8 @@ final class Plugin {
         $this->getCache()->cleanup();
 
         // Purge each storage
-        foreach ( array_keys( $this->storage ) as $storageName ) {
+        $storageList = array_unique( apply_filters( 'wordpresscrm_storage_list', array_keys( $this->storage ) ) );
+        foreach ( $storageList as $storageName ) {
             $this->getStorage( $storageName )->cleanup();
         }
 
