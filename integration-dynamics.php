@@ -42,12 +42,6 @@ if ( $wpUploadDir['error'] === false ) {
 
         return;
     }
-
-    // add .htaccess to prevent access to the storage directory
-    if ( !file_exists( $wpcrmStorageDir . '/.htaccess' ) ) {
-        $htaccessContent = "Order Deny,Allow\nDeny from all\nAllow from 127.0.0.1\n";
-        @file_put_contents( $wpcrmStorageDir . '/.htaccess', $htaccessContent );
-    }
 }
 
 define( 'WORDPRESSCRM_STORAGE', $wpcrmStorageDir );
@@ -109,11 +103,17 @@ if ( !function_exists( 'curl_version' ) ) {
 }
 
 // Run migrations
-register_activation_hook( __FILE__, function() {
+register_activation_hook( __FILE__, function() use ( $wpcrmStorageDir ) {
     $update = new \AlexaCRM\WordpressCRM\Update();
     $update->updateDeprecatedOptions();
     $update->updateDataBoundPages();
     $update->updateDataBinding();
+
+    // add .htaccess to prevent access to the storage directory
+    if ( !file_exists( $wpcrmStorageDir . '/.htaccess' ) ) {
+        $htaccessContent = "Order Deny,Allow\nDeny from all\nAllow from 127.0.0.1\n";
+        @file_put_contents( $wpcrmStorageDir . '/.htaccess', $htaccessContent );
+    }
 } );
 
 require_once __DIR__ . '/core.php';
