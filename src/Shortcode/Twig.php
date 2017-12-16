@@ -144,6 +144,9 @@ class Twig extends Shortcode {
         // Access to any entity via {{ entities.logicalName["GUID"] }}
         $twigEnv->addGlobal( 'entities', new Twig\FauxEntitiesCollection() );
 
+        // List of entities ( entityLogicalName => entityDisplayName )
+        $twigEnv->addGlobal( 'entities_list', ACRM()->getMetadata()->getEntitiesList() );
+
         /**
          * Access to CRM metadata.
          *

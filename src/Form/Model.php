@@ -139,7 +139,6 @@ class Model {
                 'datetimeformat' => get_option( 'date_format' ) . ' ' . get_option( 'time_format' ),
             ],
             'metadata' => $metadata,
-            'entities' => ACRM()->getMetadata()->getEntitiesList(),
             'parameters' => $this->attributes,
             'record' => $formDefinition['record'],
         ];
