@@ -52,6 +52,13 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.8 =
+
+* List of CRM entities added to the Twig environment
+* Better support for parameters and lookup substitution in Twig views
+* Fixed: dropdowns in Firefox could have not behaved as intended
+* Fixed: .htaccess was checked at every request instead of installation/update phase
+
 = 1.2.7 =
 
 * Implement Twig form lookup control as a dropdown
