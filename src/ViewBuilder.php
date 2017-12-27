@@ -64,14 +64,10 @@ class ViewBuilder {
         list ( $fetchXML, $layoutXML ) = [ $view->fetchxml, $view->layoutxml ];
 
         // Substitute parameters
-        if ( array_key_exists( 'parameters', $this->attributes ) ) {
-            $fetchXML = FetchXML::replacePlaceholderValuesByParametersArray( $fetchXML, $this->attributes['parameters'] );
-        }
+        $fetchXML = $this->processParameters( $fetchXML );
 
         // Substitute lookups
-        if ( array_key_exists( 'lookups', $this->attributes ) ) {
-            $fetchXML = FetchXML::replaceLookupConditionsByLookupsArray( $fetchXML, $this->attributes['lookups'] );
-        }
+        $fetchXML = $this->processLookups( $fetchXML );
 
         $isPaged = array_key_exists( 'count', $this->attributes );
         $perPage = Client::MAX_CRM_RECORDS;
@@ -118,6 +114,56 @@ class ViewBuilder {
         ];
 
         return $listView;
+    }
+
+    /**
+     * Replaces FetchXML placeholders "{int}" with specified parameters.
+     *
+     * @param string $fetchXML
+     *
+     * @return string
+     */
+    private function processParameters( $fetchXML ) {
+        if ( !array_key_exists( 'parameters', $this->attributes ) ) {
+            return $fetchXML;
+        }
+
+        $parameters = $this->attributes['parameters'];
+
+        if ( is_string( $parameters ) ) {
+            return FetchXML::replacePlaceholderValuesByParametersArray( $fetchXML, $parameters );
+        }
+
+        if ( !is_array( $parameters ) ) {
+            return $fetchXML;
+        }
+
+        foreach ( $parameters as $i => $param ) {
+            $placeholder = '{' . $i . '}';
+            $fetchXML = FetchXML::replaceConditionPlaceholderByValue( $fetchXML, $placeholder, $param );
+        }
+
+        return $fetchXML;
+    }
+
+    /**
+     * Replaces FetchXML conditions with specified lookup values.
+     *
+     * @param string $fetchXML
+     *
+     * @return string
+     */
+    private function processLookups( $fetchXML ) {
+        if ( !is_array( $this->attributes['lookups'] ) ) {
+            return $fetchXML;
+        }
+
+        $lookups = $this->attributes['lookups'];
+        foreach ( $lookups as $field => $value ) {
+            $fetchXML = FetchXML::replaceCondition( $fetchXML, 'attribute', $field, $value );
+        }
+
+        return $fetchXML;
     }
 
     /**

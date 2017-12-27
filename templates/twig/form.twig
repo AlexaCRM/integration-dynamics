@@ -145,7 +145,7 @@
                 {% elseif control.classId == '{270BD3DB-D9AF-4782-9025-509E298DEC0A}' %}{# lookup field #}
                   {% set lookupTypes = {} %}
                   {% for lookupType in control.metadata.lookupTypes %}
-                    {% set lookupTypes = lookupTypes|merge( { (lookupType): form.entities[lookupType] } ) %}
+                    {% set lookupTypes = lookupTypes|merge( { (lookupType): entities_list[lookupType] } ) %}
                   {% endfor %}
                   <div class="input-group wpcrm-lookup" data-types="{{ lookupTypes|json_encode }}">
                     <input type="text" id="{{ control.id }}" data-field="{{ control.name }}" class="form-control wpcrm-lookup-display" readonly="readonly" value="{{ attribute( form.record, control.name ) }}">
