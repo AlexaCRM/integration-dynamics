@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.8.1 =
+
+* Fixed: incorrect regex rules would prevent submitting forms with Money fields
+
 = 1.2.8 =
 
 * List of CRM entities added to the Twig environment
