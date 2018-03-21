@@ -55,6 +55,11 @@ class View extends Shortcode {
              * Specifies the number of records per page, enables pagination.
              */
             'count' => null,
+
+            /**
+             * Specifies the language code.
+             */
+            'language' => null,
         ), $atts );
     }
 
@@ -208,7 +213,8 @@ class View extends Shortcode {
             }
         }
 
-        $rows = CRMView::getViewRows( $entities, $cells, $fetchXML, null, ( $inlineTemplate && $inlineTemplate->results ) );
+        $languageCode = ( $attributes['language'] === null )? 1033 : (int)$attributes['language'];
+        $rows = CRMView::getViewRows( $entities, $cells, $fetchXML, $languageCode );
 
         if ( $inlineTemplate && $inlineTemplate->results && $entities->Count ) {
             ob_start();

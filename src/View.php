@@ -109,7 +109,7 @@ class View {
         return $view;
     }
 
-    public static function getViewRows( $entities, $cells, $fetchXML, $tzOffset = null ) {
+    public static function getViewRows( $entities, $cells, $fetchXML, $languageCode = 1033 ) {
 
         $elements = array();
 
@@ -121,6 +121,7 @@ class View {
         $fetchDom->loadXML( $fetchXML );
 
         $primaryName = $entities->Entities[0]->getPrimaryNameField();
+        $tzOffset = null;
 
         foreach ( $entities->Entities as $entity ) {
             /**
@@ -151,7 +152,7 @@ class View {
                         $element["properties"]      = $entity->$alias->attributes[ $field ];
                     }
                 } else {
-                    $element["head"] = $entity->getPropertyLabel( $name );
+                    $element["head"] = $entity->getPropertyLabel( $name, $languageCode );
                     $element["value"]      = trim( $entity->{$name} );
                     $element["properties"] = $entity->attributes[ $name ];
                     $element["formatted_value"] = self::getFormattedValue( $entity, $name, $tzOffset );
@@ -165,7 +166,7 @@ class View {
                     }
 
                     if ( trim( $relatedEntityLabel ) === '' && $entity->metadata()->primaryNameAttribute === $name ) {
-                        $relatedEntityLabel = '(No name)';
+                        $relatedEntityLabel = __( '(No name)', 'integration-dynamics' );
                     }
 
                     if ( $name === $primaryName ) {
