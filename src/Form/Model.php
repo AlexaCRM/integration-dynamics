@@ -147,6 +147,12 @@ class Model {
         $formDOM->loadXML( $formXML );
         $formXPath = new \DOMXPath( $formDOM );
 
+        $notSupportedControlClasses = [
+            '{06375649-C143-495E-A496-C962E5B4488E}', // Notes control
+            '{62B0DF79-0464-470F-8AF7-4483CFEA0C7D}', // Address Map
+            '{E7A81278-8635-4D9E-8D4D-59480B391C5B}', // Subgrid
+        ];
+
         $tabs = $formXPath->query( '/form/tabs/tab' );
         foreach ( $tabs as $tab ) {
             $tabId = $tab->getAttribute( 'id' );
@@ -177,6 +183,9 @@ class Model {
 
                     $rows = $formXPath->query( './rows/row[count(*)>0]', $section );
                     foreach ( $rows as $row ) {
+                        /**
+                         * @var $row \DOMNode
+                         */
                         $cellCollection = [];
 
                         $cells = $formXPath->query( './cell', $row );
@@ -193,6 +202,11 @@ class Model {
                             $controlList = $formXPath->query( './control', $cell );
                             if ( $controlList->length ) {
                                 $control = $controlList->item( 0 );
+
+                                if ( in_array( strtoupper( $control->getAttribute( 'classid' ) ), $notSupportedControlClasses, true ) ) {
+                                    continue;
+                                }
+
                                 $controlDefinition = [
                                     'id' => $control->getAttribute( 'id' ),
                                     'classId' => strtoupper( $control->getAttribute( 'classid' ) ),
@@ -229,7 +243,9 @@ class Model {
                             $cellCollection[$cellId] = $cellDefinition;
                         }
 
-                        $sectionDefinition['rows'][] = $cellCollection;
+                        if ( count( $cellCollection) ) {
+                            $sectionDefinition['rows'][] = $cellCollection;
+                        }
                     }
 
                     $columnDefinition['sections'][$sectionId] = $sectionDefinition;
