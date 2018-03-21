@@ -155,6 +155,9 @@ class FormInstance extends AbstractForm {
 
     private $showForm = true;
 
+    private $isDefaultLanguage = true;
+    private $languageCode = 1033;
+
     /**
      * FormInstance constructor.
      */
@@ -286,6 +289,11 @@ class FormInstance extends AbstractForm {
 
             $this->disableLayout = ( $attributes["enable_layout"] != "true" );
 
+            if ( $attributes['language'] !== null ) {
+                $this->languageCode = (int)$attributes['language'];
+                $this->isDefaultLanguage = false;
+            }
+
             /* Retrieve parameter name */
             $id = self::parseParameterName( $attributes["parameter_name"], $this->mode );
 
@@ -300,7 +308,7 @@ class FormInstance extends AbstractForm {
 
             /* Check that the entity or entity record exists */
             if ( !$this->entity ) {
-                array_push( $this->errors, "Entity " . $entityName . " doesn't exist" );
+                array_push( $this->errors, sprintf( __( 'Entity %s doesn\'t exist', 'integration-dynamics' ), $entityName ) );
 
                 return self::printFormErrors( $this->errors );
             }
@@ -467,7 +475,7 @@ class FormInstance extends AbstractForm {
         $newAnnotation->mimetype     = $fileType;
         $newAnnotation->filename     = $fileName;
 
-        ASDK()->create( $newAnnotation );
+        $sdk->create( $newAnnotation );
     }
 
     /**
@@ -953,8 +961,13 @@ class FormInstance extends AbstractForm {
                 $controls[ $name ]->classid = strtoupper( (string) $control['classid'] );
 
                 if ( $properties[ $name ]->type == 'Picklist' || $properties[ $name ]->type == 'Boolean' ) {
-
                     $controls[ $name ]->options = $properties[ $name ]->optionSet->options;
+                    if ( !$this->isDefaultLanguage ) {
+                        $controls[ $name ]->options = [];
+                        foreach ( $properties[$name]->optionSet->localizedOptions as $optionValue => $localizedLabels ) {
+                            $controls[$name]->options[$optionValue] = $localizedLabels[$this->languageCode];
+                        }
+                    }
                 } else if ( empty( $controls[ $name ]->options ) ) {
                     $controls[ $name ]->options = null;
                 }
@@ -982,7 +995,7 @@ class FormInstance extends AbstractForm {
 
                     $controls["firstname"]->name      = "firstname";
                     $controls["firstname"]->inputname = "entity[firstname]";
-                    $controls["firstname"]->label     = "First name";
+                    $controls["firstname"]->label     = $this->entity->getPropertyLabel( 'firstname', $this->languageCode );
                     $controls["firstname"]->disabled  = false;
                     $controls["firstname"]->required = false;
 
@@ -996,7 +1009,7 @@ class FormInstance extends AbstractForm {
 
                     $controls["lastname"]->name      = "lastname";
                     $controls["lastname"]->inputname = "entity[lastname]";
-                    $controls["lastname"]->label     = "Last name";
+                    $controls["lastname"]->label     = $this->entity->getPropertyLabel( 'lastname', $this->languageCode );
                     $controls["lastname"]->disabled  = false;
                     $controls["lastname"]->required = true; // required by Dynamics CRM
                     $controls["lastname"]->jsValidators['required'] = [
@@ -1078,7 +1091,7 @@ class FormInstance extends AbstractForm {
             if ( isset( $this->entity->{$compositePrefix . $addr} ) ) {
                 $controls[ $compositePrefix . $addr ]        = new Control( $compositePrefix . $addr );
                 $controls[ $compositePrefix . $addr ]->type  = $this->entity->attributes[ $compositePrefix . $addr ]->type;
-                $controls[ $compositePrefix . $addr ]->label = $this->entity->getPropertyLabel( $compositePrefix . $addr );
+                $controls[ $compositePrefix . $addr ]->label = $this->entity->getPropertyLabel( $compositePrefix . $addr, $this->languageCode );
                 $controls[ $compositePrefix . $addr ]->value = $this->entity->{$compositePrefix . $addr};
             }
         }

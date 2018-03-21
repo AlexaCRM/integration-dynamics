@@ -51,6 +51,8 @@ abstract class AbstractForm extends Shortcode {
             'disable_default_for_create' => false,
             'disable_default_for_edit'   => true,
             'default_mode'               => [ ],
+
+            'language'                   => null,
         ], $attributes );
 
         if ( is_null( $attrs['entity'] ) && !is_null( $attrs['entity_name'] ) ) {

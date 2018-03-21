@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "03e97e6adfdab17970740ea2e91503ff",
-    "content-hash": "1ad8cc6ba9043a5d6e8ad96019491112",
+    "hash": "9c85786dbd702bce23acf8afe461ffd5",
+    "content-hash": "d18b89ddd1e2833b1b1872b3f9017b45",
     "packages": [
         {
             "name": "alexacrm/php-crm-toolkit",
-            "version": "dev-master",
+            "version": "20180321",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AlexaCRM/php-crm-toolkit.git",
-                "reference": "6170aaf2f87c55cb9b3e5ca1303cda581ab59803"
+                "reference": "64468cd2d6056ce1db77d45605ea9a9bf6f61443"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/6170aaf2f87c55cb9b3e5ca1303cda581ab59803",
-                "reference": "6170aaf2f87c55cb9b3e5ca1303cda581ab59803",
+                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/64468cd2d6056ce1db77d45605ea9a9bf6f61443",
+                "reference": "64468cd2d6056ce1db77d45605ea9a9bf6f61443",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +50,7 @@
                 "php",
                 "sdk"
             ],
-            "time": "2017-11-15 14:38:29"
+            "time": "2018-03-12 16:24:19"
         },
         {
             "name": "monolog/monolog",
@@ -236,12 +236,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296"
+                "reference": "78be803ce01e55d3491c1397cf1c64beb9c1b63b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
-                "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/78be803ce01e55d3491c1397cf1c64beb9c1b63b",
+                "reference": "78be803ce01e55d3491c1397cf1c64beb9c1b63b",
                 "shasum": ""
             },
             "require": {
@@ -253,7 +253,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6-dev"
+                    "dev-master": "1.7-dev"
                 }
             },
             "autoload": {
@@ -287,7 +287,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-10-11 12:05:26"
+            "time": "2018-01-30 19:27:44"
         },
         {
             "name": "twig/twig",
@@ -295,12 +295,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "5322c9b4ca5fbff5917ecbf0544b46fb2fa66086"
+                "reference": "c35ad8c4e33d02ad14171b033b938f520e5eefb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/5322c9b4ca5fbff5917ecbf0544b46fb2fa66086",
-                "reference": "5322c9b4ca5fbff5917ecbf0544b46fb2fa66086",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/c35ad8c4e33d02ad14171b033b938f520e5eefb5",
+                "reference": "c35ad8c4e33d02ad14171b033b938f520e5eefb5",
                 "shasum": ""
             },
             "require": {
@@ -308,8 +308,8 @@
             },
             "require-dev": {
                 "psr/container": "^1.0",
-                "symfony/debug": "~2.7",
-                "symfony/phpunit-bridge": "~3.3@dev"
+                "symfony/debug": "^2.7",
+                "symfony/phpunit-bridge": "^3.3"
             },
             "type": "library",
             "extra": {
@@ -352,15 +352,13 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-11-12 18:47:15"
+            "time": "2018-03-20 04:26:35"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "alexacrm/php-crm-toolkit": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
