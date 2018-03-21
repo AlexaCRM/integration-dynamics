@@ -1,0 +1,26 @@
+{% set controlPrefix = control.name|slice(0, 8) %}
+<div class="form-group">
+  <input type="text" name="{{ controlPrefix }}_line1" class="form-control" placeholder="Street 1" value="{{ attribute( form.record, controlPrefix ~ '_line1' ) }}" {% if control.disabled %}readonly="readonly"{% endif %}>
+</div>
+<div class="form-group">
+  <input type="text" name="{{ controlPrefix }}_line2" class="form-control" placeholder="Street 2" value="{{ attribute( form.record, controlPrefix ~ '_line2' ) }}" {% if control.disabled %}readonly="readonly"{% endif %}>
+</div>
+<div class="form-group">
+  <input type="text" name="{{ controlPrefix }}_line3" class="form-control" placeholder="Street 3" value="{{ attribute( form.record, controlPrefix ~ '_line3' ) }}" {% if control.disabled %}readonly="readonly"{% endif %}>
+</div>
+<div class="form-group row">
+  <div class="col-8">
+    <input type="text" name="{{ controlPrefix }}_city" class="form-control" placeholder="City" value="{{ attribute( form.record, controlPrefix ~ '_city' ) }}" {% if control.disabled %}readonly="readonly"{% endif %}>
+  </div>
+  <div class="col-4">
+    <input type="text" name="{{ controlPrefix }}_stateorprovince" class="form-control" placeholder="State/Province" value="{{ attribute( form.record, controlPrefix ~ '_stateorprovince' ) }}" {% if control.disabled %}readonly="readonly"{% endif %}>
+  </div>
+</div>
+<div class="row">
+  <div class="col-4">
+    <input type="text" name="{{ controlPrefix }}_postalcode" class="form-control" placeholder="ZIP/Postal code" value="{{ attribute( form.record, controlPrefix ~ '_postalcode' ) }}" {% if control.disabled %}readonly="readonly"{% endif %}>
+  </div>
+  <div class="col-8">
+    <input type="text" name="{{ controlPrefix }}_country" class="form-control" placeholder="Country/Region" value="{{ attribute( form.record, controlPrefix ~ '_country' ) }}" {% if control.disabled %}readonly="readonly"{% endif %}>
+  </div>
+</div>

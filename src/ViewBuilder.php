@@ -85,7 +85,8 @@ class ViewBuilder {
         $retrieveResult = $this->retrieveData( $fetchXML );
         $totalPages = (int)ceil( $retrieveResult->TotalRecordCount / $perPage );
 
-        $columns = $this->getColumns( $layoutXML );
+        $languageCode = array_key_exists( 'language', $this->attributes )? $this->attributes['language'] : null;
+        $columns = $this->getColumns( $layoutXML, $languageCode );
         $viewCells = array_map( function( $column ) {
             return [ 'name' => $column['logical_name'] ];
         }, $columns );
@@ -217,11 +218,12 @@ class ViewBuilder {
      * Returns column descriptions for the view.
      *
      * @param string $layoutXML
+     * @param int $languageCode
      *
      * @return array
      * @see https://community.adxstudio.com/products/adxstudio-portals/documentation/configuration-guide/liquid-templates/objects/entitylist/#entitylistviewcolumn
      */
-    private function getColumns( $layoutXML ) {
+    private function getColumns( $layoutXML, $languageCode = null ) {
         $viewLayout = new \SimpleXMLElement( $layoutXML );
         $rawCells = $viewLayout->xpath( './/cell' );
 
@@ -236,6 +238,9 @@ class ViewBuilder {
                 'name' => $entityAttributes[$columnName]->label,
                 'width' => (int)$cell['width'],
             ];
+            if ( $languageCode ) {
+                $columns[$columnName]['name'] = $entityAttributes[$columnName]->getLabel($languageCode);
+            }
         }
 
         return $columns;

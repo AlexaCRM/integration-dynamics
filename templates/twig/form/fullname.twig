@@ -1,0 +1,20 @@
+{% set firstnameDisabled = control.disabled %}
+{% set lastnameDisabled = control.disabled %}
+<div class="row">
+  <div class="col-6 {% if 'firstname' in form.errors|keys %}has-danger{% endif %}">
+    <input type="text" name="firstname" placeholder="First Name" class="form-control form-control-danger" value="{{ attribute(form.record, 'firstname') ?? form.defaults['firstname'] }}" {% if firstnameDisabled %}readonly="readonly"{% endif %}>
+    {% if 'firstname' in form.errors|keys %}
+      {% for errorMessage in form.errors['firstname'] %}
+        <div class="form-control-feedback">{{ errorMessage }}</div>
+      {% endfor %}
+    {% endif %}
+  </div>
+  <div class="col-6 {% if 'lastname' in form.errors|keys %}has-danger{% endif %}">
+    <input type="text" name="lastname" placeholder="Last Name" class="form-control" value="{{ attribute(form.record, 'lastname') ?? form.defaults['lastname'] }}" {% if lastnameDisabled %}readonly="readonly"{% endif %}>
+    {% if 'lastname' in form.errors|keys %}
+      {% for errorMessage in form.errors['lastname'] %}
+        <div class="form-control-feedback">{{ errorMessage }}</div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>

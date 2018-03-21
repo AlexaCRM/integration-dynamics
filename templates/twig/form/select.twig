@@ -1,0 +1,10 @@
+{% set controlValue = attribute( form.record, control.name ).value %}
+{% if controlValue is null %}
+  {% set controlValue = attribute( form.record, control.name ) %}
+{% endif %}
+<select id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}disabled="disabled"{% endif %} autocomplete="off">
+  {% if control.metadata.type == 'Picklist' %}<option value=""></option>{% endif %}
+  {% for optionValue, optionLabel in control.metadata.optionSet.localizedOptions %}
+    <option value="{{ optionValue }}" {{ (controlValue == optionValue)? 'selected="selected"' : '' }}>{{ optionLabel[form.parameters.language ?? 1033] }}</option>
+  {% endfor %}
+</select>
