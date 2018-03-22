@@ -52,6 +52,11 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.9 =
+
+* Localized forms and views
+* Fixed: decimal and email handling errors in forms
+
 = 1.2.8.1 =
 
 * Fixed: incorrect regex rules would prevent submitting forms with Money fields
