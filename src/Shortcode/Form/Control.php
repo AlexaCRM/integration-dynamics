@@ -85,6 +85,13 @@ class Control {
          * JS validation rules according to https://jqueryvalidation.org/documentation/
          */
 
+        if ( $property->type === 'Decimal' ) {
+            $this->jsValidators['number'] = [
+                'value' => true,
+                'message' => sprintf( __( '%s must be a valid decimal number', 'integration-dynamics' ), $this->label ),
+            ];
+        }
+
         if ( $property->type == "String" && strlen( $this->format ) > 0 ) {
             switch ( strtolower( $this->format ) ) {
                 case "text":

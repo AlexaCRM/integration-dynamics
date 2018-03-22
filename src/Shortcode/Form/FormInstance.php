@@ -661,8 +661,10 @@ class FormInstance extends AbstractForm {
         }
 
         foreach ( $post as $key => $value ) {
-
             $value = trim( $value );
+            if ( strtolower( $this->entity->attributes[ $key ]->format ) === 'email' ) {
+                $value = trim( $value, '.' );
+            }
 
             if ( $this->entity->attributes[ $key ]->isValidForUpdate ) {
 
@@ -760,7 +762,7 @@ class FormInstance extends AbstractForm {
             return $errorsFound;
         }
 
-        if ( $control->required && !$value ) {
+        if ( $control->required && trim( $value ) === '' ) {
             $this->entityErrors[ $field ] = $this->entity->getPropertyLabel( $field ) . " is required";
         }
 
