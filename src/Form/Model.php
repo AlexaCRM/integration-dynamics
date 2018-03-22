@@ -191,6 +191,7 @@ class Model {
                         $cells = $formXPath->query( './cell', $row );
                         foreach ( $cells as $cell ) {
                             $cellId = $cell->getAttribute( 'id' );
+
                             $cellDefinition = [
                                 'showLabel' => ( $cell->getAttribute( 'showlabel' ) === 'true' ),
                                 'label' => $formXPath->evaluate( 'string(./labels/label/@description[1])', $cell ),
@@ -216,6 +217,11 @@ class Model {
                                     'metadata' => $metadata->attributes[$control->getAttribute( 'datafieldname' )],
                                     'parameters' => [],
                                 ];
+
+                                if ( array_key_exists( 'language', $this->attributes )
+                                     && ( !array_key_exists( 'keep_labels', $this->attributes ) || $this->attributes['keep_labels'] !== true ) ) {
+                                    $cellDefinition['label'] = $controlDefinition['metadata']->getLabel( $this->attributes['language'] );
+                                }
 
                                 $this->formControls[] = $controlDefinition['name'];
 

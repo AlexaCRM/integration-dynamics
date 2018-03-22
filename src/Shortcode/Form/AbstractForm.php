@@ -53,6 +53,7 @@ abstract class AbstractForm extends Shortcode {
             'default_mode'               => [ ],
 
             'language'                   => null,
+            'keep_labels'                => false,
         ], $attributes );
 
         if ( is_null( $attrs['entity'] ) && !is_null( $attrs['entity_name'] ) ) {
@@ -65,6 +66,12 @@ abstract class AbstractForm extends Shortcode {
 
         if ( is_null( $attrs['type'] ) && !is_null( $attrs['form_type'] ) ) {
             $attrs['type'] = $attrs['form_type'];
+        }
+
+        if ( $attrs['keep_labels'] === 'true' ) {
+            $attrs['keep_labels'] = true;
+        } else {
+            $attrs['keep_labels'] = false;
         }
 
         unset( $attrs['entity_name'] );

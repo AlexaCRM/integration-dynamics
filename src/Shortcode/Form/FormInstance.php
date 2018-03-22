@@ -157,6 +157,7 @@ class FormInstance extends AbstractForm {
 
     private $isDefaultLanguage = true;
     private $languageCode = 1033;
+    private $keepLabels = false;
 
     /**
      * FormInstance constructor.
@@ -292,6 +293,7 @@ class FormInstance extends AbstractForm {
             if ( $attributes['language'] !== null ) {
                 $this->languageCode = (int)$attributes['language'];
                 $this->isDefaultLanguage = false;
+                $this->keepLabels = $attributes['keep_labels'];
             }
 
             /* Retrieve parameter name */
@@ -885,6 +887,9 @@ class FormInstance extends AbstractForm {
 
                 $controls[ $name ]        = new Control( $name, $this->entity );
                 $controls[ $name ]->label = ( $label ) ? $label : $this->entity->getPropertyLabel( $name );
+                if ( !$this->isDefaultLanguage && !$this->keepLabels ) {
+                    $controls[$name]->label = $this->entity->getPropertyLabel( $name, $this->languageCode );
+                }
 
                 if ( $cellLabelAlignment !== '' ) {
                     $controls[$name]->labelAlignment = $cellLabelAlignment;
