@@ -226,7 +226,7 @@ class Model {
                                 $this->formControls[] = $controlDefinition['name'];
 
                                 $controlDefinition['required'] = in_array( $controlDefinition['metadata']->requiredLevel, [ 'ApplicationRequired', 'SystemRequired' ] );
-                                if ( $controlDefinition['required'] && !in_array( $controlDefinition['name'], $this->attributes['optional'] ) ) {
+                                if ( $controlDefinition['required'] && in_array( $controlDefinition['name'], $this->attributes['optional'] ) ) {
                                     $controlDefinition['required'] = false;
                                 }
                                 if ( !$controlDefinition['required'] && in_array( $controlDefinition['name'], $this->attributes['required'] ) ) {
