@@ -44,6 +44,7 @@
                 {% endif %}
                 {% set labelWidth = (cell.showLabel? (section.cellLabelPosition == 'top'? 12 : 4) : 0) %}
                 {% set controlWidth = (12 - labelWidth) %}
+                {% if controlWidth == 0 %}{% set controlWidth = 12 %}{% endif %}
                 {% if cell.showLabel and section.cellLabelPosition == 'left' %}
                 <label class="col-form-label col-sm-{{ labelWidth }}" for="{{ control.id }}">{{ cell.label }} {{ control.required? '*' : '' }}</label>
                 {% elseif cell.showLabel %}
