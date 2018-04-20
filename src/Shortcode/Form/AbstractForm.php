@@ -188,11 +188,8 @@ abstract class AbstractForm extends Shortcode {
             $array = array_filter( preg_split( "/[{}]/", $defaultValues ) );
             /* Extract field name and default values */
             foreach ( $array as $arr ) {
-                /* if () */
-
-                $temp = explode( ":", $arr );
-
-                $default[ $temp[0] ] = $temp[1];
+                list ( $key, $value ) = explode( ":", $arr );
+                $default[ trim( $key ) ] = trim( $value );
             }
             /* Remove empty field names */
             if ( isset( $default[""] ) ) {
@@ -217,8 +214,8 @@ abstract class AbstractForm extends Shortcode {
             $array = array_filter( preg_split( "/[{}]/", $lookupTypes ) );
             /* Extract field name and default values */
             foreach ( $array as $arr ) {
-                $temp              = explode( ":", $arr );
-                $types[ $temp[0] ] = explode( ",", trim( $temp[1] ) );
+                $temp = explode( ":", $arr );
+                $types[ trim( $temp[0] ) ] = array_filter( explode( ",", $temp[1] ), 'trim' );
             }
             /* Remove empty field names */
             if ( isset( $types[""] ) ) {
