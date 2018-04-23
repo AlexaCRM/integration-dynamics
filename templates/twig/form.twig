@@ -22,133 +22,135 @@
         {% set cellWidth = 12/(row|length) %}
         <div class="row">
         {% for cell in row %}
-          {% if cell.isSpacer %}
-            <div class="col-12 pb-3 mb-3 wpcrm-form-spacer"></div>
-          {% else %}
-          {% set control = cell.control %}
-            <div class="col-sm-{{ cellWidth }} wpcrm-form-cell">
-              <div class="form-group row">
-                {% set controlDisabled = control.disabled %}
-                {% if not controlDisabled %}
-                  {% if form.parameters.mode == "create" %}
-                    {% set controlDisabled = not(control.metadata.isValidForCreate) %}
-                  {% elseif form.parameters.mode == "edit" %}
-                    {% set controlDisabled = not(control.metadata.isValidForUpdate) %}
-                  {% elseif form.parameters.mode == "upsert"  %}
-                    {% if form.record %}
-                      {% set controlDisabled = not(control.metadata.isValidForUpdate) %}
-                    {% else %}
-                      {% set controlDisabled = not(control.metadata.isValidForCreate) %}
-                    {% endif %}
-                  {% endif %}
-                {% endif %}
-                {% set labelWidth = (cell.showLabel? (section.cellLabelPosition == 'top'? 12 : 4) : 0) %}
-                {% set controlWidth = (12 - labelWidth) %}
-                {% if controlWidth == 0 %}{% set controlWidth = 12 %}{% endif %}
-                {% if cell.showLabel and section.cellLabelPosition == 'left' %}
-                <label class="col-form-label col-sm-{{ labelWidth }}" for="{{ control.id }}">{{ cell.label }} {{ control.required? '*' : '' }}</label>
-                {% elseif cell.showLabel %}
-                <div class="col-sm-{{ labelWidth }}" style="text-align:{{ section.cellLabelAlignment }};">
-                  <label class="form-control-label" for="{{ control.id }}">{{ cell.label }} {{ control.required? '*' : '' }}</label>
-                </div>
-                {% endif %}
-                <div class="col-sm-{{ controlWidth }} {% if control.name in form.errors|keys %}has-danger{% endif %}">
-                {% if control.classId in [ '{4273EDBD-AC1D-40D3-9FB2-095C621B552D}' ] %}{# text field #}
-                  {% if control.name == 'fullname' %}{# decompose fullname into firstname and lastname #}
-                    {% include "form/fullname.twig" %}
-                  {% else %}{# text field #}
-                    <input type="text" id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}readonly="readonly"{% endif %} value="{{ attribute( form.record, control.name ) ?? form.defaults[control.name] }}">
-                    {% for errorMessage in form.errors[control.name] %}
-                      <div class="form-control-feedback">{{ errorMessage }}</div>
-                    {% endfor %}
-                  {% endif %}
-                {% elseif control.classId == '{ADA2203E-B4CD-49BE-9DDF-234642B43B52}' %}{# email field #}
-                  <input type="email" id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}readonly="readonly"{% endif %} value="{{ attribute( form.record, control.name ) ?? form.defaults[control.name] }}">
-                  {% for errorMessage in form.errors[control.name] %}
-                    <div class="form-control-feedback">{{ errorMessage }}</div>
-                  {% endfor %}
-                {% elseif control.classId == '{71716B6C-711E-476C-8AB8-5D11542BFB47}' %}{# url field #}
-                  <input type="url" id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}readonly="readonly"{% endif %} value="{{ attribute( form.record, control.name ) ?? form.defaults[control.name] }}">
-                  {% for errorMessage in form.errors[control.name] %}
-                    <div class="form-control-feedback">{{ errorMessage }}</div>
-                  {% endfor %}
-                {% elseif control.classId == '{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}' %}{# datetime field #}
-                  {% set dateOnly = (control.metadata.format == 'DateOnly') %}
-                  {% set dateFormat = dateOnly? form.options.dateformat : form.options.datetimeformat %}
-                  <input type="datetime" id="{{ control.id }}" name="{{ control.name }}" class="form-control {{ dateOnly? 'crm-datepicker' : 'crm-datetimepicker' }}" {% if controlDisabled %}disabled="disabled"{% endif %} value="{{ attribute( form.record, control.name )? attribute( form.record, control.name )|date(dateFormat) : form.defaults[control.name] }}">
-                  {% for errorMessage in form.errors[control.name] %}
-                    <div class="form-control-feedback">{{ errorMessage }}</div>
-                  {% endfor %}
-                {% elseif control.classId == '{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}' %}{# radio field #}
-                  {% include "form/radio.twig" %}
-                  {% for errorMessage in form.errors[control.name] %}
-                    <div class="form-control-feedback">{{ errorMessage }}</div>
-                  {% endfor %}
-                {% elseif control.classId == '{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}' %}{# select field #}
-                  {% include "form/select.twig" %}
-                  {% for errorMessage in form.errors[control.name] %}
-                    <div class="form-control-feedback">{{ errorMessage }}</div>
-                  {% endfor %}
-                {% elseif control.classId == '{B0C6723A-8503-4FD7-BB28-C8A06AC933C2}' %}{# checkbox field #}
-                  {% set controlValue = attribute( form.record, control.name ).value %}
-                  {% if controlValue is null %}
-                    {% set controlValue = attribute( form.record, control.name ) %}
-                  {% endif %}
+          {% if cell.isVisible %}
+            {% if cell.isSpacer %}
+              <div class="col-12 pb-3 mb-3 wpcrm-form-spacer"></div>
+            {% else %}
+            {% set control = cell.control %}
+              <div class="col-sm-{{ cellWidth }} wpcrm-form-cell">
+                <div class="form-group row">
+                  {% set controlDisabled = control.disabled %}
                   {% if not controlDisabled %}
-                    <input type="hidden" name="{{ control.name }}" value="0">
-                  {% endif %}
-                  <div class="form-check form-check-inline">
-                    <label class="form-check-label"><input type="checkbox" id="{{ control.id }}" name="{{ control.name }}" class="form-check-input" value="1" {{ controlValue? 'checked="checked"' : '' }} {% if controlDisabled %}disabled="disabled"{% endif %}></label>
-                  </div>
-                  {% for errorMessage in form.errors[control.name] %}
-                    <div class="form-control-feedback">{{ errorMessage }}</div>
-                  {% endfor %}
-                {% elseif control.classId == '{270BD3DB-D9AF-4782-9025-509E298DEC0A}' %}{# lookup field #}
-                  {% set lookupTypes = {} %}
-                  {% for lookupType in control.metadata.lookupTypes %}
-                    {% set lookupTypes = lookupTypes|merge( { (lookupType): entities_list[lookupType] } ) %}
-                  {% endfor %}
-                  <div class="input-group wpcrm-lookup" data-types="{{ lookupTypes|json_encode }}">
-                    <input type="text" id="{{ control.id }}" data-field="{{ control.name }}" class="form-control wpcrm-lookup-display" readonly="readonly" value="{{ attribute( form.record, control.name ) }}">
-                    {% if not controlDisabled %}
-                      <span class="input-group-btn">
-                      {% if attribute( form.record, control.name ) %}
-                        <button class="btn btn-secondary" type="button" data-action="disassociate"><i class="fa fa-times" aria-hidden="true"></i></button>
+                    {% if form.parameters.mode == "create" %}
+                      {% set controlDisabled = not(control.metadata.isValidForCreate) %}
+                    {% elseif form.parameters.mode == "edit" %}
+                      {% set controlDisabled = not(control.metadata.isValidForUpdate) %}
+                    {% elseif form.parameters.mode == "upsert"  %}
+                      {% if form.record %}
+                        {% set controlDisabled = not(control.metadata.isValidForUpdate) %}
                       {% else %}
-                        <button class="btn btn-secondary" type="button" data-action="associate"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        {% set controlDisabled = not(control.metadata.isValidForCreate) %}
                       {% endif %}
-                      </span>
                     {% endif %}
+                  {% endif %}
+                  {% set labelWidth = (cell.showLabel? (section.cellLabelPosition == 'top'? 12 : 4) : 0) %}
+                  {% set controlWidth = (12 - labelWidth) %}
+                  {% if controlWidth == 0 %}{% set controlWidth = 12 %}{% endif %}
+                  {% if cell.showLabel and section.cellLabelPosition == 'left' %}
+                  <label class="col-form-label col-sm-{{ labelWidth }}" for="{{ control.id }}">{{ cell.label }} {{ control.required? '*' : '' }}</label>
+                  {% elseif cell.showLabel %}
+                  <div class="col-sm-{{ labelWidth }}" style="text-align:{{ section.cellLabelAlignment }};">
+                    <label class="form-control-label" for="{{ control.id }}">{{ cell.label }} {{ control.required? '*' : '' }}</label>
                   </div>
-                  {% for errorMessage in form.errors[control.name] %}
-                    <div class="form-control-feedback">{{ errorMessage }}</div>
-                  {% endfor %}
-                  <input type="hidden" name="{{ control.name }}" value="{{ [ attribute( form.record, control.name ).logicalName, attribute( form.record, control.name ).id, attribute( form.record, control.name ) ~ '' ]|json_encode }}">
-                {% elseif control.classId == '{628064E7-E104-4B65-9EBF-3ED02F9AEBB6}' %}{# lookup view field #}
-                  {% set controlValue = attribute( form.record, control.name ).id %}
-                  <select id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}disabled="disabled"{% endif %} autocomplete="off">
-                    <option value=""></option>
-                    {% for optionRecord in control.options %}
-                      {% set optionValue = [ optionRecord.logicalName, optionRecord.id, optionRecord.displayName ] %}
-                      <option value="{{ optionValue|json_encode }}" {{ (controlValue == optionRecord.id)? 'selected="selected"' : '' }}>{{ optionRecord }}</option>
-                    {% endfor %}
-                  </select>
-                  {% for errorMessage in form.errors[control.name] %}
-                    <div class="form-control-feedback">{{ errorMessage }}</div>
-                  {% endfor %}
-                {% elseif control.classId == '{E0DECE4B-6FC8-4A8F-A065-082708572369}' %}{# textarea field #}
-                  {% if control.name matches '/address\\d_composite/' %}{# decompose composite address field #}
-                    {% include "form/address.twig" %}
-                  {% else %}{# textarea field #}
-                    <textarea class="form-control" id="{{ control.id }}" name="{{ control.name }}" rows="{{ cell.rowspan ?? 3 }}" {% if controlDisabled %}readonly="readonly"{% endif %}>{{ attribute( form.record, control.name ) ?? form.defaults[control.name] }}</textarea>
+                  {% endif %}
+                  <div class="col-sm-{{ controlWidth }} {% if control.name in form.errors|keys %}has-danger{% endif %}">
+                  {% if control.classId in [ '{4273EDBD-AC1D-40D3-9FB2-095C621B552D}' ] %}{# text field #}
+                    {% if control.name == 'fullname' %}{# decompose fullname into firstname and lastname #}
+                      {% include "form/fullname.twig" %}
+                    {% else %}{# text field #}
+                      <input type="text" id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}readonly="readonly"{% endif %} value="{{ attribute( form.record, control.name ) ?? form.defaults[control.name] }}">
+                      {% for errorMessage in form.errors[control.name] %}
+                        <div class="form-control-feedback">{{ errorMessage }}</div>
+                      {% endfor %}
+                    {% endif %}
+                  {% elseif control.classId == '{ADA2203E-B4CD-49BE-9DDF-234642B43B52}' %}{# email field #}
+                    <input type="email" id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}readonly="readonly"{% endif %} value="{{ attribute( form.record, control.name ) ?? form.defaults[control.name] }}">
                     {% for errorMessage in form.errors[control.name] %}
                       <div class="form-control-feedback">{{ errorMessage }}</div>
                     {% endfor %}
+                  {% elseif control.classId == '{71716B6C-711E-476C-8AB8-5D11542BFB47}' %}{# url field #}
+                    <input type="url" id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}readonly="readonly"{% endif %} value="{{ attribute( form.record, control.name ) ?? form.defaults[control.name] }}">
+                    {% for errorMessage in form.errors[control.name] %}
+                      <div class="form-control-feedback">{{ errorMessage }}</div>
+                    {% endfor %}
+                  {% elseif control.classId == '{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}' %}{# datetime field #}
+                    {% set dateOnly = (control.metadata.format == 'DateOnly') %}
+                    {% set dateFormat = dateOnly? form.options.dateformat : form.options.datetimeformat %}
+                    <input type="datetime" id="{{ control.id }}" name="{{ control.name }}" class="form-control {{ dateOnly? 'crm-datepicker' : 'crm-datetimepicker' }}" {% if controlDisabled %}disabled="disabled"{% endif %} value="{{ attribute( form.record, control.name )? attribute( form.record, control.name )|date(dateFormat) : form.defaults[control.name] }}">
+                    {% for errorMessage in form.errors[control.name] %}
+                      <div class="form-control-feedback">{{ errorMessage }}</div>
+                    {% endfor %}
+                  {% elseif control.classId == '{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}' %}{# radio field #}
+                    {% include "form/radio.twig" %}
+                    {% for errorMessage in form.errors[control.name] %}
+                      <div class="form-control-feedback">{{ errorMessage }}</div>
+                    {% endfor %}
+                  {% elseif control.classId == '{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}' %}{# select field #}
+                    {% include "form/select.twig" %}
+                    {% for errorMessage in form.errors[control.name] %}
+                      <div class="form-control-feedback">{{ errorMessage }}</div>
+                    {% endfor %}
+                  {% elseif control.classId == '{B0C6723A-8503-4FD7-BB28-C8A06AC933C2}' %}{# checkbox field #}
+                    {% set controlValue = attribute( form.record, control.name ).value %}
+                    {% if controlValue is null %}
+                      {% set controlValue = attribute( form.record, control.name ) %}
+                    {% endif %}
+                    {% if not controlDisabled %}
+                      <input type="hidden" name="{{ control.name }}" value="0">
+                    {% endif %}
+                    <div class="form-check form-check-inline">
+                      <label class="form-check-label"><input type="checkbox" id="{{ control.id }}" name="{{ control.name }}" class="form-check-input" value="1" {{ controlValue? 'checked="checked"' : '' }} {% if controlDisabled %}disabled="disabled"{% endif %}></label>
+                    </div>
+                    {% for errorMessage in form.errors[control.name] %}
+                      <div class="form-control-feedback">{{ errorMessage }}</div>
+                    {% endfor %}
+                  {% elseif control.classId == '{270BD3DB-D9AF-4782-9025-509E298DEC0A}' %}{# lookup field #}
+                    {% set lookupTypes = {} %}
+                    {% for lookupType in control.metadata.lookupTypes %}
+                      {% set lookupTypes = lookupTypes|merge( { (lookupType): entities_list[lookupType] } ) %}
+                    {% endfor %}
+                    <div class="input-group wpcrm-lookup" data-types="{{ lookupTypes|json_encode }}">
+                      <input type="text" id="{{ control.id }}" data-field="{{ control.name }}" class="form-control wpcrm-lookup-display" readonly="readonly" value="{{ attribute( form.record, control.name ) }}">
+                      {% if not controlDisabled %}
+                        <span class="input-group-btn">
+                        {% if attribute( form.record, control.name ) %}
+                          <button class="btn btn-secondary" type="button" data-action="disassociate"><i class="fa fa-times" aria-hidden="true"></i></button>
+                        {% else %}
+                          <button class="btn btn-secondary" type="button" data-action="associate"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        {% endif %}
+                        </span>
+                      {% endif %}
+                    </div>
+                    {% for errorMessage in form.errors[control.name] %}
+                      <div class="form-control-feedback">{{ errorMessage }}</div>
+                    {% endfor %}
+                    <input type="hidden" name="{{ control.name }}" value="{{ [ attribute( form.record, control.name ).logicalName, attribute( form.record, control.name ).id, attribute( form.record, control.name ) ~ '' ]|json_encode }}">
+                  {% elseif control.classId == '{628064E7-E104-4B65-9EBF-3ED02F9AEBB6}' %}{# lookup view field #}
+                    {% set controlValue = attribute( form.record, control.name ).id %}
+                    <select id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}disabled="disabled"{% endif %} autocomplete="off">
+                      <option value=""></option>
+                      {% for optionRecord in control.options %}
+                        {% set optionValue = [ optionRecord.logicalName, optionRecord.id, optionRecord.displayName ] %}
+                        <option value="{{ optionValue|json_encode }}" {{ (controlValue == optionRecord.id)? 'selected="selected"' : '' }}>{{ optionRecord }}</option>
+                      {% endfor %}
+                    </select>
+                    {% for errorMessage in form.errors[control.name] %}
+                      <div class="form-control-feedback">{{ errorMessage }}</div>
+                    {% endfor %}
+                  {% elseif control.classId == '{E0DECE4B-6FC8-4A8F-A065-082708572369}' %}{# textarea field #}
+                    {% if control.name matches '/address\\d_composite/' %}{# decompose composite address field #}
+                      {% include "form/address.twig" %}
+                    {% else %}{# textarea field #}
+                      <textarea class="form-control" id="{{ control.id }}" name="{{ control.name }}" rows="{{ cell.rowspan ?? 3 }}" {% if controlDisabled %}readonly="readonly"{% endif %}>{{ attribute( form.record, control.name ) ?? form.defaults[control.name] }}</textarea>
+                      {% for errorMessage in form.errors[control.name] %}
+                        <div class="form-control-feedback">{{ errorMessage }}</div>
+                      {% endfor %}
+                    {% endif %}
                   {% endif %}
-                {% endif %}
+                  </div>
                 </div>
               </div>
-            </div>
+            {% endif %}
           {% endif %}
         {% endfor %}
         </div>

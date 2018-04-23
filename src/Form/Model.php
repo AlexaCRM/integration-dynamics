@@ -190,6 +190,9 @@ class Model {
 
                         $cells = $formXPath->query( './cell', $row );
                         foreach ( $cells as $cell ) {
+                            /**
+                             * @var \DOMElement $cell
+                             */
                             $cellId = $cell->getAttribute( 'id' );
 
                             $cellDefinition = [
@@ -198,6 +201,8 @@ class Model {
                                 'colspan' => (int)$cell->getAttribute( 'colspan' ),
                                 'rowspan' => (int)$cell->getAttribute( 'rowspan' ),
                                 'isSpacer' => ( $cell->getAttribute( 'userspacer' ) === 'true' ),
+                                'isVisible' => !$cell->hasAttribute( 'visible' )
+                                               || ( $cell->hasAttribute( 'visible' ) && $cell->getAttribute( 'visible' ) !== 'false' ),
                             ];
 
                             $controlList = $formXPath->query( './control', $cell );
