@@ -52,6 +52,13 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.10 =
+
+* Fixed: cell width for full-width controls in Twig forms
+* Fixed: required fields in Twig forms
+* Fixed: hidden controls were still still displayed in Twig forms
+* Fixed: legacy form shortcode attributes were treated incorrectly with extra spaces
+
 = 1.2.9 =
 
 * Localized forms and views
