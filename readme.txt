@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.11 =
+
+* Fixed: connection to some IFD deployments would not work
+
 = 1.2.10 =
 
 * Fixed: cell width for full-width controls in Twig forms
