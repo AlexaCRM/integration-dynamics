@@ -88,10 +88,8 @@ class General extends Tab {
 
             if ( !isset( $options["serverUrl"] ) ||
                  !isset( $options["username"] ) ||
-                 !isset( $options["password"] ) ||
                  !$options["serverUrl"] ||
-                 !$options["username"] ||
-                 !$options["password"]
+                 !$options["username"]
             ) {
                 ACRM()->getNotifier()->add( __( 'Please fill in the fields that are marked as required *.', 'integration-dynamics' ), Notifier::NOTICE_ERROR );
 

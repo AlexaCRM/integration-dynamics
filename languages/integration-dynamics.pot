@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the Dynamics 365 Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics 365 Integration 1.2.11\n"
+"Project-Id-Version: Dynamics 365 Integration 1.2.12\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-"
 "dynamics\n"
-"POT-Creation-Date: 2018-05-09 09:41:46+00:00\n"
+"POT-Creation-Date: 2018-05-22 08:51:07+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

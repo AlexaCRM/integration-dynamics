@@ -9,8 +9,8 @@ class PasswordHandler {
     protected $key;
 
     public function __construct() {
-        if ( defined( 'WPCRM_KEY' ) && strlen( WPCRM_KEY ) === 32 ) {
-            $this->key = WPCRM_KEY;
+        if ( defined( 'WPCRM_KEY' ) && strlen( base64_decode( WPCRM_KEY ) ) === 32 ) {
+            $this->key = base64_decode( WPCRM_KEY );
         } elseif ( defined( 'AUTH_KEY' ) && strlen( AUTH_KEY ) >= 32 ) {
             $this->key = substr( AUTH_KEY, 0, 32 );
         } else {
@@ -43,6 +43,9 @@ class PasswordHandler {
         list( $iv, $ciphertext ) = explode( ':', $ivCiphertext );
 
         $password = openssl_decrypt( $ciphertext, self::CRYPTO_METHOD, $this->key, 0, base64_decode( $iv ) );
+        if ( $password === false ) {
+            return '_';
+        }
 
         return $password;
     }
