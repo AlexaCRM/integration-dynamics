@@ -217,6 +217,20 @@ add_filter( 'pre_handle_404', function( $preempt, \WP_Query $query ) {
     return $preempt;
 }, 10, 2 );
 
+add_filter( 'option_msdyncrm_options', function( $value, $option ) {
+    $pwdHandler = new \AlexaCRM\WordpressCRM\PasswordHandler();
+    $value['password'] = $pwdHandler->decrypt( $value['password'] );
+
+    return $value;
+}, 10, 2 );
+
+add_filter( "pre_update_option_msdyncrm_options", function( $value, $old_value, $option ) {
+    $pwdHandler = new \AlexaCRM\WordpressCRM\PasswordHandler();
+    $value['password'] = $pwdHandler->encrypt( $value['password'] );
+
+    return $value;
+}, 10, 3 );
+
 /**
  * Start initializing the plugin.
  */

@@ -264,7 +264,7 @@ class General extends Tab {
                                     <td>
                                         <input id="wpcrmFPassword" type="password" class="regular-text wpcrm-setting"
                                                name="<?php echo $this->get_field_name( 'password' ); ?>"
-                                               value="<?php echo esc_attr( $this->get_field_value( 'password' ) ); ?>"/>
+                                               placeholder="[Enter Password Here]">
                                         <p class="description"><?php _e( 'CRM user password', 'integration-dynamics' ); ?></p>
                                     </td>
                                 </tr>
@@ -314,7 +314,7 @@ class General extends Tab {
                                     <td>
                                         <input id="wpcrmOFPassword" class="regular-text wpcrm-setting" type="password"
                                                name="<?php echo $this->get_field_name( 'password' ); ?>"
-                                               value="<?php echo esc_attr( $this->get_field_value( 'password' ) ); ?>"/>
+                                               placeholder="[Enter Password Here]">
                                         <p class="description"><?php _e( 'CRM user password', 'integration-dynamics' ); ?></p>
                                     </td>
                                 </tr>
