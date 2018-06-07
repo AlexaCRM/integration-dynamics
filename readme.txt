@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.12.1 =
+
+* Fixed: Dynamics credentials could be leaked via logs
+
 = 1.2.12 =
 
 * **Important Update:** connection passwords are now encrypted. It is advised to set a WPCRM_KEY constant in wp-config.php (a base64-encoded 256-bit random key) and re-establish the connection.
