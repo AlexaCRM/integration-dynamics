@@ -57,6 +57,14 @@ if ( defined( 'WORDPRESSCRM_LOG_LEVEL' ) ) {
 define( 'WORDPRESSCRM_EFFECTIVE_LOG_LEVEL', $logLevel );
 $logStream = new \Monolog\Handler\RotatingFileHandler( WORDPRESSCRM_STORAGE . '/integration-dynamics.log', 3, $logLevel );
 $logger->pushHandler( $logStream );
+$logger->pushProcessor( function( $record ) {
+    if ( array_key_exists( 'request', $record['context'] ) ) {
+        $record['context']['request'] = preg_replace( '~<o:Password Type=".*?">.*?</o:Password>~', '<o:Password/>', $record['context']['request'] );
+        $record['context']['request'] = preg_replace( '~<default:CipherValue>.*?</default:CipherValue>~', '<default:CipherValue/>', $record['context']['request'] );
+    }
+
+    return $record;
+} );
 
 /**
  * Checking for the current PHP version.

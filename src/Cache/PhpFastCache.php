@@ -965,9 +965,7 @@ allow from 127.0.0.1";
                 $f = fopen( $file, "w+" );
                 fwrite( $f, self::encode( $value, $time_in_second ) );
                 fclose( $f );
-            } catch ( Exception $e ) {
-                die( "Sorry, can't write cache to file :" . $file );
-            }
+            } catch ( Exception $e ) {}
         }
 
         return $value;
