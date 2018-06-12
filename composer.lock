@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5535c01fe003b1a30a0de438b893aec",
+    "content-hash": "7e81e2e5f599a0061058d63c4e7484b6",
     "packages": [
         {
             "name": "alexacrm/php-crm-toolkit",
-            "version": "20180509",
+            "version": "20180612",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AlexaCRM/php-crm-toolkit.git",
-                "reference": "c8f5bc9ca6cf1d546fddcff099dadfe320858c9d"
+                "reference": "5c651f35789edf59722ac4f4daa7bb51bccf5dd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/c8f5bc9ca6cf1d546fddcff099dadfe320858c9d",
-                "reference": "c8f5bc9ca6cf1d546fddcff099dadfe320858c9d",
+                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/5c651f35789edf59722ac4f4daa7bb51bccf5dd8",
+                "reference": "5c651f35789edf59722ac4f4daa7bb51bccf5dd8",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                 "php",
                 "sdk"
             ],
-            "time": "2018-05-09T09:12:27+00:00"
+            "time": "2018-06-12T12:44:46+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -57,12 +57,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4"
+                "reference": "120c434db947f91c3844ea9212ce34d08262335a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
-                "reference": "fd8c787753b3a2ad11bc60c063cff1358a32a3b4",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/120c434db947f91c3844ea9212ce34d08262335a",
+                "reference": "120c434db947f91c3844ea9212ce34d08262335a",
                 "shasum": ""
             },
             "require": {
@@ -127,7 +127,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-06-19T01:22:40+00:00"
+            "time": "2018-06-11T15:30:42+00:00"
         },
         {
             "name": "psr/log",
@@ -235,16 +235,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "7cc359f1b7b80fc25ed7796be7d96adc9b354bae"
+                "reference": "9d31bef82d2e9b033f335d60b96611757f98c605"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/7cc359f1b7b80fc25ed7796be7d96adc9b354bae",
-                "reference": "7cc359f1b7b80fc25ed7796be7d96adc9b354bae",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/9d31bef82d2e9b033f335d60b96611757f98c605",
+                "reference": "9d31bef82d2e9b033f335d60b96611757f98c605",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
+            },
+            "suggest": {
+                "ext-ctype": "For best performance"
             },
             "type": "library",
             "extra": {
@@ -282,7 +285,7 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2018-04-30T19:57:29+00:00"
+            "time": "2018-05-17T18:32:56+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -290,12 +293,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "3296adf6a6454a050679cde90f95350ad604b171"
+                "reference": "25b83a5050c6607e2dfa814ffb15388caf7ce690"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/3296adf6a6454a050679cde90f95350ad604b171",
-                "reference": "3296adf6a6454a050679cde90f95350ad604b171",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/25b83a5050c6607e2dfa814ffb15388caf7ce690",
+                "reference": "25b83a5050c6607e2dfa814ffb15388caf7ce690",
                 "shasum": ""
             },
             "require": {
@@ -341,7 +344,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-04-26T10:06:28+00:00"
+            "time": "2018-05-30T15:56:36+00:00"
         },
         {
             "name": "twig/twig",
@@ -349,12 +352,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "ed02b30a17a4d5e29b7a965c7c5fdc85f9be7bc0"
+                "reference": "3b71efb7b4506e32ec52aa4620d1099daa7e045d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/ed02b30a17a4d5e29b7a965c7c5fdc85f9be7bc0",
-                "reference": "ed02b30a17a4d5e29b7a965c7c5fdc85f9be7bc0",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3b71efb7b4506e32ec52aa4620d1099daa7e045d",
+                "reference": "3b71efb7b4506e32ec52aa4620d1099daa7e045d",
                 "shasum": ""
             },
             "require": {
@@ -407,7 +410,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2018-05-02T15:04:18+00:00"
+            "time": "2018-06-07T05:40:46+00:00"
         }
     ],
     "packages-dev": [],
