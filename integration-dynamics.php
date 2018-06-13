@@ -48,6 +48,15 @@ define( 'WORDPRESSCRM_STORAGE', $wpcrmStorageDir );
 
 require_once __DIR__ . '/vendor/autoload.php'; // Composer autoloader
 
+function wpcrm_log_processor_sanitizer( $record ) {
+    if ( array_key_exists( 'request', $record['context'] ) ) {
+        $record['context']['request'] = preg_replace( '~<o:Password Type=".*?">.*?</o:Password>~', '<o:Password/>', $record['context']['request'] );
+        $record['context']['request'] = preg_replace( '~<default:CipherValue>.*?</default:CipherValue>~', '<default:CipherValue/>', $record['context']['request'] );
+    }
+
+    return $record;
+}
+
 $logger = new \Monolog\Logger( 'wpcrm' );
 $logLevel = WP_DEBUG? \Monolog\Logger::INFO : \Monolog\Logger::NOTICE;
 $logLevel = get_option( 'wpcrm_log_level', $logLevel );
@@ -57,14 +66,7 @@ if ( defined( 'WORDPRESSCRM_LOG_LEVEL' ) ) {
 define( 'WORDPRESSCRM_EFFECTIVE_LOG_LEVEL', $logLevel );
 $logStream = new \Monolog\Handler\RotatingFileHandler( WORDPRESSCRM_STORAGE . '/integration-dynamics.log', 3, $logLevel );
 $logger->pushHandler( $logStream );
-$logger->pushProcessor( function( $record ) {
-    if ( array_key_exists( 'request', $record['context'] ) ) {
-        $record['context']['request'] = preg_replace( '~<o:Password Type=".*?">.*?</o:Password>~', '<o:Password/>', $record['context']['request'] );
-        $record['context']['request'] = preg_replace( '~<default:CipherValue>.*?</default:CipherValue>~', '<default:CipherValue/>', $record['context']['request'] );
-    }
-
-    return $record;
-} );
+$logger->pushProcessor( 'wpcrm_log_processor_sanitizer' );
 
 /**
  * Checking for the current PHP version.
