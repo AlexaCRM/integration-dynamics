@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.12.2 =
+
+* Fixed: potential crash when logging is performed in certain situations
+
 = 1.2.12.1 =
 
 * Fixed: Dynamics credentials could be leaked via logs
