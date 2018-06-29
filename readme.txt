@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.13 =
+
+* Introduced supports for online organizations with federated Azure AD / ADFS authentication
+
 = 1.2.12.2 =
 
 * Fixed: potential crash when logging is performed in certain situations
