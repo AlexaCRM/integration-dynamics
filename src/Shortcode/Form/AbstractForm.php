@@ -149,7 +149,7 @@ abstract class AbstractForm extends Shortcode {
             }
 
             if ( $argValue ) {
-                array_push( $result[$argName], $argValue );
+                array_push( $result[$argName], urldecode( $argValue ) );
             }
         }
 
