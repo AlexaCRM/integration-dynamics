@@ -133,7 +133,12 @@ abstract class AbstractForm extends Shortcode {
 
         $result = [];
         foreach ( explode( '&', $queryString ) as $argumentPairString ) {
-            list( $argName, $argValue ) = explode( '=', $argumentPairString );
+            $argumentPair = explode( '=', $argumentPairString );
+            if ( count( $argumentPair ) !== 2 ) {
+                continue;
+            }
+
+            list( $argName, $argValue ) = $argumentPair;
 
             if ( !$argName ) {
                 continue;
