@@ -3,7 +3,21 @@
 <div class="row">
   <div class="col-12">
     <div class="alert alert-success">
-      {{ form.parameters.messages.success ?? "Form has been successfully submitted." }}
+      {{ form.parameters.messages.success ?? "The form has been successfully submitted." }}
+    </div>
+  </div>
+</div>
+{% elseif form.submission and (not form.status) %}
+<div class="row">
+  <div class="col-12">
+    <div class="alert alert-danger">
+      {% if form.parameters.messages.error %}
+      {{ form.parameters.messages.error }}
+      {% else %}
+      {% for descriptor, message in form.errors %}
+      <div>{{ descriptor }}: {{ message|join(', ') }}</div>
+      {% endfor %}
+      {% endif %}
     </div>
   </div>
 </div>
