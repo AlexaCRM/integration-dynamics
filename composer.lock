@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd951ea98d5d28ca124f1eef8c7a1329",
+    "content-hash": "a83a90b53ecf100baef0259cc9133ded",
     "packages": [
         {
             "name": "alexacrm/php-crm-toolkit",
-            "version": "20180719",
+            "version": "20180726",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AlexaCRM/php-crm-toolkit.git",
-                "reference": "f4c7803067ff31936cb16a40adcf01df04265ed7"
+                "reference": "f5d952ce6a22304977a51a409884af4af2cbceac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/f4c7803067ff31936cb16a40adcf01df04265ed7",
-                "reference": "f4c7803067ff31936cb16a40adcf01df04265ed7",
+                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/f5d952ce6a22304977a51a409884af4af2cbceac",
+                "reference": "f5d952ce6a22304977a51a409884af4af2cbceac",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                 "php",
                 "sdk"
             ],
-            "time": "2018-07-19T10:03:30+00:00"
+            "time": "2018-07-26T14:41:50+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -352,12 +352,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "cb848ee0a46d116d944fd80d50c8174e30c49f83"
+                "reference": "7a3d825969fd7f6ccaa8fb737361baa715ffb71c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/cb848ee0a46d116d944fd80d50c8174e30c49f83",
-                "reference": "cb848ee0a46d116d944fd80d50c8174e30c49f83",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/7a3d825969fd7f6ccaa8fb737361baa715ffb71c",
+                "reference": "7a3d825969fd7f6ccaa8fb737361baa715ffb71c",
                 "shasum": ""
             },
             "require": {
@@ -410,7 +410,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2018-07-13T07:13:09+00:00"
+            "time": "2018-07-25T13:16:22+00:00"
         }
     ],
     "packages-dev": [],
