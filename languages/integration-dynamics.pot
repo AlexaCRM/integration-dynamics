@@ -2,9 +2,10 @@
 # This file is distributed under the same license as the Dynamics 365 Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics 365 Integration 1.2.14\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-dynamics\n"
-"POT-Creation-Date: 2018-07-20 15:04:18+00:00\n"
+"Project-Id-Version: Dynamics 365 Integration 1.2.15\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-"
+"dynamics\n"
+"POT-Creation-Date: 2018-07-26 15:35:29+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -73,15 +74,22 @@ msgid "Entity attribute to render."
 msgstr ""
 
 #: integration-dynamics.php:36
-msgid "Dynamics 365 Integration detected that <code>%s</code> is not writable by the web server. Please fix it to complete the installation."
+msgid ""
+"Dynamics 365 Integration detected that <code>%s</code> is not writable by "
+"the web server. Please fix it to complete the installation."
 msgstr ""
 
 #: integration-dynamics.php:84
-msgid "Dynamics 365 Integration detected that your environment has PHP %1$s. The plugin requires at least PHP %2$s to work. Please upgrade your PHP installation to fully enable the plugin."
+msgid ""
+"Dynamics 365 Integration detected that your environment has PHP %1$s. The "
+"plugin requires at least PHP %2$s to work. Please upgrade your PHP "
+"installation to fully enable the plugin."
 msgstr ""
 
 #: integration-dynamics.php:105
-msgid "cURL, a PHP extension, is not installed. <strong>Dynamics 365 Integration</strong> requires cURL to work properly."
+msgid ""
+"cURL, a PHP extension, is not installed. <strong>Dynamics 365 Integration</"
+"strong> requires cURL to work properly."
 msgstr ""
 
 #: src/Admin/Metabox/DataBinding.php:62
@@ -168,7 +176,9 @@ msgid "<a href=\"%s\" target=\"_blank\">Documentation</a>"
 msgstr ""
 
 #: src/Admin/Tab/About.php:61
-msgid "<strong>Want to take more from your Dynamics?</strong> Check out the <a href=\"%s\">premium plugin</a>."
+msgid ""
+"<strong>Want to take more from your Dynamics?</strong> Check out the <a href="
+"\"%s\">premium plugin</a>."
 msgstr ""
 
 #: src/Admin/Tab/About.php:64
@@ -176,11 +186,17 @@ msgid "Error reporting"
 msgstr ""
 
 #: src/Admin/Tab/About.php:66
-msgid "If you experience problems while using Dynamics 365 Integration plugin and eventually report them, attach log files which are stored in <code>%s</code>. <a href=\"%s\">Download log files</a>"
+msgid ""
+"If you experience problems while using Dynamics 365 Integration plugin and "
+"eventually report them, attach log files which are stored in <code>%s</"
+"code>. <a href=\"%s\">Download log files</a>"
 msgstr ""
 
 #: src/Admin/Tab/About.php:68
-msgid "If you experience problems while using Dynamics 365 Integration plugin and eventually report them, attach log files which are stored in <code>%s</code>. <a href=\"%s\">Download the latest log file</a>"
+msgid ""
+"If you experience problems while using Dynamics 365 Integration plugin and "
+"eventually report them, attach log files which are stored in <code>%s</"
+"code>. <a href=\"%s\">Download the latest log file</a>"
 msgstr ""
 
 #: src/Admin/Tab/About.php:73
@@ -200,7 +216,9 @@ msgid "Images"
 msgstr ""
 
 #: src/Admin/Tab/Attachments.php:75
-msgid "This page allows you to configure how images are fetched from CRM and displayed."
+msgid ""
+"This page allows you to configure how images are fetched from CRM and "
+"displayed."
 msgstr ""
 
 #: src/Admin/Tab/Attachments.php:75 src/Admin/Tab/Forms.php:37
@@ -229,7 +247,9 @@ msgid "reCAPTCHA settings"
 msgstr ""
 
 #: src/Admin/Tab/Forms.php:44
-msgid "Plugin supports reCAPTCHA that you can add to the forms to protect your WordPress site from spam."
+msgid ""
+"Plugin supports reCAPTCHA that you can add to the forms to protect your "
+"WordPress site from spam."
 msgstr ""
 
 #: src/Admin/Tab/Forms.php:54
@@ -261,11 +281,16 @@ msgid "Connection to Dynamics 365 <%s> has been successfully established."
 msgstr ""
 
 #: src/Admin/Tab/General.php:126
-msgid "Unable to connect to Dynamics 365 using provided address, username and/or password."
+msgid ""
+"Unable to connect to Dynamics 365 using provided address, username and/or "
+"password."
 msgstr ""
 
 #: src/Admin/Tab/General.php:131 src/Admin/Tab/General.php:135
-msgid "<strong>Unable to connect to Dynamics 365:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct."
+msgid ""
+"<strong>Unable to connect to Dynamics 365:</strong> %s. Check whether you "
+"selected the appropriate deployment type and that CRM URL and credentials "
+"are correct."
 msgstr ""
 
 #: src/Admin/Tab/General.php:174
@@ -285,7 +310,8 @@ msgid "Deployment Type"
 msgstr ""
 
 #: src/Admin/Tab/General.php:225 src/Admin/Tab/General.php:285
-msgid "Dynamics 365 Address (URL) <span class=\"description\">(required)</span>"
+msgid ""
+"Dynamics 365 Address (URL) <span class=\"description\">(required)</span>"
 msgstr ""
 
 #: src/Admin/Tab/General.php:233 src/Admin/Tab/General.php:293
@@ -321,7 +347,10 @@ msgid "Metadata Settings"
 msgstr ""
 
 #: src/Admin/Tab/General.php:331
-msgid "If you have changed your Dynamics 365 entities metadata recently (i.e. fields, forms, views, etc.) please regenerate local metadata cache to keep it up to date."
+msgid ""
+"If you have changed your Dynamics 365 entities metadata recently (i.e. "
+"fields, forms, views, etc.) please regenerate local metadata cache to keep "
+"it up to date."
 msgstr ""
 
 #: src/Admin/Tab/General.php:335
@@ -409,7 +438,9 @@ msgid "%s &lsaquo; Dynamics 365"
 msgstr ""
 
 #: src/Admin.php:109
-msgid "Dynamics 365 Plugin successfully activated, <b>please configure it</b> <a href=\"admin.php?page=wordpresscrm\">on this page</a>."
+msgid ""
+"Dynamics 365 Plugin successfully activated, <b>please configure it</b> <a "
+"href=\"admin.php?page=wordpresscrm\">on this page</a>."
 msgstr ""
 
 #: src/Form/Model.php:413 src/Form/Model.php:463
@@ -517,11 +548,15 @@ msgid "Invalid number value"
 msgstr ""
 
 #: src/Shortcode/Form/FormInstance.php:808
-msgid "Invalid number value. Enter a decimal number without currency symbol or thousands separator."
+msgid ""
+"Invalid number value. Enter a decimal number without currency symbol or "
+"thousands separator."
 msgstr ""
 
 #: src/Shortcode/Form/FormInstance.php:813
-msgid "Invalid money value. Enter a decimal number without currency symbol or thousands separator."
+msgid ""
+"Invalid money value. Enter a decimal number without currency symbol or "
+"thousands separator."
 msgstr ""
 
 #: src/Shortcode/Twig/Template.php:29
@@ -529,27 +564,44 @@ msgid "Unexpected error. Please try again."
 msgstr ""
 
 #: src/Shortcode/View.php:140
-msgid "Inline view templates are not supported in the free version. Get <a href=\"http://alexacrm.com/dynamics-crm-integration-premium/\">the premium extension</a> today!"
+msgid ""
+"Inline view templates are not supported in the free version. Get <a href="
+"\"http://alexacrm.com/dynamics-crm-integration-premium/\">the premium "
+"extension</a> today!"
 msgstr ""
 
 #: src/Shortcode/View.php:143
-msgid "Error in inline template body, please check the inline template for unclosed or empty tags. <br/> Note that inline template must be well formatted xml document"
+msgid ""
+"Error in inline template body, please check the inline template for unclosed "
+"or empty tags. <br/> Note that inline template must be well formatted xml "
+"document"
 msgstr ""
 
 #: src/Shortcode/View.php:148
-msgid "<strong>The &lt;fetch&gt;, &lt;results&gt; and &lt;noresults&gt; nodes are required for inline templates</strong>, please construct fetch query and the results layot and add them into the shortcode body, <br />Example: [msdyncrm_view]&lt;fetch&gt;...&lt;/fetch&gt;&lt;results&gt;...&lt;/results&gt;&lt;noresults&gt;...&lt;/noresults&gt;[/msdyncrm_view]"
+msgid ""
+"<strong>The &lt;fetch&gt;, &lt;results&gt; and &lt;noresults&gt; nodes are "
+"required for inline templates</strong>, please construct fetch query and the "
+"results layot and add them into the shortcode body, <br />Example: "
+"[msdyncrm_view]&lt;fetch&gt;...&lt;/fetch&gt;&lt;results&gt;...&lt;/"
+"results&gt;&lt;noresults&gt;...&lt;/noresults&gt;[/msdyncrm_view]"
 msgstr ""
 
 #: src/Shortcode/View.php:158
-msgid "\"entity_name\" shortcode attribute is deprecated, use \"entity\" shortcode attribute instead with result records entity type"
+msgid ""
+"\"entity_name\" shortcode attribute is deprecated, use \"entity\" shortcode "
+"attribute instead with result records entity type"
 msgstr ""
 
 #: src/Shortcode/View.php:162
-msgid "\"entity\" shortcode attribute is required, please add entity=\"entity_logical_name\" to the msdyncrm_view shortcode attributes"
+msgid ""
+"\"entity\" shortcode attribute is required, please add entity="
+"\"entity_logical_name\" to the msdyncrm_view shortcode attributes"
 msgstr ""
 
 #: src/Shortcode/View.php:166
-msgid "\"name\" shortcode attribute is required, please add name=\"View Name\" to the msdyncrm_view shortcode attributes"
+msgid ""
+"\"name\" shortcode attribute is required, please add name=\"View Name\" to "
+"the msdyncrm_view shortcode attributes"
 msgstr ""
 
 #: src/Shortcode/View.php:172
@@ -557,7 +609,8 @@ msgid "Unable to get the specified SavedQuery [%1$s] for the entity {%2$s}"
 msgstr ""
 
 #: src/Shortcode.php:39
-msgid "An error occurred, please try again later or contact site administration"
+msgid ""
+"An error occurred, please try again later or contact site administration"
 msgstr ""
 
 #: src/View.php:169
@@ -646,7 +699,9 @@ msgid "Set default for views"
 msgstr ""
 
 #: views/admin/nav_tabs.php:37
-msgid "WordPress is connected to your Dynamics 365 organization and is ready for use."
+msgid ""
+"WordPress is connected to your Dynamics 365 organization and is ready for "
+"use."
 msgstr ""
 
 #: views/admin/nav_tabs.php:37
@@ -660,6 +715,7 @@ msgstr ""
 #: views/admin/nav_tabs.php:38
 msgid "Not connected"
 msgstr ""
+
 #. Plugin Name of the plugin/theme
 msgid "Dynamics 365 Integration"
 msgstr ""
@@ -669,7 +725,8 @@ msgid "https://wordpress.org/plugins/integration-dynamics/"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "The easiest way to connect Dynamics 365 and Dynamics CRM with WordPress."
+msgid ""
+"The easiest way to connect Dynamics 365 and Dynamics CRM with WordPress."
 msgstr ""
 
 #. Author of the plugin/theme

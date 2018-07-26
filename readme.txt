@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.15 =
+
+* Fixed handling of boolean values in forms
+
 = 1.2.14 =
 
 * Fixed query string handling in forms (URL-encoded values in inputs and PHP notices)
