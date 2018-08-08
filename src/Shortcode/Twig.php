@@ -2,6 +2,7 @@
 
 namespace AlexaCRM\WordpressCRM\Shortcode;
 
+use AlexaCRM\CRMToolkit\Entity;
 use AlexaCRM\CRMToolkit\Entity\EntityReference;
 use AlexaCRM\WordpressCRM\Cache\TwigCache;
 use AlexaCRM\WordpressCRM\Shortcode;
@@ -31,11 +32,15 @@ class Twig extends Shortcode {
      *
      * @param array $attributes
      * @param string $content
-     * @param $tagName
+     * @param string $tagName
      *
      * @return string
+     *
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
-    public function shortcode( $attributes, $content = null, $tagName ) {
+    public function shortcode( $attributes, $content, $tagName ) {
         $twig = $this->getTwig();
 
         // Remove wpautop() side effects
@@ -206,8 +211,30 @@ class Twig extends Shortcode {
             return wpautop( $value );
         } );
 
+        $toEntityReference = new \Twig_SimpleFilter( 'toEntityReference', function( $value ) {
+            if ( $value instanceof Entity ) {
+                return $value->toEntityReference();
+            }
+
+            if ( !is_array( $value ) || !array_key_exists( 'LogicalName', $value ) ) {
+                return null;
+            }
+
+            $ref = new EntityReference( $value['LogicalName'] );
+            if ( array_key_exists( 'Id', $value ) ) {
+                $ref->Id = $value['Id'];
+            }
+
+            if ( array_key_exists( 'DisplayName', $value ) ) {
+                $ref->displayName = $value['DisplayName'];
+            }
+
+            return $ref;
+        } );
+
         $twigEnv->addFilter( $addQuery );
         $twigEnv->addFilter( $wpautop );
+        $twigEnv->addFilter( $toEntityReference );
     }
 
 }

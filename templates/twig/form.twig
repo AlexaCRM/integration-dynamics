@@ -119,15 +119,19 @@
                       <div class="form-control-feedback">{{ errorMessage }}</div>
                     {% endfor %}
                   {% elseif control.classId == '{270BD3DB-D9AF-4782-9025-509E298DEC0A}' %}{# lookup field #}
+                    {% set controlValue = attribute( form.record, control.name ) %}
+                    {% if controlValue is null %}
+                      {% set controlValue = form.defaults[control.name]|toEntityReference %}
+                    {% endif %}
                     {% set lookupTypes = {} %}
                     {% for lookupType in control.metadata.lookupTypes %}
                       {% set lookupTypes = lookupTypes|merge( { (lookupType): entities_list[lookupType] } ) %}
                     {% endfor %}
                     <div class="input-group wpcrm-lookup" data-types="{{ lookupTypes|json_encode }}">
-                      <input type="text" id="{{ control.id }}" data-field="{{ control.name }}" class="form-control wpcrm-lookup-display" readonly="readonly" value="{{ attribute( form.record, control.name ) }}">
+                      <input type="text" id="{{ control.id }}" data-field="{{ control.name }}" class="form-control wpcrm-lookup-display" readonly="readonly" value="{{ controlValue }}">
                       {% if not controlDisabled %}
                         <span class="input-group-btn">
-                        {% if attribute( form.record, control.name ) %}
+                        {% if controlValue %}
                           <button class="btn btn-secondary" type="button" data-action="disassociate"><i class="fa fa-times" aria-hidden="true"></i></button>
                         {% else %}
                           <button class="btn btn-secondary" type="button" data-action="associate"><i class="fa fa-search" aria-hidden="true"></i></button>
@@ -138,7 +142,7 @@
                     {% for errorMessage in form.errors[control.name] %}
                       <div class="form-control-feedback">{{ errorMessage }}</div>
                     {% endfor %}
-                    <input type="hidden" name="{{ control.name }}" value="{{ [ attribute( form.record, control.name ).logicalName, attribute( form.record, control.name ).id, attribute( form.record, control.name ) ~ '' ]|json_encode }}">
+                    <input type="hidden" name="{{ control.name }}" value="{{ [ controlValue.logicalName, controlValue.id, controlValue ~ '' ]|json_encode }}">
                   {% elseif control.classId == '{628064E7-E104-4B65-9EBF-3ED02F9AEBB6}' %}{# lookup view field #}
                     {% set controlValue = attribute( form.record, control.name ).id %}
                     <select id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}disabled="disabled"{% endif %} autocomplete="off">

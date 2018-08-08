@@ -14,7 +14,14 @@ if ( !defined( 'ABSPATH' ) ) {
  */
 abstract class Shortcode {
 
-    public abstract function shortcode( $attributes, $content = null, $tagName );
+    /**
+     * @param array $attributes
+     * @param string $content
+     * @param string $tagName
+     *
+     * @return string
+     */
+    public abstract function shortcode( $attributes, $content, $tagName );
 
     /**
      * @param string $error
