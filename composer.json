@@ -3,7 +3,7 @@
   "description": "The easiest way to connect Dynamics 365 and Dynamics CRM with WordPress.",
   "type": "wordpress-plugin",
   "require": {
-    "alexacrm/php-crm-toolkit": "20180726",
+    "alexacrm/php-crm-toolkit": "20180808",
     "symfony/http-foundation": "3.1.*",
     "monolog/monolog": "^1.0",
     "twig/twig": "~1.0"
