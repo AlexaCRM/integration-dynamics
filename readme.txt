@@ -52,6 +52,11 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.16 =
+
+* Default values for lookups, address composites, dropdowns, radios and checkboxes in Twig forms
+* Fixed handling of of empty values in forms
+
 = 1.2.15 =
 
 * Fixed handling of boolean values in forms
