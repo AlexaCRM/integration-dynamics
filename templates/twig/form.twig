@@ -109,6 +109,9 @@
                     {% if controlValue is null %}
                       {% set controlValue = attribute( form.record, control.name ) %}
                     {% endif %}
+                    {% if controlValue is null %}
+                      {% set controlValue = form.defaults[control.name] %}
+                    {% endif %}
                     {% if not controlDisabled %}
                       <input type="hidden" name="{{ control.name }}" value="0">
                     {% endif %}
@@ -145,6 +148,9 @@
                     <input type="hidden" name="{{ control.name }}" value="{{ [ controlValue.logicalName, controlValue.id, controlValue ~ '' ]|json_encode }}">
                   {% elseif control.classId == '{628064E7-E104-4B65-9EBF-3ED02F9AEBB6}' %}{# lookup view field #}
                     {% set controlValue = attribute( form.record, control.name ).id %}
+                    {% if controlValue is null %}
+                      {% set controlValue = form.defaults[control.name] %}
+                    {% endif %}
                     <select id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}disabled="disabled"{% endif %} autocomplete="off">
                       <option value=""></option>
                       {% for optionRecord in control.options %}

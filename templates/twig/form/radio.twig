@@ -2,6 +2,9 @@
 {% if controlValue is null %}
   {% set controlValue = attribute( form.record, control.name ) %}
 {% endif %}
+{% if controlValue is null %}
+  {% set controlValue = form.defaults[control.name] %}
+{% endif %}
 {% if not controlDisabled %}
   <input type="hidden" name="{{ control.name }}" value="">
 {% endif %}
