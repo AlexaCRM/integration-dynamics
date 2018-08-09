@@ -131,7 +131,7 @@
                       {% set lookupTypes = lookupTypes|merge( { (lookupType): entities_list[lookupType] } ) %}
                     {% endfor %}
                     <div class="input-group wpcrm-lookup" data-types="{{ lookupTypes|json_encode }}">
-                      <input type="text" id="{{ control.id }}" data-field="{{ control.name }}" class="form-control wpcrm-lookup-display" readonly="readonly" value="{{ controlValue }}">
+                      <input type="text" id="{{ control.id }}" data-field="{{ control.name }}" class="form-control wpcrm-lookup-display" readonly="readonly" value="{{ controlValue.DisplayName }}">
                       {% if not controlDisabled %}
                         <span class="input-group-btn">
                         {% if controlValue %}
@@ -145,7 +145,7 @@
                     {% for errorMessage in form.errors[control.name] %}
                       <div class="form-control-feedback">{{ errorMessage }}</div>
                     {% endfor %}
-                    <input type="hidden" name="{{ control.name }}" value="{{ [ controlValue.logicalName, controlValue.id, controlValue ~ '' ]|json_encode }}">
+                    <input type="hidden" name="{{ control.name }}" value="{{ { "LogicalName": controlValue.logicalName, "Id": controlValue.id, "DisplayName": controlValue ~ '' }|json_encode }}">
                   {% elseif control.classId == '{628064E7-E104-4B65-9EBF-3ED02F9AEBB6}' %}{# lookup view field #}
                     {% set controlValue = attribute( form.record, control.name ).id %}
                     {% if controlValue is null %}
@@ -192,7 +192,11 @@
   </div>
 </div>
 {% for fieldName, fieldValue in form.hiddenDefaults %}
-<input type="hidden" name="{{ fieldName }}" value="{{ fieldValue }}">
+  {% if fieldValue is iterable %}
+    <input type="hidden" name="{{ fieldName }}" value="{{ fieldValue|json_encode }}">
+  {% else %}
+    <input type="hidden" name="{{ fieldName }}" value="{{ fieldValue }}">
+  {% endif %}
 {% endfor %}
 </form>
 {% embed "form/lookup.twig" %}{% endembed %}

@@ -309,17 +309,26 @@ class Model {
             }
 
             if ( $fieldMetadata->isLookup ) {
-                $reference = json_decode( $fieldValue );
-                if ( is_array( $reference ) && count( $reference ) === 3 ) {
-                    if ( !$reference[0] || !$reference[1] ) {
-                        continue;
-                    }
-
-                    $entityReference = ASDK()->entity( $reference[0] );
-                    $entityReference->ID = $reference[1];
-                    $entityReference->{$entityReference->metadata()->primaryNameAttribute} = $reference[2];
-                    $this->record->{$fieldName} = $entityReference;
+                $reference = json_decode( $fieldValue, true );
+                if ( !is_array( $reference ) || count( $reference ) !== 3 ) {
+                    continue;
                 }
+
+                if ( !array_key_exists( 'LogicalName', $reference )
+                     && !array_key_exists( 'Id', $reference )
+                     && !array_key_exists( 'DisplayName', $reference ) ) {
+                    continue;
+                }
+
+                if ( !$reference['LogicalName'] || !$reference['Id'] ) {
+                    $this->record->{$fieldName} = null;
+                    continue;
+                }
+
+                $entityReference = ASDK()->entity( $reference['LogicalName'] );
+                $entityReference->ID = $reference['Id'];
+                $entityReference->{$entityReference->metadata()->primaryNameAttribute} = $reference['DisplayName'];
+                $this->record->{$fieldName} = $entityReference;
 
                 continue;
             }
