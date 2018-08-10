@@ -228,7 +228,9 @@ class Model {
                                     $cellDefinition['label'] = $controlDefinition['metadata']->getLabel( $this->attributes['language'] );
                                 }
 
-                                $this->formControls[] = $controlDefinition['name'];
+                                if ( $cellDefinition['isVisible'] ) {
+                                    $this->formControls[] = $controlDefinition['name'];
+                                }
 
                                 $controlDefinition['required'] = in_array( $controlDefinition['metadata']->requiredLevel, [ 'ApplicationRequired', 'SystemRequired' ] );
                                 if ( $controlDefinition['required'] && in_array( $controlDefinition['name'], $this->attributes['optional'] ) ) {

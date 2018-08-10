@@ -147,15 +147,15 @@
                     {% endfor %}
                     <input type="hidden" name="{{ control.name }}" value="{{ { "LogicalName": controlValue.logicalName, "Id": controlValue.id, "DisplayName": controlValue ~ '' }|json_encode }}">
                   {% elseif control.classId == '{628064E7-E104-4B65-9EBF-3ED02F9AEBB6}' %}{# lookup view field #}
-                    {% set controlValue = attribute( form.record, control.name ).id %}
+                    {% set controlValue = attribute( form.record, control.name ) %}
                     {% if controlValue is null %}
-                      {% set controlValue = form.defaults[control.name] %}
+                      {% set controlValue = form.defaults[control.name]|toEntityReference %}
                     {% endif %}
                     <select id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}disabled="disabled"{% endif %} autocomplete="off">
                       <option value=""></option>
                       {% for optionRecord in control.options %}
-                        {% set optionValue = [ optionRecord.logicalName, optionRecord.id, optionRecord.displayName ] %}
-                        <option value="{{ optionValue|json_encode }}" {{ (controlValue == optionRecord.id)? 'selected="selected"' : '' }}>{{ optionRecord }}</option>
+                        {% set optionValue = { "LogicalName": optionRecord.logicalName, "Id": optionRecord.id, "DisplayName": optionRecord.displayName } %}
+                        <option value="{{ optionValue|json_encode }}" {{ (controlValue.id == optionRecord.id)? 'selected="selected"' : '' }}>{{ optionRecord }}</option>
                       {% endfor %}
                     </select>
                     {% for errorMessage in form.errors[control.name] %}
