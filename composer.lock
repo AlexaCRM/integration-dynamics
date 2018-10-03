@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92a99ba9d036fb32b046796edd5f00ce",
+    "content-hash": "dfc40e826b170507fb2831ae84e0bac6",
     "packages": [
         {
             "name": "alexacrm/php-crm-toolkit",
-            "version": "20180808",
+            "version": "20181003",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AlexaCRM/php-crm-toolkit.git",
-                "reference": "e2a9c4c33c6d735858e5d460001abc005f8fc6ea"
+                "reference": "29995814d03987302c1690992f5a6e1221310d24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/e2a9c4c33c6d735858e5d460001abc005f8fc6ea",
-                "reference": "e2a9c4c33c6d735858e5d460001abc005f8fc6ea",
+                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/29995814d03987302c1690992f5a6e1221310d24",
+                "reference": "29995814d03987302c1690992f5a6e1221310d24",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                 "php",
                 "sdk"
             ],
-            "time": "2018-08-08T15:58:17+00:00"
+            "time": "2018-10-03T15:27:44+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -293,12 +293,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8"
+                "reference": "c79c051f5b3a46be09205c73b80b346e4153e494"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/d0cd638f4634c16d8df4508e847f14e9e43168b8",
-                "reference": "d0cd638f4634c16d8df4508e847f14e9e43168b8",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/c79c051f5b3a46be09205c73b80b346e4153e494",
+                "reference": "c79c051f5b3a46be09205c73b80b346e4153e494",
                 "shasum": ""
             },
             "require": {
@@ -344,7 +344,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-08-06T14:22:27+00:00"
+            "time": "2018-09-21T13:07:52+00:00"
         },
         {
             "name": "twig/twig",
@@ -352,12 +352,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "82515f6339fd223a6a6a40a432e6e61b8d6d269f"
+                "reference": "4eea72c25c98d3cd94cd8449c08fd81fe2ab91c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/82515f6339fd223a6a6a40a432e6e61b8d6d269f",
-                "reference": "82515f6339fd223a6a6a40a432e6e61b8d6d269f",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/4eea72c25c98d3cd94cd8449c08fd81fe2ab91c3",
+                "reference": "4eea72c25c98d3cd94cd8449c08fd81fe2ab91c3",
                 "shasum": ""
             },
             "require": {
@@ -410,7 +410,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2018-08-03T05:53:41+00:00"
+            "time": "2018-09-27T14:33:24+00:00"
         }
     ],
     "packages-dev": [],
