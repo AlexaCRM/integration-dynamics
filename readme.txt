@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.17.1 =
+
+* Fixed: crashes on some environments related to TLSv1.2 support in cURL
+
 = 1.2.17 =
 
 * Fix lookup handling in Twig forms
