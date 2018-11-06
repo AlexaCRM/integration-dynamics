@@ -54,6 +54,7 @@ abstract class AbstractForm extends Shortcode {
 
             'language'                   => null,
             'keep_labels'                => false,
+            'ignore_nonce'                => false,
         ], $attributes );
 
         if ( is_null( $attrs['entity'] ) && !is_null( $attrs['entity_name'] ) ) {
@@ -72,6 +73,12 @@ abstract class AbstractForm extends Shortcode {
             $attrs['keep_labels'] = true;
         } else {
             $attrs['keep_labels'] = false;
+        }
+
+        if ( $attrs['ignore_nonce'] === 'true' ) {
+            $attrs['ignore_nonce'] = true;
+        } else {
+            $attrs['ignore_nonce'] = false;
         }
 
         unset( $attrs['entity_name'] );
