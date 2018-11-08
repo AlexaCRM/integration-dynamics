@@ -179,6 +179,7 @@ class Twig extends Shortcode {
             'path_and_query' => $request->getRequestUri(),
             'query' => $request->getQueryString()? '?' . $request->getQueryString() : '',
             'url' => $request->getUri(),
+            'referer' => $request->headers->get('referer'),
         ];
 
         // `request` global variable
