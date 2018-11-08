@@ -158,7 +158,7 @@ class FormInstance extends AbstractForm {
     private $isDefaultLanguage = true;
     private $languageCode = 1033;
     private $keepLabels = false;
-    private $isIgnoreNonce = false;
+    private $ignoreNonce = false;
 
     /**
      * FormInstance constructor.
@@ -207,10 +207,8 @@ class FormInstance extends AbstractForm {
              ( $formData->get( 'entity_form_entity', '' ) == $this->entity->logicalname )
         ) {
             $nonceActionName = 'wpcrm-form-' . $formData->get( 'form_name', '' );
-            if ( !$this->isIgnoreNonce ){
-                if ( !wp_verify_nonce( $formData->get( '_wpnonce', '' ), $nonceActionName ) ) {
-                    throw new Exception( __( 'Form submission couldn\'t pass security check. Please try again', 'integration-dynamics' ) );
-                }
+            if ( !$this->ignoreNonce && !wp_verify_nonce( $formData->get( '_wpnonce', '' ), $nonceActionName ) ) {
+                throw new Exception( __( 'Form submission couldn\'t pass security check. Please try again', 'integration-dynamics' ) );
             }
 
             $postData = $formData->all();
@@ -293,7 +291,7 @@ class FormInstance extends AbstractForm {
 
             $this->disableLayout = ( $attributes["enable_layout"] != "true" );
             
-            $this->isIgnoreNonce = $attributes['ignore_nonce'];
+            $this->ignoreNonce = $attributes['ignore_nonce'];
             
             if ( $attributes['language'] !== null ) {
                 $this->languageCode = (int)$attributes['language'];

@@ -74,13 +74,9 @@ abstract class AbstractForm extends Shortcode {
         } else {
             $attrs['keep_labels'] = false;
         }
-
-        if ( $attrs['ignore_nonce'] === 'true' ) {
-            $attrs['ignore_nonce'] = true;
-        } else {
-            $attrs['ignore_nonce'] = false;
-        }
-
+        
+        $attrs['ignore_nonce'] = ( $attrs['ignore_nonce'] === 'true' );
+        
         unset( $attrs['entity_name'] );
         unset( $attrs['form_name'] );
         unset( $attrs['form_type'] );
