@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the Dynamics 365 Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics 365 Integration 1.2.17.1\n"
+"Project-Id-Version: Dynamics 365 Integration 1.2.18\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-"
 "dynamics\n"
-"POT-Creation-Date: 2018-10-03 15:35:18+00:00\n"
+"POT-Creation-Date: 2018-11-15 13:57:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -489,9 +489,9 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: src/Shortcode/Form/AbstractForm.php:272 src/Shortcode/Form/Control.php:78
-#: src/Shortcode/Form/FormInstance.php:1013
-#: src/Shortcode/Form/FormInstance.php:1024
+#: src/Shortcode/Form/AbstractForm.php:275 src/Shortcode/Form/Control.php:78
+#: src/Shortcode/Form/FormInstance.php:1016
+#: src/Shortcode/Form/FormInstance.php:1027
 msgid "%s is required"
 msgstr ""
 
@@ -499,7 +499,7 @@ msgstr ""
 msgid "%s must be a valid decimal number"
 msgstr ""
 
-#: src/Shortcode/Form/Control.php:102 src/Shortcode/Form/FormInstance.php:790
+#: src/Shortcode/Form/Control.php:102 src/Shortcode/Form/FormInstance.php:793
 msgid "%s must be a valid email address"
 msgstr ""
 
@@ -513,47 +513,47 @@ msgid_plural "%1$s must be less than %2$d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Shortcode/Form/FormInstance.php:169
+#: src/Shortcode/Form/FormInstance.php:170
 msgid "<strong>Success!</strong>"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:210
+#: src/Shortcode/Form/FormInstance.php:211
 msgid "Form submission couldn't pass security check. Please try again"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:313
+#: src/Shortcode/Form/FormInstance.php:316
 msgid "Entity %s doesn't exist"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:325
+#: src/Shortcode/Form/FormInstance.php:328
 msgid "Can not get form definition"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:697
+#: src/Shortcode/Form/FormInstance.php:700
 msgid "Unsupported lookup type for [%1$s], or entity {%2$s} not found"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:778
+#: src/Shortcode/Form/FormInstance.php:781
 msgid "Must be less than %d characters"
 msgid_plural "Must be less than %d characters"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Shortcode/Form/FormInstance.php:785
+#: src/Shortcode/Form/FormInstance.php:788
 msgid "Incorrect text value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:803
+#: src/Shortcode/Form/FormInstance.php:806
 msgid "Invalid number value"
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:808
+#: src/Shortcode/Form/FormInstance.php:811
 msgid ""
 "Invalid number value. Enter a decimal number without currency symbol or "
 "thousands separator."
 msgstr ""
 
-#: src/Shortcode/Form/FormInstance.php:813
+#: src/Shortcode/Form/FormInstance.php:816
 msgid ""
 "Invalid money value. Enter a decimal number without currency symbol or "
 "thousands separator."

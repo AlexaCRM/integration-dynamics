@@ -52,6 +52,13 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.18 =
+
+* Add shortcode attribute to disable nonce check in forms
+* Add referrer information to the request object for Twig templates
+* Treat email addresses with capital letters as valid
+* Fixed: crash in Twig if no active connection to CRM
+
 = 1.2.17.1 =
 
 * Fixed: crashes on some environments related to TLSv1.2 support in cURL
