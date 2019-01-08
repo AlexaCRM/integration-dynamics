@@ -97,21 +97,23 @@ class AnnotationImage extends Image {
             return $this->storage->get( $imageCode );
         }
 
-        $columnSet = [ 'mimetype', 'documentbody', 'annotationid' ];
+        $columnSet = [ 'mimetype', 'filename', 'documentbody', 'annotationid' ];
         $annotation = $sdk->entity( 'annotation', $id, $columnSet );
 
         if ( !$annotation->exists ) {
             $this->sendError( 'Image not found.', 404, $isJsonExpected );
         }
 
-        if ( !in_array( $annotation->mimetype, static::$mime_types ) ) {
-            $this->sendError( 'Image type is not supported.', 400, $isJsonExpected );
-        }
-
         $image = [
             'mimetype' => $annotation->mimetype,
             'documentbody' => $annotation->documentbody,
         ];
+
+        $image = apply_filters( 'wordpresscrm_retrieve_image', $image, $annotation );
+
+        if ( !in_array( $image['mimetype'], static::$mime_types ) ) {
+            $this->sendError( 'Image type is not supported.', 400, $isJsonExpected );
+        }
 
         $this->storage->set( $imageCode, $image );
 
