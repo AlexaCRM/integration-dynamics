@@ -198,6 +198,7 @@
     <input type="hidden" name="{{ fieldName }}" value="{{ fieldValue }}">
   {% endif %}
 {% endfor %}
+  <input type="hidden" name="_key" value="{{ form.key }}">
 </form>
 {% embed "form/lookup.twig" %}{% endembed %}
 <script>
