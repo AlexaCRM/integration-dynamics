@@ -74,6 +74,12 @@ class Model {
         $model->formName = $formName;
         $model->record = ASDK()->entity( $model->entityName );
 
+        if ( !isset( $attributes['key'] ) ) {
+            $keyAttributes = $attributes;
+            unset( $keyAttributes['record'] );
+            $attributes['key'] = sha1( $entityName . $formName . serialize( $keyAttributes ) );
+        }
+
         // list of fields to be marked as optional (overrides metadata)
         if ( !array_key_exists( 'optional', $attributes ) || !is_array( $attributes['optional'] ) ) {
             $attributes['optional'] = [];
@@ -115,7 +121,9 @@ class Model {
      * Builds the view of the form.
      */
     public function buildView() {
-        $formDefinition = [];
+        $formDefinition = [
+            'key' => $this->attributes['key'],
+        ];
 
         $formDefinition['record'] = $this->record;
         if ( $this->attributes['record'] instanceof Entity ) {
@@ -132,6 +140,7 @@ class Model {
         $metadata = ACRM()->getMetadata()->getEntityDefinition( $this->entityName );
         $formDefinition = [
             'id' => $this->getInstanceId(),
+            'key' => $this->attributes['key'],
             'name' => $this->formName,
             'tabs' => [],
             'options' => [
@@ -501,15 +510,29 @@ class Model {
      */
     public function dispatch() {
         $request = ACRM()->request->request;
+        $fields = $request->all();
 
         if ( ACRM()->request->getMethod() !== 'POST' ) {
-            return [ 'submission' => false, 'fields' => $request->all() ];
+            return [ 'submission' => false, 'fields' => $fields ];
         }
 
         $dispatchedForm = clone $this;
 
-        // Process the form
-        $fields = $request->all();
+        /*
+         * The `key` allows to distinguish submissions to different forms on one page.
+         * The key is calculated automatically based on form arguments (not the template, if it's a custom form).
+         * If two identical forms are on one page, the key would be identical too. It is possible
+         * to override the key with the `key` attribute.
+         */
+        $submittedKey = $request->get( '_key' );
+
+        /*
+         * If the key is absent, we're likely dealing with old custom forms. Continue without the key.
+         * Otherwise match the incoming key to the model and halt as if no submission is taking place.
+         */
+        if ( $submittedKey !== null && $submittedKey !== $dispatchedForm->attributes['key'] ) {
+            return [ 'submission' => false, 'fields' => $fields ];
+        }
 
         $validateMethod = [ $dispatchedForm, 'validate' ];
         if ( !$this->formName ) {
