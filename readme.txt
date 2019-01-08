@@ -52,6 +52,11 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.19 =
+
+* Allow multiple Twig forms on one page
+* Add a filter to make annotation images delivery more extensible
+
 = 1.2.18 =
 
 * Add shortcode attribute to disable nonce check in forms
