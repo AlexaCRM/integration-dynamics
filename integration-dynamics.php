@@ -14,9 +14,26 @@ if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-define( 'WORDPRESSCRM_VERSION', '1.2.18' );
+define( 'WORDPRESSCRM_VERSION', '1.2.19' );
 
 define( 'WORDPRESSCRM_DIR', __DIR__ );
+
+/**
+ * Blocks upgrade to Version 2 if such update becomes available.
+ */
+add_filter( 'site_transient_update_plugins', function( $value ) {
+    if ( !isset( $value->response['integration-dynamics/integration-dynamics.php'] ) ) {
+        return $value;
+    }
+
+    $data = $value->response['integration-dynamics/integration-dynamics.php'];
+    if ( version_compare( $data->new_version, '2.0', '>=' ) ) {
+        $value->no_update['integration-dynamics/integration-dynamics.php'] = $data;
+        unset( $value->response['integration-dynamics/integration-dynamics.php'] );
+    }
+
+    return $value;
+} );
 
 $wpUploadDir = wp_upload_dir();
 $wpcrmStorageDir = null;
