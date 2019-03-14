@@ -119,6 +119,25 @@ register_activation_hook( __FILE__, function() use ( $wpcrmStorageDir ) {
     $update->updateDataBoundPages();
     $update->updateDataBinding();
 
+    function removeDir( $target ) {
+        $iterator = new RecursiveDirectoryIterator( $target, RecursiveDirectoryIterator::SKIP_DOTS );
+        $fileIterator = new RecursiveIteratorIterator( $iterator, RecursiveIteratorIterator::CHILD_FIRST );
+        foreach ( $fileIterator as $file ) {
+            /** @var SplFileInfo $file */
+            if ( is_dir( $file ) ) {
+                rmdir( $file->getRealPath() );
+                continue;
+            }
+
+            unlink( $file->getRealPath() );
+        }
+
+        rmdir( $target );
+    }
+
+    // Drop the cache.
+    removeDir( $wpcrmStorageDir . '/cache' );
+
     // add .htaccess to prevent access to the storage directory
     if ( !file_exists( $wpcrmStorageDir . '/.htaccess' ) ) {
         $htaccessContent = "Order Deny,Allow\nDeny from all\nAllow from 127.0.0.1\n";

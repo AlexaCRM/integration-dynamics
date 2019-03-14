@@ -27,8 +27,6 @@ namespace AlexaCRM\WordpressCRM\Cache;
 use Exception;
 use Memcache;
 use Memcached;
-use PDO;
-use PDOException;
 
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
@@ -46,7 +44,7 @@ class PhpFastCache {
     /**
      * @ignore
      */
-    public static $storage = "auto"; // PDO | mpdo | Auto | Files | memcache | apc | wincache
+    public static $storage = "auto"; // Auto | Files | memcache | apc | wincache
 
     /**
      * @ignore
@@ -91,51 +89,18 @@ class PhpFastCache {
     /**
      * @ignore
      */
-    public static $debugging = false; // turn true for debugging
-
-    // NOTHING TO CHANGE FROM HERE
-    /**
-     * @ignore
-     */
-    private static $step_debugging = 0;
-
-    /**
-     * @ignore
-     */
     private static $Tmp = array();
 
     /**
      * @ignore
      */
     private static $supported_api = array(
-        "pdo",
-        "mpdo",
         "files",
         "memcache",
         "memcached",
         "apc",
         "wincache"
     );
-
-    /**
-     * @ignore
-     */
-    private static $filename = "pdo.caching";
-
-    /**
-     * @ignore
-     */
-    private static $table = "objects";
-
-    /**
-     * @ignore
-     */
-    private static $autodb = "";
-
-    /**
-     * @ignore
-     */
-    private static $multiPDO = array();
 
     /**
      * @ignore
@@ -157,7 +122,6 @@ class PhpFastCache {
     private static $objects = array(
         "memcache"  => "",
         "memcached" => "",
-        "pdo"       => "",
     );
 
     /**
@@ -188,14 +152,12 @@ class PhpFastCache {
 
             self::$sys['errors']  = array();
             self::$sys['storage'] = "";
-            self::$sys['method']  = "pdo";
+            self::$sys['method']  = "files";
             self::$sys['drivers'] = array(
                 "apc"       => false,
                 "memcache"  => false,
                 "memcached" => false,
                 "wincache"  => false,
-                "pdo"       => false,
-                "mpdo"      => false,
                 "files"     => false,
             );
 
@@ -237,25 +199,13 @@ class PhpFastCache {
                 }
             }
 
-            if ( extension_loaded( 'pdo_sqlite' ) ) {
-                self::$sys['drivers']['pdo']  = true;
-                self::$sys['drivers']['mpdo'] = true;
-            }
-
             if ( is_writable( self::getPath( true ) ) ) {
                 self::$sys['drivers']['files'] = true;
             }
 
             if ( self::$sys['storage'] == "" ) {
-
-                if ( extension_loaded( 'pdo_sqlite' ) ) {
-                    self::$sys['storage'] = "disk";
-                    self::$sys['method']  = "pdo";
-                } else {
-
-                    self::$sys['storage'] = "disk";
-                    self::$sys['method']  = "files";
-                }
+                self::$sys['storage'] = "disk";
+                self::$sys['method']  = "files";
             }
 
             if ( self::$sys['storage'] == "disk" && !is_writable( self::getPath() ) ) {
@@ -263,7 +213,6 @@ class PhpFastCache {
             }
         }
 
-        // self::startDebug(self::$sys);
         return self::$sys;
     }
 
@@ -346,40 +295,28 @@ allow from 127.0.0.1";
     }
 
     // return method automatic;
-    // APC will be TOP, then Memcached, Memcache, PDO and Files
+    // APC will be TOP, then Memcached, Memcache and Files
     /**
      * @ignore
      */
     public static function autoconfig( $name = "" ) {
-        // self::startDebug($name,"Check Name",__LINE__,__FUNCTION__);
-
         $cache = self::cacheMethod( $name );
         if ( $cache != "" && $cache != self::$storage && $cache != "auto" ) {
             return $cache;
         }
 
-        // self::startDebug($cache,"Check Cache",__LINE__,__FUNCTION__);
-
         $os = self::getOS();
-        // self::startDebug(self::$storage,"User Set",__LINE__,__FUNCTION__);
         if ( self::$storage == "" || self::$storage == "auto" ) {
-            // self::startDebug(self::$storage,"User Set Auto",__LINE__,__FUNCTION__);
-
             if ( extension_loaded( 'apc' ) && ini_get( 'apc.enabled' ) && strpos( PHP_SAPI, "CGI" ) === false ) {
-
                 self::$sys['drivers']['apc'] = true;
                 self::$sys['storage']        = "memory";
                 self::$sys['method']         = "apc";
-                // self::startDebug(self::$sys,"GOT APC",__LINE__,__FUNCTION__);
             } else {
                 // fix PATH for existing
                 $reconfig = false;
-                // self::startDebug(self::getPath()."/config.".$os['unique'].".cache.ini","CHECK CONFIG FILE",__LINE__,__FUNCTION__);
 
                 if ( file_exists( self::getPath() . "/config." . $os['unique'] . ".cache.ini" ) ) {
                     $info = self::decode( file_get_contents( self::getPath() . "/config." . $os['unique'] . ".cache.ini" ) );
-
-                    // self::startDebug($info,"CHECK INFO",__LINE__,__FUNCTION__);
 
                     if ( !isset( $info['value'] ) ) {
                         $reconfig = true;
@@ -388,13 +325,10 @@ allow from 127.0.0.1";
                         self::$sys = $info;
                     }
                 } else {
-
                     $info = self::systemInfo();
-                    // self::startDebug($info,"CHECK INFO BY SYSTEM INFO",__LINE__,__FUNCTION__);
                 }
 
                 if ( isset( $info['os']['unique'] ) ) {
-
                     if ( $info['os']['unique'] != $os['unique'] ) {
                         $reconfig = true;
                     }
@@ -403,10 +337,8 @@ allow from 127.0.0.1";
                 }
 
                 if ( !file_exists( self::getPath() . "/config." . $os['unique'] . ".cache.ini" ) || $reconfig == true ) {
-
                     $info      = self::systemInfo();
                     self::$sys = $info;
-                    // self::startDebug($info,"Check Info",__LINE__,__FUNCTION__);
 
                     try {
                         $f = fopen( self::getPath() . "/config." . $os['unique'] . ".cache.ini", "w+" );
@@ -415,14 +347,13 @@ allow from 127.0.0.1";
                     } catch ( Exception $e ) {
                         die( "Please chmod 0777 " . self::getPath() . "/config." . $os['unique'] . ".cache.ini" );
                     }
-                } else {
                 }
             }
 
             self::$storage = self::$sys['method'];
         } else {
 
-            if ( in_array( self::$storage, array( "files", "pdo", "mpdo" ) ) ) {
+            if ( self::$storage === 'files' ) {
                 self::$sys['storage'] = "disk";
             } elseif ( in_array( self::$storage, array( "apc", "memcache", "memcached", "wincache" ) ) ) {
                 self::$sys['storage'] = "memory";
@@ -444,8 +375,6 @@ allow from 127.0.0.1";
                 self::files_set( "last_cleanup_cache", @date( "U" ), 3600 * self::$files_cleanup_after );
             }
         }
-
-        // self::startDebug(self::$sys,"Check RETURN SYS",__LINE__,__FUNCTION__);
 
         return self::$sys['method'];
     }
@@ -510,12 +439,6 @@ allow from 127.0.0.1";
         self::$Tmp = array();
 
         switch ( $api ) {
-            case "pdo":
-                return self::pdo_cleanup( $option );
-                break;
-            case "mpdo":
-                return self::pdo_cleanup( $option );
-                break;
             case "files":
                 return self::files_cleanup( $option );
                 break;
@@ -532,7 +455,7 @@ allow from 127.0.0.1";
                 return self::apc_cleanup( $option );
                 break;
             default:
-                return self::pdo_cleanup( $option );
+                return self::files_cleanup( $option );
                 break;
         }
     }
@@ -544,12 +467,6 @@ allow from 127.0.0.1";
         switch ( $api ) {
             case 'files':
                 return self::files_purge();
-            case "pdo":
-                return self::pdo_cleanup();
-                break;
-            case "mpdo":
-                return self::pdo_cleanup();
-                break;
             case "memcache":
                 return self::memcache_cleanup();
                 break;
@@ -563,7 +480,7 @@ allow from 127.0.0.1";
                 return self::apc_cleanup();
                 break;
             default:
-                return self::pdo_cleanup();
+                return self::files_purge();
                 break;
         }
     }
@@ -582,12 +499,6 @@ allow from 127.0.0.1";
         }
 
         switch ( $api ) {
-            case "pdo":
-                return self::pdo_delete( $name );
-                break;
-            case "mpdo":
-                return self::pdo_delete( $name );
-                break;
             case "files":
                 return self::files_delete( $name );
                 break;
@@ -604,7 +515,7 @@ allow from 127.0.0.1";
                 return self::apc_delete( $name );
                 break;
             default:
-                return self::pdo_delete( $name );
+                return self::files_delete( $name );
                 break;
         }
     }
@@ -616,12 +527,6 @@ allow from 127.0.0.1";
 
         $api = self::autoconfig( $name );
         switch ( $api ) {
-            case "pdo":
-                return self::pdo_exist( $name );
-                break;
-            case "mpdo":
-                return self::pdo_exist( $name );
-                break;
             case "files":
                 return self::files_exist( $name );
                 break;
@@ -638,7 +543,7 @@ allow from 127.0.0.1";
                 return self::apc_exist( $name );
                 break;
             default:
-                return self::pdo_exist( $name );
+                return self::files_exist( $name );
                 break;
         }
     }
@@ -691,7 +596,6 @@ allow from 127.0.0.1";
             if ( $name != "" && $value != "" ) {
                 $res[ $n ] = self::set( $name, $value, $time, $skip );
             }
-            // echo "<br> ----- <br>";
         }
 
         return $res;
@@ -708,12 +612,6 @@ allow from 127.0.0.1";
         }
 
         switch ( $api ) {
-            case "pdo":
-                return self::pdo_set( $name, $value, $time_in_second, $skip_if_existing );
-                break;
-            case "mpdo":
-                return self::pdo_set( $name, $value, $time_in_second, $skip_if_existing );
-                break;
             case "files":
                 return self::files_set( $name, $value, $time_in_second, $skip_if_existing );
                 break;
@@ -730,48 +628,7 @@ allow from 127.0.0.1";
                 return self::apc_set( $name, $value, $time_in_second, $skip_if_existing );
                 break;
             default:
-                return self::pdo_set( $name, $value, $time_in_second, $skip_if_existing );
-                break;
-        }
-    }
-
-    /**
-     * @ignore
-     */
-    public static function decrement( $name, $step = 1 ) {
-        $api = self::autoconfig( $name );
-        if ( self::$useTmpCache == true ) {
-            $tmp_name = md5( serialize( $api . $name ) );
-            if ( isset( self::$Tmp[ $tmp_name ] ) ) {
-                self::$Tmp[ $tmp_name ] = (Int) self::$Tmp[ $tmp_name ] - $step;
-            } else {
-                self::$Tmp[ $tmp_name ] = $step;
-            }
-        }
-        switch ( $api ) {
-            case "pdo":
-                return self::pdo_decrement( $name, $step );
-                break;
-            case "mpdo":
-                return self::pdo_decrement( $name, $step );
-                break;
-            case "files":
-                return self::files_decrement( $name, $step );
-                break;
-            case "memcache":
-                return self::memcache_decrement( $name, $step );
-                break;
-            case "memcached":
-                return self::memcached_decrement( $name, $step );
-                break;
-            case "wincache":
-                return self::wincache_decrement( $name, $step );
-                break;
-            case "apc":
-                return self::apc_decrement( $name, $step );
-                break;
-            default:
-                return self::pdo_decrement( $name, $step );
+                return self::files_set( $name, $value, $time_in_second, $skip_if_existing );
                 break;
         }
     }
@@ -788,16 +645,8 @@ allow from 127.0.0.1";
             }
         }
 
-        // self::startDebug($api,"API",__LINE__,__FUNCTION__);
         // for files, check it if NULL and "empty" string
         switch ( $api ) {
-            case "pdo":
-                return self::pdo_get( $name );
-                break;
-            case "mpdo":
-                return self::pdo_get( $name );
-
-                break;
             case "files":
                 return self::files_get( $name );
                 break;
@@ -814,7 +663,7 @@ allow from 127.0.0.1";
                 return self::apc_get( $name );
                 break;
             default:
-                return self::pdo_get( $name );
+                return self::files_get( $name );
                 break;
         }
     }
@@ -843,12 +692,6 @@ allow from 127.0.0.1";
     public static function stats() {
         $api = self::autoconfig();
         switch ( $api ) {
-            case "pdo":
-                return self::pdo_stats();
-                break;
-            case "mpdo":
-                return self::pdo_stats();
-                break;
             case "files":
                 return self::files_stats();
                 break;
@@ -865,50 +708,7 @@ allow from 127.0.0.1";
                 return self::apc_stats();
                 break;
             default:
-                return self::pdo_stats();
-                break;
-        }
-    }
-
-    /**
-     * @ignore
-     */
-    public static function increment( $name, $step = 1 ) {
-        $api = self::autoconfig( $name );
-
-        if ( self::$useTmpCache == true ) {
-            $tmp_name = md5( serialize( $api . $name ) );
-            if ( isset( self::$Tmp[ $tmp_name ] ) ) {
-                self::$Tmp[ $tmp_name ] = (Int) self::$Tmp[ $tmp_name ] + $step;
-            } else {
-                self::$Tmp[ $tmp_name ] = $step;
-            }
-        }
-
-        switch ( $api ) {
-            case "pdo":
-                return self::pdo_increment( $name, $step );
-                break;
-            case "mpdo":
-                return self::pdo_increment( $name, $step );
-                break;
-            case "files":
-                return self::files_increment( $name, $step );
-                break;
-            case "memcache":
-                return self::memcache_increment( $name, $step );
-                break;
-            case "memcached":
-                return self::memcached_increment( $name, $step );
-                break;
-            case "wincache":
-                return self::wincache_increment( $name, $step );
-                break;
-            case "apc":
-                return self::apc_increment( $name, $step );
-                break;
-            default:
-                return self::pdo_increment( $name, $step );
+                return self::files_stats();
                 break;
         }
     }
@@ -1148,70 +948,6 @@ allow from 127.0.0.1";
     /**
      * @ignore
      */
-    private static function files_increment( $name, $step = 1 ) {
-        $db     = self::selectDB( $name );
-        $name   = $db['item'];
-        $folder = $db['db'];
-
-        $path = self::getPath();
-        $tmp  = explode( "/", $folder );
-        foreach ( $tmp as $dir ) {
-            if ( $dir != "" && $dir != "." && $dir != ".." ) {
-                $path .= "/" . $dir;
-            }
-        }
-
-        $file = $path . "/" . $name . ".c.html";
-        if ( !file_exists( $file ) ) {
-            self::files_set( $name, $step, 3600 );
-
-            return $step;
-        }
-
-        $data = self::decode( file_get_contents( $file ) );
-        if ( isset( $data['time'] ) && isset( $data['value'] ) && isset( $data['endin'] ) ) {
-            $data['value'] = $data['value'] + $step;
-            self::files_set( $name, $data['value'], $data['endin'] );
-        }
-
-        return $data['value'];
-    }
-
-    /**
-     * @ignore
-     */
-    private static function files_decrement( $name, $step = 1 ) {
-        $db     = self::selectDB( $name );
-        $name   = $db['item'];
-        $folder = $db['db'];
-
-        $path = self::getPath();
-        $tmp  = explode( "/", $folder );
-        foreach ( $tmp as $dir ) {
-            if ( $dir != "" && $dir != "." && $dir != ".." ) {
-                $path .= "/" . $dir;
-            }
-        }
-
-        $file = $path . "/" . $name . ".c.html";
-        if ( !file_exists( $file ) ) {
-            self::files_set( $name, $step, 3600 );
-
-            return $step;
-        }
-
-        $data = self::decode( file_get_contents( $file ) );
-        if ( isset( $data['time'] ) && isset( $data['value'] ) && isset( $data['endin'] ) ) {
-            $data['value'] = $data['value'] - $step;
-            self::files_set( $name, $data['value'], $data['endin'] );
-        }
-
-        return $data['value'];
-    }
-
-    /**
-     * @ignore
-     */
     private static function getMemoryName( $name ) {
         $db     = self::selectDB( $name );
         $name   = $db['item'];
@@ -1300,38 +1036,6 @@ allow from 127.0.0.1";
         $name = self::getMemoryName( $name );
 
         return apc_delete( $name );
-    }
-
-    /**
-     * @ignore
-     */
-    private static function apc_increment( $name, $step = 1 ) {
-        $orgi = $name;
-        $name = self::getMemoryName( $name );
-        $ret  = apc_inc( $name, $step, $fail );
-        if ( $ret === false ) {
-            self::apc_set( $orgi, $step, 3600 );
-
-            return $step;
-        } else {
-            return $ret;
-        }
-    }
-
-    /**
-     * @ignore
-     */
-    private static function apc_decrement( $name, $step = 1 ) {
-        $orgi = $name;
-        $name = self::getMemoryName( $name );
-        $ret  = apc_dec( $name, $step, $fail );
-        if ( $ret === false ) {
-            self::apc_set( $orgi, $step, 3600 );
-
-            return $step;
-        } else {
-            return $ret;
-        }
     }
 
     /*
@@ -1425,24 +1129,6 @@ allow from 127.0.0.1";
         $name = self::getMemoryName( $name );
 
         return self::$objects['memcache']->delete( $name );
-    }
-
-    /**
-     * @ignore
-     */
-    private static function memcache_increment( $name, $step = 1 ) {
-        $name = self::getMemoryName( $name );
-
-        return self::$objects['memcache']->increment( $name, $step );
-    }
-
-    /**
-     * @ignore
-     */
-    private static function memcache_decrement( $name, $step = 1 ) {
-        $name = self::getMemoryName( $name );
-
-        return self::$objects['memcache']->decrement( $name, $step );
     }
 
     /*
@@ -1543,24 +1229,6 @@ allow from 127.0.0.1";
         return self::$objects['memcached']->delete( $name );
     }
 
-    /**
-     * @ignore
-     */
-    private static function memcached_increment( $name, $step = 1 ) {
-        $name = self::getMemoryName( $name );
-
-        return self::$objects['memcached']->increment( $name, $step );
-    }
-
-    /**
-     * @ignore
-     */
-    private static function memcached_decrement( $name, $step = 1 ) {
-        $name = self::getMemoryName( $name );
-
-        return self::$objects['memcached']->decrement( $name, $step );
-    }
-
     /*
      * Begin WinCache Static
      */
@@ -1630,82 +1298,6 @@ allow from 127.0.0.1";
         return wincache_ucache_delete( $name );
     }
 
-    /**
-     * @ignore
-     */
-    private static function wincache_increment( $name, $step = 1 ) {
-        $name = self::getMemoryName( $name );
-
-        return wincache_ucache_inc( $name, $step );
-    }
-
-    /**
-     * @ignore
-     */
-    private static function wincache_decrement( $name, $step = 1 ) {
-        $name = self::getMemoryName( $name );
-
-        return wincache_ucache_dec( $name, $step );
-    }
-
-    /*
-     * Begin PDO Static
-     */
-
-    /**
-     * @ignore
-     */
-    private static function pdo_exist( $name ) {
-        $db   = self::selectDB( $name );
-        $name = $db['item'];
-
-        $x = self::db( array( 'db' => $db['db'] ) )->prepare( "SELECT COUNT(*) as `total` FROM " . self::$table . " WHERE `name`=:name" );
-
-        $x->execute( array(
-            ":name" => $name,
-        ) );
-
-        $row = $x->fetch( PDO::FETCH_ASSOC );
-        if ( $row['total'] > 0 ) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @ignore
-     */
-    private static function pdo_cleanup( $option = "" ) {
-        self::db( array( "skip_clean" => true ) )->exec( "drop table if exists " . self::$table );
-        self::initDatabase();
-
-        return true;
-    }
-
-    /**
-     * @ignore
-     */
-    private static function pdo_stats( $full = false ) {
-        $res = array();
-        if ( $full == true ) {
-            $stm = self::db()->prepare( "SELECT * FROM " . self::$table . "" );
-            $stm->execute();
-            $result      = $stm->fetchAll();
-            $res['data'] = $result;
-        }
-        $stm = self::db()->prepare( "SELECT COUNT(*) as `total` FROM " . self::$table . "" );
-        $stm->execute();
-        $result        = $stm->fetch();
-        $res['record'] = $result['total'];
-        if ( self::$path != "memory" ) {
-            $res['size'] = filesize( self::getPath() . "/" . self::$filename );
-        }
-
-        return $res;
-    }
-
-    // for PDO return DB name,
     // For Files, return Dir
     /**
      * @ignore
@@ -1728,320 +1320,7 @@ allow from 127.0.0.1";
             $res['db'] = "files";
         }
 
-        // for auto database
-        if ( $res['db'] == "" && self::$storage == "mpdo" ) {
-            $create_table = false;
-            if ( !file_exists( 'sqlite:' . self::getPath() . '/phpfastcache.c' ) ) {
-                $create_table = true;
-            }
-            if ( self::$autodb == "" ) {
-                try {
-                    self::$autodb = new PDO( 'sqlite:' . self::getPath() . '/phpfastcache.c' );
-                    self::$autodb->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-                } catch ( PDOException $e ) {
-                    die( "Please CHMOD 0777 or Writable Permission for " . self::getPath() );
-                }
-            }
-
-            if ( $create_table == true ) {
-                self::$autodb->exec( 'CREATE TABLE IF NOT EXISTS "main"."db" ("id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , "item" VARCHAR NOT NULL  UNIQUE , "dbname" INTEGER NOT NULL )' );
-            }
-
-            $db = self::$autodb->prepare( "SELECT * FROM `db` WHERE `item`=:item" );
-            $db->execute( array(
-                ":item" => $res['item'],
-            ) );
-            $row = $db->fetch( PDO::FETCH_ASSOC );
-            if ( isset( $row['dbname'] ) ) {
-                // found key
-                $res['db'] = $row['dbname'];
-            } else {
-                // not key // check filesize
-                if ( (Int) self::$autosize < 10 ) {
-                    self::$autosize = 10;
-                }
-                // get last key
-                $db = self::$autodb->prepare( "SELECT * FROM `db` ORDER BY `id` DESC" );
-                $db->execute();
-                $row    = $db->fetch( PDO::FETCH_ASSOC );
-                $dbname = isset( $row['dbname'] ) ? $row['dbname'] : 1;
-                $fsize  = file_exists( self::getPath() . "/" . $dbname . ".cache" ) ? filesize( self::getPath() . "/" . $dbname . ".cache" ) : 0;
-                if ( $fsize > ( 1024 * 1024 * (Int) self::$autosize ) ) {
-                    $dbname = (Int) $dbname + 1;
-                }
-                try {
-                    $insert = self::$autodb->prepare( "INSERT INTO `db` (`item`,`dbname`) VALUES(:item,:dbname)" );
-                    $insert->execute( array(
-                        ":item"   => $res['item'],
-                        ":dbname" => $dbname
-                    ) );
-                } catch ( PDOException $e ) {
-                    die( 'Database Error - Check A look at self::$autodb->prepare("INSERT INTO ' );
-                }
-
-                $res['db'] = $dbname;
-            }
-        }
-
         return $res;
-    }
-
-    /**
-     * @ignore
-     */
-    private static function pdo_get( $name ) {
-        $db   = self::selectDB( $name );
-        $name = $db['item'];
-        // array('db'=>$db['db'])
-        // self::startDebug($db,"",__LINE__,__FUNCTION__);
-
-        $stm = self::db( array( 'db' => $db['db'] ) )->prepare( "SELECT * FROM " . self::$table . " WHERE `name`='" . $name . "'" );
-        $stm->execute();
-        $res = $stm->fetch( PDO::FETCH_ASSOC );
-
-        if ( !isset( $res['value'] ) ) {
-            return null;
-        } elseif ( (Int) $res['added'] + (Int) $res['endin'] <= (Int) @date( "U" ) ) {
-            return null;
-        } else {
-            // decode value on SQL;
-            $data = self::decode( $res['value'] );
-
-            // check if VALUE on string encode
-            return isset( $data['value'] ) ? $data['value'] : null;
-        }
-    }
-
-    /**
-     * @ignore
-     */
-    private static function pdo_decrement( $name, $step = 1 ) {
-        $db   = self::selectDB( $name );
-        $name = $db['item'];
-        // array('db'=>$db['db'])
-
-        $int = self::get( $name );
-        try {
-            $stm = self::db( array( 'db' => $db['db'] ) )->prepare( "UPDATE " . self::$table . " SET `value`=:new WHERE `name`=:name " );
-            $stm->execute( array(
-                ":new"  => self::encode( $int - $step ),
-                ":name" => $name,
-            ) );
-        } catch ( PDOException $e ) {
-            die( "Sorry! phpFastCache don't allow this type of value - Name: " . $name . " -> Decrement: " . $step );
-        }
-
-        return $int - $step;
-    }
-
-    /**
-     * @ignore
-     */
-    private static function pdo_increment( $name, $step = 1 ) {
-        $db   = self::selectDB( $name );
-        $name = $db['item'];
-        // array('db'=>$db['db'])
-
-        $int = self::get( $name );
-        // echo $int."xxx";
-        try {
-            $stm = self::db( array( 'db' => $db['db'] ) )->prepare( "UPDATE " . self::$table . " SET `value`=:new WHERE `name`=:name " );
-            $stm->execute( array(
-                ":new"  => self::encode( $int + $step ),
-                ":name" => $name,
-            ) );
-        } catch ( PDOException $e ) {
-            die( "Sorry! phpFastCache don't allow this type of value - Name: " . $name . " -> Increment: " . $step );
-        }
-
-        return $int + $step;
-    }
-
-    /**
-     * @ignore
-     */
-    private static function pdo_delete( $name ) {
-        $db   = self::selectDB( $name );
-        $name = $db['item'];
-
-        return self::db( array( 'db' => $db['db'] ) )->exec( "DELETE FROM " . self::$table . " WHERE `name`='" . $name . "'" );
-    }
-
-    /**
-     * @ignore
-     */
-    private static function pdo_set( $name, $value, $time_in_second = 600, $skip_if_existing = false ) {
-        $db   = self::selectDB( $name );
-        $name = $db['item'];
-        // array('db'=>$db['db'])
-
-        if ( $skip_if_existing == true ) {
-            try {
-                $insert = self::db( array( 'db' => $db['db'] ) )->prepare( "INSERT OR IGNORE INTO " . self::$table . " (name,value,added,endin) VALUES(:name,:value,:added,:endin)" );
-                try {
-                    $value = self::encode( $value );
-                } catch ( Exception $e ) {
-                    die( "Sorry! phpFastCache don't allow this type of value - Name: " . $name );
-                }
-
-                $insert->execute( array(
-                    ":name"  => $name,
-                    ":value" => $value,
-                    ":added" => @date( "U" ),
-                    ":endin" => (Int) $time_in_second
-                ) );
-
-                return true;
-            } catch ( PDOException $e ) {
-                return false;
-            }
-        } else {
-            try {
-                $insert = self::db( array( 'db' => $db['db'] ) )->prepare( "INSERT OR REPLACE INTO " . self::$table . " (name,value,added,endin) VALUES(:name,:value,:added,:endin)" );
-                try {
-                    $value = self::encode( $value );
-                } catch ( Exception $e ) {
-                    die( "Sorry! phpFastCache don't allow this type of value - Name: " . $name );
-                }
-
-                $insert->execute( array(
-                    ":name"  => $name,
-                    ":value" => $value,
-                    ":added" => @date( "U" ),
-                    ":endin" => (Int) $time_in_second
-                ) );
-
-                return true;
-            } catch ( PDOException $e ) {
-                return false;
-            }
-        }
-    }
-
-    /**
-     * @ignore
-     */
-    private static function db( $option = array() ) {
-        $vacuum = false;
-        $dbname = isset( $option['db'] ) ? $option['db'] : "";
-        $dbname = $dbname != "" ? $dbname : self::$filename;
-        if ( $dbname != self::$filename ) {
-            $dbname = $dbname . ".cache";
-        }
-        // debuging
-        // self::startDebug(self::$storage,"Check Storage",__LINE__,__FUNCTION__);
-        $initDB = false;
-
-        if ( self::$storage == "pdo" ) {
-            // start self PDO
-            if ( self::$objects['pdo'] == "" ) {
-
-                //  self::$objects['pdo'] == new PDO("sqlite:".self::$path."/cachedb.sqlite");
-                if ( !file_exists( self::getPath() . "/" . $dbname ) ) {
-                    $initDB = true;
-                } else {
-                    if ( !is_writable( self::getPath() . "/" . $dbname ) ) {
-                        @chmod( self::getPath() . "/" . $dbname, 0777 );
-                        if ( !is_writable( self::getPath() . "/" . $dbname ) ) {
-                            die( "Please CHMOD 0777 or any Writable Permission for " . self::getPath() . "/" . $dbname );
-                        }
-                    }
-                }
-
-                try {
-                    self::$objects['pdo'] = new PDO( "sqlite:" . self::getPath() . "/" . $dbname );
-                    self::$objects['pdo']->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-                    if ( $initDB == true ) {
-                        self::initDatabase();
-                    }
-
-                    $time = filemtime( self::getPath() . "/" . $dbname );
-                    if ( $time + ( 3600 * 24 ) < @date( "U" ) ) {
-                        $vacuum = true;
-                    }
-
-                    // Revision 619
-                    // auto Vaccuum() every 48 hours
-                    if ( $vacuum == true ) {
-                        if ( !isset( $option['skip_clean'] ) ) {
-                            self::$objects['pdo']->exec( "DELETE FROM " . self::$table . " WHERE (`added` + `endin`) < " . @date( "U" ) );
-                        }
-                        self::$objects['pdo']->exec( 'VACUUM' );
-                    }
-                } catch ( PDOException $e ) {
-                    die( "Can't connect to caching file " . self::getPath() . "/" . $dbname );
-                }
-
-                return self::$objects['pdo'];
-            } else {
-                return self::$objects['pdo'];
-            }
-            // end self pdo
-        } elseif ( self::$storage == "mpdo" ) {
-
-            // start self PDO
-            if ( !isset( self::$multiPDO[ $dbname ] ) ) {
-                //  self::$objects['pdo'] == new PDO("sqlite:".self::$path."/cachedb.sqlite");
-                if ( self::$path != "memory" ) {
-                    if ( !file_exists( self::getPath() . "/" . $dbname ) ) {
-                        $initDB = true;
-                    } else {
-                        if ( !is_writable( self::getPath() . "/" . $dbname ) ) {
-                            @chmod( self::getPath() . "/" . $dbname, 0777 );
-                            if ( !is_writable( self::getPath() . "/" . $dbname ) ) {
-                                die( "Please CHMOD 0777 or any Writable Permission for PATH " . self::getPath() );
-                            }
-                        }
-                    }
-
-                    try {
-                        self::$multiPDO[ $dbname ] = new PDO( "sqlite:" . self::getPath() . "/" . $dbname );
-                        self::$multiPDO[ $dbname ]->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-                        if ( $initDB == true ) {
-                            self::initDatabase( self::$multiPDO[ $dbname ] );
-                        }
-
-                        $time = filemtime( self::getPath() . "/" . $dbname );
-                        if ( $time + ( 3600 * 24 ) < @date( "U" ) ) {
-                            $vacuum = true;
-                        }
-
-                        // Revision 619
-                        if ( $vacuum == true ) {
-                            if ( !isset( $option['skip_clean'] ) ) {
-                                self::$multiPDO[ $dbname ]->exec( "DELETE FROM " . self::$table . " WHERE (`added` + `endin`) < " . @date( "U" ) );
-                            }
-                            self::$multiPDO[ $dbname ]->exec( 'VACUUM' );
-                        }
-                    } catch ( PDOException $e ) {
-                        // Revision 619
-                        die( "Can't connect to caching file " . self::getPath() . "/" . $dbname );
-                    }
-                }
-
-                return self::$multiPDO[ $dbname ];
-            } else {
-                return self::$multiPDO[ $dbname ];
-            }
-            // end self pdo
-        }
-    }
-
-    /**
-     * @ignore
-     */
-    private static function initDatabase( $object = null ) {
-        if ( $object == null ) {
-            self::db( array( "skip_clean" => true ) )->exec( 'CREATE TABLE IF NOT EXISTS "' . self::$table . '" ("id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , "name" VARCHAR UNIQUE NOT NULL  , "value" BLOB, "added" INTEGER NOT NULL  DEFAULT 0, "endin" INTEGER NOT NULL  DEFAULT 0)' );
-            self::db( array( "skip_clean" => true ) )->exec( 'CREATE INDEX "lookup" ON "' . self::$table . '" ("added" ASC, "endin" ASC)' );
-            self::db( array( "skip_clean" => true ) )->exec( 'VACUUM' );
-        } else {
-            $object->exec( 'CREATE TABLE IF NOT EXISTS "' . self::$table . '" ("id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , "name" VARCHAR UNIQUE NOT NULL  , "value" BLOB, "added" INTEGER NOT NULL  DEFAULT 0, "endin" INTEGER NOT NULL  DEFAULT 0)' );
-            $object->exec( 'CREATE INDEX "lookup" ON "' . self::$table . '" ("added" ASC, "endin" ASC)' );
-            $object->exec( 'VACUUM' );
-        }
     }
 
 }
