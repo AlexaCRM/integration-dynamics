@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.20.1 =
+
+* Fixed: possible fatal error during plugin activation/upgrade
+
 = 1.2.20 =
 
 * Dropped SQLite support in cache
