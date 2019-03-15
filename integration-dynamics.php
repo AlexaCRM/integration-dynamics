@@ -120,23 +120,27 @@ register_activation_hook( __FILE__, function() use ( $wpcrmStorageDir ) {
     $update->updateDataBinding();
 
     function removeDir( $target ) {
-        $iterator = new RecursiveDirectoryIterator( $target, RecursiveDirectoryIterator::SKIP_DOTS );
-        $fileIterator = new RecursiveIteratorIterator( $iterator, RecursiveIteratorIterator::CHILD_FIRST );
-        foreach ( $fileIterator as $file ) {
-            /** @var SplFileInfo $file */
-            if ( is_dir( $file ) ) {
-                rmdir( $file->getRealPath() );
-                continue;
+        try {
+            $iterator = new RecursiveDirectoryIterator( $target, RecursiveDirectoryIterator::SKIP_DOTS );
+            $fileIterator = new RecursiveIteratorIterator( $iterator, RecursiveIteratorIterator::CHILD_FIRST );
+            foreach ( $fileIterator as $file ) {
+                /** @var SplFileInfo $file */
+                if ( is_dir( $file ) ) {
+                    rmdir( $file->getRealPath() );
+                    continue;
+                }
+
+                unlink( $file->getRealPath() );
             }
 
-            unlink( $file->getRealPath() );
-        }
-
-        rmdir( $target );
+            rmdir( $target );
+        } catch ( \Exception $e ) {} // Silence is golden.
     }
 
     // Drop the cache.
-    removeDir( $wpcrmStorageDir . '/cache' );
+    if ( is_dir( $wpcrmStorageDir . '/cache' ) ) {
+        removeDir( $wpcrmStorageDir . '/cache' );
+    }
 
     // add .htaccess to prevent access to the storage directory
     if ( !file_exists( $wpcrmStorageDir . '/.htaccess' ) ) {
