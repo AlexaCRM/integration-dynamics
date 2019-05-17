@@ -362,7 +362,9 @@ allow from 127.0.0.1";
             }
 
             if ( self::$sys['storage'] == "" || !in_array( self::$storage, self::$supported_api ) ) {
-                die( "Don't have this Cache " . self::$storage . " In your System! Please double check!" );
+                // Fall back to files.
+                self::$storage = self::$sys['method'] = 'files';
+                self::$sys['storage'] = 'disk';
             }
 
             self::$sys['method'] = strtolower( self::$storage );
