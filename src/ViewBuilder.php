@@ -155,7 +155,7 @@ class ViewBuilder {
      * @return string
      */
     private function processLookups( $fetchXML ) {
-        if ( !is_array( $this->attributes['lookups'] ) ) {
+        if ( !isset( $this->attributes['lookups'] ) || !is_array( $this->attributes['lookups'] ) ) {
             return $fetchXML;
         }
 
