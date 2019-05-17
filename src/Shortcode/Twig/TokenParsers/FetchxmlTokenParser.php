@@ -3,13 +3,17 @@
 namespace AlexaCRM\WordpressCRM\Shortcode\Twig\TokenParsers;
 
 use AlexaCRM\WordpressCRM\Shortcode\Twig\Nodes\FetchxmlNode;
+use AlexaCRM\WordpressCRM\Shortcode\Twig\TokenParser;
 use Twig_NodeInterface;
 use Twig_Token;
 
 /**
  * Implements token parser for the `fetchxml` tag.
  */
-class FetchxmlTokenParser extends \Twig_TokenParser {
+class FetchxmlTokenParser extends TokenParser {
+
+    const TAG_BEGIN = 'fetchxml';
+    const TAG_END = 'endfetchxml';
 
     /**
      * Parses a token and returns a node.
@@ -40,7 +44,7 @@ class FetchxmlTokenParser extends \Twig_TokenParser {
         $stream->expect( Twig_Token::BLOCK_END_TYPE );
         $fetchxml = $parser->subparse( [ $this, 'decideFetchxmlEnd' ] );
 
-        $stream->expect( Twig_Token::NAME_TYPE, 'endfetchxml' );
+        $stream->expect( Twig_Token::NAME_TYPE, static::TAG_END );
         $stream->expect( Twig_Token::BLOCK_END_TYPE );
 
         return new FetchxmlNode( $fetchxml, $arguments, $lineNo );
@@ -54,7 +58,7 @@ class FetchxmlTokenParser extends \Twig_TokenParser {
      * @return bool
      */
     public function decideFetchxmlEnd( Twig_Token $token ) {
-        return $token->test( 'endfetchxml' );
+        return $token->test( static::TAG_END );
     }
 
     /**
@@ -63,6 +67,6 @@ class FetchxmlTokenParser extends \Twig_TokenParser {
      * @return string The tag name
      */
     public function getTag() {
-        return 'fetchxml';
+        return static::TAG_BEGIN;
     }
 }

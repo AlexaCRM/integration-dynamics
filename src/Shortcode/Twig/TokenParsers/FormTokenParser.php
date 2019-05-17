@@ -3,6 +3,7 @@
 namespace AlexaCRM\WordpressCRM\Shortcode\Twig\TokenParsers;
 
 use AlexaCRM\WordpressCRM\Shortcode\Twig\Nodes\FormNode;
+use AlexaCRM\WordpressCRM\Shortcode\Twig\TokenParser;
 use Twig_Error_Syntax;
 use Twig_NodeInterface;
 use Twig_Token;
@@ -10,7 +11,10 @@ use Twig_Token;
 /**
  * Parses the `form` token.
  */
-class FormTokenParser extends \Twig_TokenParser {
+class FormTokenParser extends TokenParser {
+
+    const TAG_BEGIN = 'form';
+    const TAG_END = 'endform';
 
     /**
      * Parses a token and returns a node.
@@ -59,7 +63,7 @@ class FormTokenParser extends \Twig_TokenParser {
             $template = $parser->subparse( [ $this, 'decideFormEnd'] );
         }
 
-        $stream->expect( Twig_Token::NAME_TYPE, 'endform' );
+        $stream->expect( Twig_Token::NAME_TYPE, static::TAG_END );
         $stream->expect( Twig_Token::BLOCK_END_TYPE );
 
         return new FormNode( [ 'template' => $template ], $arguments, $lineNo );
@@ -71,7 +75,7 @@ class FormTokenParser extends \Twig_TokenParser {
      * @return string The tag name
      */
     public function getTag() {
-        return 'form';
+        return static::TAG_BEGIN;
     }
 
     /**
@@ -82,24 +86,7 @@ class FormTokenParser extends \Twig_TokenParser {
      * @return bool
      */
     public function decideFormEnd( Twig_Token $token ) {
-        return $token->test( 'endform' );
+        return $token->test( static::TAG_END );
     }
 
-    /**
-     * Checks whether given template is empty
-     * (no nodes or only spaces/new lines/etc.)
-     *
-     * @param \Twig_Node $template
-     *
-     * @return bool
-     */
-    private function isEmptyTemplate( \Twig_Node $template ) {
-        if ( $template->hasAttribute( 'data' ) ) {
-            $data = $template->getAttribute( 'data' );
-
-            return ( trim( $data ) === '' );
-        }
-
-        return !$template->count();
-    }
 }

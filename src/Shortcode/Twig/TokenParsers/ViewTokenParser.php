@@ -3,6 +3,7 @@
 namespace AlexaCRM\WordpressCRM\Shortcode\Twig\TokenParsers;
 
 use AlexaCRM\WordpressCRM\Shortcode\Twig\Nodes\ViewNode;
+use AlexaCRM\WordpressCRM\Shortcode\Twig\TokenParser;
 use Twig_Error_Syntax;
 use Twig_NodeInterface;
 use Twig_Token;
@@ -10,7 +11,10 @@ use Twig_Token;
 /**
  * Parses the `view` token.
  */
-class ViewTokenParser extends \Twig_TokenParser {
+class ViewTokenParser extends TokenParser {
+
+    const TAG_BEGIN = 'view';
+    const TAG_END = 'endview';
 
     /**
      * Parses a token and returns a node.
@@ -46,9 +50,7 @@ class ViewTokenParser extends \Twig_TokenParser {
         $stream->expect( Twig_Token::BLOCK_END_TYPE );
         $template = $parser->subparse( [ $this, 'decideViewEnd' ] );
 
-        if ( ( get_class( $template ) === 'Twig_Node' || get_class( $template ) === 'Twig_Node_Text' )
-             && !$template->count()
-             && ( !$template->hasAttribute( 'data' ) || trim( $template->getAttribute( 'data' ) ) === '' ) ) {
+        if ( $this->isEmptyTemplate( $template ) ) {
             $stream->injectTokens( [
                 new Twig_Token( Twig_Token::BLOCK_START_TYPE, '', $lineNo ),
                 new Twig_Token( Twig_Token::NAME_TYPE, 'embed', $lineNo ),
@@ -62,7 +64,7 @@ class ViewTokenParser extends \Twig_TokenParser {
             $template = $parser->subparse( [ $this, 'decideViewEnd'] );
         }
 
-        $stream->expect( Twig_Token::NAME_TYPE, 'endview' );
+        $stream->expect( Twig_Token::NAME_TYPE, static::TAG_END );
         $stream->expect( Twig_Token::BLOCK_END_TYPE );
 
         return new ViewNode( [ 'template' => $template ], $arguments, $lineNo );
@@ -74,7 +76,7 @@ class ViewTokenParser extends \Twig_TokenParser {
      * @return string The tag name
      */
     public function getTag() {
-        return 'view';
+        return static::TAG_BEGIN;
     }
 
     /**
@@ -85,6 +87,6 @@ class ViewTokenParser extends \Twig_TokenParser {
      * @return bool
      */
     public function decideViewEnd( Twig_Token $token ) {
-        return $token->test( 'endview' );
+        return $token->test( static::TAG_END );
     }
 }
