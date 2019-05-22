@@ -39,6 +39,7 @@ class General extends Tab {
         "port"                   => "",
         "useSsl"                 => false,
         "ignoreSslErrors"        => false,
+        'strictFederatedSTS'     => false,
         "organizationUrl"        => "",
         "organizationDataUrl"    => "",
         "organizationName"       => "",
@@ -104,6 +105,7 @@ class General extends Tab {
                     'crmUrl' => $clientSettings->serverUrl,
                     'username' => $clientSettings->username,
                     'ignoreSslErrors' => $clientSettings->ignoreSslErrors,
+                    'strictFederatedSTS' => $clientSettings->strictFederatedSTS,
                 ] ] );
 
                 $client = new Client( $clientSettings, ACRM()->getCache(), ACRM()->getLogger()->withName( 'crmtoolkit' ) );
@@ -158,6 +160,10 @@ class General extends Tab {
 
         if ( isset( $options['ignoreSslErrors'] ) && $options['ignoreSslErrors'] == '1' ) {
             $options['ignoreSslErrors'] = true;
+        }
+
+        if ( isset( $options['strictFederatedSTS'] ) && $options['strictFederatedSTS'] == '1' ) {
+            $options['strictFederatedSTS'] = true;
         }
 
         return $options;
@@ -291,6 +297,12 @@ class General extends Tab {
                                                value="<?php echo esc_attr( $this->get_field_value( 'serverUrl' ) ); ?>">
                                         <p>
                                             <label><input type="checkbox" class="wpcrm-setting" name="<?php echo esc_attr( $this->get_field_name( 'ignoreSslErrors' ) ); ?>" value="1" <?php checked( $this->get_field_value( 'ignoreSslErrors' ) ); ?>> <?php _e( 'Ignore invalid certificate errors', 'integration-dynamics' ); ?></label>
+                                        </p>
+                                        <p>
+                                            <label>
+                                                <input type="checkbox" class="wpcrm-setting" name="<?php echo esc_attr( $this->get_field_name( 'strictFederatedSTS' ) ); ?>" value="1" <?php checked( $this->get_field_value( 'strictFederatedSTS' ) ); ?>>
+                                                <?php _e( 'Federated login only: use the exact specified STS URL <a href="https://docs.alexacrm.com/wpcrm/configuration/#using-the-exact-specified-sts-url" target="_blank"><small>(what\'s this?)</small></a>' ) ?>
+                                            </label>
                                         </p>
                                     </td>
                                 </tr>
