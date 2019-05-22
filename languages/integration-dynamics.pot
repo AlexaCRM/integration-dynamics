@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the Dynamics 365 Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics 365 Integration 1.2.20.3\n"
+"Project-Id-Version: Dynamics 365 Integration 1.2.21\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-"
 "dynamics\n"
-"POT-Creation-Date: 2019-05-17 15:51:10+00:00\n"
+"POT-Creation-Date: 2019-05-22 15:18:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -222,7 +222,7 @@ msgid ""
 msgstr ""
 
 #: src/Admin/Tab/Attachments.php:75 src/Admin/Tab/Forms.php:37
-#: src/Admin/Tab/General.php:181 src/Admin/Tab/Messages.php:126
+#: src/Admin/Tab/General.php:187 src/Admin/Tab/Messages.php:126
 msgid "Documentation &raquo;"
 msgstr ""
 
@@ -264,108 +264,115 @@ msgstr ""
 msgid "Secret key <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:64
+#: src/Admin/Tab/General.php:65
 msgid "Metadata cache has been purged and now will be rebuilt gradually."
 msgstr ""
 
-#: src/Admin/Tab/General.php:72
+#: src/Admin/Tab/General.php:73
 msgid "Connection"
 msgstr ""
 
-#: src/Admin/Tab/General.php:94
+#: src/Admin/Tab/General.php:95
 msgid "Please fill in the fields that are marked as required *."
 msgstr ""
 
-#: src/Admin/Tab/General.php:122
+#: src/Admin/Tab/General.php:124
 msgid "Connection to Dynamics 365 <%s> has been successfully established."
 msgstr ""
 
-#: src/Admin/Tab/General.php:126
+#: src/Admin/Tab/General.php:128
 msgid ""
 "Unable to connect to Dynamics 365 using provided address, username and/or "
 "password."
 msgstr ""
 
-#: src/Admin/Tab/General.php:131 src/Admin/Tab/General.php:135
+#: src/Admin/Tab/General.php:133 src/Admin/Tab/General.php:137
 msgid ""
 "<strong>Unable to connect to Dynamics 365:</strong> %s. Check whether you "
 "selected the appropriate deployment type and that CRM URL and credentials "
 "are correct."
 msgstr ""
 
-#: src/Admin/Tab/General.php:174
+#: src/Admin/Tab/General.php:180
 msgid "Reconnect"
 msgstr ""
 
-#: src/Admin/Tab/General.php:174
+#: src/Admin/Tab/General.php:180
 msgid "Connect"
 msgstr ""
 
-#: src/Admin/Tab/General.php:181
+#: src/Admin/Tab/General.php:187
 msgid "Configure the plugin to connect to your Dynamics 365 instance."
 msgstr ""
 
-#: src/Admin/Tab/General.php:188 src/Admin/Tab/General.php:192
+#: src/Admin/Tab/General.php:194 src/Admin/Tab/General.php:198
 msgid "Deployment Type"
 msgstr ""
 
-#: src/Admin/Tab/General.php:225 src/Admin/Tab/General.php:285
+#: src/Admin/Tab/General.php:231 src/Admin/Tab/General.php:291
 msgid ""
 "Dynamics 365 Address (URL) <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:233 src/Admin/Tab/General.php:293
+#: src/Admin/Tab/General.php:239 src/Admin/Tab/General.php:299
 msgid "Ignore invalid certificate errors"
 msgstr ""
 
-#: src/Admin/Tab/General.php:239
+#: src/Admin/Tab/General.php:245
 msgid "Authentication Source"
 msgstr ""
 
-#: src/Admin/Tab/General.php:243
+#: src/Admin/Tab/General.php:249
 msgid "Internet-facing deployment (IFD)"
 msgstr ""
 
-#: src/Admin/Tab/General.php:249 src/Admin/Tab/General.php:299
+#: src/Admin/Tab/General.php:255 src/Admin/Tab/General.php:311
 msgid "User Name <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:255 src/Admin/Tab/General.php:305
+#: src/Admin/Tab/General.php:261 src/Admin/Tab/General.php:317
 msgid "CRM user login"
 msgstr ""
 
-#: src/Admin/Tab/General.php:260 src/Admin/Tab/General.php:310
+#: src/Admin/Tab/General.php:266 src/Admin/Tab/General.php:322
 msgid "Password <span class=\"description\">(required)</span>"
 msgstr ""
 
-#: src/Admin/Tab/General.php:266 src/Admin/Tab/General.php:316
+#: src/Admin/Tab/General.php:272 src/Admin/Tab/General.php:328
 msgid "CRM user password"
 msgstr ""
 
-#: src/Admin/Tab/General.php:330
+#: src/Admin/Tab/General.php:304
+msgid ""
+"Federated login only: use the exact specified STS URL <a href=\"https://docs."
+"alexacrm.com/wpcrm/configuration/#using-the-exact-specified-sts-url\" target="
+"\"_blank\"><small>(what's this?)</small></a>"
+msgstr ""
+
+#: src/Admin/Tab/General.php:342
 msgid "Metadata Settings"
 msgstr ""
 
-#: src/Admin/Tab/General.php:331
+#: src/Admin/Tab/General.php:343
 msgid ""
 "If you have changed your Dynamics 365 entities metadata recently (i.e. "
 "fields, forms, views, etc.) please regenerate local metadata cache to keep "
 "it up to date."
 msgstr ""
 
-#: src/Admin/Tab/General.php:335
+#: src/Admin/Tab/General.php:347
 msgid "Regenerate Metadata Cache"
 msgstr ""
 
-#: src/Admin/Tab/General.php:340
+#: src/Admin/Tab/General.php:352
 msgid "F j, Y \\a\\t g:i A"
 msgstr ""
 
-#: src/Admin/Tab/General.php:342
+#: src/Admin/Tab/General.php:354
 msgid "Metadata cache was last regenerated on %s."
 msgstr ""
 
-#: src/Admin/Tab/General.php:344
+#: src/Admin/Tab/General.php:356
 msgid "Metadata has never been regenerated."
 msgstr ""
 

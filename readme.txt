@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.21 =
+
+* Allow following the exact STS URL in federated online deployments
+
 = 1.2.20.3 =
 
 * Fixed: conflict with other WordPress plugins which provide a newer version of Twig
