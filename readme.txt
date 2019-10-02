@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.22 =
+
+* Add support for money, decimal and integer fields in Twig forms
+
 = 1.2.21 =
 
 * Allow following the exact STS URL in federated online deployments
