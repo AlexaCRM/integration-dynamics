@@ -170,6 +170,10 @@
                         <div class="form-control-feedback">{{ errorMessage }}</div>
                       {% endfor %}
                     {% endif %}
+                  {% elseif control.classId == '{533B9E00-756B-4312-95A0-DC888637AC78}' or
+                            control.classId == '{C3EFE0C3-0EC6-42BE-8349-CBD9079DFD8E}' or
+                            control.classId == '{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}' %}{# money, decimal, integer #}
+                    <input type="text" id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}readonly="readonly"{% endif %} value="{{ attribute( form.record, control.name ) ?? form.defaults[control.name] }}">
                   {% endif %}
                   </div>
                 </div>
