@@ -92,7 +92,7 @@ final class Plugin {
          *
          * @param string[]  List of storage names
          */
-        $storage = apply_filters( 'wordpresscrm_storage_list', [ 'metadata', 'images' ] );
+        $storage = apply_filters( 'wordpresscrm_storage_list', [ 'metadata', 'images', 'twig', ] );
         foreach ( $storage as $storageName ) {
             $this->storage[$storageName] = null;
         }
