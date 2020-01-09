@@ -2,10 +2,12 @@
 
 namespace AlexaCRM\WordpressCRM\Shortcode;
 
+use AlexaCRM\CRMToolkit\Client;
 use AlexaCRM\CRMToolkit\Entity;
 use AlexaCRM\CRMToolkit\Entity\EntityReference;
 use AlexaCRM\WordpressCRM\Cache\TwigCache;
 use AlexaCRM\WordpressCRM\Shortcode;
+use DOMDocument;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Extension_Debug;
 
@@ -125,6 +127,66 @@ class Twig extends Shortcode {
             return admin_url( 'admin-ajax.php?action=msdyncrm_attachment&id=' . $attachmentId );
         } );
         $twigEnv->addFunction( $attachmentUrlFunction );
+
+        // Provide access to global OptionSet metadata.
+        $globalOptionSetFunc = new \Twig_SimpleFunction( 'globaloptionset', function( $name ) {
+            $reqDom = new DOMDocument();
+            $execNode              = $reqDom->appendChild( $reqDom->createElementNS( 'http://schemas.microsoft.com/xrm/2011/Contracts/Services', 'Execute' ) );
+            $reqNode              = $execNode->appendChild( $reqDom->createElement( 'request' ) );
+            $reqNode->setAttributeNS( 'http://www.w3.org/2001/XMLSchema-instance', 'i:type', 'b:RetrieveOptionSetRequest' );
+            $reqNode->setAttributeNS( 'http://www.w3.org/2000/xmlns/', 'xmlns:b', 'http://schemas.microsoft.com/xrm/2011/Contracts' );
+            $paramNode = $reqNode->appendChild( $reqDom->createElement( 'b:Parameters' ) );
+            $paramNode->setAttributeNS( 'http://www.w3.org/2000/xmlns/', 'xmlns:c', 'http://schemas.datacontract.org/2004/07/System.Collections.Generic' );
+            /* EntityFilters */
+            $kvPairNode1 = $paramNode->appendChild( $reqDom->createElement( 'b:KeyValuePairOfstringanyType' ) );
+            $kvPairNode1->appendChild( $reqDom->createElement( 'c:key', 'Name' ) );
+            $valNode1 = $kvPairNode1->appendChild( $reqDom->createElement( 'c:value', $name ) );
+            $valNode1->setAttribute( 'i:type', 'd:string' );
+            $valNode1->setAttributeNS( 'http://www.w3.org/2000/xmlns/', 'xmlns:d', 'http://www.w3.org/2001/XMLSchema' );
+
+            /* MetadataId */
+            $keyValuePairNode2 = $paramNode->appendChild( $reqDom->createElement( 'b:KeyValuePairOfstringanyType' ) );
+            $keyValuePairNode2->appendChild( $reqDom->createElement( 'c:key', 'MetadataId' ) );
+            $valueNode2 = $keyValuePairNode2->appendChild( $reqDom->createElement( 'c:value', Client::EmptyGUID ) );
+            $valueNode2->setAttribute( 'i:type', 'd:guid' );
+            $valueNode2->setAttributeNS( 'http://www.w3.org/2000/xmlns/', 'xmlns:d', 'http://schemas.microsoft.com/2003/10/Serialization/' );
+
+            /* RetrieveAsIfPublished */
+            $keyValuePairNode3 = $paramNode->appendChild( $reqDom->createElement( 'b:KeyValuePairOfstringanyType' ) );
+            $keyValuePairNode3->appendChild( $reqDom->createElement( 'c:key', 'RetrieveAsIfPublished' ) );
+            $valueNode3 = $keyValuePairNode3->appendChild( $reqDom->createElement( 'c:value', 'false' ) );
+            $valueNode3->setAttribute( 'i:type', 'd:boolean' );
+            $valueNode3->setAttributeNS( 'http://www.w3.org/2000/xmlns/', 'xmlns:d', 'http://www.w3.org/2001/XMLSchema' );
+
+            /* Request ID and Name */
+            $reqNode->appendChild( $reqDom->createElement( 'b:RequestId' ) )->setAttribute( 'i:nil', 'true' );
+            $reqNode->appendChild( $reqDom->createElement( 'b:RequestName', 'RetrieveOptionSet' ) );
+
+            $respXml = ACRM()->getSdk()->attemptSoapResponse( 'organization', function() use ( $execNode ) {
+                return ACRM()->getSdk()->generateSoapRequest( 'organization', 'Execute', $execNode );
+            } );
+            $resp = new DOMDocument();
+            $resp->loadXML( $respXml );
+            $respQ = new \DOMXPath( $resp );
+            $respQ->registerNamespace( 'z', 'http://schemas.microsoft.com/xrm/2011/Contracts/Services' );
+            $respQ->registerNamespace( 'b', 'http://schemas.microsoft.com/xrm/2011/Contracts' );
+            $respQ->registerNamespace( 'c', 'http://schemas.datacontract.org/2004/07/System.Collections.Generic' );
+
+            $mdNodes = $respQ->query( '//z:ExecuteResult/b:Results/b:KeyValuePairOfstringanyType/c:value' );
+            if ( $mdNodes === false || $mdNodes->length === 0 ) {
+                return null;
+            }
+
+            $mdNode = $mdNodes->item( 0 );
+            $mdXml = $resp->saveXML( $mdNode );
+            $mdXml = preg_replace( '/(<)([a-z]:)/', '<', preg_replace( '/(<\/)([a-z]:)/', '</', $mdXml ) );
+            $mdXml = preg_replace( '~([\s"])[a-z]:([a-zA-Z]+)~', '$1$2', $mdXml );
+
+            $os = new Entity\OptionSet( simplexml_load_string( $mdXml ) );
+
+            return $os;
+        } );
+        $twigEnv->addFunction( $globalOptionSetFunc );
 
         /**
          * Fired when Twig environment has been set up in the shortcode.
