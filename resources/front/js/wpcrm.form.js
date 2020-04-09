@@ -1,6 +1,5 @@
+"use strict";
 ( function( $ ) {
-    "use strict";
-
     var LookupDialog = function( $dialog ) {
         var ld = this, $target;
 
@@ -278,12 +277,11 @@
     };
 
     $( function() {
-        var $lookupDialog = $( '#wpcrmLookupDialog' ), ld = new LookupDialog( $lookupDialog );
 
         $( '.crm-datepicker' ).datetimepicker( {
             timepicker: false,
             format: window.wpcrm.dateformat,
-            scrollInput: false
+            scrollInput: true
         } );
 
         $( '.crm-datetimepicker' ).datetimepicker( {
@@ -295,10 +293,14 @@
             var $lookupContainer = $( this );
 
             $lookupContainer.on( 'click', 'button[data-action=associate]', function() {
+                var $lookupDialog = $(this).closest("form").parent().find('#wpcrmLookupDialog');
+                var ld = new LookupDialog( $lookupDialog );
                 ld.setTarget( $lookupContainer );
                 ld.openDialog();
             } );
             $lookupContainer.on( 'click', 'button[data-action=disassociate]', function() {
+                var $lookupDialog =  $(this).closest("form").parent().find('#wpcrmLookupDialog');
+                var ld = new LookupDialog( $lookupDialog );
                 ld.setTarget( $lookupContainer );
                 ld.disassociate();
                 $( this ).attr( 'data-action', 'associate' );
