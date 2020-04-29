@@ -2,6 +2,7 @@
 
 namespace AlexaCRM\WordpressCRM\Shortcode\Form;
 
+use AlexaCRM\CRMToolkit\Settings;
 use Exception;
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -52,6 +53,12 @@ class GCaptcha {
         curl_setopt( $cURLHandle, CURLOPT_HTTPHEADER, $headers );
         curl_setopt( $cURLHandle, CURLOPT_HEADER, false );
         curl_setopt( $cURLHandle, CURLOPT_SSL_VERIFYPEER, false );
+
+        $sdk = ACRM()->getSdk();
+
+        if( $sdk->settings->proxy ) {
+            curl_setopt( $cURLHandle, CURLOPT_PROXY, $sdk->settings->proxy );
+        }
 
         $response = curl_exec( $cURLHandle );
 
