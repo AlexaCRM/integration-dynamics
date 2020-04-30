@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "55089b529f403e70e7c90624c8a85d33",
+    "content-hash": "87bfa982786d7147b25ab9ed704dfc5a",
     "packages": [
         {
             "name": "alexacrm/php-crm-toolkit",
-            "version": "20190522",
+            "version": "20200422",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AlexaCRM/php-crm-toolkit.git",
-                "reference": "f5489ff795e0f1090d1fc2537ae286e623c0d9d1"
+                "reference": "15c8aecde18a412b35d4fa7769d670efb808c0b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/f5489ff795e0f1090d1fc2537ae286e623c0d9d1",
-                "reference": "f5489ff795e0f1090d1fc2537ae286e623c0d9d1",
+                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/15c8aecde18a412b35d4fa7769d670efb808c0b1",
+                "reference": "15c8aecde18a412b35d4fa7769d670efb808c0b1",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                 "php",
                 "sdk"
             ],
-            "time": "2019-05-22T15:12:31+00:00"
+            "time": "2020-04-22T15:12:50+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -420,5 +420,6 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }
