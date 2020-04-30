@@ -52,6 +52,11 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.24 =
+
+* Proper integration with WP proxy settings
+* Fixed entity image behavior in newer Dynamics deployments
+
 = 1.2.23 =
 
 * Added support for global option sets in Twig
