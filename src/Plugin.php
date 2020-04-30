@@ -174,12 +174,17 @@ final class Plugin {
         ] );
 
         $wpProxy = new WP_HTTP_Proxy();
+        $proxyString = null;
 
-        $proxyString = "http://";
-        if ( $wpProxy->authentication() ) {
-            $proxyString .= $wpProxy->authentication() . '@';
+        if ($wpProxy->is_enabled()){
+            $proxyString = "http://";
+
+            if ( $wpProxy->use_authentication() ) {
+                $proxyString .= $wpProxy->authentication() . '@';
+            }
+
+            $proxyString .= $wpProxy->host() . ':' . $wpProxy->port();
         }
-        $proxyString .= $wpProxy->host() . ':' . $wpProxy->port();
 
         $options['proxy'] = apply_filters( 'wpcrm/proxy', $proxyString );
 
