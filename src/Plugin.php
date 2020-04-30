@@ -12,6 +12,7 @@ use AlexaCRM\WordpressCRM\Image\CustomImage;
 use Exception;
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
+use WP_HTTP_Proxy;
 
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
@@ -171,6 +172,16 @@ final class Plugin {
         $options = array_merge( $options, [
             'caPath' => ABSPATH . WPINC . '/certificates/ca-bundle.crt',
         ] );
+
+        $wpProxy = new WP_HTTP_Proxy();
+
+        $proxyString = "http://";
+        if ( $wpProxy->authentication() ) {
+            $proxyString .= $wpProxy->authentication() . '@';
+        }
+        $proxyString .= $wpProxy->host() . ':' . $wpProxy->port();
+
+        $options['proxy'] = apply_filters( 'wpcrm/proxy', $proxyString );
 
         $this->getLogger()->debug( 'Initializing PHP CRM Toolkit.' );
 
