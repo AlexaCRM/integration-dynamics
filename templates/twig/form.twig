@@ -128,7 +128,7 @@
                     {% endif %}
                     {% set lookupTypes = {} %}
                     {% for lookupType in control.metadata.lookupTypes %}
-                      {% set lookupTypes = lookupTypes|merge( { (lookupType): entities_list[lookupType] } ) %}
+                      {% set lookupTypes = lookupTypes|merge( { (lookupType): entities_list[lookupType] ?? lookupType|capitalize } ) %}
                     {% endfor %}
                     <div class="input-group wpcrm-lookup" data-types="{{ lookupTypes|json_encode }}">
                       <input type="text" id="{{ control.id }}" data-field="{{ control.name }}" class="form-control wpcrm-lookup-display" readonly="readonly" value="{{ controlValue.DisplayName }}">
