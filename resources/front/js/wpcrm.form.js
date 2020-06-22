@@ -4,20 +4,20 @@
         var ld = this, $target;
 
         // Close the dialog.
-        $dialog.on( 'click', '.crm-popup-cancel, .crm-popup-add-button, .crm-popup-cancel-button', function( e ) {
+        $dialog.on( 'click.wpcrm-close', '.crm-popup-cancel, .crm-popup-add-button, .crm-popup-cancel-button', function( e ) {
             e.preventDefault();
 
             ld.closeDialog();
         } );
 
         // Select a row.
-        $dialog.on( 'click', '.body-row', function( e ) {
+        $dialog.on( 'click.wpcrm-row', '.body-row', function( e ) {
             $dialog.find( '.body-row' ).removeClass( 'selected-row' );
             $( this ).addClass( 'selected-row' );
         } );
 
         // Associate the selected record with the field.
-        $dialog.on( 'click', '.crm-popup-add-button', function( e ) {
+        $dialog.on( 'click.wpcrm-associate', '.crm-popup-add-button', function( e ) {
             var $selectedRow = $dialog.find( '.selected-row' ), entityName, recordId, displayName;
 
             entityName = $dialog.find( '.crm-lookup-lookuptype' ).val();
@@ -29,10 +29,15 @@
 
             // Set the new record ID to the field input.
             $target.find( '~ input[type=hidden]' ).val( JSON.stringify( { 'LogicalName': entityName, 'Id': recordId, 'DisplayName': displayName } ) );
+
+            $target.find( 'button[data-action=associate]' )
+                .attr( 'data-action', 'disassociate' )
+                .find( 'i.fa' )
+                    .removeClass( 'fa-search' ).addClass( 'fa-times' );
         } );
 
         // Change the searched entity.
-        $dialog.on( 'change', '#wpcrmLookupType', function() {
+        $dialog.on( 'change.wpcrm-type', '#wpcrmLookupType', function() {
             ld.setPageNumber( 1 );
             ld.setPagingCookie( null );
 
@@ -40,7 +45,7 @@
         } );
 
         // First page.
-        $dialog.on( 'click', '.crm-lookup-popup-first-page', function() {
+        $dialog.on( 'click.wpcrm-first', '.crm-lookup-popup-first-page', function() {
             ld.setPageNumber( 1 );
             ld.setPagingCookie( null );
 
@@ -48,7 +53,7 @@
         } );
 
         // Previous page.
-        $dialog.on( 'click', '.crm-lookup-popup-prev-page', function() {
+        $dialog.on( 'click.wpcrm-prev', '.crm-lookup-popup-prev-page', function() {
             ld.setPageNumber( ld.getPageNumber() - 1 );
             ld.setPagingCookie( null );
 
@@ -56,17 +61,17 @@
         } );
 
         // Next page.
-        $dialog.on( 'click', '.crm-lookup-popup-next-page', function() {
+        $dialog.on( 'click.wpcrm-next', '.crm-lookup-popup-next-page', function() {
             ld.setPageNumber( ld.getPageNumber() + 1 );
 
             ld.retrieveRecords();
         } );
 
         // Start searching.
-        $dialog.on( 'click', '.crm-lookup-searchfield-button', function() {
+        $dialog.on( 'click.wpcrm-search', '.crm-lookup-searchfield-button', function() {
             ld.searchRecords();
         } );
-        $dialog.on( 'keypress', '#wpcrmLookupSearchField', function( e ) {
+        $dialog.on( 'keypress.wpcrm-enter', '#wpcrmLookupSearchField', function( e ) {
             if ( e.which !== 13 ) {
                 return;
             }
@@ -84,7 +89,7 @@
             ld.searchRecords();
         } );
 
-        $dialog.on( 'click', '.crm-lookup-searchfield-delete-search', function() {
+        $dialog.on( 'click.wpcrm-delete-search', '.crm-lookup-searchfield-delete-search', function() {
             $dialog.find( '.crm-lookup-searchfield-delete-search' ).hide();
             $dialog.find( '.crm-lookup-searchfield-button' ).show();
             $dialog.find( '#wpcrmLookupSearchField' ).val( '' );
@@ -229,6 +234,18 @@
          */
         ld.closeDialog = function() {
             $dialog.fadeOut();
+
+            $dialog
+                .off('click.wpcrm-close')
+                .off('click.wpcrm-row')
+                .off('click.wpcrm-associate')
+                .off('change.wpcrm-type')
+                .off('click.wpcrm-first')
+                .off('click.wpcrm-prev')
+                .off('click.wpcrm-next')
+                .off('click.wpcrm-search')
+                .off('keypress.wpcrm-enter')
+                .off('click.wpcrm-delete-search');
         };
 
         /**
