@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.25 =
+
+* Fixed lookup dialog behavior in forms with multiple lookup fields
+
 = 1.2.24 =
 
 * Proper integration with WP proxy settings
