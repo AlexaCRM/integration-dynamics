@@ -265,9 +265,7 @@ class Twig extends Shortcode {
      */
     private function addFilters( \Twig_Environment $twigEnv ) {
         $addQuery = new \Twig_SimpleFilter( 'add_query', function( $url, $argName, $argValue ) {
-            $req = Request::create( $url, 'GET', [ $argName => $argValue ] );
-
-            return $req->getUri();
+            return add_query_arg( $argName, $argValue, $url );
         } );
 
         $wpautop = new \Twig_SimpleFilter( 'wpautop', function( $value ) {
