@@ -232,6 +232,10 @@ class Model {
                                     'parameters' => [],
                                 ];
 
+                                if ( $controlDefinition['name'] === 'name' ) {
+                                    $controlDefinition['name'] = '__compat_name';
+                                }
+
                                 if ( array_key_exists( 'language', $this->attributes )
                                      && ( !array_key_exists( 'keep_labels', $this->attributes ) || $this->attributes['keep_labels'] !== true ) ) {
                                     $cellDefinition['label'] = $controlDefinition['metadata']->getLabel( $this->attributes['language'] );
@@ -514,6 +518,10 @@ class Model {
 
         if ( ACRM()->request->getMethod() !== 'POST' ) {
             return [ 'submission' => false, 'fields' => $fields ];
+        }
+
+        if ( isset( $fields['__compat_name'] ) ) {
+            $fields['name'] = $fields['__compat_name'];
         }
 
         $dispatchedForm = clone $this;
