@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.27 =
+
+* Fixed Twig form submissions with the "name" field present on the form
+
 = 1.2.26 =
 
 * Fixed add_query() Twig filter to produce a correct result for relative URLs
