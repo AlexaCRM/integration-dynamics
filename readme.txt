@@ -52,6 +52,11 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.27.1 =
+
+* Fixed "name" field value in Twig forms used with existing records
+* Fixed PHP notices in Twig forms
+
 = 1.2.27 =
 
 * Fixed Twig form submissions with the "name" field present on the form

@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the Dynamics 365 Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics 365 Integration 1.2.27\n"
+"Project-Id-Version: Dynamics 365 Integration 1.2.27.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-"
 "dynamics\n"
-"POT-Creation-Date: 2020-07-09 22:30:21+00:00\n"
+"POT-Creation-Date: 2020-07-10 20:38:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -450,33 +450,33 @@ msgid ""
 "href=\"admin.php?page=wordpresscrm\">on this page</a>."
 msgstr ""
 
-#: src/Form/Model.php:437 src/Form/Model.php:487
+#: src/Form/Model.php:445 src/Form/Model.php:495
 msgid "The field is required."
 msgstr ""
 
-#: src/Form/Model.php:625
+#: src/Form/Model.php:633
 msgid "The field could not be validated."
 msgstr ""
 
-#: src/Form/Model.php:631
+#: src/Form/Model.php:639
 msgid "Must be less than %d characters."
 msgid_plural "Must be less than %d characters."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Form/Model.php:639
+#: src/Form/Model.php:647
 msgid "Incorrect text value."
 msgstr ""
 
-#: src/Form/Model.php:646
+#: src/Form/Model.php:654
 msgid "Not a valid email address."
 msgstr ""
 
-#: src/Form/Model.php:656
+#: src/Form/Model.php:664
 msgid "Invalid number value."
 msgstr ""
 
-#: src/Form/Model.php:664
+#: src/Form/Model.php:672
 msgid "Invalid decimal value."
 msgstr ""
 
