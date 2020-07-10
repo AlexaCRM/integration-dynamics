@@ -222,13 +222,18 @@ class Model {
                                     continue;
                                 }
 
+                                $attrMd = null;
+                                if ( isset( $metadata->attributes[$control->getAttribute( 'datafieldname' )] ) ) {
+                                    $attrMd = $metadata->attributes[ $control->getAttribute( 'datafieldname' ) ];
+                                }
+
                                 $controlDefinition = [
                                     'id' => $control->getAttribute( 'id' ),
                                     'classId' => strtoupper( $control->getAttribute( 'classid' ) ),
                                     'disabled' => ( $control->getAttribute( 'disabled' ) === 'true' ),
                                     'required' => false,
                                     'name' => $control->getAttribute( 'datafieldname' ),
-                                    'metadata' => $metadata->attributes[$control->getAttribute( 'datafieldname' )],
+                                    'metadata' => $attrMd,
                                     'parameters' => [],
                                 ];
 
@@ -236,16 +241,19 @@ class Model {
                                     $controlDefinition['name'] = '__compat_name';
                                 }
 
-                                if ( array_key_exists( 'language', $this->attributes )
-                                     && ( !array_key_exists( 'keep_labels', $this->attributes ) || $this->attributes['keep_labels'] !== true ) ) {
-                                    $cellDefinition['label'] = $controlDefinition['metadata']->getLabel( $this->attributes['language'] );
-                                }
-
                                 if ( $cellDefinition['isVisible'] ) {
                                     $this->formControls[] = $controlDefinition['name'];
                                 }
 
-                                $controlDefinition['required'] = in_array( $controlDefinition['metadata']->requiredLevel, [ 'ApplicationRequired', 'SystemRequired' ] );
+                                if ( $attrMd !== null ) {
+                                    if ( array_key_exists( 'language', $this->attributes )
+                                         && ( !array_key_exists( 'keep_labels', $this->attributes ) || $this->attributes['keep_labels'] !== true ) ) {
+                                        $cellDefinition['label'] = $attrMd->getLabel( $this->attributes['language'] );
+                                    }
+
+                                    $controlDefinition['required'] = in_array( $attrMd->requiredLevel, [ 'ApplicationRequired', 'SystemRequired' ] );
+                                }
+
                                 if ( $controlDefinition['required'] && in_array( $controlDefinition['name'], $this->attributes['optional'] ) ) {
                                     $controlDefinition['required'] = false;
                                 }
