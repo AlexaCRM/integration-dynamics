@@ -72,7 +72,7 @@
                     {% if control.name == 'fullname' %}{# decompose fullname into firstname and lastname #}
                       {% include "form/fullname.twig" %}
                     {% else %}{# text field #}
-                      <input type="text" id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}readonly="readonly"{% endif %} value="{{ attribute( form.record, control.name ) ?? form.defaults[control.name] }}">
+                      <input type="text" id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}readonly="readonly"{% endif %} value="{{ attribute( form.record, (control.name == "__compat_name"? "name" : control.name) ) ?? form.defaults[(control.name == "__compat_name"? "name" : control.name )] }}">
                       {% for errorMessage in form.errors[control.name] %}
                         <div class="form-control-feedback">{{ errorMessage }}</div>
                       {% endfor %}
