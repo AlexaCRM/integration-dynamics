@@ -290,9 +290,9 @@ class FormInstance extends AbstractForm {
             $this->attachmentLabel = $attributes["attachment_label"];
 
             $this->disableLayout = ( $attributes["enable_layout"] != "true" );
-            
+
             $this->ignoreNonce = $attributes['ignore_nonce'];
-            
+
             if ( $attributes['language'] !== null ) {
                 $this->languageCode = (int)$attributes['language'];
                 $this->isDefaultLanguage = false;
@@ -372,6 +372,8 @@ class FormInstance extends AbstractForm {
                     }
 
                     $this->errors = apply_filters( "wordpresscrm_form_errors", $this->errors );
+
+                    do_action( 'wordpresscrm_before_form_submit', $this );
 
                     if ( empty( $this->errors ) ) {
                         try {
