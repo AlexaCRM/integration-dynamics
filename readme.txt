@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.27.3 =
+
+* Maintenance release to improve logging
+
 = 1.2.27.2 =
 
 * Fixed language-related issues
