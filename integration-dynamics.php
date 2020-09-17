@@ -50,7 +50,7 @@ require_once __DIR__ . '/vendor/autoload.php'; // Composer autoloader
 
 function wpcrm_log_processor_sanitizer( $record ) {
     if ( array_key_exists( 'request', $record['context'] ) ) {
-        $record['context']['request'] = preg_replace( '~<o:Password Type=".*?">.*?</o:Password>~', '<o:Password/>', $record['context']['request'] );
+        $record['context']['request'] = preg_replace( '~<o:Password\s+Type=".*?">.*?</o:Password>~', '<o:Password/>', $record['context']['request'] );
         $record['context']['request'] = preg_replace( '~<default:CipherValue>.*?</default:CipherValue>~', '<default:CipherValue/>', $record['context']['request'] );
     }
 
