@@ -20,7 +20,7 @@ class Twig extends Shortcode {
     /**
      * @var \Twig_Environment
      */
-    private static $twigEnvironment;
+    protected static $twigEnvironment;
 
     /**
      * Array loader that stores inline shortcode templates.
