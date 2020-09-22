@@ -27,7 +27,7 @@ class Twig extends Shortcode {
      *
      * @var \Twig_Loader_Array
      */
-    private static $shortcodeLoader;
+    protected static $shortcodeLoader;
 
     /**
      * Renders the shortcode.
@@ -62,7 +62,7 @@ class Twig extends Shortcode {
      *
      * @return \Twig_Environment
      */
-    private function getTwig() {
+    protected function getTwig() {
         if ( static::$twigEnvironment instanceof \Twig_Environment ) {
             return static::$twigEnvironment;
         }
