@@ -555,7 +555,16 @@ class Model {
             $validateMethod = [ $dispatchedForm, 'validateHeadless' ];
         }
 
-        $validationResult = call_user_func_array( $validateMethod, [ $fields ] );
+        $validationResult = $validateMethod( $fields );
+
+        /**
+         * Filters the default form validation.
+         *
+         * @param array $validationResult
+         * @param array fields Map of fields received from the form.
+         * @param Model $dispatchedForm
+         */
+        $validationResult = apply_filters( 'wpcrm/twig/form/validate', $validationResult, $fields, $dispatchedForm );
 
         if ( $validationResult['status'] ) {
             $record = $dispatchedForm->hydrateRecord( $validationResult['payload'] );

@@ -136,7 +136,7 @@ class FormValidator {
                 break;
         }
 
-        return ( $filter === false ) ? false : filter_var( $value, $filter ) !== false ? true : false;
+        return ( $filter === false ) ? false : ( filter_var( $value, $filter ) !== false ? true : false );
     }
 
 }
