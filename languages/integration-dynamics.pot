@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the Dynamics 365 Integration package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Dynamics 365 Integration 1.2.27.3\n"
+"Project-Id-Version: Dynamics 365 Integration 1.2.28\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/integration-"
 "dynamics\n"
-"POT-Creation-Date: 2020-09-17 15:14:18+00:00\n"
+"POT-Creation-Date: 2020-10-26 18:17:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -454,29 +454,29 @@ msgstr ""
 msgid "The field is required."
 msgstr ""
 
-#: src/Form/Model.php:633
+#: src/Form/Model.php:642
 msgid "The field could not be validated."
 msgstr ""
 
-#: src/Form/Model.php:639
+#: src/Form/Model.php:648
 msgid "Must be less than %d characters."
 msgid_plural "Must be less than %d characters."
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Form/Model.php:647
+#: src/Form/Model.php:656
 msgid "Incorrect text value."
 msgstr ""
 
-#: src/Form/Model.php:654
+#: src/Form/Model.php:663
 msgid "Not a valid email address."
 msgstr ""
 
-#: src/Form/Model.php:664
+#: src/Form/Model.php:673
 msgid "Invalid number value."
 msgstr ""
 
-#: src/Form/Model.php:672
+#: src/Form/Model.php:681
 msgid "Invalid decimal value."
 msgstr ""
 
