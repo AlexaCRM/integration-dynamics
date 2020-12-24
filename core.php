@@ -285,6 +285,9 @@ function wordpresscrm_javascript_redirect( $location = null ) {
         exit();
     }
 
+    // Stop buffering the output, flush what's left.
+    wp_ob_end_flush_all();
+
     /*
      * Redirect using front-end JavaScript if the headers have already been sent.
      */
