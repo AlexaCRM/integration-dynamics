@@ -446,7 +446,11 @@ class Model {
                 continue;
             }
 
-            $validationResult = $this->validateFieldValue( $fieldMetadata, $fields[$fieldName] );
+            $val = null;
+            if ( isset( $fields[$fieldName] ) ) {
+                $val = $fields[$fieldName];
+            }
+            $validationResult = $this->validateFieldValue( $fieldMetadata, $val );
             if ( !$validationResult['status'] ) {
                 $errors[$fieldName][] = $validationResult['payload'];
             }
