@@ -77,11 +77,11 @@ class DataBinding {
 
             $bindingConfig = ACRM()->getBinding()->getPostBinding( $post->ID );
 
-            $post_entity         = $bindingConfig['entity'];
-            $post_parametername  = $bindingConfig['key'];
-            $post_isdefaultview  = $bindingConfig['default'];
-            $post_querystring    = $bindingConfig['query'];
-            $post_empty_behavior = $bindingConfig['empty'];
+            $post_entity         = $bindingConfig['entity'] ?? '';
+            $post_parametername  = $bindingConfig['key'] ?? '';
+            $post_isdefaultview  = $bindingConfig['default'] ?? false;
+            $post_querystring    = $bindingConfig['query'] ?? 'id';
+            $post_empty_behavior = $bindingConfig['empty'] ?? '';
 
             if ( $post_isdefaultview || $post_isdefaultview === 'true' ) {
                 $post_isdefaultview = 'checked="checked"';
