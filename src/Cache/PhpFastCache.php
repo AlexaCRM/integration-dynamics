@@ -305,6 +305,10 @@ allow from 127.0.0.1";
             return $cache;
         }
 
+        if ( defined( 'WPCRM_CACHE_METHOD' ) ) {
+            self::$storage = defined( 'WPCRM_CACHE_METHOD' );
+        }
+
         $os = self::getOS();
         if ( self::$storage == "" || self::$storage == "auto" ) {
             if ( extension_loaded( 'apc' ) && ini_get( 'apc.enabled' ) && strpos( PHP_SAPI, "CGI" ) === false ) {

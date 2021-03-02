@@ -53,7 +53,12 @@ class Cache implements CacheInterface {
      * @param array $options
      */
     public function __construct( $options = null ) {
-        if ( function_exists( 'wp_using_ext_object_cache' ) && wp_using_ext_object_cache() ) {
+        if ( defined( 'WPCRM_CACHE_METHOD' ) && WPCRM_CACHE_METHOD === 'off' ) {
+            return;
+        }
+
+        if ( ( defined( 'WPCRM_CACHE_METHOD' ) && WPCRM_CACHE_METHOD === 'wpcache' )
+             || ( function_exists( 'wp_using_ext_object_cache' ) && wp_using_ext_object_cache() ) ) {
             $this->storage = new WPCache( $options );
         } else {
             PhpFastCache::$server = array( array( $options["server"], $options["port"] ) );
@@ -93,6 +98,10 @@ class Cache implements CacheInterface {
      */
     public function set( $key, $value, $expiresAfter = null ) {
         if ( $value ) {
+            if ( defined( 'WPCRM_CACHE_METHOD' ) && WPCRM_CACHE_METHOD === 'off' ) {
+                return true;
+            }
+
             $expiresAfter = ( $expiresAfter == null ) ? self::$cacheTime : $expiresAfter;
 
             return $this->storage->set( $key, $value, $expiresAfter );
@@ -110,6 +119,10 @@ class Cache implements CacheInterface {
      * @return mixed|null
      */
     public function get( $key, $default = null ) {
+        if ( defined( 'WPCRM_CACHE_METHOD' ) && WPCRM_CACHE_METHOD === 'off' ) {
+            return null;
+        }
+
         $value = $this->storage->get( $key );
         if ( $value == null ) {
             $value = $default;
@@ -124,6 +137,10 @@ class Cache implements CacheInterface {
      * @param string $key
      */
     public function delete( $key ) {
+        if ( defined( 'WPCRM_CACHE_METHOD' ) && WPCRM_CACHE_METHOD === 'off' ) {
+            return;
+        }
+
         $this->storage->delete( $key );
     }
 
@@ -135,6 +152,10 @@ class Cache implements CacheInterface {
      * @return bool
      */
     public function exists( $key ) {
+        if ( defined( 'WPCRM_CACHE_METHOD' ) && WPCRM_CACHE_METHOD === 'off' ) {
+            return false;
+        }
+
         $cacheValue = $this->storage->get( $key );
 
         return $cacheValue !== null;
@@ -146,6 +167,10 @@ class Cache implements CacheInterface {
      * @return bool
      */
     public function cleanup() {
+        if ( defined( 'WPCRM_CACHE_METHOD' ) && WPCRM_CACHE_METHOD === 'off' ) {
+            return true;
+        }
+
         return $this->storage->purge();
     }
 }
