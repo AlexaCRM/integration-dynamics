@@ -306,7 +306,7 @@ allow from 127.0.0.1";
         }
 
         if ( defined( 'WPCRM_CACHE_METHOD' ) ) {
-            self::$storage = defined( 'WPCRM_CACHE_METHOD' );
+            self::$storage = WPCRM_CACHE_METHOD;
         }
 
         $os = self::getOS();
