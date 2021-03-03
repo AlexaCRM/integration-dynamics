@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.29.1 =
+
+* Fixed caching method selection
+
 = 1.2.29 =
 
 * Added WPCRM_CACHE_METHOD to allow changing the caching method (off/wpcache/files)
