@@ -120,7 +120,7 @@ class Cache implements CacheInterface {
      */
     public function get( $key, $default = null ) {
         if ( defined( 'WPCRM_CACHE_METHOD' ) && WPCRM_CACHE_METHOD === 'off' ) {
-            return null;
+            return $default;
         }
 
         $value = $this->storage->get( $key );
