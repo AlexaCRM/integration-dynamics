@@ -9,7 +9,7 @@ class PasswordHandler {
     protected $key;
 
     public function __construct() {
-        if ( defined( 'WPCRM_KEY' ) && strlen( base64_decode( WPCRM_KEY ) ) === 32 ) {
+        if ( defined( 'WPCRM_KEY' ) && strlen( base64_decode( WPCRM_KEY ) ) >= 32 ) {
             $this->key = base64_decode( WPCRM_KEY );
         } elseif ( defined( 'AUTH_KEY' ) && strlen( AUTH_KEY ) >= 32 ) {
             $this->key = substr( AUTH_KEY, 0, 32 );
