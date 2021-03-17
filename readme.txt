@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.29.2 =
+
+* Allow to use WPCRM_KEY more than 32 symbols length
+
 = 1.2.29.1 =
 
 * Fixed caching method selection
