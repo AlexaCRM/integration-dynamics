@@ -188,6 +188,10 @@ final class Plugin {
 
         $options['proxy'] = apply_filters( 'wpcrm/proxy', $proxyString );
 
+        if ( defined( 'WPCRM_REMOVE_DISCOVERY' ) && WPCRM_REMOVE_DISCOVERY ) {
+            $options['useDiscovery'] = false;
+        }
+
         $this->getLogger()->debug( 'Initializing PHP CRM Toolkit.' );
 
         $clientSettings = new Settings( $options );
