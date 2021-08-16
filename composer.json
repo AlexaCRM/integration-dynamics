@@ -6,7 +6,7 @@
     "alexacrm/php-crm-toolkit": "20211119",
     "symfony/http-foundation": "3.1.*",
     "monolog/monolog": "^1.0",
-    "twig/twig": "~1.0"
+    "twig/twig": "~2.14.0"
   },
   "license": "GPL-2.0",
   "authors": [

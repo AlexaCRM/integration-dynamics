@@ -4,8 +4,8 @@ namespace AlexaCRM\WordpressCRM\Shortcode\Twig\TokenParsers;
 
 use AlexaCRM\WordpressCRM\Shortcode\Twig\Nodes\FetchxmlNode;
 use AlexaCRM\WordpressCRM\Shortcode\Twig\TokenParser;
-use Twig_NodeInterface;
-use Twig_Token;
+use Twig\Node\Node as Twig_NodeInterface;
+use Twig\Token as Twig_Token;
 
 /**
  * Implements token parser for the `fetchxml` tag.

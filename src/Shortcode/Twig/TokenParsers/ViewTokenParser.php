@@ -4,9 +4,9 @@ namespace AlexaCRM\WordpressCRM\Shortcode\Twig\TokenParsers;
 
 use AlexaCRM\WordpressCRM\Shortcode\Twig\Nodes\ViewNode;
 use AlexaCRM\WordpressCRM\Shortcode\Twig\TokenParser;
-use Twig_Error_Syntax;
-use Twig_NodeInterface;
-use Twig_Token;
+use Twig\Error\SyntaxError as Twig_Error_Syntax;
+use Twig\Node\Node as Twig_NodeInterface;
+use Twig\Token as Twig_Token;
 
 /**
  * Parses the `view` token.
