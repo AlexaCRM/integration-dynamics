@@ -11,6 +11,8 @@ The easiest way to connect Dynamics 365 or Dynamics CRM with WordPress.
 
 == Description ==
 
+THIS A SPECIAL VERSION FOR MIGRATION TO INTEGRATION-CDS. IT REQUIRES AT LEAST PHP 7.4 IN ORDER TO WORK PROPERLY
+
 This plugin directly connects WordPress and Microsoft Dynamics 365 or Dynamics CRM, creating powerful portal solutions for your business.
 
 Features:
@@ -26,7 +28,7 @@ Features:
 
 = Minimum PHP version =
 
-This plugin requires at least PHP 5.4. Versions 5.6 or 7.x are expected to have full compatibility.
+This plugin requires at least PHP 7.4
 
 = WARNING =
 
@@ -51,6 +53,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 * Navigate to **Admin > Dynamics CRM** page to enter your Dynamics 365 / CRM connection details.
 
 == Changelog ==
+
+= 1.2.30-migration =
+
+* Upadated Twig to v2.12.5
 
 = 1.2.30 =
 
