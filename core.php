@@ -219,14 +219,24 @@ add_filter( 'pre_handle_404', function( $preempt, \WP_Query $query ) {
 
 add_filter( 'option_msdyncrm_options', function( $value, $option ) {
     $pwdHandler = new \AlexaCRM\WordpressCRM\PasswordHandler();
-    $value['password'] = $pwdHandler->decrypt( $value['password'] );
+    if ( !empty( $value['password'] ) ) {
+        $value['password'] = $pwdHandler->decrypt( $value['password'] );
+    }
+    if ( !empty( $value['clientSecret'] ) ) {
+        $value['clientSecret'] = $pwdHandler->decrypt( $value['clientSecret'] );
+    }
 
     return $value;
 }, 10, 2 );
 
 add_filter( "pre_update_option_msdyncrm_options", function( $value, $old_value, $option ) {
     $pwdHandler = new \AlexaCRM\WordpressCRM\PasswordHandler();
-    $value['password'] = $pwdHandler->encrypt( $value['password'] );
+    if ( !empty( $value['password'] ) ) {
+        $value['password'] = $pwdHandler->encrypt( $value['password'] );
+    }
+    if ( !empty( $value['clientSecret'] ) ) {
+        $value['clientSecret'] = $pwdHandler->encrypt( $value['clientSecret'] );
+    }
 
     return $value;
 }, 10, 3 );

@@ -4,9 +4,12 @@ namespace AlexaCRM\WordpressCRM;
 
 use AlexaCRM\CRMToolkit\Client;
 use AlexaCRM\CRMToolkit\Entity\MetadataCollection;
+use AlexaCRM\CRMToolkit\OnlineS2SSecretAuthenticationSettings;
 use AlexaCRM\CRMToolkit\OrganizationDisabledException;
 use AlexaCRM\CRMToolkit\Settings;
+use AlexaCRM\CRMToolkit\SettingsFactory;
 use AlexaCRM\CRMToolkit\StorageInterface;
+use AlexaCRM\WordpressCRM\Cache\WPCache;
 use AlexaCRM\WordpressCRM\Image\AnnotationImage;
 use AlexaCRM\WordpressCRM\Image\CustomImage;
 use Exception;
@@ -187,6 +190,9 @@ final class Plugin {
         }
 
         $options['proxy'] = apply_filters( 'wpcrm/proxy', $proxyString );
+	    if ( isset( $options['authMethod'] ) && $options['authMethod'] === OnlineS2SSecretAuthenticationSettings::SETTINGS_TYPE ) {
+		    $options['cache'] = new WPCache();
+	    }
 
         if ( defined( 'WPCRM_REMOVE_DISCOVERY' ) && WPCRM_REMOVE_DISCOVERY ) {
             $options['useDiscovery'] = false;
@@ -194,7 +200,8 @@ final class Plugin {
 
         $this->getLogger()->debug( 'Initializing PHP CRM Toolkit.' );
 
-        $clientSettings = new Settings( $options );
+        $clientSettings = SettingsFactory::getSettings( $options );
+
         $this->facilities['sdk'] = new Client( $clientSettings, $this->getCache(), $this->getLogger()->withName( 'crmtoolkit' ) );
 
         $this->getLogger()->debug( 'Finished initializing PHP CRM Toolkit.' );

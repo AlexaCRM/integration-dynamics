@@ -2,9 +2,12 @@
 namespace AlexaCRM\WordpressCRM\Admin\Tab;
 
 use AlexaCRM\CRMToolkit\Client;
+use AlexaCRM\CRMToolkit\OnlineS2SSecretAuthenticationSettings;
 use AlexaCRM\CRMToolkit\Settings;
+use AlexaCRM\CRMToolkit\SettingsFactory;
 use AlexaCRM\WordpressCRM\Admin;
 use AlexaCRM\WordpressCRM\Admin\Tab;
+use AlexaCRM\WordpressCRM\Cache\WPCache;
 use AlexaCRM\WordpressCRM\Notifier;
 use AlexaCRM\WordpressCRM\Plugin;
 use Error;
@@ -35,6 +38,9 @@ class General extends Tab {
         "loginUrl"               => "",
         "serverUrl"              => "",
         "authMode"               => "",
+        "authMethod"             => "",
+        "applicationId"          => "",
+        "clientSecret"           => "",
         "crmRegion"              => "",
         "port"                   => "",
         "useSsl"                 => false,
@@ -87,23 +93,37 @@ class General extends Tab {
 
             $options = get_option( Plugin::PREFIX . 'options' );
 
-            if ( !isset( $options["serverUrl"] ) ||
-                 !isset( $options["username"] ) ||
-                 !$options["serverUrl"] ||
-                 !$options["username"]
-            ) {
+            $sharedSecretAuth = isset( $options['authMethod'] ) && $options['authMethod'] === OnlineS2SSecretAuthenticationSettings::SETTINGS_TYPE;
+
+	        if ( $sharedSecretAuth ) {
+		        $options['cache'] = new WPCache();
+	        }
+
+            if ( !$sharedSecretAuth && (
+                    empty( $options["serverUrl"] ) ||
+                    empty( $options["username"] )
+                ) ) {
+                ACRM()->getNotifier()->add( __( 'Please fill in the fields that are marked as required *.', 'integration-dynamics' ), Notifier::NOTICE_ERROR );
+
+                return;
+            }
+
+            if ( $sharedSecretAuth && (
+                    empty( $options["serverUrl"] ) ||
+                    empty( $options["applicationId"] )
+                ) ) {
                 ACRM()->getNotifier()->add( __( 'Please fill in the fields that are marked as required *.', 'integration-dynamics' ), Notifier::NOTICE_ERROR );
 
                 return;
             }
 
             try {
-                $clientSettings = new Settings( $options );
+
+                $clientSettings = SettingsFactory::getSettings( $options );
 
                 ACRM()->getLogger()->notice( 'Connecting to a new instance', [ 'settings' => [
                     'authMode' => $clientSettings->authMode,
                     'crmUrl' => $clientSettings->serverUrl,
-                    'username' => $clientSettings->username,
                     'ignoreSslErrors' => $clientSettings->ignoreSslErrors,
                     'strictFederatedSTS' => $clientSettings->strictFederatedSTS,
                 ] ] );
@@ -132,9 +152,9 @@ class General extends Tab {
                 ACRM()->getLogger()->error( 'CRM connection attempt failed with exception.', [ 'credentials' => [ $options['serverUrl'], $options['username'] ], 'exception' => $e ] );
                 ACRM()->getNotifier()->add( sprintf( __( '<strong>Unable to connect to Dynamics 365:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct.', 'integration-dynamics' ), $e->getMessage() ), Notifier::NOTICE_ERROR );
                 Connection::setConnectionStatus( false );
-            } catch ( Error $err ) {
-                ACRM()->getLogger()->error( 'CRM connection attempt failed with exception.', [ 'credentials' => [ $options['serverUrl'], $options['username'] ], 'exception' => $err ] );
-                ACRM()->getNotifier()->add( sprintf( __( '<strong>Unable to connect to Dynamics 365:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct.', 'integration-dynamics' ), $err->getMessage() ), Notifier::NOTICE_ERROR );
+            } catch ( Error $e ) {
+                ACRM()->getLogger()->error( 'CRM connection attempt failed with exception.', [ 'credentials' => [ $options['serverUrl'], $options['username'] ], 'exception' => $e ] );
+                ACRM()->getNotifier()->add( sprintf( __( '<strong>Unable to connect to Dynamics 365:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct.', 'integration-dynamics' ), $e->getMessage() ), Notifier::NOTICE_ERROR );
                 Connection::setConnectionStatus( false );
             }
 
@@ -158,6 +178,14 @@ class General extends Tab {
             $options["password"] = trim( $options["password"] );
         }
 
+        if ( isset( $options["applicationId"] ) && $options["applicationId"] ) {
+            $options["applicationId"] = trim( $options["applicationId"] );
+        }
+
+        if ( isset( $options["clientSecret"] ) && $options["clientSecret"] ) {
+            $options["clientSecret"] = trim( $options["clientSecret"] );
+        }
+
         if ( isset( $options['ignoreSslErrors'] ) && $options['ignoreSslErrors'] == '1' ) {
             $options['ignoreSslErrors'] = true;
         }
@@ -174,6 +202,7 @@ class General extends Tab {
      */
     public function render() {
         $authMode = ( $this->get_field_value( 'authMode' ) != null ) ? ( $this->get_field_value( 'authMode' ) ) : 'OnlineFederation';
+	    $authMethod = ( $this->get_field_value( 'authMethod' ) != null ) ? ( $this->get_field_value( 'authMethod' ) ) : 'defaultAuth';
 
         $this->options = ACRM()->option( 'options' );
         $isConnected   = ( isset( $this->options['connected'] ) && $this->options['connected'] );
@@ -284,7 +313,38 @@ class General extends Tab {
                         id="table-OnlineFederation" <?php echo ( $authMode == "OnlineFederation" ) ? "style=''" : "style='display: none'"; ?>>
                         <form method="post" action="options.php">
                             <?php settings_fields( $this->settingsField ); ?>
+
                             <table class="form-table">
+                                <tbody>
+                                <tr>
+                                    <th scope="row"><?php _e( 'Authentication Method', 'integration-dynamics' ) ?></th>
+                                    <td>
+                                        <fieldset>
+                                            <legend class="screen-reader-text">
+                                                <label><?php _e( 'Authentication Method', 'integration-dynamics' ) ?></label>
+                                            </legend>
+                                            <p>
+                                                <label>
+                                                    <input type="radio" value="defaultAuth" class="wpcrm-setting"
+                                                           name="<?php echo $this->get_field_name( 'authMethod' ); ?>" <?php echo ( $authMethod == "defaultAuth" ) ? "checked='checked'" : ""; ?>
+                                                           onClick='jQuery("#table-sharedSecretAuth").hide();
+                                                            jQuery("#table-defaultAuth").show();'> Username / Password Auth
+                                                </label>
+                                                <label style="margin-left:12px!important;">
+                                                    <input type="radio" value="sharedSecretAuth" class="wpcrm-setting"
+                                                           name="<?php echo $this->get_field_name( 'authMethod' ); ?>" <?php echo ( $authMethod == "sharedSecretAuth" ) ? "checked='checked'" : ""; ?>
+                                                           onClick='jQuery("#table-sharedSecretAuth").show();
+                                                            jQuery("#table-defaultAuth").hide();'> OAuth 2.0 / Shared Secret
+                                                </label>
+                                                <input type="hidden" id="alexasdkauthmetod"
+                                                       value="<?php echo esc_attr( $this->get_field_value( 'authMethod' ) ); ?>">
+                                            </p>
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="form-table" id="table-defaultAuth" <?php echo ( $authMethod == "defaultAuth" ) ? "style=''" : "style='display: none'"; ?>>
                                 <tbody>
                                 <tr>
                                     <th scope="row"><label
@@ -326,6 +386,43 @@ class General extends Tab {
                                                name="<?php echo $this->get_field_name( 'password' ); ?>"
                                                placeholder="[Enter Password Here]">
                                         <p class="description"><?php _e( 'CRM user password', 'integration-dynamics' ); ?></p>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="form-table" id="table-sharedSecretAuth" <?php echo ( $authMethod == "sharedSecretAuth" ) ? "style=''" : "style='display: none'"; ?>>
+                                <tbody>
+                                <tr>
+                                    <th scope="row"><label
+                                                for="wpcrmFAddress"><?php _e( 'Dynamics 365 Address (URL) <span class="description">(required)</span>', 'integration-dynamics' ); ?></label>
+                                    </th>
+                                    <td>
+                                        <input id="wpcrmFAddress" type="text" class="regular-text code wpcrm-setting"
+                                               placeholder="https://contoso.yourdomain.com"
+                                               name="<?php echo $this->get_field_name( 'serverUrl' ); ?>"
+                                               value="<?php echo esc_attr( $this->get_field_value( 'serverUrl' ) ); ?>">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><label
+                                                for="wpcrmFappid"><?php _e( 'Application ID <span class="description">(required)</span>', 'integration-dynamics' ); ?></label>
+                                    </th>
+                                    <td>
+                                        <input id="wpcrmFappid" type="text" class="regular-text wpcrm-setting"
+                                               name="<?php echo $this->get_field_name( 'applicationId' ); ?>"
+                                               value="<?php echo esc_attr( $this->get_field_value( 'applicationId' ) ); ?>"/>
+                                        <p class="description"><?php _e( 'Identifier of the Azure Active Directory application registration.', 'integration-dynamics' ); ?></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"><label
+                                                for="wpcrmFSecret"><?php _e( 'Client Secret <span class="description">(required)</span>', 'integration-dynamics' ); ?></label>
+                                    </th>
+                                    <td>
+                                        <input id="wpcrmFSecret" type="password" class="regular-text wpcrm-setting"
+                                               name="<?php echo $this->get_field_name( 'clientSecret' ); ?>"
+                                               placeholder="[Enter Secret Here]">
+                                        <p class="description"><?php _e( 'A key associated with the Azure Active Directory app specified above', 'integration-dynamics' ); ?></p>
                                     </td>
                                 </tr>
                                 </tbody>
