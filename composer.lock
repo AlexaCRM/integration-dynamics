@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9b458b65e7914e64946720ff08af5fc",
+    "content-hash": "ac44a29c5ca5bb6925bed3558e7e40bd",
     "packages": [
         {
             "name": "alexacrm/php-crm-toolkit",
-            "version": "20210416",
+            "version": "20211026",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AlexaCRM/php-crm-toolkit.git",
-                "reference": "9bc6569954666e39e95ef79a2e9e0ae5846b9d6f"
+                "reference": "34ef6016611b2f4057b7a64e2ec9e39bd01e1c29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/9bc6569954666e39e95ef79a2e9e0ae5846b9d6f",
-                "reference": "9bc6569954666e39e95ef79a2e9e0ae5846b9d6f",
+                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/34ef6016611b2f4057b7a64e2ec9e39bd01e1c29",
+                "reference": "34ef6016611b2f4057b7a64e2ec9e39bd01e1c29",
                 "shasum": ""
             },
             "require": {
@@ -51,9 +51,9 @@
             ],
             "support": {
                 "issues": "https://github.com/AlexaCRM/php-crm-toolkit/issues",
-                "source": "https://github.com/AlexaCRM/php-crm-toolkit/tree/20210416"
+                "source": "https://github.com/AlexaCRM/php-crm-toolkit/tree/20211026"
             },
-            "time": "2021-04-16T15:53:52+00:00"
+            "time": "2021-10-26T14:08:00+00:00"
         },
         {
             "name": "monolog/monolog",
