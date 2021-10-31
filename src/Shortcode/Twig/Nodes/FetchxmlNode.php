@@ -62,9 +62,9 @@ class FetchxmlNode extends Twig_Node {
             $compiler->write( "}\n" );
         }
         $compiler->write( "\$context['{$this->getAttribute( 'collection' )}'] = " );
-        $compiler->write( "[ 'xml'=>\$fetchxml, 'results'=>['entities'=>(\$records? \$records->Entities : null)," );
-        $compiler->write( "'total_record_count'=>(\$records? \$records->TotalRecordCount : null), 'more_records'=>(\$records? \$records->MoreRecords: null)," );
-        $compiler->write( "'paging_cookie'=>(\$records? \$records->PagingCookie: null)]," );
+        $compiler->write( "[ 'xml'=>\$fetchxml, 'results'=>['entities'=>(isset(\$records)? \$records->Entities : null)," );
+        $compiler->write( "'total_record_count'=>(isset(\$records)? \$records->TotalRecordCount : null), 'more_records'=>(isset(\$records)? \$records->MoreRecords : null)," );
+        $compiler->write( "'paging_cookie'=>(isset(\$records)? \$records->PagingCookie : null)]," );
         $compiler->write( "'error'=>(\$exception?\$exception->getMessage():null)];\n" );
         $compiler->outdent();
         $compiler->write( "}\n");
