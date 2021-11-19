@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.2.32.1 =
+
+* Fixed authentication process using Application Id and Client Secret
+
 = 1.2.32 =
 
 * Add authentication using Application Id and Client Secret
