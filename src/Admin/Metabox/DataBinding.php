@@ -77,19 +77,17 @@ class DataBinding {
 
             $bindingConfig = ACRM()->getBinding()->getPostBinding( $post->ID );
 
-            if ( $bindingConfig !== null ) {
-                $post_entity = $bindingConfig['entity'] ? $bindingConfig['entity'] : '';
-                $post_parametername = $bindingConfig['key'] ? $bindingConfig['key'] : '';
-                $post_isdefaultview = $bindingConfig['default'] ? $bindingConfig['default'] : false;
-                $post_querystring = $bindingConfig['query'] ? $bindingConfig['query'] : 'id';
-                $post_empty_behavior = $bindingConfig['empty'] ? $bindingConfig['empty'] : '';
+            $post_entity = $bindingConfig['entity'] ?? '';
+            $post_parametername = $bindingConfig['key'] ?? '';
+            $post_isdefaultview = $bindingConfig['default'] ?? false;
+            $post_querystring = $bindingConfig['query'] ?? 'id';
+            $post_empty_behavior = $bindingConfig['empty'] ?? '';
 
-                if ( $post_isdefaultview || $post_isdefaultview === 'true' ) {
-                    $post_isdefaultview = 'checked="checked"';
-                }
-
-                include( WORDPRESSCRM_DIR . '/views/admin/meta_box.php' );
+            if ( $post_isdefaultview || $post_isdefaultview === 'true' ) {
+                $post_isdefaultview = 'checked="checked"';
             }
+
+            include( WORDPRESSCRM_DIR . '/views/admin/meta_box.php' );
         }
     }
 
