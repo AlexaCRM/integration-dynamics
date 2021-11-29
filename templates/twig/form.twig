@@ -155,7 +155,13 @@
                       <option value=""></option>
                       {% for optionRecord in control.options %}
                         {% set optionValue = { "LogicalName": optionRecord.logicalName, "Id": optionRecord.id, "DisplayName": optionRecord.displayName } %}
-                        <option value="{{ optionValue|json_encode }}" {{ (controlValue.id == optionRecord.id)? 'selected="selected"' : '' }}>{{ optionRecord }}</option>
+                        <option value="{{ optionValue|json_encode }}" {{ (controlValue.id == optionRecord.id)? 'selected="selected"' : '' }}>
+                          {% if control.displayAttribute != null %}
+                            {{ optionRecord|formatted_value(control.displayAttribute) }}
+                          {% else %}
+                            {{ optionRecord.displayName }}
+                          {% endif %}
+                        </option>
                       {% endfor %}
                     </select>
                     {% for errorMessage in form.errors[control.name] %}

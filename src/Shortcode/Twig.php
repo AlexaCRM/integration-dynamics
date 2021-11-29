@@ -9,6 +9,7 @@ use AlexaCRM\WordpressCRM\Cache\TwigCache;
 use AlexaCRM\WordpressCRM\Shortcode;
 use DOMDocument;
 use Symfony\Component\HttpFoundation\Request;
+use Twig\TwigFilter;
 use Twig_Extension_Debug;
 
 /**
@@ -187,6 +188,15 @@ class Twig extends Shortcode {
             return $os;
         } );
         $twigEnv->addFunction( $globalOptionSetFunc );
+
+        $twigEnv->addFilter( new TwigFilter(
+            'formatted_value',
+            function ( $entity, $attributeName ) {
+                /** @var Entity $entity */
+                /** @var string $attributeName */
+                return $entity->getFormattedValue( $attributeName );
+            }
+        ) );
 
         /**
          * Fired when Twig environment has been set up in the shortcode.

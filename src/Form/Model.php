@@ -235,6 +235,7 @@ class Model {
                                     'name' => $control->getAttribute( 'datafieldname' ),
                                     'metadata' => $attrMd,
                                     'parameters' => [],
+                                    'displayAttribute' => null,
                                 ];
 
                                 if ( $controlDefinition['name'] === 'name' ) {
@@ -267,8 +268,14 @@ class Model {
                                 }
 
                                 if ( array_key_exists( $controlDefinition['name'], $this->attributes['lookupviews'] ) ) {
+                                    $viewDefinition = $this->attributes['lookupviews'][ $controlDefinition['name'] ];
+
                                     $controlDefinition['classId'] = static::CONTROL_LOOKUP_VIEW;
-                                    $controlDefinition['options'] = $this->retrieveLookupView( $this->attributes['lookupviews'][$controlDefinition['name']] );
+                                    $controlDefinition['options'] = $this->retrieveLookupView( $viewDefinition );
+
+                                    if ( is_array( $viewDefinition ) && !empty( $viewDefinition[2] ) ) {
+                                        $controlDefinition['displayAttribute'] = $viewDefinition[2];
+                                    }
                                 }
 
                                 $cellDefinition['control'] = $controlDefinition;
@@ -743,7 +750,7 @@ class Model {
      * @return Entity[]
      */
     private function retrieveLookupView( $viewDefinition ) {
-        if ( !is_array( $viewDefinition ) || count( $viewDefinition ) !== 2 ) {
+        if ( !is_array( $viewDefinition ) || count( $viewDefinition ) < 2 ) {
             return [];
         }
 
