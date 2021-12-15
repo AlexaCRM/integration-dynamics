@@ -103,7 +103,7 @@ class General extends Tab {
                     empty( $options["serverUrl"] ) ||
                     empty( $options["username"] )
                 ) ) {
-                ACRM()->getNotifier()->add( __( 'Please fill in the fields that are marked as required *.', 'integration-dynamics' ), Notifier::NOTICE_ERROR );
+                ACRM()->getNotifier()->add( __( 'Please fill in the fields that are marked as required.', 'integration-dynamics' ), Notifier::NOTICE_ERROR );
 
                 return;
             }
@@ -112,7 +112,7 @@ class General extends Tab {
                     empty( $options["serverUrl"] ) ||
                     empty( $options["applicationId"] )
                 ) ) {
-                ACRM()->getNotifier()->add( __( 'Please fill in the fields that are marked as required *.', 'integration-dynamics' ), Notifier::NOTICE_ERROR );
+                ACRM()->getNotifier()->add( __( 'Please fill in the fields that are marked as required.', 'integration-dynamics' ), Notifier::NOTICE_ERROR );
 
                 return;
             }
@@ -394,11 +394,11 @@ class General extends Tab {
                                 <tbody>
                                 <tr>
                                     <th scope="row"><label
-                                                for="wpcrmFAddress"><?php _e( 'Dynamics 365 Address (URL) <span class="description">(required)</span>', 'integration-dynamics' ); ?></label>
+                                                for="wpcrmAFAddress"><?php _e( 'Dynamics 365 Address (URL) <span class="description">(required)</span>', 'integration-dynamics' ); ?></label>
                                     </th>
                                     <td>
-                                        <input id="wpcrmFAddress" type="text" class="regular-text code wpcrm-setting"
-                                               placeholder="https://contoso.yourdomain.com"
+                                        <input id="wpcrmAFAddress" type="text" class="regular-text code wpcrm-setting"
+                                               placeholder="https://contoso.crm.dynamics.com"
                                                name="<?php echo $this->get_field_name( 'serverUrl' ); ?>"
                                                value="<?php echo esc_attr( $this->get_field_value( 'serverUrl' ) ); ?>">
                                     </td>
@@ -485,6 +485,17 @@ class General extends Tab {
                 };
                 $('.wpcrm-setting').keypress(activateReconnect);
                 $('.wpcrm-setting[type=radio],.wpcrm-setting[type=checkbox]').change(activateReconnect);
+
+                // Quick fix to fill empty 'serverUrl' field for sharedSecret method from username/password because they shared same option name and when sharedSecret field is empty it blocks passing value from username/password field. Good solution here is to refactor from single <form> to the couple of independent forms.
+                $('#table-OnlineFederation form').on('submit', function(e){
+                    var $defaultServerUrl = $('#wpcrmOFAddress');
+                    var $sharedSecretServerUrl = $('#wpcrmAFAddress');
+
+                    if ($defaultServerUrl.val() !== ''){
+                        $sharedSecretServerUrl.val( $defaultServerUrl.val() );
+                    }
+                });
+
             })(jQuery, "[name='<?php echo Plugin::PREFIX . 'options'; ?>[authMode]']");
             //]]>
         </script>
