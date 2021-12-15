@@ -1,0 +1,20 @@
+{% set controlValue = attribute( form.record, control.name ).value %}
+{% if controlValue is null %}
+  {% set controlValue = attribute( form.record, control.name ) %}
+{% endif %}
+{% if controlValue is null %}
+  {% set controlValue = form.defaults[control.name] %}
+{% endif %}
+
+{#<pre>DUMP:
+  {{ dump(controlValue) }}</pre>#}
+
+<select multiple id="{{ control.id }}" name="{{ control.name }}[]" class="form-control" {% if controlDisabled %}disabled="disabled"{% endif %} autocomplete="off">
+  {% for optionValue, optionLabel in control.metadata.optionSet.localizedOptions %}
+    <option
+      value="{{ optionValue }}"
+      {{ (optionValue in controlValue)? 'selected="selected"' : '' }}
+    >{{ optionLabel[form.parameters.language ?? 1033] }}</option>
+  {% endfor %}
+</select>
+

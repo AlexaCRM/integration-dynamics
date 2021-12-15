@@ -104,6 +104,11 @@
                     {% for errorMessage in form.errors[control.name] %}
                       <div class="form-control-feedback">{{ errorMessage }}</div>
                     {% endfor %}
+                  {% elseif control.classId == '{4AA28AB7-9C13-4F57-A73D-AD894D048B5F}' %}{# multi-select field #}
+                    {% include "form/multi-select.twig" %}
+                    {% for errorMessage in form.errors[control.name] %}
+                      <div class="form-control-feedback">{{ errorMessage }}</div>
+                    {% endfor %}
                   {% elseif control.classId == '{B0C6723A-8503-4FD7-BB28-C8A06AC933C2}' %}{# checkbox field #}
                     {% set controlValue = attribute( form.record, control.name ).value %}
                     {% if controlValue is null %}

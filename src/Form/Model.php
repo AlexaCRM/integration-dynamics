@@ -18,6 +18,11 @@ class Model {
     const CONTROL_LOOKUP_VIEW = '{628064E7-E104-4B65-9EBF-3ED02F9AEBB6}';
 
     /**
+     * Class ID for the Multi-Select Option Set control.
+     */
+    const CONTROL_MULTISELECT = '{4AA28AB7-9C13-4F57-A73D-AD894D048B5F}';
+
+    /**
      * Entity that the form belongs to.
      *
      * @var string
@@ -320,7 +325,9 @@ class Model {
         $fields = array_intersect_key( $fields, $metadata->attributes );
 
         foreach ( $fields as $fieldName => $fieldValue ) {
-            $fieldValue = trim( $fieldValue );
+            if ( is_string( $fieldValue ) ) {
+                $fieldValue = trim( $fieldValue );
+            }
             $fieldMetadata = $metadata->attributes[$fieldName];
 
             if ( !$fieldMetadata->isValidForUpdate ) {
@@ -334,7 +341,11 @@ class Model {
             }
 
             if ( $fieldMetadata->optionSet instanceof Entity\OptionSet ) {
-                $this->record->{$fieldName} = (int)$fieldValue;
+                if ( strtolower( $fieldMetadata->type ) == 'virtual' ) {
+                    $this->record->{$fieldName} = $fieldValue;
+                }else {
+                    $this->record->{$fieldName} = (int)$fieldValue;
+                }
                 continue;
             }
 

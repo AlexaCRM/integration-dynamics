@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a9a2d6b6312e558a04bc3aae16b21093",
+    "content-hash": "e4ce9ac14972a48372809eb189c7b125",
     "packages": [
         {
             "name": "alexacrm/php-crm-toolkit",
-            "version": "20211130",
+            "version": "20211216",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AlexaCRM/php-crm-toolkit.git",
-                "reference": "8d379e48145624dd71e6b5fc18fe8865e08936e3"
+                "reference": "85572d4670961e4509d39bc9d26a5e9d4e8496e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/8d379e48145624dd71e6b5fc18fe8865e08936e3",
-                "reference": "8d379e48145624dd71e6b5fc18fe8865e08936e3",
+                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/85572d4670961e4509d39bc9d26a5e9d4e8496e2",
+                "reference": "85572d4670961e4509d39bc9d26a5e9d4e8496e2",
                 "shasum": ""
             },
             "require": {
@@ -51,9 +51,9 @@
             ],
             "support": {
                 "issues": "https://github.com/AlexaCRM/php-crm-toolkit/issues",
-                "source": "https://github.com/AlexaCRM/php-crm-toolkit/tree/20211130"
+                "source": "https://github.com/AlexaCRM/php-crm-toolkit/tree/20211216"
             },
-            "time": "2021-11-30T12:47:33+00:00"
+            "time": "2021-12-16T14:05:57+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -336,12 +336,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "11b9acb5e8619aef6455735debf77dde8825795c"
+                "reference": "0abb51d2f102e00a4eefcf46ba7fec406d245825"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/11b9acb5e8619aef6455735debf77dde8825795c",
-                "reference": "11b9acb5e8619aef6455735debf77dde8825795c",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/0abb51d2f102e00a4eefcf46ba7fec406d245825",
+                "reference": "0abb51d2f102e00a4eefcf46ba7fec406d245825",
                 "shasum": ""
             },
             "require": {
@@ -412,7 +412,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-10-20T20:35:02+00:00"
+            "time": "2021-11-30T18:21:41+00:00"
         },
         {
             "name": "twig/twig",
