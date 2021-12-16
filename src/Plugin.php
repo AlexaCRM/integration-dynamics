@@ -202,6 +202,10 @@ final class Plugin {
 
         $clientSettings = SettingsFactory::getSettings( $options );
 
+        if ( defined( 'WPCRM_SDK_VERSION' ) && !empty( WPCRM_SDK_VERSION ) ) {
+            $clientSettings->clientVersion = WPCRM_SDK_VERSION;
+        }
+
         $this->facilities['sdk'] = new Client( $clientSettings, $this->getCache(), $this->getLogger()->withName( 'crmtoolkit' ) );
 
         $this->getLogger()->debug( 'Finished initializing PHP CRM Toolkit.' );

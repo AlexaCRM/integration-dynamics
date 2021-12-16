@@ -121,6 +121,10 @@ class General extends Tab {
 
                 $clientSettings = SettingsFactory::getSettings( $options );
 
+                if ( defined( 'WPCRM_SDK_VERSION' ) && !empty( WPCRM_SDK_VERSION ) ) {
+                    $clientSettings->clientVersion = WPCRM_SDK_VERSION;
+                }
+
                 ACRM()->getLogger()->notice( 'Connecting to a new instance', [ 'settings' => [
                     'authMode' => $clientSettings->authMode,
                     'crmUrl' => $clientSettings->serverUrl,
