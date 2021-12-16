@@ -52,6 +52,18 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.3 =
+
+IMPORTANT! Minimum PHP and WordPress versions requirements has been raised to PHP 7.2 and WordPress 5.8 accordingly. You will not be able to update and use this version and any newer versions of the Integration Dynamics plugin if your installation does not meet the requirements.
+Starting from this version you can install Dataverse Integration plugin (https://wordpress.org/plugins/integration-cds/) side-by-side for staged migration from SOAP (deprecated) to Web API.
+
+* Raised the minimum PHP and WordPress versions requirements
+* Updated Twig to v2.14
+* Added support for multi-select option set fields
+* Allow specifying column name for display name for lookup dropdown fields
+* Fixed unexpected prompt for mandatory fields at connection settings page
+* Fixed rendering data binding box in case data binding is not set
+
 = 1.2.32.1 =
 
 * Fixed authentication process using Application Id and Client Secret
