@@ -5,6 +5,7 @@
   "require": {
     "alexacrm/php-crm-toolkit": "20211216",
     "symfony/http-foundation": "3.1.*",
+    "symfony/polyfill-mbstring": "1.20.0",
     "monolog/monolog": "^1.0",
     "twig/twig": "~2.14.0"
   },
