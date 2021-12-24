@@ -52,6 +52,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.3.1 =
+
+* Raise WordPress tested version to 5.8.2
+
 = 1.3 =
 
 IMPORTANT! Minimum PHP and WordPress versions requirements has been raised to PHP 7.2 and WordPress 5.8 accordingly. You will not be able to update and use this version and any newer versions of the Integration Dynamics plugin if your installation does not meet the requirements.
