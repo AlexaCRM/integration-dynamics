@@ -1,7 +1,7 @@
 === Dynamics 365 Integration ===
 Contributors: alexacrm, georgedude, wizardist
 Tags: contact form, CRM, dynamics crm, dynamics 365, form, integration, leads, membership, portal, shortcode
-Requires at least: 5.8
+Requires at least: 4.4
 Tested up to: 5.8.2
 Stable tag: trunk
 License: GPLv2
@@ -26,7 +26,7 @@ Features:
 
 = Minimum PHP version =
 
-This plugin requires at least PHP 5.4. Versions 5.6 or 7.x are expected to have full compatibility.
+This plugin requires at least PHP 7.2.5.
 
 = WARNING =
 
@@ -44,7 +44,7 @@ Development of this plugin takes place at the [GitHub repository](https://github
 
 Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
-* Inside of your WordPress dashboard navigate to your WordPress **Plugins** page
+* Inside your WordPress dashboard navigate to your WordPress **Plugins** page
 * In the search field enter **Dynamics CRM** or **Dynamics 365**, then click **Search Plugins**, or press Enter.
 * Select **Dynamics 365 Integration** and click **Install Now**.
 * Once installed, click **Activate**.
@@ -58,7 +58,7 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 = 1.3 =
 
-IMPORTANT! Minimum PHP and WordPress versions requirements has been raised to PHP 7.2 and WordPress 5.8 accordingly. You will not be able to update and use this version and any newer versions of the Integration Dynamics plugin if your installation does not meet the requirements.
+IMPORTANT! Minimum PHP and WordPress versions requirements has been raised to PHP 7.2.5 and WordPress 5.8 accordingly. You will not be able to update and use this version and any newer versions of the Integration Dynamics plugin if your installation does not meet the requirements.
 Starting from this version you can install Dataverse Integration plugin (https://wordpress.org/plugins/integration-cds/) side-by-side for staged migration from SOAP (deprecated) to Web API.
 
 * Raised the minimum PHP and WordPress versions requirements
