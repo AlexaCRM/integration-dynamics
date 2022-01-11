@@ -1,7 +1,7 @@
 === Dynamics 365 Integration ===
 Contributors: alexacrm, georgedude, wizardist
 Tags: contact form, CRM, dynamics crm, dynamics 365, form, integration, leads, membership, portal, shortcode
-Requires at least: 4.4
+Requires at least: 4.9
 Tested up to: 5.8.2
 Stable tag: trunk
 License: GPLv2

@@ -4,7 +4,7 @@
  * Plugin URI: https://wordpress.org/plugins/integration-dynamics/
  * Description: The easiest way to connect Dynamics 365 and Dynamics CRM with WordPress.
  * Version: 1.3.2
- * Requires at least: 4.4
+ * Requires at least: 4.9
  * Requires PHP: 7.2.5
  * Author: AlexaCRM
  * Author URI: https://alexacrm.com
