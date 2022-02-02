@@ -412,7 +412,8 @@ class FormInstance extends AbstractForm {
             }
 
             add_action( 'wordpresscrm_after_form_end', function( $form ) {
-                $messageContainer = $form->attributes['message_container'];
+                $messageContainer = !empty( $form->attributes['message_container'] ) ? $form->attributes['message_container'] : null;
+
                 if ( is_null( $messageContainer ) ) {
                     return;
                 }
