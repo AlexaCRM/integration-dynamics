@@ -8,9 +8,7 @@ use AlexaCRM\CRMToolkit\Entity\EntityReference;
 use AlexaCRM\WordpressCRM\Cache\TwigCache;
 use AlexaCRM\WordpressCRM\Shortcode;
 use DOMDocument;
-use Symfony\Component\HttpFoundation\Request;
 use Twig\TwigFilter;
-use Twig_Extension_Debug;
 
 /**
  * Implements the Twig templates with entity/user binding,
@@ -19,14 +17,14 @@ use Twig_Extension_Debug;
 class Twig extends Shortcode {
 
     /**
-     * @var \Twig_Environment
+     * @var \Twig\Environment
      */
     protected static $twigEnvironment;
 
     /**
      * Array loader that stores inline shortcode templates.
      *
-     * @var \Twig_Loader_Array
+     * @var \Twig\Loader\ArrayLoader
      */
     protected static $shortcodeLoader;
 
@@ -39,9 +37,9 @@ class Twig extends Shortcode {
      *
      * @return string
      *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function shortcode( $attributes, $content, $tagName ) {
         $twig = $this->getTwig();
@@ -61,25 +59,25 @@ class Twig extends Shortcode {
     /**
      * Gives access to the Twig engine instance.
      *
-     * @return \Twig_Environment
+     * @return \Twig\Environment
      */
     protected function getTwig() {
-        if ( static::$twigEnvironment instanceof \Twig_Environment ) {
+        if ( static::$twigEnvironment instanceof \Twig\Environment ) {
             return static::$twigEnvironment;
         }
 
-        $chainLoader = new \Twig_Loader_Chain();
+        $chainLoader = new \Twig\Loader\ChainLoader();
 
-        static::$shortcodeLoader = new \Twig_Loader_Array();
+        static::$shortcodeLoader = new \Twig\Loader\ArrayLoader();
         $chainLoader->addLoader( static::$shortcodeLoader );
         $chainLoader->addLoader(
-            new \Twig_Loader_Filesystem( WORDPRESSCRM_DIR . '/templates/twig' )
+            new \Twig\Loader\FilesystemLoader( WORDPRESSCRM_DIR . '/templates/twig' )
         );
 
         /**
          * Allows extending the list of available Twig template loaders.
          *
-         * @param \Twig_Loader_Chain $chainLoader
+         * @param \Twig\Loader\ChainLoader $chainLoader
          */
         do_action( 'wordpresscrm_after_twig_loaders', $chainLoader );
 
@@ -89,14 +87,14 @@ class Twig extends Shortcode {
             $twigCache = new TwigCache( WORDPRESSCRM_STORAGE . '/twig' );
         }
 
-        $twigEnv = new \Twig_Environment( $chainLoader, [
+        $twigEnv = new \Twig\Environment( $chainLoader, [
             'debug' => $isDebugEnabled,
             'cache' => $twigCache,
         ] );
-        $twigEnv->setBaseTemplateClass( '\AlexaCRM\WordpressCRM\Shortcode\Twig\Template' );
+        //REMOVED: $twigEnv->setBaseTemplateClass( '\AlexaCRM\WordpressCRM\Shortcode\Twig\Template' );
 
         if ( $isDebugEnabled ) {
-            $twigEnv->addExtension( new Twig_Extension_Debug() );
+            $twigEnv->addExtension( new \Twig\Extension\DebugExtension() );
         }
 
         // Add global variables to the context
@@ -115,7 +113,7 @@ class Twig extends Shortcode {
         $twigEnv->addTokenParser( new Twig\TokenParsers\FormTokenParser() );
 
         // entityUrl() - URL builder
-        $entityUrlFunction = new \Twig_SimpleFunction( 'entityUrl', function( $entityName, $entityId ) {
+        $entityUrlFunction = new \Twig\TwigFunction( 'entityUrl', function( $entityName, $entityId ) {
             $binding = ACRM()->getBinding();
             $reference = new EntityReference( $entityName, $entityId );
 
@@ -124,13 +122,13 @@ class Twig extends Shortcode {
         $twigEnv->addFunction( $entityUrlFunction );
 
         // attachmentUrl() - URL generator for force-downloaded attachments
-        $attachmentUrlFunction = new \Twig_SimpleFunction( 'attachmentUrl', function( $attachmentId ) {
+        $attachmentUrlFunction = new \Twig\TwigFunction( 'attachmentUrl', function( $attachmentId ) {
             return admin_url( 'admin-ajax.php?action=msdyncrm_attachment&id=' . $attachmentId );
         } );
         $twigEnv->addFunction( $attachmentUrlFunction );
 
         // Provide access to global OptionSet metadata.
-        $globalOptionSetFunc = new \Twig_SimpleFunction( 'globaloptionset', function( $name ) {
+        $globalOptionSetFunc = new \Twig\TwigFunction( 'globaloptionset', function( $name ) {
             $reqDom = new DOMDocument();
             $execNode              = $reqDom->appendChild( $reqDom->createElementNS( 'http://schemas.microsoft.com/xrm/2011/Contracts/Services', 'Execute' ) );
             $reqNode              = $execNode->appendChild( $reqDom->createElement( 'request' ) );
@@ -203,7 +201,7 @@ class Twig extends Shortcode {
          *
          * Allows to further extend the Twig environment with new features.
          *
-         * @param \Twig_Environment $twigEnv
+         * @param \Twig\Environment $twigEnv
          */
         do_action( 'wordpresscrm_after_twig_ready', $twigEnv );
 
@@ -215,9 +213,9 @@ class Twig extends Shortcode {
     /**
      * Adds global variables to the given environment object.
      *
-     * @param \Twig_Environment $twigEnv
+     * @param \Twig\Environment $twigEnv
      */
-    private function addGlobals( \Twig_Environment $twigEnv ) {
+    private function addGlobals( \Twig\Environment $twigEnv ) {
         // Access to any entity via {{ entities.logicalName["GUID"] }}
         $twigEnv->addGlobal( 'entities', new Twig\FauxEntitiesCollection() );
 
@@ -263,7 +261,7 @@ class Twig extends Shortcode {
         /**
          * Triggered after default global variables are set up.
          *
-         * @param \Twig_Environment $twigEnv
+         * @param \Twig\Environment $twigEnv
          */
         do_action( 'wordpresscrm_after_twig_globals', $twigEnv );
     }
@@ -271,18 +269,18 @@ class Twig extends Shortcode {
     /**
      * Adds default filters to the given environment object.
      *
-     * @param \Twig_Environment $twigEnv
+     * @param \Twig\Environment $twigEnv
      */
-    private function addFilters( \Twig_Environment $twigEnv ) {
-        $addQuery = new \Twig_SimpleFilter( 'add_query', function( $url, $argName, $argValue ) {
+    private function addFilters( \Twig\Environment $twigEnv ) {
+        $addQuery = new \Twig\TwigFilter( 'add_query', function( $url, $argName, $argValue ) {
             return add_query_arg( $argName, $argValue, $url );
         } );
 
-        $wpautop = new \Twig_SimpleFilter( 'wpautop', function( $value ) {
+        $wpautop = new \Twig\TwigFilter( 'wpautop', function( $value ) {
             return wpautop( $value );
         } );
 
-        $toEntityReference = new \Twig_SimpleFilter( 'toEntityReference', function( $value ) {
+        $toEntityReference = new \Twig\TwigFilter( 'toEntityReference', function( $value ) {
             if ( $value instanceof Entity ) {
                 return $value->toEntityReference();
             }

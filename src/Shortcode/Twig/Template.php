@@ -2,16 +2,15 @@
 
 namespace AlexaCRM\WordpressCRM\Shortcode\Twig;
 
-use Twig_Error;
 use Exception;
 
-abstract class Template extends \Twig_Template {
+abstract class Template extends \Twig\Template {
 
     protected function displayWithErrorHandling(array $context, array $blocks = array())
     {
         try {
             $this->doDisplay($context, $blocks);
-        } catch (Twig_Error $e) {
+        } catch (\Twig\Error\Error $e) {
             if (!$e->getSourceContext()) {
                 $e->setSourceContext($this->getSourceContext());
             }

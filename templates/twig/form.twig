@@ -1,4 +1,4 @@
-{% spaceless %}
+{% apply spaceless %}
 {% if form.submission and form.status %}
 <div class="row">
   <div class="col-12">
@@ -224,4 +224,4 @@
         w.wpcrmFormValidationRules['{{ form.id }}'] = validationRules;
     }(window) );
 </script>
-{% endspaceless %}
+{% endapply %}

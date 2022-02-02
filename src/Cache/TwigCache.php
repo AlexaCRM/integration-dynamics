@@ -20,9 +20,10 @@ namespace AlexaCRM\WordpressCRM\Cache;
  *
  * @author Andrew Tch <andrew@noop.lv>
  */
-class TwigCache extends \Twig_Cache_Filesystem {
+class TwigCache extends \Twig\Cache\FilesystemCache {
 
     private $directory;
+
     private $options;
 
     public function __construct( $directory, $options = 0 ) {
@@ -30,7 +31,7 @@ class TwigCache extends \Twig_Cache_Filesystem {
         $this->options = $options;
     }
 
-    public function generateKey( $name, $className ) {
+    public function generateKey(string $name, string $className): string {
         $hash = hash('sha256', $className);
 
         return $this->directory.$hash[0].$hash[1].'/'.$hash.'.html';

@@ -2,19 +2,17 @@
 
 namespace AlexaCRM\WordpressCRM\Shortcode\Twig\Nodes;
 
-use Twig_Compiler;
-
 /**
  * Represents the `form` node.
  */
-class FormNode extends \Twig_Node {
+class FormNode extends \Twig\Node\Node {
 
     /**
      * Compiles the node.
      *
-     * @param Twig_Compiler $compiler
+     * @param \Twig\Compiler $compiler
      */
-    public function compile( Twig_Compiler $compiler ) {
+    public function compile( \Twig\Compiler $compiler ) {
         $compiler->write( "if ( ACRM()->connected() ) {\n")->indent();
 
         $compiler->write( "\$entityName = " );

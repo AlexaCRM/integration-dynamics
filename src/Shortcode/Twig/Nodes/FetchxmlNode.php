@@ -2,18 +2,15 @@
 
 namespace AlexaCRM\WordpressCRM\Shortcode\Twig\Nodes;
 
-use Twig_Compiler;
-use Twig_Node;
-
 /**
  * Represents the `fetchxml` tag node.
  */
-class FetchxmlNode extends Twig_Node {
+class FetchxmlNode extends \Twig\Node\Node {
 
     /**
      * FetchxmlNode constructor.
      *
-     * @param Twig_Node $fetchxmlNode
+     * @param \Twig\Node\Node $fetchxmlNode
      * @param array $attributes
      * @param int $lineNo
      * @param null $tag
@@ -25,9 +22,9 @@ class FetchxmlNode extends Twig_Node {
     /**
      * Compiles the node.
      *
-     * @param Twig_Compiler $compiler
+     * @param \Twig\Compiler $compiler
      */
-    public function compile( Twig_Compiler $compiler ) {
+    public function compile( \Twig\Compiler $compiler ) {
         $compiler->write( "ob_start();\n" );
         $compiler->subcompile( $this->getNode( 'fetchxml' ) );
         $compiler->write( "\$fetchxml = trim(ob_get_clean());\n" );

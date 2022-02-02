@@ -1,4 +1,4 @@
-{% spaceless %}
+{% apply spaceless %}
 {% if entityview.first_page is not null %}
 <table class="{{ tableClass ?? [ 'table' ]|join( ' ' ) }}">
     <thead class="{{ tableHeaderClass ?? []|join( ' ' ) }}">
@@ -44,4 +44,4 @@
         <p>No records found.</p>
     {% endblock %}
 {% endif %}
-{% endspaceless %}
+{% endapply %}

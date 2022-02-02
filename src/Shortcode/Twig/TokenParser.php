@@ -5,16 +5,16 @@ namespace AlexaCRM\WordpressCRM\Shortcode\Twig;
 /**
  * Base class for token parsers in the plugin.
  */
-abstract class TokenParser extends \Twig_TokenParser {
+abstract class TokenParser extends \Twig\TokenParser\AbstractTokenParser {
 
     /**
      * Tells whether given template is empty - no nodes or only spaces/new lines/etc.
      *
-     * @param \Twig_Node $template
+     * @param \Twig\Node\Node $template
      *
      * @return bool
      */
-    protected function isEmptyTemplate( \Twig_Node $template ) {
+    protected function isEmptyTemplate( \Twig\Node\Node $template ) {
         $allowedNodes = [
             'Twig_Node', 'Twig_Node_Text', 'Twig\Node\Node', 'Twig\Node\TextNode',
         ];
