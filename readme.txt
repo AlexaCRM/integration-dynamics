@@ -52,6 +52,13 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.3.3 =
+
+* Fix displaying form labels in forms defined with the new PowerApps editor
+* Fix attempting to retrieve missing FormInstance field
+* Update Twig to v3.3.7
+* Update WordPress required version to 4.9
+
 = 1.3.2 =
 
 * Lower WordPress required version to 4.4
