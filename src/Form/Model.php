@@ -210,7 +210,7 @@ class Model {
                             $cellId = $cell->getAttribute( 'id' );
 
                             $cellDefinition = [
-                                'showLabel' => ( $cell->getAttribute( 'showlabel' ) === 'true' ),
+                                'showLabel' => true,
                                 'label' => $formXPath->evaluate( 'string(./labels/label/@description[1])', $cell ),
                                 'colspan' => (int)$cell->getAttribute( 'colspan' ),
                                 'rowspan' => (int)$cell->getAttribute( 'rowspan' ),
@@ -218,6 +218,10 @@ class Model {
                                 'isVisible' => !$cell->hasAttribute( 'visible' )
                                                || ( $cell->hasAttribute( 'visible' ) && $cell->getAttribute( 'visible' ) !== 'false' ),
                             ];
+
+                            if ( $cell->hasAttribute( 'showlabel' ) && $cell->getAttribute( 'showlabel' ) !== 'true' ) {
+                                $cellDefinition['showLabel'] = false;
+                            }
 
                             $controlList = $formXPath->query( './control', $cell );
                             if ( $controlList->length ) {
