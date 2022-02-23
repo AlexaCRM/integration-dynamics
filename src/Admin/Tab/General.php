@@ -37,6 +37,8 @@ class General extends Tab {
         "password"               => "",
         "loginUrl"               => "",
         "serverUrl"              => "",
+        "serverUrlSsa"           => "",
+        "serverUrlPassword"      => "",
         "authMode"               => "",
         "authMethod"             => "",
         "applicationId"          => "",
@@ -97,6 +99,8 @@ class General extends Tab {
 
 	        if ( $sharedSecretAuth ) {
 		        $options['cache'] = new WPCache();
+		        $options['serverUrlPassword'] = $options['serverUrl'];
+		        $options['serverUrl'] = $options['serverUrlSsa'];
 	        }
 
             if ( !$sharedSecretAuth && (
@@ -152,17 +156,13 @@ class General extends Tab {
                     ACRM()->getNotifier()->add( __( 'Unable to connect to Dynamics 365 using provided address, username and/or password.', 'integration-dynamics' ), Notifier::NOTICE_ERROR );
                     Connection::setConnectionStatus( false );
                 }
-            } catch ( Exception $e ) {
-                ACRM()->getLogger()->error( 'CRM connection attempt failed with exception.', [ 'credentials' => [ $options['serverUrl'], $options['username'] ], 'exception' => $e ] );
-                ACRM()->getNotifier()->add( sprintf( __( '<strong>Unable to connect to Dynamics 365:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct.', 'integration-dynamics' ), $e->getMessage() ), Notifier::NOTICE_ERROR );
-                Connection::setConnectionStatus( false );
-            } catch ( Error $e ) {
+            } catch ( Error|Exception $e ) {
                 ACRM()->getLogger()->error( 'CRM connection attempt failed with exception.', [ 'credentials' => [ $options['serverUrl'], $options['username'] ], 'exception' => $e ] );
                 ACRM()->getNotifier()->add( sprintf( __( '<strong>Unable to connect to Dynamics 365:</strong> %s. Check whether you selected the appropriate deployment type and that CRM URL and credentials are correct.', 'integration-dynamics' ), $e->getMessage() ), Notifier::NOTICE_ERROR );
                 Connection::setConnectionStatus( false );
             }
 
-            wordpresscrm_javascript_redirect( admin_url( 'admin.php?page=wordpresscrm' ) );
+	        wordpresscrm_javascript_redirect( admin_url( 'admin.php?page=wordpresscrm' ) );
         }
     }
 
@@ -257,6 +257,7 @@ class General extends Tab {
                         style="">
                         <form method="post" action="options.php">
                             <?php settings_fields( $this->settingsField ); ?>
+                            <?php $serverUrl = $this->get_field_value( 'serverUrlPassword' ) ?: $this->get_field_value( 'serverUrl' ); ?>
                             <table class="form-table">
                                 <tbody>
                                 <tr>
@@ -267,7 +268,7 @@ class General extends Tab {
                                         <input id="wpcrmFAddress" type="text" class="regular-text code wpcrm-setting"
                                                placeholder="https://contoso.yourdomain.com"
                                                name="<?php echo $this->get_field_name( 'serverUrl' ); ?>"
-                                               value="<?php echo esc_attr( $this->get_field_value( 'serverUrl' ) ); ?>">
+                                               value="<?php echo esc_attr( $serverUrl ); ?>">
                                         <p>
                                             <label><input type="checkbox" class="wpcrm-setting" name="<?php echo esc_attr( $this->get_field_name( 'ignoreSslErrors' ) ); ?>" value="1" <?php checked( $this->get_field_value( 'ignoreSslErrors' ) ); ?>> <?php _e( 'Ignore invalid certificate errors', 'integration-dynamics' ); ?></label>
                                         </p>
@@ -317,6 +318,7 @@ class General extends Tab {
                         id="table-OnlineFederation" <?php echo ( $authMode == "OnlineFederation" ) ? "style=''" : "style='display: none'"; ?>>
                         <form method="post" action="options.php">
                             <?php settings_fields( $this->settingsField ); ?>
+	                        <?php $serverUrl = $this->get_field_value( 'serverUrlPassword' ) ?: $this->get_field_value( 'serverUrl' ); ?>
 
                             <table class="form-table">
                                 <tbody>
@@ -358,7 +360,7 @@ class General extends Tab {
                                         <input id="wpcrmOFAddress" type="text" class="regular-text code wpcrm-setting"
                                                placeholder="https://contoso.crm.dynamics.com"
                                                name="<?php echo $this->get_field_name( 'serverUrl' ); ?>"
-                                               value="<?php echo esc_attr( $this->get_field_value( 'serverUrl' ) ); ?>">
+                                               value="<?php echo esc_attr( $serverUrl ); ?>">
                                         <p>
                                             <label><input type="checkbox" class="wpcrm-setting" name="<?php echo esc_attr( $this->get_field_name( 'ignoreSslErrors' ) ); ?>" value="1" <?php checked( $this->get_field_value( 'ignoreSslErrors' ) ); ?>> <?php _e( 'Ignore invalid certificate errors', 'integration-dynamics' ); ?></label>
                                         </p>
@@ -403,8 +405,8 @@ class General extends Tab {
                                     <td>
                                         <input id="wpcrmAFAddress" type="text" class="regular-text code wpcrm-setting"
                                                placeholder="https://contoso.crm.dynamics.com"
-                                               name="<?php echo $this->get_field_name( 'serverUrl' ); ?>"
-                                               value="<?php echo esc_attr( $this->get_field_value( 'serverUrl' ) ); ?>">
+                                               name="<?php echo $this->get_field_name( 'serverUrlSsa' ); ?>"
+                                               value="<?php echo esc_attr( $this->get_field_value( 'serverUrlSsa' ) ); ?>">
                                     </td>
                                 </tr>
                                 <tr>
@@ -489,16 +491,6 @@ class General extends Tab {
                 };
                 $('.wpcrm-setting').keypress(activateReconnect);
                 $('.wpcrm-setting[type=radio],.wpcrm-setting[type=checkbox]').change(activateReconnect);
-
-                // Quick fix to fill empty 'serverUrl' field for sharedSecret method from username/password because they shared same option name and when sharedSecret field is empty it blocks passing value from username/password field. Good solution here is to refactor from single <form> to the couple of independent forms.
-                $('#table-OnlineFederation form').on('submit', function(e){
-                    var $defaultServerUrl = $('#wpcrmOFAddress');
-                    var $sharedSecretServerUrl = $('#wpcrmAFAddress');
-
-                    if ($defaultServerUrl.val() !== ''){
-                        $sharedSecretServerUrl.val( $defaultServerUrl.val() );
-                    }
-                });
 
             })(jQuery, "[name='<?php echo Plugin::PREFIX . 'options'; ?>[authMode]']");
             //]]>
