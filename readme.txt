@@ -52,20 +52,24 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.3.4 =
+
+* Fixed saving connection settings after switching auth method
+
 = 1.3.3 =
 
-* Fix displaying form labels in forms defined with the new PowerApps editor
-* Fix attempting to retrieve missing FormInstance field
-* Update Twig to v3.3.7
-* Update WordPress required version to 4.9
+* Fixed displaying form labels in forms defined with the new PowerApps editor
+* Fixed attempting to retrieve missing FormInstance field
+* Updated Twig to v3.3.7
+* Updated WordPress required version to 4.9
 
 = 1.3.2 =
 
-* Lower WordPress required version to 4.4
+* Lowered WordPress required version to 4.4
 
 = 1.3.1 =
 
-* Raise WordPress tested version to 5.8.2
+* Raised WordPress tested version to 5.8.2
 
 = 1.3 =
 
@@ -85,8 +89,8 @@ Starting from this version you can install Dataverse Integration plugin (https:/
 
 = 1.2.32 =
 
-* Add authentication using Application Id and Client Secret
-* Prevent explicit php notices in some cases
+* Added authentication using Application Id and Client Secret
+* Prevented explicit php notices in some cases
 
 = 1.2.31 =
 
