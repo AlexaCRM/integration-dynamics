@@ -27,7 +27,7 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
     } );
     $view->registerField( $entityField );
 
-    $viewField = new ShortcodeWizard\Field\Dropdown( 'view', __( 'Entity View name', 'integration-dynamics' ) );
+    $viewField = new ShortcodeWizard\Field\Dropdown( 'name', __( 'Entity View name', 'integration-dynamics' ) );
     $viewField->description = __( 'Name of the view to display.', 'integration-dynamics' );
     $viewField->bindingFields = [ 'entity' ];
     $viewField->setValueGenerator( function( $values ) {
