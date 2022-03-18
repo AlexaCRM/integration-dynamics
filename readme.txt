@@ -1,4 +1,5 @@
 === Dynamics 365 Integration ===
+
 Contributors: alexacrm, georgedude, wizardist
 Tags: contact form, CRM, dynamics crm, dynamics 365, form, integration, leads, membership, portal, shortcode
 Requires at least: 4.9
@@ -8,6 +9,20 @@ License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The easiest way to connect Dynamics 365 or Dynamics CRM with WordPress.
+
+== IMPORTANT ==
+
+As [communicated by Microsoft](https://docs.microsoft.com/power-platform/important-changes-coming#deprecation-of-office365-authentication-type-and-organizationserviceproxy-class-for-connecting-to-dataverse), effective April 04, 2022, Microsoft Dataverse is retiring the WS-Trust authentication protocol. Dynamics 365 Integration plugin uses WS-Trust protocol when authenticating using username and password. Beginning from version 1.2.32, the plugin includes app id / secret authentication method. This method uses OAuth protocol and will continue to operate as normal.
+
+= How does this affect me? =
+
+On April 04, 2022, any instance of Dynamics 365 Integration plugin that uses username / password authentication will no longer connect to Microsoft Dataverse / Dynamics 365.
+
+= What action do I need to take? = 
+
+**Existing users:** To avoid impact to your operations when this is enforced, please switch plugin authentication method from username / password to app id / secret by following [Quick Start instructions](https://docs.alexacrm.com/wpcrm/quickstart/#app-id--client-secret-authentication) in the product documentation. 
+
+**New users**: follow [Quick Start steps](https://docs.alexacrm.com/wpcrm/quickstart/#app-id--client-secret-authentication) and use app id / secret to connect to your Dataverse / Dynamics 365 instance. 
 
 == Description ==
 
