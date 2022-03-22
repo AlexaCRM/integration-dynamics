@@ -18,11 +18,11 @@ As [communicated by Microsoft](https://docs.microsoft.com/power-platform/importa
 
 On April 04, 2022, any instance of Dynamics 365 Integration plugin that uses username / password authentication will no longer connect to Microsoft Dataverse / Dynamics 365.
 
-= What action do I need to take? = 
+= What action do I need to take? =
 
-**Existing users:** To avoid impact to your operations when this is enforced, please switch plugin authentication method from username / password to app id / secret by following [Quick Start instructions](https://docs.alexacrm.com/wpcrm/quickstart/#app-id--client-secret-authentication) in the product documentation. 
+**Existing users:** To avoid impact to your operations when this is enforced, please switch plugin authentication method from username / password to app id / secret by following [Quick Start instructions](https://docs.alexacrm.com/wpcrm/quickstart/#app-id--client-secret-authentication) in the product documentation.
 
-**New users**: follow [Quick Start steps](https://docs.alexacrm.com/wpcrm/quickstart/#app-id--client-secret-authentication) and use app id / secret to connect to your Dataverse / Dynamics 365 instance. 
+**New users**: follow [Quick Start steps](https://docs.alexacrm.com/wpcrm/quickstart/#app-id--client-secret-authentication) and use app id / secret to connect to your Dataverse / Dynamics 365 instance.
 
 == Description ==
 
@@ -66,6 +66,11 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 * Navigate to **Admin > Dynamics CRM** page to enter your Dynamics 365 / CRM connection details.
 
 == Changelog ==
+
+= 1.3.5 =
+
+* Fixed shortcode wizard for the `view` shortcode
+* Updated Twig to v3.3.8
 
 = 1.3.4 =
 
