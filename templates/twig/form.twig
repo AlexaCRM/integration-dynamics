@@ -99,7 +99,9 @@
                     {% for errorMessage in form.errors[control.name] %}
                       <div class="form-control-feedback">{{ errorMessage }}</div>
                     {% endfor %}
-                  {% elseif control.classId == '{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}' %}{# select field #}
+                  {% elseif control.classId == '{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}' or
+                    control.classId == '{5D68B988-0661-4DB2-BC3E-17598AD3BE6C}'
+                  %}{# select field #}
                     {% include "form/select.twig" %}
                     {% for errorMessage in form.errors[control.name] %}
                       <div class="form-control-feedback">{{ errorMessage }}</div>
