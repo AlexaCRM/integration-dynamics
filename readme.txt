@@ -67,6 +67,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.3.7 =
+
+* Fixed a statuscode field values according to the selected statecode field value
+
 = 1.3.6 =
 
 * Added support for Status Reason field type
