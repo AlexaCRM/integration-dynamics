@@ -219,11 +219,42 @@
 </form>
 {% embed "form/lookup.twig" %}{% endembed %}
 <script>
-    ( function (w) {
-        var validationRules = {};
+  (function(w, $) {
+    var validationRules = {};
 
-        w.wpcrmFormValidationRules = w.wpcrmFormValidationRules || {};
-        w.wpcrmFormValidationRules['{{ form.id }}'] = validationRules;
-    }(window) );
+    w.wpcrmFormValidationRules = w.wpcrmFormValidationRules || {};
+    w.wpcrmFormValidationRules['{{ form.id }}'] = validationRules;
+
+    function filterOptions(){
+      if ($('select[data-wpcrm-statecode-input]').length === 0) {
+        return;
+      }
+
+      var currentState = $('select[data-wpcrm-statecode-input]').val();
+      var allStatusOptions = $('select[data-wpcrm-statuscode-input] option');
+      var activeStatusOptions = $('select[data-wpcrm-statuscode-input] option[data-wpcrm-state=' + currentState + ']');
+
+      allStatusOptions.prop({
+        'hidden': true,
+        'disabled': true
+      });
+
+      activeStatusOptions.prop({
+        'hidden': false,
+        'disabled': false
+      });
+    }
+
+    function setSelectedOption(){
+      $('select[data-wpcrm-statuscode-input] option:not([hidden])').first().prop('selected', true);
+    }
+
+    $('select[data-wpcrm-statecode-input]').on('change', function() {
+      filterOptions();
+      setSelectedOption();
+    });
+
+    filterOptions();
+  }(window, jQuery));
 </script>
 {% endapply %}

@@ -5,9 +5,21 @@
 {% if controlValue is null %}
   {% set controlValue = form.defaults[control.name] %}
 {% endif %}
-<select id="{{ control.id }}" name="{{ control.name }}" class="form-control" {% if controlDisabled %}disabled="disabled"{% endif %} autocomplete="off">
+<select
+  id="{{ control.id }}"
+  name="{{ control.name }}"
+  class="form-control"
+  {% if controlDisabled %}disabled="disabled"{% endif %}
+  {% if control.metadata.type == 'State' %}data-wpcrm-statecode-input{% endif %}
+  {% if control.metadata.type == 'Status' %}data-wpcrm-statuscode-input{% endif %}
+  autocomplete="off"
+>
   {% if control.metadata.type == 'Picklist' %}<option value=""></option>{% endif %}
   {% for optionValue, optionLabel in control.metadata.optionSet.localizedOptions %}
-    <option value="{{ optionValue }}" {{ (controlValue == optionValue)? 'selected="selected"' : '' }}>{{ optionLabel[form.parameters.language ?? 1033] }}</option>
+    <option
+      value="{{ optionValue }}"
+      {% if controlValue == optionValue %}selected="selected"{% endif %}
+      {% if control.metadata.type == 'Status' %}data-wpcrm-state="{{ control.metadata.optionSet.optionsMetadata[optionValue].State }}"{% endif %}
+    >{{ optionLabel[form.parameters.language ?? 1033] }}</option>
   {% endfor %}
 </select>
