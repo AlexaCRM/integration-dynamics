@@ -74,8 +74,6 @@ class FrontendScripts {
         wp_register_script( 'recaptcha', 'https://www.google.com/recaptcha/api.js' );
 
         // Global frontend scripts
-        wp_enqueue_script( 'recaptcha' );
-
         wp_register_script( 'jquery-datetimepicker', $scriptPath . 'jquery.datetimepicker.js', [ 'jquery' ] );
         wp_register_script( 'wordpresscrm-front', $scriptPath . 'wordpresscrm-front' . $suffix . '.js', [ 'jquery-datetimepicker' ] );
         wp_register_script( 'jquery-validation', $scriptPath . 'jquery.validate.min.js', [ 'jquery' ] );
