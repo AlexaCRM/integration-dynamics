@@ -98,14 +98,11 @@ class Shortcode {
      * @return string
      */
     public function generateCode( $fieldValues ) {
-        $shortcodePrefix = Plugin::PREFIX;
-
         /*
-         * %1$s - shortcode prefix
-         * %2$s - shortcode name
+         * %1$s - shortcode name
          * %2$s - shortcode arguments
          */
-        $shortcodeTemplate = '[%1$s%2$s %3$s]';
+        $shortcodeTemplate = '%1$s %2$s';
 
         // filter empty fields
         $fieldValues = array_filter( $fieldValues );
@@ -117,8 +114,7 @@ class Shortcode {
         $fieldValues = array_intersect_key( $fieldValues, array_flip( $allowedFieldNames ) );
 
         $shortcodeArguments = $this->_arrayToAttributes( $fieldValues );
-
-        return sprintf( $shortcodeTemplate, $shortcodePrefix, $this->name, $shortcodeArguments );
+        return '{% ' . sprintf( $shortcodeTemplate, $this->name, $shortcodeArguments ) . ' %}' . '{%end' . $this->name . '%}';
     }
 
     /**

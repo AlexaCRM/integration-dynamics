@@ -13,21 +13,23 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
     $view = new ShortcodeWizard\Shortcode( 'view', __( 'View', 'integration-dynamics' ) );
     $view->description = __( 'Renders a Dynamics 365 view as a table.', 'integration-dynamics' );
 
-    $entityField = new ShortcodeWizard\Field\Dropdown( 'entity', __( 'Entity name', 'integration-dynamics' ) );
-    $entityField->description = __( 'Name of the entity to display a view of.', 'integration-dynamics' );
+    $entityField = new ShortcodeWizard\Field\Dropdown( 'entity', __( 'Table', 'integration-dynamics' ) );
+    $entityField->description = __( 'Name of the table to display a view of.', 'integration-dynamics' );
     $entityField->setValueGenerator( function() {
         try {
             $entities = ACRM()->getMetadata()->getEntitiesList();
             asort( $entities );
-
-            return $entities;
+	        array_walk( $entities, function ( &$val, $logical ) {
+		        $val = "$val ($logical)";
+	        } );
+	        return $entities;
         } catch ( \Exception $e ) {
             throw $e;
         }
     } );
     $view->registerField( $entityField );
 
-    $viewField = new ShortcodeWizard\Field\Dropdown( 'name', __( 'Entity View name', 'integration-dynamics' ) );
+    $viewField = new ShortcodeWizard\Field\Dropdown( 'name', __( 'Table View name', 'integration-dynamics' ) );
     $viewField->description = __( 'Name of the view to display.', 'integration-dynamics' );
     $viewField->bindingFields = [ 'entity' ];
     $viewField->setValueGenerator( function( $values ) {
@@ -39,13 +41,13 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
         $views = [];
 
         if ( !array_key_exists( 'entity', $values ) ) {
-            throw new \InvalidArgumentException( __( 'Entity name is not specified', 'integration-dynamics' ) );
+            throw new \InvalidArgumentException( __( 'Table is not specified', 'integration-dynamics' ) );
         }
 
         $entityName = trim( $values['entity'] );
 
         if ( $entityName === '' ) {
-            throw new \InvalidArgumentException( __( 'Empty entity name in the request', 'integration-dynamics' ) );
+            throw new \InvalidArgumentException( __( 'Empty table name in the request', 'integration-dynamics' ) );
         }
 
         $entity = $client->entity( $entityName );
@@ -96,49 +98,71 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
     $shortcodeWizard->registerShortcode( $view );
 } );
 
-// field shortcode
-add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWizard ) {
-    $field = new ShortcodeWizard\Shortcode( 'field', __( 'Field', 'integration-dynamics' ) );
-    $field->description = __( 'Renders a field value for the current CRM record on a data-bound page.', 'integration-dynamics' );
+// form shortcode
+add_action( 'wordpresscrm_sw_register', function ( ShortcodeWizard $shortcodeWizard ) {
+	$form              = new ShortcodeWizard\Shortcode( 'form', __( 'Form', 'integration-dynamics' ) );
+	$form->description = __( 'Renders a Dynamics 365 form.', 'integration-dynamics' );
 
-    $entityField = new ShortcodeWizard\Field\Hidden( 'entity' );
-    if ( array_key_exists( 'post', $_GET ) ) {
-        $entityField->setStaticValueGenerator( function() {
-            $postId = (int)$_GET['post'];
-            $bindingConfig = ACRM()->getBinding()->getPostBinding( $postId );
-            if ( $bindingConfig === null ) {
-                return '';
-            }
+	$entityField              = new ShortcodeWizard\Field\Dropdown( 'entity', __( 'Table', 'integration-dynamics' ) );
+	$entityField->description = __( 'Name of the table to display a form of.', 'integration-dynamics' );
+	$entityField->setValueGenerator( function () {
+		try {
+			$entities = ACRM()->getMetadata()->getEntitiesList();
+			asort( $entities );
+			array_walk( $entities, function ( &$val, $logical ) {
+				$val = "$val ($logical)";
+			} );
 
-            return $bindingConfig['entity'];
-        } );
-    }
-    $field->registerField( $entityField );
+			return $entities;
+		} catch ( \Exception $e ) {
+			throw $e;
+		}
+	} );
+	$form->registerField( $entityField );
 
-    $attributeField = new ShortcodeWizard\Field\Dropdown( 'field', __( 'Attribute name', 'integration-dynamics' ) );
-    $attributeField->description = __( 'Entity attribute to render.', 'integration-dynamics' );
-    $attributeField->bindingFields = [ 'entity' ];
-    $attributeField->setValueGenerator( function( $values ) {
-        $client = ACRM()->getSdk();
-        if ( !$client ) {
-            return [];
-        }
+	$formField                = new ShortcodeWizard\Field\Dropdown( 'name', __( 'Form', 'integration-dynamics' ) );
+	$formField->description   = __( 'Name of the form of the table.', 'integration-dynamics' );
+	$formField->bindingFields = [ 'entity' ];
+	$formField->setValueGenerator( function ( $values ) {
+		$client = ACRM()->getSdk();
+		if ( ! $client ) {
+			throw new \Exception( __( 'Not connected to CRM', 'integration-dynamics' ) );
+		}
 
-        $attributes = [];
+		$forms = [];
 
-        $entity = $client->entity( $values['entity'] );
+		if ( ! array_key_exists( 'entity', $values ) ) {
+			throw new \InvalidArgumentException( __( 'Table is not specified', 'integration-dynamics' ) );
+		}
 
-        foreach ( $entity->attributes as $attribute ) {
-            $attributes[$attribute->logicalName] = $attribute->logicalName . ' (' . $attribute->label . ')';
-        }
+		$entityName = trim( $values['entity'] );
 
-        asort( $attributes );
+		if ( $entityName === '' ) {
+			throw new \InvalidArgumentException( __( 'Empty table name in the request', 'integration-dynamics' ) );
+		}
 
-        return $attributes;
-    } );
+		$entity = $client->entity( $entityName );
 
-    $field->registerField( $attributeField );
-    $shortcodeWizard->registerShortcode( $field );
+		$fetch = '<fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+						<entity name="systemform">
+                            <attribute name="name" />
+                            <attribute name="objecttypecode" />
+							 <filter type="and">
+								<condition attribute="objecttypecode" operator="eq" value="' . $entity->metadata()->objectTypeCode . '" />
+							  </filter>
+						</entity>
+					  </fetch>';
+
+		$systemForms = $client->retrieveMultiple( $fetch );
+		foreach ( $systemForms->Entities as $form ) {
+			$forms[ $form->name ] = $form->name;
+		}
+
+
+		return $forms;
+	} );
+	$form->registerField( $formField );
+	$shortcodeWizard->registerShortcode( $form );
 } );
 
 add_action( 'wp_ajax_wpcrm_log_verbosity', function() {

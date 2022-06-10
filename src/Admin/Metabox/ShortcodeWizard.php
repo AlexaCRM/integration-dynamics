@@ -131,7 +131,7 @@ class ShortcodeWizard {
 <div class="shortcode-fields"></div>
 <div class="shortcode-result" style="border-top: 1px solid #eceeef; padding-top: 10px; display: none;">
     <textarea style="width:100%" rows="6" readonly></textarea>
-    <p class="description"><?php _e( 'Copy the generated code and paste into the editor window.', 'integration-dynamics' ); ?></p>
+    <p class="description"><?php _e( 'Copy the generated code and paste it inside Twig shortcode, between [msdyncrm_twig] and [/msdyncrm_twig] tags.', 'integration-dynamics' ); ?></p>
 </div>
 </script>
 <script type="text/template" id="tpl-wpcrmShortcodeWizardShortcodeField">
