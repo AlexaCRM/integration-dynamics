@@ -67,6 +67,11 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.3.10 =
+
+* Fixed handling of timezoneindepent datetime and date only columns
+* Raised WordPress tested version to 6.1.1
+
 = 1.3.9 =
 
 * Removed recaptcha scripts from pages without forms
