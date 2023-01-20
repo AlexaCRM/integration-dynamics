@@ -67,6 +67,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.3.11 =
+
+* Fixed unauthorized access to plugin logs
+
 = 1.3.10 =
 
 * Fixed handling of timezoneindepent datetime and date only columns
