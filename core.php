@@ -142,6 +142,10 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
 } );
 
 add_action( 'wp_ajax_wpcrm_log_verbosity', function() {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_send_json( 'Access denied', 403 );
+    }
+
     $request = ACRM()->request->request;
 
     update_option( 'wpcrm_log_level', $request->get( 'logVerbosity', WORDPRESSCRM_EFFECTIVE_LOG_LEVEL ) );
@@ -150,6 +154,10 @@ add_action( 'wp_ajax_wpcrm_log_verbosity', function() {
 } );
 
 add_action( 'wp_ajax_wpcrm_log', function() {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_send_json( 'Access denied', 403 );
+    }
+
     if ( class_exists( '\ZipArchive' ) && ( $zipPath = tempnam( sys_get_temp_dir(), 'wpcrm' ) ) ) {
         $zip = new ZipArchive();
         $zip->open( $zipPath, ZipArchive::OVERWRITE );
