@@ -68,7 +68,12 @@ class About extends Tab {
                 $message = __( 'If you experience problems while using Dynamics 365 Integration plugin and eventually report them, attach log files which are stored in <code>%s</code>. <a href="%s">Download the latest log file</a>', 'integration-dynamics' );
             }
 
-            printf( $message, WORDPRESSCRM_STORAGE, admin_url( 'admin-ajax.php?action=wpcrm_log') ); ?></p>
+            printf(
+                $message,
+                WORDPRESSCRM_STORAGE,
+                wp_nonce_url( admin_url( 'admin-ajax.php?action=wpcrm_log' ), 'wpcrm_log' )
+            ); ?>
+        </p>
         <p>
             <label><?php _e( 'Change log verbosity:', 'integration-dynamics' ); ?>
                 <select name="verbosity" id="wpcrmVerbositySelector" style="vertical-align: baseline;">
@@ -97,17 +102,20 @@ class About extends Tab {
                     $verbositySpinner = $( '#wpcrmVerbositySelectorSpinner' ),
                     verbosityPrevious = $verbositySelector.val();
 
-                $verbositySelector.change( function( e ) {
+                $verbositySelector.change(function(e) {
                     $verbositySpinner.show();
-                    $.post( ajaxurl, { action: 'wpcrm_log_verbosity', logVerbosity: $verbositySelector.val() } ).done( function() {
-
-                    } ).fail( function() {
-                        $verbositySelector.val( verbosityPrevious );
-                        alert( '<?php echo esc_js( __( 'Couldn\'t save the new log verbosity setting.', 'integration-dynamics' ) ); ?>' );
-                    } ).always( function() {
+                    $.post(ajaxurl, {
+                        action: 'wpcrm_log_verbosity',
+                        logVerbosity: $verbositySelector.val(),
+                        _wpnonce: '<?php echo wp_create_nonce( 'wpcrm_log_verbosity' ) ?>',
+                    }).done(function() {
+                    }).fail(function() {
+                        $verbositySelector.val(verbosityPrevious);
+                        alert('<?php echo esc_js( __( 'Couldn\'t save the new log verbosity setting.', 'integration-dynamics' ) ); ?>');
+                    }).always(function() {
                         $verbositySpinner.hide();
-                    } );
-                } );
+                    });
+                });
             }( jQuery ) );
         </script>
         <?php

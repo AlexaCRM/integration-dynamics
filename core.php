@@ -148,6 +148,10 @@ add_action( 'wp_ajax_wpcrm_log_verbosity', function() {
 
     $request = ACRM()->request->request;
 
+    if ( ! wp_verify_nonce( $request->get( '_wpnonce' ), 'wpcrm_log_verbosity' ) ) {
+        wp_send_json( 'Access denied', 403 );
+    }
+
     update_option( 'wpcrm_log_level', $request->get( 'logVerbosity', WORDPRESSCRM_EFFECTIVE_LOG_LEVEL ) );
 
     wp_send_json_success();
@@ -155,6 +159,10 @@ add_action( 'wp_ajax_wpcrm_log_verbosity', function() {
 
 add_action( 'wp_ajax_wpcrm_log', function() {
     if ( ! current_user_can( 'manage_options' ) ) {
+        wp_send_json( 'Access denied', 403 );
+    }
+
+    if ( ! wp_verify_nonce( ACRM()->request->query->get( '_wpnonce' ), 'wpcrm_log' ) ) {
         wp_send_json( 'Access denied', 403 );
     }
 
