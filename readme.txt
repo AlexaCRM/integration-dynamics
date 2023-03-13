@@ -67,6 +67,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.3.13 =
+
+* Added check for nonce value when accessing plugin logs
+
 = 1.3.12 =
 
 * Updated Twig to v3.5.0
