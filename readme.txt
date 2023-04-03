@@ -67,6 +67,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.3.14 =
+
+* Fixed unauthorized access to clear cache feature
+
 = 1.3.13 =
 
 * Added check for nonce value when accessing plugin logs
