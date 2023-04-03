@@ -67,14 +67,7 @@ class General extends Tab {
 
         parent::init();
 
-        if ( isset( $_POST["clear_cache"] ) && $_POST["clear_cache"] ) {
-            ACRM()->purgeCache();
-
-            ACRM()->getNotifier()->add( __( 'Metadata cache has been purged and now will be rebuilt gradually.', 'integration-dynamics' ) );
-
-            $this->options['last_metadata_purge'] = current_time( 'timestamp' );
-            update_option( $this->settingsField, $this->options );
-        }
+        $this->clearCache();
     }
 
     public function getDisplayName() {
@@ -446,6 +439,7 @@ class General extends Tab {
                     <p><?php _e( 'If you have changed your Dynamics 365 entities metadata recently (i.e. fields, forms, views, etc.) please regenerate local metadata cache to keep it up to date.', 'integration-dynamics' ) ?></p>
                     <form method="post" action="">
                         <input type="hidden" name="clear_cache" value="1"/>
+                        <input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'wpcrm_clear_cache' ) ?>"/>
                         <p class="submit">
                             <?php submit_button( __( 'Regenerate Metadata Cache', 'integration-dynamics' ), 'primary', 'submit', false, [ 'style' => 'vertical-align:middle;' ] ); ?>
                             <span style="padding-left:1em;vertical-align:middle;">
@@ -496,6 +490,36 @@ class General extends Tab {
             //]]>
         </script>
         <?php
+    }
+
+    /**
+     * Clears plugin cache after respective verifications
+     *
+     * @return void
+     */
+    protected function clearCache() {
+        if ( ! isset( $_POST["clear_cache"] ) || ! $_POST["clear_cache"] ) {
+            return;
+        }
+
+        if ( ! current_user_can( 'manage_options' ) ) {
+            ACRM()->getNotifier()->add( __( 'Failed to clear cache. Access denied.', 'integration-dynamics' ), Notifier::NOTICE_WARNING );
+
+            return;
+        }
+
+        if ( ! wp_verify_nonce( ACRM()->request->request->get( '_wpnonce' ), 'wpcrm_clear_cache' ) ) {
+            ACRM()->getNotifier()->add( __( 'Failed to clear cache. Request error.', 'integration-dynamics' ), Notifier::NOTICE_WARNING );
+
+            return;
+        }
+
+        ACRM()->purgeCache();
+
+        ACRM()->getNotifier()->add( __( 'Metadata cache has been purged and now will be rebuilt gradually.', 'integration-dynamics' ) );
+
+        $this->options['last_metadata_purge'] = current_time( 'timestamp' );
+        update_option( $this->settingsField, $this->options );
     }
 
 }
