@@ -67,6 +67,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.3.15 =
+
+* Added reCaptcha support to Twig forms
+
 = 1.3.14 =
 
 * Fixed unauthorized access to clear cache feature
