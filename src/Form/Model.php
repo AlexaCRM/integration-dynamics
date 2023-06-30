@@ -5,6 +5,7 @@ namespace AlexaCRM\WordpressCRM\Form;
 use AlexaCRM\CRMToolkit\Client;
 use AlexaCRM\CRMToolkit\Entity;
 use AlexaCRM\WordpressCRM\FormValidator;
+use AlexaCRM\WordpressCRM\Shortcode\Form\GCaptcha;
 use AlexaCRM\WordpressCRM\View;
 
 /**
@@ -57,10 +58,16 @@ class Model {
     private $formControls;
 
     /**
+     * @var GCaptcha
+     */
+    private $captcha;
+
+    /**
      * Model constructor.
      */
     public function __construct() {
         $this->instanceId = Client::getUuid();
+        $this->captcha = new GCaptcha();
     }
 
     /**
@@ -315,6 +322,17 @@ class Model {
         $hiddenDefaults = array_diff_key( $this->attributes['default'], array_flip( $this->formControls ) );
         $formDefinition['defaults'] = $this->attributes['default'];
         $formDefinition['hiddenDefaults'] = $hiddenDefaults;
+
+        $formDefinition['captcha'] = [
+            'enabled' => false,
+        ];
+
+        if ( $this->formCaptchaEnabled() && $this->captcha->enable_captcha ) {
+            $formDefinition['captcha'] = [
+                'enabled' => true,
+                'sitekey' => $this->captcha->sitekey,
+            ];
+        }
 
         return $formDefinition;
     }
@@ -576,6 +594,22 @@ class Model {
             return [ 'submission' => false, 'fields' => $fields ];
         }
 
+        // captcha
+        if ( $this->formCaptchaEnabled() && $this->captcha->enable_captcha ) {
+            if ( ! $this->captcha->checkResponse() || ! $this->captcha->checkCaptcha() ) {
+                return [
+                    'submission' => true,
+                    'status'     => false,
+                    'fields'     => $fields,
+                    'errors'     => [
+                        'Captcha' => [
+                            __( 'Failed to verify reCAPTCHA, please try again.', 'integration-dynamics' ),
+                        ],
+                    ],
+                ];
+            }
+        }
+
         $validateMethod = [ $dispatchedForm, 'validate' ];
         if ( !$this->formName ) {
             $validateMethod = [ $dispatchedForm, 'validateHeadless' ];
@@ -789,6 +823,21 @@ class Model {
      */
     public function __clone() {
         $this->record = clone $this->record;
+    }
+
+    /**
+     * Checks 'captcha' attribute.
+     *
+     * @return bool
+     */
+    private function formCaptchaEnabled() {
+        $truthyValues = [ true, 'true', 1, '1' ];
+
+        if ( ! isset( $this->attributes['captcha'] ) ) {
+            return false;
+        }
+
+        return in_array( $this->attributes['captcha'], $truthyValues );
     }
 
 }
