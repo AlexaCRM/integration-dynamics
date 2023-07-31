@@ -67,6 +67,11 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.3.16 =
+
+* Fixed entity deserialization error
+* Raised WordPress tested version to 6.2.2
+
 = 1.3.15 =
 
 * Added reCaptcha support to Twig forms
