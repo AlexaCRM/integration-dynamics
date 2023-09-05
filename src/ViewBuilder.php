@@ -205,7 +205,7 @@ class ViewBuilder {
 
                 $cache->set( $cacheKey, $retrieveResult, $cacheTime );
             } catch ( \Exception $e ) {
-                ACRM()->getLogger()->warn( 'Incorrect cache interval given in the view tag', [ 'attributes' => $this->attributes ] );
+                ACRM()->getLogger()->warning( 'Incorrect cache interval given in the view tag', [ 'attributes' => $this->attributes ] );
 
                 return $retrieveResult;
             }

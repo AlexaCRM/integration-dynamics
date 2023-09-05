@@ -202,6 +202,15 @@
   </div>
   {% endfor %}
 </div>
+{% if form.captcha.enabled %}
+  <div class="row wpcrm-form-captcha">
+    <div class="col-sm-12">
+      <div class="form-group">
+        <div class="g-recaptcha" data-sitekey="{{ form.captcha.sitekey }}"></div>
+      </div>
+    </div>
+  </div>
+{% endif %}
 {% endfor %}
 <div class="row">
   <div class="col-sm-12">

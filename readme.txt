@@ -3,7 +3,7 @@
 Contributors: alexacrm, georgedude, wizardist
 Tags: contact form, CRM, dynamics crm, dynamics 365, form, integration, leads, membership, portal, shortcode
 Requires at least: 4.9
-Tested up to: 6.1.1
+Tested up to: 6.2.2
 Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -66,6 +66,15 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 * Navigate to **Admin > Dynamics CRM** page to enter your Dynamics 365 / CRM connection details.
 
 == Changelog ==
+
+= 1.3.16 =
+
+* Fixed entity deserialization error
+* Raised WordPress tested version to 6.2.2
+
+= 1.3.15 =
+
+* Added reCaptcha support to Twig forms
 
 = 1.3.14 =
 
