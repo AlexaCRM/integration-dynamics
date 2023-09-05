@@ -4,7 +4,7 @@ if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-function wordpresscrm_form_start( $classes = array(), $id ) {
+function wordpresscrm_form_start( $classes, $id ) {
     ACRM()->getTemplate()->getTemplate( 'form/form-start.php', array( 'classes' => $classes, "id" => $id ) );
 }
 

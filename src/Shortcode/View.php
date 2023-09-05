@@ -116,7 +116,7 @@ class View extends Shortcode {
      *
      * @return string
      */
-    public function shortcode( $attributes, $content = null, $tagName ) {
+    public function shortcode( $attributes, $content, $tagName ) {
         /* Check the connection to Dynamics CRM */
         if ( !ACRM()->connected() ) {
             /* Return error template if it's not connected function located in AlexaCRM\WordpressCRM\Shortcode::notConnected() */

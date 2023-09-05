@@ -616,7 +616,7 @@ class FormInstance extends AbstractForm {
      * @param $attributeName
      * @param $value
      */
-    private function createControl( $createControl = false, $control, $attributeName, $value ) {
+    private function createControl( $createControl, $control, $attributeName, $value ) {
         if ( $createControl ) {
             $newControl = new Control( $attributeName );
             $newControl->visible = false;

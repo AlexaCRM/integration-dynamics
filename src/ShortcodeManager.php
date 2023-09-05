@@ -67,7 +67,7 @@ class ShortcodeManager {
      *
      * @return string
      */
-    public function render( $attributes, $content = null, $tagName ) {
+    public function render( $attributes, $content, $tagName ) {
         $shortcodeName = $this->getUnprefixedShortcodeName( $tagName );
 	    if ( $shortcodeName === 'form' || ( $shortcodeName === 'twig' && strpos( $content, 'form' ) !== false ) ) {
 		    wp_enqueue_script( 'recaptcha' );
