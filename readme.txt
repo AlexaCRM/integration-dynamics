@@ -67,6 +67,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.3.17 =
+
+* Fixed incompatibility with PHP 8.0
+
 = 1.3.16 =
 
 * Fixed entity deserialization error
