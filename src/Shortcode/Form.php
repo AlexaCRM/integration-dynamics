@@ -49,7 +49,7 @@ class Form extends Shortcode {
      *
      * @return string
      */
-    public function shortcode( $attributes, $content = null, $tagName ) {
+    public function shortcode( $attributes, $content, $tagName ) {
         $form = new FormInstance();
 
         return $form->shortcode( $attributes );

@@ -34,7 +34,7 @@ class Field extends Shortcode {
      *
      * @return string
      */
-    public function shortcode( $attributes, $content = null, $tagName ) {
+    public function shortcode( $attributes, $content, $tagName ) {
 
         try {
             $record = ACRM()->getBinding()->getEntity();
