@@ -66,8 +66,17 @@ if ( defined( 'WORDPRESSCRM_LOG_LEVEL' ) ) {
     $logLevel = WORDPRESSCRM_LOG_LEVEL;
 }
 define( 'WORDPRESSCRM_EFFECTIVE_LOG_LEVEL', $logLevel );
+
 $logStream = new \Monolog\Handler\RotatingFileHandler( WORDPRESSCRM_STORAGE . '/integration-dynamics.log', 3, $logLevel );
-$logger->pushHandler( $logStream );
+
+$dateFormat = 'Y-m-d';
+$uniqId = crc32( date( $dateFormat ) . ( defined( 'AUTH_KEY' ) ? AUTH_KEY : 'abcdefghijklmnopqrstuvwxyz123456' ) );
+$logStream->setFilenameFormat( "{filename}-$uniqId-{date}", $dateFormat );
+
+if ( !file_exists( $logStream->getUrl() ) || is_writable( $logStream->getUrl() ) ) {
+    $logger->pushHandler( $logStream );
+}
+
 $logger->pushProcessor( 'wpcrm_log_processor_sanitizer' );
 
 /**
