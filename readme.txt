@@ -67,6 +67,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.3.19 =
+
+* Raised WordPress tested version to 6.5.2
+
 = 1.3.18 =
 
 * Fixed possible security vulnerability with log file names
