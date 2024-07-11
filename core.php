@@ -128,8 +128,10 @@ add_action( 'wordpresscrm_sw_register', function( ShortcodeWizard $shortcodeWiza
 
         $entity = $client->entity( $values['entity'] );
 
-        foreach ( $entity->attributes as $attribute ) {
-            $attributes[$attribute->logicalName] = $attribute->logicalName . ' (' . $attribute->label . ')';
+        if ( $entity->attributes ) {
+            foreach ( $entity->attributes as $attribute ) {
+                $attributes[$attribute->logicalName] = $attribute->logicalName.' ('.$attribute->label.')';
+            }
         }
 
         asort( $attributes );

@@ -121,7 +121,7 @@ class View {
         $fetchDom->loadXML( $fetchXML );
 
         $primaryName = $entities->Entities[0]->getPrimaryNameField();
-        $tzOffset = null;
+        $tzOffset = 0;
 
         foreach ( $entities->Entities as $entity ) {
             /**
@@ -153,8 +153,8 @@ class View {
                     }
                 } else {
                     $element["head"] = $entity->getPropertyLabel( $name, $languageCode );
-                    $element["value"]      = trim( $entity->{$name} );
-                    $element["properties"] = $entity->attributes[ $name ];
+                    $element["value"] = $entity->{$name} ? trim($entity->{$name}) : '';
+                    $element["properties"] = $entity->attributes[$name];
                     $element["formatted_value"] = self::getFormattedValue( $entity, $name, $tzOffset );
 
                     $boundUrl = '';
@@ -196,8 +196,9 @@ class View {
      *
      * @return string
      */
-    public static function getFormattedValue( $entity, $name, $timezoneoffset ) {
-        $value = htmlentities( trim( $entity->getFormattedValue( $name, $timezoneoffset ) ) );
+    public static function getFormattedValue( $entity, $name, $timezoneoffset = 0) {
+        $value = $entity->getFormattedValue($name, $timezoneoffset);
+        $value = $value ? htmlentities(trim($value)) : '';
 
         if ( isset( $entity->attributes[ $name ] ) ) {
             switch ( $entity->attributes[ $name ]->format ) {

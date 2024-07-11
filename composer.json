@@ -4,7 +4,7 @@
   "type": "wordpress-plugin",
   "require": {
     "alexacrm/php-crm-toolkit": "20230730",
-    "symfony/http-foundation": "3.1.*",
+    "symfony/http-foundation": "5.4",
     "symfony/polyfill-mbstring": "1.20.0",
     "monolog/monolog": "^1.0",
     "twig/twig": "~3.5.0"
