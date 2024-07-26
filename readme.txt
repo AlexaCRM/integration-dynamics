@@ -67,6 +67,12 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.3.20 =
+
+**PHP Version Support Notice**
+This version of the plugin is the final release to support PHP 7.4, 8.0, and 8.1. Future releases will require PHP 8.2 or higher. We will continue to backport critical security fixes to this version for PHP 7.4, 8.0, and 8.1.
+Moving forward, the plugin will require PHP versions that are actively supported according to the [official PHP supported versions](https://www.php.net/supported-versions.php).
+
 = 1.3.19 =
 
 * Raised WordPress tested version to 6.5.2
