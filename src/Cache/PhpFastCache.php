@@ -310,6 +310,11 @@ allow from 127.0.0.1";
         }
 
         $os = self::getOS();
+
+        if (PHP_VERSION_ID >= 80100) {
+            self::$storage = "files";
+        }
+
         if ( self::$storage == "" || self::$storage == "auto" ) {
             if ( extension_loaded( 'apc' ) && ini_get( 'apc.enabled' ) && strpos( PHP_SAPI, "CGI" ) === false ) {
                 self::$sys['drivers']['apc'] = true;
