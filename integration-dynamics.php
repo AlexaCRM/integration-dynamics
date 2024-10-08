@@ -5,7 +5,7 @@
  * Description: The easiest way to connect Dynamics 365 and Dynamics CRM with WordPress.
  * Version: 1.3.24
  * Requires at least: 4.9
- * Requires PHP: 7.2.5
+ * Requires PHP: 8.2
  * Author: AlexaCRM
  * Author URI: https://alexacrm.com
  * Text Domain: integration-dynamics

@@ -41,7 +41,7 @@ Features:
 
 = Minimum PHP version =
 
-This plugin requires at least PHP 7.2.5.
+This plugin requires at least PHP 8.2.
 
 = WARNING =
 

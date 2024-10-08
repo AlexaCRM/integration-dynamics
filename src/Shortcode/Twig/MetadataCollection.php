@@ -32,7 +32,7 @@ class MetadataCollection implements \ArrayAccess {
      *
      * @return bool
      */
-    public function offsetExists( $entityName ) {
+    public function offsetExists( $entityName ): bool {
         if ( !ACRM()->connected() ) {
             return false;
         }
@@ -48,7 +48,7 @@ class MetadataCollection implements \ArrayAccess {
      *
      * @return Metadata
      */
-    public function offsetGet( $entityName ) {
+    public function offsetGet( $entityName ): mixed {
         if ( !ACRM()->connected() ) {
             return null;
         }
@@ -64,7 +64,7 @@ class MetadataCollection implements \ArrayAccess {
      * @param mixed $offset
      * @param mixed $value
      */
-    public function offsetSet( $offset, $value ) {
+    public function offsetSet( $offset, $value ): void {
         return;
     }
 
@@ -73,7 +73,7 @@ class MetadataCollection implements \ArrayAccess {
      *
      * @param mixed $offset
      */
-    public function offsetUnset( $offset ) {
+    public function offsetUnset( $offset ): void {
         return;
     }
 }
