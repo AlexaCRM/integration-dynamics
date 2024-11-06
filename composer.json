@@ -7,7 +7,7 @@
     "symfony/http-foundation": "3.1.*",
     "symfony/polyfill-mbstring": "1.20.0",
     "monolog/monolog": "^1.0",
-    "twig/twig": "~3.5.0"
+    "twig/twig": "~3.11.2"
   },
   "license": "GPL-2.0",
   "authors": [
