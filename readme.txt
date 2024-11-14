@@ -67,6 +67,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.3.22 =
+
+* Removed using of deprecated strptime function in the toolkit
+
 = 1.3.21 =
 
 * Fixed serialization issue in cache
