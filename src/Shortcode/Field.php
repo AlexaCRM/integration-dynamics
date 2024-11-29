@@ -6,6 +6,8 @@ namespace AlexaCRM\WordpressCRM\Shortcode;
 use AlexaCRM\WordpressCRM\Shortcode;
 use Exception;
 use AlexaCRM\WordpressCRM\Image\AnnotationImage;
+use Locale;
+use NumberFormatter;
 
 if ( !defined( 'ABSPATH' ) ) {
     exit;
@@ -135,9 +137,18 @@ class Field extends Shortcode {
                         }
 
                         return self::wrap( number_format( (float) $entity->{$field}, $fl_format[0], $fl_format[1], $fl_format[2] ), $nowrap );
-                    } else if ( $format != null && $entity->attributes[ $field ]->type == "Money" ) {
+                    } elseif ($format != null && $entity->attributes[$field]->type == "Money") {
+                        setlocale(LC_ALL,0);
+                        $ftm = new NumberFormatter('', NumberFormatter::CURRENCY);
+                        $currentLocale = $ftm->getLocale(Locale::VALID_LOCALE) ?? 'en_US.UTF-8';
+                        if ($currentLocale) {
+                            $locale_info = localeconv();
+                            $currency = $locale_info['int_curr_symbol'];
 
-                        return self::wrap( money_format( $format, $entity->{$field} ), $nowrap );
+                            return self::wrap(numfmt_format_currency($ftm, $entity->{$field}, $currency), $nowrap);
+                        }
+
+                        return self::wrap(numfmt_format($format, $entity->{$field}), $nowrap);
                     } else {
 
                         $value = $entity->getFormattedValue( $field, $timezoneOffset );

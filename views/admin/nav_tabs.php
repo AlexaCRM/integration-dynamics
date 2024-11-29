@@ -1,5 +1,7 @@
 <?php
 
+use AlexaCRM\WordpressCRM\Admin;
+
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
@@ -39,7 +41,7 @@ $isConnected = ( isset( $options['connected'] ) && $options['connected'] );
 </h2>
 <h2 class="nav-tab-wrapper">
     <?php
-    $tabs = apply_filters( 'wordpresscrm_tabs', static::$tabs );
+    $tabs = apply_filters( 'wordpresscrm_tabs', Admin::$tabs );
     uasort( $tabs, function ( $first, $second ) {
         if ( $first[1] === $second[1] ) {
             return 0;
@@ -52,7 +54,7 @@ $isConnected = ( isset( $options['connected'] ) && $options['connected'] );
         /**
          * @var $tabInstance \AlexaCRM\WordpressCRM\Admin\Tab
          */
-        $tabInstance = static::$tabsCollection[ $tabName ];
+        $tabInstance = Admin::$tabsCollection[ $tabName ];
 
         $tabSlug = 'wordpresscrm_' . $tabInstance->pageId;
         if ( $tabInstance->pageId === 'general' ) {
