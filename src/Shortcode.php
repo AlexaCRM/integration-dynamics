@@ -3,6 +3,8 @@
 // Exit if accessed directly
 namespace AlexaCRM\WordpressCRM;
 
+use NumberFormatter;
+
 if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
@@ -139,6 +141,36 @@ abstract class Shortcode {
         $content = str_replace( [ '&#8220;', '&#8221;' ], '"', $content );
 
         return $content;
+    }
+
+    /**
+     * Replaces deprecated money_format function.
+     *
+     * @param string $format The format specification (Not used).
+     * @param float $number The number to be formatted.
+     * @param string $defaultLocale Default locale to use for formating, if no locale is set.
+     *
+     * @return string The formatted string.
+     */
+    function moneyFormat( string $format, float $number, string $defaultLocale = 'en_US' ) {
+        if ( function_exists( 'money_format' ) ) {
+            return money_format( $format, $number );
+        }
+
+        if ( class_exists( 'NumberFormatter' ) ) {
+
+            $currentLocale = setlocale( LC_MONETARY, 0 );
+            if ( $currentLocale === false || $currentLocale === 'C' ) {
+                $currentLocale = $defaultLocale;
+            }
+
+            $formatter = new NumberFormatter( $currentLocale, NumberFormatter::CURRENCY );
+            $currencyCode = $formatter->getTextAttribute( NumberFormatter::CURRENCY_CODE );
+
+            return $formatter->formatCurrency( $number, $currencyCode );
+        }
+
+        return strval( $number );
     }
 
 }
