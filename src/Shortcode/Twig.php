@@ -7,7 +7,9 @@ use AlexaCRM\CRMToolkit\Entity;
 use AlexaCRM\CRMToolkit\Entity\EntityReference;
 use AlexaCRM\WordpressCRM\Cache\TwigCache;
 use AlexaCRM\WordpressCRM\Shortcode;
+use AlexaCRM\WordpressCRM\Shortcode\Twig\SecurityPolicy;
 use DOMDocument;
+use Twig\Extension\SandboxExtension;
 use Twig\TwigFilter;
 
 /**
@@ -92,6 +94,8 @@ class Twig extends Shortcode {
             'cache' => $twigCache,
         ] );
         //REMOVED: $twigEnv->setBaseTemplateClass( '\AlexaCRM\WordpressCRM\Shortcode\Twig\Template' );
+
+        $twigEnv->addExtension(new SandboxExtension( new SecurityPolicy(), true));
 
         if ( $isDebugEnabled ) {
             $twigEnv->addExtension( new \Twig\Extension\DebugExtension() );
