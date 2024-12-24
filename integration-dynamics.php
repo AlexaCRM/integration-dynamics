@@ -3,8 +3,8 @@
  * Plugin Name: Dynamics 365 Integration
  * Plugin URI: https://wordpress.org/plugins/integration-dynamics/
  * Description: The easiest way to connect Dynamics 365 and Dynamics CRM with WordPress.
- * Version: 1.3.24
- * Requires at least: 4.9
+ * Version: 1.4
+ * Requires at least: 6.1
  * Requires PHP: 8.2
  * Author: AlexaCRM
  * Author URI: https://alexacrm.com
@@ -16,7 +16,7 @@ if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-define( 'WORDPRESSCRM_VERSION', '1.3.24' );
+define( 'WORDPRESSCRM_VERSION', '1.4' );
 
 define( 'WORDPRESSCRM_DIR', __DIR__ );
 
@@ -83,8 +83,8 @@ $logger->pushProcessor( 'wpcrm_log_processor_sanitizer' );
  * Checking for the current PHP version.
  * We support 5.4+
  */
-if ( version_compare( phpversion(), '5.4', '<' ) ) {
-    $logger->critical( 'PHP version is less than 5.4. Cannot proceed further.', array( 'phpversion' => phpversion() ) );
+if ( version_compare( phpversion(), '8.2', '<' ) ) {
+    $logger->critical( 'PHP version is less than 8.2. Cannot proceed further.', array( 'phpversion' => phpversion() ) );
 
     add_action( 'admin_notices', function() {
         $screen = get_current_screen();
@@ -92,7 +92,7 @@ if ( version_compare( phpversion(), '5.4', '<' ) ) {
             ?>
             <div class="notice notice-error">
                 <p>
-                    <?php printf( __( 'Dynamics 365 Integration detected that your environment has PHP %1$s. The plugin requires at least PHP %2$s to work. Please upgrade your PHP installation to fully enable the plugin.', 'integration-dynamics' ), phpversion(), '5.4' ); ?>
+                    <?php printf( __( 'Dynamics 365 Integration detected that your environment has PHP %1$s. The plugin requires at least PHP %2$s to work. Please upgrade your PHP installation to fully enable the plugin.', 'integration-dynamics' ), phpversion(), '8.2' ); ?>
                 </p>
             </div>
             <?php

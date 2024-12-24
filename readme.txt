@@ -2,8 +2,9 @@
 
 Contributors: alexacrm, georgedude, wizardist
 Tags: contact form, CRM, dynamics crm, dynamics 365, form, integration, leads, membership, portal, shortcode
-Requires at least: 4.9
+Requires at least: 6.1
 Tested up to: 6.7.1
+Requires PHP: 8.2
 Stable tag: trunk
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -66,6 +67,11 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 * Navigate to **Admin > Dynamics CRM** page to enter your Dynamics 365 / CRM connection details.
 
 == Changelog ==
+
+= 1.4 =
+
+* Raised required PHP version to 8.2
+* Improved compatibility with PHP 8.2
 
 = 1.3.24 =
 
