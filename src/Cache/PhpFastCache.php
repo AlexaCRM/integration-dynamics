@@ -250,8 +250,13 @@ class PhpFastCache {
 deny from all \r\n
 allow from 127.0.0.1";
                 $f    = @fopen( $path . "/.htaccess", "w+" );
-                @fwrite( $f, $html );
-                @fclose( $f );
+                if($f) {
+                    @fwrite( $f, $html );
+                    @fclose( $f );
+                }
+                else {
+                    trigger_error("Failed to open " . $path . "/.htaccess for writing", E_USER_WARNING);   //   echo "can't write";
+                }            
             } else {
                 //   echo "got me";
             }
