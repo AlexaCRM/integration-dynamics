@@ -56,8 +56,10 @@ class Admin {
             return;
         }
 
-        new DataBinding();
-        new ShortcodeWizard();
+        add_action( 'init', function() {
+            new DataBinding();
+            new ShortcodeWizard();
+        } );
     }
 
     /**

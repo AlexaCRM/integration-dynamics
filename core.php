@@ -5,7 +5,9 @@ use AlexaCRM\WordpressCRM\Notifier;
 use AlexaCRM\WordpressCRM\Plugin;
 use Symfony\Component\HttpFoundation\Request;
 
-load_plugin_textdomain( 'integration-dynamics', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+add_action( 'init', function() {
+    load_plugin_textdomain( 'integration-dynamics', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+}, 1 );
 
 /* Shortcode Wizard init */
 // view shortcode
