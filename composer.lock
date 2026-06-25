@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2be0cfeb862d5686822f511fd4551ce5",
+    "content-hash": "73ed7da50bc7068d28beb4cc97a3c85f",
     "packages": [
         {
             "name": "alexacrm/php-crm-toolkit",
-            "version": "20241114",
+            "version": "20260625",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AlexaCRM/php-crm-toolkit.git",
-                "reference": "33f97bfe3e4d72b6f3d6e77ccc98321cbe8b2538"
+                "reference": "cdd85f8c703e9a1a600d5525584d428365cb152d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/33f97bfe3e4d72b6f3d6e77ccc98321cbe8b2538",
-                "reference": "33f97bfe3e4d72b6f3d6e77ccc98321cbe8b2538",
+                "url": "https://api.github.com/repos/AlexaCRM/php-crm-toolkit/zipball/cdd85f8c703e9a1a600d5525584d428365cb152d",
+                "reference": "cdd85f8c703e9a1a600d5525584d428365cb152d",
                 "shasum": ""
             },
             "require": {
@@ -51,9 +51,9 @@
             ],
             "support": {
                 "issues": "https://github.com/AlexaCRM/php-crm-toolkit/issues",
-                "source": "https://github.com/AlexaCRM/php-crm-toolkit/tree/20241114"
+                "source": "https://github.com/AlexaCRM/php-crm-toolkit/tree/20260625"
             },
-            "time": "2024-11-14T07:48:56+00:00"
+            "time": "2026-06-25T10:12:03+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -264,16 +264,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v5.4.48",
+            "version": "v5.4.50",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "3f38b8af283b830e1363acd79e5bc3412d055341"
+                "reference": "1a0706e8b8041046052ea2695eb8aeee04f97609"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/3f38b8af283b830e1363acd79e5bc3412d055341",
-                "reference": "3f38b8af283b830e1363acd79e5bc3412d055341",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/1a0706e8b8041046052ea2695eb8aeee04f97609",
+                "reference": "1a0706e8b8041046052ea2695eb8aeee04f97609",
                 "shasum": ""
             },
             "require": {
@@ -320,7 +320,7 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/v5.4.48"
+                "source": "https://github.com/symfony/http-foundation/tree/v5.4.50"
             },
             "funding": [
                 {
@@ -332,11 +332,15 @@
                     "type": "github"
                 },
                 {
+                    "url": "https://github.com/nicolas-grekas",
+                    "type": "github"
+                },
+                {
                     "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-11-13T18:58:02+00:00"
+            "time": "2025-11-03T12:58:48+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
