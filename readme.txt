@@ -3,7 +3,7 @@
 Contributors: alexacrm, georgedude, wizardist
 Tags: contact form, CRM, dynamics crm, dynamics 365, form, integration, leads, membership, portal, shortcode
 Requires at least: 6.1
-Tested up to: 6.7.1
+Tested up to: 7.0
 Requires PHP: 8.2
 Stable tag: trunk
 License: GPLv2
