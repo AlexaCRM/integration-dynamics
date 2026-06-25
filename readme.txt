@@ -68,6 +68,14 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.4.1 =
+
+* Fixed caching entity objects when object cache is enabled
+* Fixed handling permission of .htaccess in cache
+* Fixed loading text domain for translation
+* Updated Twig to v3.27.1
+* Tested compatibility with WordPress up to 7.0
+
 = 1.4 =
 
 * Raised required PHP version to 8.2
