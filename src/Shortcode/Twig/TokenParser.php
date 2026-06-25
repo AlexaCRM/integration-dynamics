@@ -16,7 +16,7 @@ abstract class TokenParser extends \Twig\TokenParser\AbstractTokenParser {
      */
     protected function isEmptyTemplate( \Twig\Node\Node $template ) {
         $allowedNodes = [
-            'Twig_Node', 'Twig_Node_Text', 'Twig\Node\Node', 'Twig\Node\TextNode',
+            'Twig_Node', 'Twig_Node_Text', 'Twig\Node\Node', 'Twig\Node\TextNode', 'Twig\Node\Nodes',
         ];
 
         return in_array( get_class( $template ), $allowedNodes, true )
