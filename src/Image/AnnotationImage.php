@@ -32,7 +32,10 @@ class AnnotationImage extends Image {
         $this->storage = $storage;
 
         add_action( 'wp_ajax_msdyncrm_image', [ $this, 'serveImage' ] );
-        add_action( 'wp_ajax_nopriv_msdyncrm_image', [ $this, 'serveImage' ] );
+
+        if ( !ACRM()->option( 'block_anonymous_endpoints', false ) ) {
+            add_action( 'wp_ajax_nopriv_msdyncrm_image', [ $this, 'serveImage' ] );
+        }
     }
 
     /**

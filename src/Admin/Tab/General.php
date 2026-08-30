@@ -68,6 +68,7 @@ class General extends Tab {
         parent::init();
 
         $this->clearCache();
+        $this->saveAnonymousAccessSetting();
     }
 
     public function getDisplayName() {
@@ -455,6 +456,22 @@ class General extends Tab {
 							</span>
                         </p>
                     </form>
+
+                    <hr>
+
+                    <h3 class="title"><?php _e( 'Anonymous Access', 'integration-dynamics' ); ?></h3>
+                    <p><?php _e( 'The Lookup Dialog, attachment download, and image download endpoints are reachable by logged-in and anonymous (public) site visitors by default, so they keep working on public-facing forms. If your site does not expose CRM data to anonymous visitors through these features, you can block anonymous access to them here.', 'integration-dynamics' ) ?></p>
+                    <form method="post" action="">
+                        <input type="hidden" name="block_anonymous_endpoints_submit" value="1"/>
+                        <input type="hidden" name="_wpnonce" value="<?php echo wp_create_nonce( 'wpcrm_block_anonymous_endpoints' ) ?>"/>
+                        <label>
+                            <input type="checkbox" name="block_anonymous_endpoints" value="1" <?php checked( ACRM()->option( 'block_anonymous_endpoints', false ) ); ?>>
+                            <?php _e( 'Block anonymous (public) access to the Lookup, attachment, and image endpoints', 'integration-dynamics' ); ?>
+                        </label>
+                        <p class="submit">
+                            <?php submit_button( __( 'Save', 'integration-dynamics' ), 'primary', 'submit', false ); ?>
+                        </p>
+                    </form>
                     <?php } ?>
 
                     <?php do_action( 'wordpresscrm_after_settings_general' ); ?>
@@ -520,6 +537,37 @@ class General extends Tab {
 
         $this->options['last_metadata_purge'] = current_time( 'timestamp' );
         update_option( $this->settingsField, $this->options );
+    }
+
+    /**
+     * Saves the "block anonymous endpoints" setting after respective verifications
+     *
+     * @return void
+     */
+    protected function saveAnonymousAccessSetting() {
+        if ( ! isset( $_POST['block_anonymous_endpoints_submit'] ) ) {
+            return;
+        }
+
+        if ( ! current_user_can( 'manage_options' ) ) {
+            ACRM()->getNotifier()->add( __( 'Failed to update setting. Access denied.', 'integration-dynamics' ), Notifier::NOTICE_WARNING );
+
+            return;
+        }
+
+        if ( ! wp_verify_nonce( ACRM()->request->request->get( '_wpnonce' ), 'wpcrm_block_anonymous_endpoints' ) ) {
+            ACRM()->getNotifier()->add( __( 'Failed to update setting. Request error.', 'integration-dynamics' ), Notifier::NOTICE_WARNING );
+
+            return;
+        }
+
+        $blockAnonymousEndpoints = isset( $_POST['block_anonymous_endpoints'] ) && $_POST['block_anonymous_endpoints'] === '1';
+        update_option( Plugin::PREFIX . 'block_anonymous_endpoints', $blockAnonymousEndpoints );
+
+        ACRM()->getNotifier()->add( $blockAnonymousEndpoints
+            ? __( 'Anonymous (public) access to the Lookup, attachment, and image endpoints is now blocked.', 'integration-dynamics' )
+            : __( 'Anonymous (public) access to the Lookup, attachment, and image endpoints is now allowed.', 'integration-dynamics' )
+        );
     }
 
 }

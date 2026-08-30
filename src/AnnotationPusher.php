@@ -14,7 +14,10 @@ class AnnotationPusher {
      */
     public function __construct() {
         add_action( 'wp_ajax_msdyncrm_attachment', [ $this, 'serveAnnotation' ] );
-        add_action( 'wp_ajax_nopriv_msdyncrm_attachment', [ $this, 'serveAnnotation' ] );
+
+        if ( !ACRM()->option( 'block_anonymous_endpoints', false ) ) {
+            add_action( 'wp_ajax_nopriv_msdyncrm_attachment', [ $this, 'serveAnnotation' ] );
+        }
     }
 
     /**

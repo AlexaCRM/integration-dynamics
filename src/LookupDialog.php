@@ -34,8 +34,11 @@ class LookupDialog {
     public function __construct() {
         add_action( 'wp_ajax_retrieve_lookup_request', [ $this, 'retrieve' ] );
         add_action( 'wp_ajax_search_lookup_request', [ $this, 'search' ] );
-        add_action( 'wp_ajax_nopriv_retrieve_lookup_request', [ $this, 'retrieve' ] );
-        add_action( 'wp_ajax_nopriv_search_lookup_request', [ $this, 'search' ] );
+
+        if ( !ACRM()->option( 'block_anonymous_endpoints', false ) ) {
+            add_action( 'wp_ajax_nopriv_retrieve_lookup_request', [ $this, 'retrieve' ] );
+            add_action( 'wp_ajax_nopriv_search_lookup_request', [ $this, 'search' ] );
+        }
     }
 
     /**
