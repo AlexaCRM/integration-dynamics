@@ -1,4 +1,7 @@
 <?php
+
+use AlexaCRM\WordpressCRM\LookupNonce;
+
 if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
@@ -41,7 +44,7 @@ if ( $disabled || $readonly ) { ?>
                                     <?php foreach ( $lookupTypes as $key => $value ) {
                                         $entityMetadata = ACRM()->getMetadata()->getEntityDefinition( $value );
                                         ?>
-                                        <option value="<?php echo $key; ?>"><?php echo $entityMetadata->entityDisplayName; ?></option>
+                                        <option value="<?php echo esc_attr( $key ); ?>" data-nonce="<?php echo esc_attr( LookupNonce::create( $key ) ); ?>"><?php echo $entityMetadata->entityDisplayName; ?></option>
                                     <?php } ?>
                                 </select>
                             </td>

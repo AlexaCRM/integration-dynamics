@@ -155,6 +155,7 @@
                 'data': {
                     'action': 'retrieve_lookup_request',
                     'lookupType': $dialog.find( '#wpcrmLookupType' ).val(),
+                    'lookupNonce': $dialog.find( '#wpcrmLookupType' ).children( ':selected' ).attr( 'data-nonce' ),
                     'pagingCookie': pagingCookie,
                     'pageNumber': pageNumber
                 }
@@ -197,6 +198,7 @@
                 'data': {
                     'action': 'search_lookup_request',
                     'lookupType': $dialog.find( '#wpcrmLookupType' ).val(),
+                    'lookupNonce': $dialog.find( '#wpcrmLookupType' ).children( ':selected' ).attr( 'data-nonce' ),
                     'searchstring': encodeURIComponent( $dialog.find( '#wpcrmLookupSearchField' ).val() )
                 }
             } )
@@ -260,8 +262,8 @@
             $dialog.find( '#wpcrmLookupType option' ).remove();
 
             lookupTypes = $target.data( 'types' );
-            $.each( lookupTypes, function( entityName, label ) {
-                $dialog.find( '#wpcrmLookupType' ).append( '<option value="' + entityName + '">' + label + '</option>' );
+            $.each( lookupTypes, function( entityName, info ) {
+                $dialog.find( '#wpcrmLookupType' ).append( '<option value="' + entityName + '" data-nonce="' + info.nonce + '">' + info.label + '</option>' );
             } );
 
             ld.setPageNumber( 1 );

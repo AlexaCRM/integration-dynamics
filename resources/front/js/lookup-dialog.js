@@ -4,12 +4,14 @@ if(window.jQuery) {
         //var lookupTypes = popup.children(".crm-lookup-lookup-types").attr("value");
 
         var lookupType = popup.find(".crm-lookup-lookuptype").children(":selected").attr("value");
+        var lookupNonce = popup.find(".crm-lookup-lookuptype").children(":selected").attr("data-nonce");
 
         jQuery.ajax({
             url: wpcrm.ajaxurl,
             data: {
                 'action':'retrieve_lookup_request',
                 'lookupType' : lookupType,
+                'lookupNonce' : lookupNonce,
                 'pagingCookie' : pagingcookie,
                 'pageNumber' : pageNumber
             },
@@ -58,12 +60,14 @@ if(window.jQuery) {
     function searchLookupData(popup, searchString){
 
         var lookupType = popup.find(".crm-lookup-lookuptype").children(":selected").attr("value");
+        var lookupNonce = popup.find(".crm-lookup-lookuptype").children(":selected").attr("data-nonce");
 
         jQuery.ajax({
             url: wpcrm.ajaxurl,
             data: {
                 'action':'search_lookup_request',
                 'lookupType' : lookupType,
+                'lookupNonce' : lookupNonce,
                 'searchstring' : encodeURIComponent(searchString)
             },
             success:function(data) {

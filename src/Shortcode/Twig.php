@@ -6,6 +6,7 @@ use AlexaCRM\CRMToolkit\Client;
 use AlexaCRM\CRMToolkit\Entity;
 use AlexaCRM\CRMToolkit\Entity\EntityReference;
 use AlexaCRM\WordpressCRM\Cache\TwigCache;
+use AlexaCRM\WordpressCRM\LookupNonce;
 use AlexaCRM\WordpressCRM\Shortcode;
 use AlexaCRM\WordpressCRM\Shortcode\Twig\SecurityPolicy;
 use DOMDocument;
@@ -130,6 +131,12 @@ class Twig extends Shortcode {
             return admin_url( 'admin-ajax.php?action=msdyncrm_attachment&id=' . $attachmentId );
         } );
         $twigEnv->addFunction( $attachmentUrlFunction );
+
+        // lookupNonce() - authorizes the Lookup Dialog AJAX endpoints to query a given entity type
+        $lookupNonceFunction = new \Twig\TwigFunction( 'lookupNonce', function( $entityLogicalName ) {
+            return LookupNonce::create( $entityLogicalName );
+        } );
+        $twigEnv->addFunction( $lookupNonceFunction );
 
         // Provide access to global OptionSet metadata.
         $globalOptionSetFunc = new \Twig\TwigFunction( 'globaloptionset', function( $name ) {

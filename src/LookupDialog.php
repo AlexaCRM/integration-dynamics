@@ -51,6 +51,10 @@ class LookupDialog {
 
         $lookupType = $query->get( 'lookupType' );
 
+        if ( !LookupNonce::verify( $query->get( 'lookupNonce' ), $lookupType ) ) {
+            $this->sendErrorResponse( __( 'Your session has expired. Please reload the page and try again.', 'integration-dynamics' ) );
+        }
+
         $pagingCookie = urldecode( $query->get( 'pagingCookie', '' ) );
         if ( strlen( $pagingCookie ) < 3 ) {
             $pagingCookie = null;
@@ -117,6 +121,14 @@ class LookupDialog {
         $query = ACRM()->request->query;
 
         $lookupType = $query->get( 'lookupType' );
+
+        if ( !LookupNonce::verify( $query->get( 'lookupNonce' ), $lookupType ) ) {
+            $expiredMessage = '<table class="crm-popup-no-results"><tr><td align="center" style="vertical-align: middle">'
+                               . __( 'Your session has expired. Please reload the page and try again.', 'integration-dynamics' )
+                               . '</td></tr></table>';
+            wp_die( $expiredMessage );
+        }
+
         $entity = $sdk->entity( $lookupType );
 
         $returnedTypeCode = $entity->metadata()->objectTypeCode;
