@@ -86,13 +86,15 @@ class Twig extends Shortcode {
 
         $isDebugEnabled = defined( 'WP_DEBUG' ) && WP_DEBUG;
         $twigCache = false;
-        if ( !defined( 'WORDPRESSCRM_TWIG_CACHE_DISABLE' ) || !WORDPRESSCRM_TWIG_CACHE_DISABLE ) {
+        $twigCacheDisabled = defined( 'WORDPRESSCRM_TWIG_CACHE_DISABLE' ) && constant( 'WORDPRESSCRM_TWIG_CACHE_DISABLE' );
+        if ( !$twigCacheDisabled ) {
             $twigCache = new TwigCache( WORDPRESSCRM_STORAGE . '/twig' );
         }
 
         $twigEnv = new \Twig\Environment( $chainLoader, [
             'debug' => $isDebugEnabled,
             'cache' => $twigCache,
+            'auto_reload' => true,
         ] );
         //REMOVED: $twigEnv->setBaseTemplateClass( '\AlexaCRM\WordpressCRM\Shortcode\Twig\Template' );
 

@@ -148,9 +148,12 @@ register_activation_hook( __FILE__, function() use ( $wpcrmStorageDir ) {
         } catch ( \Exception $e ) {} // Silence is golden.
     }
 
-    // Drop the cache.
-    if ( is_dir( $wpcrmStorageDir . '/cache' ) ) {
-        removeDir( $wpcrmStorageDir . '/cache' );
+    // Drop generated caches so templates and scripts from different plugin versions cannot mix.
+    foreach ( [ 'cache', 'twig' ] as $cacheDirectory ) {
+        $cachePath = $wpcrmStorageDir . '/' . $cacheDirectory;
+        if ( is_dir( $cachePath ) ) {
+            removeDir( $cachePath );
+        }
     }
 
     // add .htaccess to prevent access to the storage directory
