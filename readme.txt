@@ -68,6 +68,10 @@ Installing Dynamics 365 Integration is just like any other WordPress plugin:
 
 == Changelog ==
 
+= 1.4.2 =
+
+* Block unauthorized access to lookup values
+
 = 1.4.1 =
 
 * Fixed caching entity objects when object cache is enabled
